@@ -1,0 +1,2 @@
+- pipeline.id: stardust-api
+  path.config: "/usr/share/logstash/pipeline/opera-panel.conf" 

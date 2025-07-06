@@ -1,0 +1,38 @@
+services:
+  stardust-api:
+    build: .
+    container_name: stardust-my-firstcare-com
+    ports:
+      - "5054:5054"
+    environment:
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin
+      - MONGODB_HOST=coruscant.my-firstcare.com
+      - MONGODB_PORT=27023
+      - MONGODB_USERNAME=opera_admin
+      - MONGODB_PASSWORD=Sim!443355
+      - MONGODB_AUTH_DB=admin
+      - MONGODB_SSL=true
+      - JWT_AUTH_BASE_URL=https://stardust-v1.my-firstcare.com
+      - ENABLE_JWT_AUTH=false
+      - DEBUG=false
+      - DEV_MODE=false
+      - PORT=5054
+      - HOST=0.0.0.0
+      - LOG_LEVEL=INFO
+      - NODE_ENV=production
+    volumes:
+      - ./logs:/app/logs
+      - ./ssl:/app/ssl:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5054/health').read()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - stardust-network
+
+networks:
+  stardust-network:
+    driver: bridge 

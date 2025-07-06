@@ -1,0 +1,50 @@
+{
+  "name": "my-firstcare-opera-panel-api-tests",
+  "version": "1.0.0",
+  "description": "Automated API testing for My FirstCare Opera Panel using Newman",
+  "main": "newman-test-runner.js",
+  "scripts": {
+    "test": "node newman-test-runner.js",
+    "test:health": "node newman-test-runner.js --health-only",
+    "test:watch": "nodemon newman-test-runner.js",
+    "test:ci": "node newman-test-runner.js && npm run test:report",
+    "test:report": "echo 'Opening test report...' && open test-results/newman-report.html",
+    "install:newman": "npm install newman --save-dev",
+    "setup": "npm install && mkdir -p test-results",
+    "clean": "rm -rf test-results/* && echo 'Test results cleaned'"
+  },
+  "keywords": [
+    "api-testing",
+    "newman",
+    "postman",
+    "healthcare",
+    "iot",
+    "medical-devices",
+    "jwt",
+    "mongodb",
+    "fastapi"
+  ],
+  "author": "My FirstCare Team",
+  "license": "MIT",
+  "devDependencies": {
+    "newman": "^6.0.0",
+    "newman-reporter-html": "^1.0.5",
+    "nodemon": "^3.0.2"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/my-firstcare-opera-panel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/my-firstcare-opera-panel/issues"
+  },
+  "homepage": "https://github.com/your-org/my-firstcare-opera-panel#readme"
+} 

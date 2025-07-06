@@ -1,0 +1,1398 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "My FirstCare Opera Panel API - Complete CRUD",
+		"description": "Comprehensive API collection for My FirstCare Opera Panel with full CRUD operations for all entities",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-login if no token exists",
+					"if (!pm.environment.get('jwt_token')) {",
+					"    pm.sendRequest({",
+					"        url: pm.environment.get('base_url') + '/auth/login',",
+					"        method: 'POST',",
+					"        header: {'Content-Type': 'application/json'},",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                username: pm.environment.get('username'),",
+					"                password: pm.environment.get('password')",
+					"            })",
+					"        }",
+					"    }, function (err, response) {",
+					"        if (response.code === 200) {",
+					"            const jsonData = response.json();",
+					"            pm.environment.set('jwt_token', jsonData.access_token);",
+					"        }",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Login successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('access_token');",
+									"    pm.environment.set('jwt_token', jsonData.access_token);",
+									"    pm.environment.set('user_id', jsonData.user_id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh_token\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Patients - CRUD",
+			"item": [
+				{
+					"name": "Get All Patients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/patients?limit=50&skip=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "hospital_id",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Patient by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/patients/{{patient_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"patients",
+								"{{patient_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Patient",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set('patient_id', jsonData.patient_id);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"nickname\": \"Johnny\",\n    \"gender\": \"male\",\n    \"birth_date\": \"1990-01-01T00:00:00Z\",\n    \"id_card\": \"1234567890123\",\n    \"phone\": \"0812345678\",\n    \"email\": \"john.doe@example.com\",\n    \"address\": \"123 Test Street\",\n    \"province_code\": \"10\",\n    \"district_code\": \"1001\",\n    \"sub_district_code\": \"100101\",\n    \"postal_code\": \"10110\",\n    \"blood_type\": \"O+\",\n    \"height\": 175.5,\n    \"weight\": 70.0,\n    \"bmi\": 22.8,\n    \"new_hospital_ids\": [\"{{hospital_id}}\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/patients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"patients"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Patient",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"John Updated\",\n    \"phone\": \"0898765432\",\n    \"weight\": 72.0,\n    \"bmi\": 23.5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/patients/{{patient_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"patients",
+								"{{patient_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Patient",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/patients/{{patient_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"patients",
+								"{{patient_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Devices - CRUD",
+			"item": [
+				{
+					"name": "Get All Devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices?limit=50&skip=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"devices"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "device_type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "hospital_id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "patient_id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Device by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices/{{device_id}}?device_type=ava4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"devices",
+								"{{device_id}}"
+							],
+							"query": [
+								{
+									"key": "device_type",
+									"value": "ava4"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set('device_id', jsonData.device_id);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"device_type\": \"ava4\",\n    \"mac_address\": \"AA:BB:CC:DD:EE:FF\",\n    \"serial_number\": \"AVA4-2024-001\",\n    \"model\": \"AVA4-Pro\",\n    \"firmware_version\": \"1.2.3\",\n    \"hospital_id\": \"{{hospital_id}}\",\n    \"patient_id\": \"{{patient_id}}\",\n    \"location\": \"Room 101\",\n    \"status\": \"active\",\n    \"configuration\": {\n        \"measurement_interval\": 300,\n        \"auto_sync\": true,\n        \"alerts_enabled\": true\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/devices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"devices"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Device",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firmware_version\": \"1.2.4\",\n    \"location\": \"Room 102\",\n    \"status\": \"active\",\n    \"configuration\": {\n        \"measurement_interval\": 600,\n        \"auto_sync\": true,\n        \"alerts_enabled\": false\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/devices/{{device_id}}?device_type=ava4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"devices",
+								"{{device_id}}"
+							],
+							"query": [
+								{
+									"key": "device_type",
+									"value": "ava4"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Device",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices/{{device_id}}?device_type=ava4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"devices",
+								"{{device_id}}"
+							],
+							"query": [
+								{
+									"key": "device_type",
+									"value": "ava4"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get AVA4 Devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/devices?device_type=ava4&limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"devices"
+							],
+							"query": [
+								{
+									"key": "device_type",
+									"value": "ava4"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Kati Devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/devices?device_type=kati&limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"devices"
+							],
+							"query": [
+								{
+									"key": "device_type",
+									"value": "kati"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Qube-Vital Devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/devices?device_type=qube-vital&limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"devices"
+							],
+							"query": [
+								{
+									"key": "device_type",
+									"value": "qube-vital"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Device Data - CRUD",
+			"item": [
+				{
+					"name": "Get Device Data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices/data?limit=50&skip=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"devices",
+								"data"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "device_id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "device_type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "data_type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "patient_id",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Device Data Record",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices/data/{{observation_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"devices",
+								"data",
+								"{{observation_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Device Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set('observation_id', jsonData.observation_id);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timestamp\": \"2024-01-15T10:30:00Z\",\n    \"device_id\": \"AA:BB:CC:DD:EE:FF\",\n    \"device_type\": \"ava4\",\n    \"data_type\": \"blood_pressure\",\n    \"values\": {\n        \"systolic\": 120,\n        \"diastolic\": 80,\n        \"pulse\": 72,\n        \"value\": 120,\n        \"unit\": \"mmHg\",\n        \"unit_code\": \"mm[Hg]\"\n    },\n    \"patient_id\": \"{{patient_id}}\",\n    \"notes\": \"Morning measurement\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/devices/data",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"devices",
+								"data"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Device Data",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"values\": {\n        \"systolic\": 125,\n        \"diastolic\": 82,\n        \"pulse\": 75,\n        \"value\": 125,\n        \"unit\": \"mmHg\",\n        \"unit_code\": \"mm[Hg]\"\n    },\n    \"notes\": \"Corrected measurement\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/devices/data/{{observation_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"devices",
+								"data",
+								"{{observation_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Device Data",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices/data/{{observation_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"devices",
+								"data",
+								"{{observation_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Medical History - CRUD",
+			"item": [
+				{
+					"name": "Get Medical History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history/blood_pressure?limit=50&skip=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"medical-history",
+								"blood_pressure"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "patient_id",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Medical History Record",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history/blood_pressure/{{record_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"medical-history",
+								"blood_pressure",
+								"{{record_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Medical History",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set('record_id', jsonData.record_id);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"patient_id\": \"{{patient_id}}\",\n    \"history_type\": \"blood_pressure\",\n    \"timestamp\": \"2024-01-15T10:30:00Z\",\n    \"device_id\": \"{{device_id}}\",\n    \"values\": {\n        \"systolic\": 120,\n        \"diastolic\": 80,\n        \"pulse\": 72,\n        \"measurement_time\": \"2024-01-15T10:30:00Z\"\n    },\n    \"notes\": \"Manual entry\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"medical-history"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Medical History",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"values\": {\n        \"systolic\": 125,\n        \"diastolic\": 82,\n        \"pulse\": 75,\n        \"measurement_time\": \"2024-01-15T10:30:00Z\"\n    },\n    \"notes\": \"Updated measurement\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history/blood_pressure/{{record_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"medical-history",
+								"blood_pressure",
+								"{{record_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Medical History",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history/blood_pressure/{{record_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"medical-history",
+								"blood_pressure",
+								"{{record_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Blood Sugar History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history/blood_sugar?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"medical-history",
+								"blood_sugar"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Temperature History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history/temperature?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"medical-history",
+								"temperature"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Step History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history/step?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"medical-history",
+								"step"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Master Data - CRUD",
+			"item": [
+				{
+					"name": "Get Master Data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/hospitals?limit=50&skip=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"hospitals"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "province_code",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "district_code",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Master Data Record",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/hospitals/{{master_data_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"hospitals",
+								"{{master_data_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Master Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set('master_data_id', jsonData.record_id);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data_type\": \"hospitals\",\n    \"name\": [\n        {\"lang\": \"th\", \"name\": \"โรงพยาบาลทดสอบ\"},\n        {\"lang\": \"en\", \"name\": \"Test Hospital\"}\n    ],\n    \"code\": 9999,\n    \"is_active\": true,\n    \"province_code\": 10,\n    \"district_code\": 1001,\n    \"sub_district_code\": 100101,\n    \"additional_fields\": {\n        \"en_name\": \"Test Hospital\",\n        \"organizecode\": 9999,\n        \"hospital_area_code\": \"TEST\",\n        \"bed_capacity\": 100,\n        \"location\": [13.7563, 100.5018],\n        \"service_plan_type\": \"A\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/master-data",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Master Data",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": [\n        {\"lang\": \"th\", \"name\": \"โรงพยาบาลทดสอบ (อัปเดต)\"},\n        {\"lang\": \"en\", \"name\": \"Test Hospital (Updated)\"}\n    ],\n    \"is_active\": true,\n    \"additional_fields\": {\n        \"bed_capacity\": 150,\n        \"service_plan_type\": \"F3\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/hospitals/{{master_data_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"hospitals",
+								"{{master_data_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Master Data",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/hospitals/{{master_data_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"hospitals",
+								"{{master_data_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Provinces",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/provinces?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"provinces"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Districts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/districts?limit=50&province_code=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"districts"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "province_code",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Sub-Districts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/sub_districts?limit=50&province_code=10&district_code=1003",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"sub_districts"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "province_code",
+									"value": "10"
+								},
+								{
+									"key": "district_code",
+									"value": "1003"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Hospital Types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/hospital_types?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"hospital_types"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin Panel",
+			"item": [
+				{
+					"name": "Dashboard Analytics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/analytics",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"analytics"
+							]
+						}
+					}
+				},
+				{
+					"name": "Audit Logs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/audit-log?limit=50&skip=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"audit-log"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "resource_type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Device API Endpoints",
+			"item": [
+				{
+					"name": "AVA4 Devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/devices?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ava4",
+								"devices"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Kati Devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/kati/devices?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"kati",
+								"devices"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Qube-Vital Devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/qube-vital/devices?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"qube-vital",
+								"devices"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Submit AVA4 Data",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timestamp\": \"2024-01-15T10:30:00Z\",\n    \"device_id\": \"AA:BB:CC:DD:EE:FF\",\n    \"type\": \"BLOOD_PRESSURE\",\n    \"data\": {\n        \"systolic\": 120,\n        \"diastolic\": 80,\n        \"pulse\": 72,\n        \"value\": 120,\n        \"unit\": \"mmHg\",\n        \"unit_code\": \"mm[Hg]\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ava4/data",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ava4",
+								"data"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "System Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					}
+				},
+				{
+					"name": "Root Endpoint",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								""
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://stardust.myfirstcare.com:5054",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "Sim!443355",
+			"type": "string"
+		}
+	]
+} 

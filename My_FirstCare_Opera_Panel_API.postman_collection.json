@@ -1,0 +1,1513 @@
+{
+	"info": {
+		"_postman_id": "12345678-1234-1234-1234-123456789abc",
+		"name": "My FirstCare Opera Panel API",
+		"description": "Complete API collection for My FirstCare Opera Panel - Medical IoT Device Management System with JWT Authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test response status",
+									"pm.test('Login successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Test response structure",
+									"pm.test('Response has required fields', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('access_token');",
+									"    pm.expect(response).to.have.property('refresh_token');",
+									"    pm.expect(response).to.have.property('token_type');",
+									"});",
+									"",
+									"// Test token format",
+									"pm.test('Tokens are valid JWT format', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.access_token).to.match(/^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+$/);",
+									"    pm.expect(response.refresh_token).to.match(/^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+$/);",
+									"});",
+									"",
+									"// Save tokens to environment",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('access_token', response.access_token);",
+									"    pm.environment.set('refresh_token', response.refresh_token);",
+									"    console.log('✅ Authentication successful - tokens saved');",
+									"    console.log('Access token:', response.access_token.substring(0, 50) + '...');",
+									"} else {",
+									"    console.log('❌ Authentication failed');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"Sim!443355\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login with admin credentials to get JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh_token\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						},
+						"description": "Refresh JWT token using refresh token"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						},
+						"description": "Get current user information"
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for JWT token management"
+		},
+		{
+			"name": "Master Data",
+			"item": [
+				{
+					"name": "Provinces",
+					"item": [
+						{
+							"name": "Get All Provinces",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/provinces?limit=10&skip=0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"provinces"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								},
+								"description": "Get all provinces with pagination"
+							},
+							"response": []
+						},
+						{
+							"name": "Search Provinces",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/provinces?search=Bangkok&limit=5",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"provinces"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Bangkok"
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								},
+								"description": "Search provinces by name (Thai/English)"
+							},
+							"response": []
+						}
+					],
+					"description": "Province master data endpoints"
+				},
+				{
+					"name": "Districts",
+					"item": [
+						{
+							"name": "Get All Districts",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/districts?limit=10&skip=0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"districts"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								},
+								"description": "Get all districts with pagination"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Districts by Province",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/districts?province_code=10&limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"districts"
+									],
+									"query": [
+										{
+											"key": "province_code",
+											"value": "10",
+											"description": "Bangkok province code"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get districts for Bangkok province (code 10)"
+							},
+							"response": []
+						},
+						{
+							"name": "Search Districts",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/districts?search=Dusit&limit=5",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"districts"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Dusit"
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								},
+								"description": "Search districts by name"
+							},
+							"response": []
+						}
+					],
+					"description": "District master data endpoints"
+				},
+				{
+					"name": "Sub-Districts",
+					"item": [
+						{
+							"name": "Get All Sub-Districts",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/sub_districts?limit=10&skip=0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"sub_districts"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								},
+								"description": "Get all sub-districts with pagination"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Sub-Districts by Province",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/sub_districts?province_code=10&limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"sub_districts"
+									],
+									"query": [
+										{
+											"key": "province_code",
+											"value": "10"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get sub-districts for Bangkok province"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Sub-Districts by District",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/sub_districts?province_code=10&district_code=1003&limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"sub_districts"
+									],
+									"query": [
+										{
+											"key": "province_code",
+											"value": "10"
+										},
+										{
+											"key": "district_code",
+											"value": "1003"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get sub-districts for specific district"
+							},
+							"response": []
+						}
+					],
+					"description": "Sub-district master data endpoints"
+				},
+				{
+					"name": "Hospital Types",
+					"item": [
+						{
+							"name": "Get All Hospital Types",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/hospital_types?limit=20",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"hospital_types"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "20"
+										}
+									]
+								},
+								"description": "Get all hospital types"
+							},
+							"response": []
+						},
+						{
+							"name": "Search Hospital Types",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/hospital_types?search=Community",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"hospital_types"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Community"
+										}
+									]
+								},
+								"description": "Search hospital types by name"
+							},
+							"response": []
+						}
+					],
+					"description": "Hospital type master data endpoints"
+				},
+				{
+					"name": "Hospitals",
+					"item": [
+						{
+							"name": "Get All Hospitals",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/hospitals?limit=10&skip=0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"hospitals"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								},
+								"description": "Get all hospitals with pagination"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Hospitals by Province",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/hospitals?province_code=10&limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"hospitals"
+									],
+									"query": [
+										{
+											"key": "province_code",
+											"value": "10"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get hospitals in Bangkok province"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Hospitals by District",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/hospitals?province_code=10&district_code=1008&limit=5",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"hospitals"
+									],
+									"query": [
+										{
+											"key": "province_code",
+											"value": "10"
+										},
+										{
+											"key": "district_code",
+											"value": "1008"
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								},
+								"description": "Get hospitals in specific district"
+							},
+							"response": []
+						},
+						{
+							"name": "Search Hospitals",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/hospitals?search=Hospital&limit=5",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"master-data",
+										"hospitals"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "Hospital"
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								},
+								"description": "Search hospitals by name"
+							},
+							"response": []
+						}
+					],
+					"description": "Hospital master data endpoints"
+				}
+			],
+			"description": "Master data endpoints with relationships and field-by-field raw documents"
+		},
+		{
+			"name": "Admin Panel",
+			"item": [
+				{
+					"name": "Patients",
+					"item": [
+						{
+							"name": "Get All Patients",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/patients?limit=10&skip=0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"patients"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										}
+									]
+								},
+								"description": "Get all patients with pagination"
+							},
+							"response": []
+						},
+						{
+							"name": "Search Patients",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/patients?search=John&limit=5",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"patients"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "John"
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								},
+								"description": "Search patients by name"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Patient by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/patients/{{patient_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"patients",
+										"{{patient_id}}"
+									]
+								},
+								"description": "Get specific patient by ID"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Patient",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"nickname\": \"Johnny\",\n    \"gender\": \"male\",\n    \"birth_date\": \"1990-01-01T00:00:00.000Z\",\n    \"id_card\": \"1234567890123\",\n    \"phone\": \"0812345678\",\n    \"email\": \"john.doe@example.com\",\n    \"address\": \"123 Test Street\",\n    \"province_code\": \"10\",\n    \"district_code\": \"1001\",\n    \"sub_district_code\": \"100101\",\n    \"postal_code\": \"10100\",\n    \"emergency_contact_name\": \"Jane Doe\",\n    \"emergency_contact_phone\": \"0823456789\",\n    \"emergency_contact_relationship\": \"spouse\",\n    \"blood_type\": \"O+\",\n    \"height\": 175.5,\n    \"weight\": 70.0,\n    \"bmi\": 22.8\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/admin/patients",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"patients"
+									]
+								},
+								"description": "Create new patient"
+							},
+							"response": []
+						}
+					],
+					"description": "Patient management endpoints"
+				},
+				{
+					"name": "Devices",
+					"item": [
+						{
+							"name": "Get AVA4 Devices",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/devices?device_type=ava4&limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"devices"
+									],
+									"query": [
+										{
+											"key": "device_type",
+											"value": "ava4"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get AVA4 devices"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Kati Devices",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/devices?device_type=kati&limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"devices"
+									],
+									"query": [
+										{
+											"key": "device_type",
+											"value": "kati"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get Kati Watch devices"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Qube-Vital Devices",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/devices?device_type=qube-vital&limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"devices"
+									],
+									"query": [
+										{
+											"key": "device_type",
+											"value": "qube-vital"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get Qube-Vital devices"
+							},
+							"response": []
+						}
+					],
+					"description": "Device management endpoints"
+				},
+				{
+					"name": "Medical History",
+					"item": [
+						{
+							"name": "Get Blood Pressure History",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/medical-history/blood_pressure?limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"medical-history",
+										"blood_pressure"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get blood pressure history records"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Blood Sugar History",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/medical-history/blood_sugar?limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"medical-history",
+										"blood_sugar"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get blood sugar history records"
+							},
+							"response": []
+						},
+						{
+							"name": "Get SPO2 History",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/medical-history/spo2?limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"medical-history",
+										"spo2"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get SPO2 history records"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Step History",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/medical-history/step?limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"medical-history",
+										"step"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Get step count history records"
+							},
+							"response": []
+						}
+					],
+					"description": "Medical history data endpoints"
+				},
+				{
+					"name": "Analytics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/analytics",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"analytics"
+							]
+						},
+						"description": "Get dashboard analytics and statistics"
+					},
+					"response": []
+				},
+				{
+					"name": "Audit Logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/audit-log?limit=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"audit-log"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Get audit logs with FHIR R5 compliance"
+					},
+					"response": []
+				}
+			],
+			"description": "Admin panel endpoints for managing patients, devices, and system data"
+		},
+		{
+			"name": "Device APIs",
+			"item": [
+				{
+					"name": "AVA4 Device",
+					"item": [
+						{
+							"name": "Get AVA4 Devices",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/ava4/devices?limit=10&active_only=true",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"ava4",
+										"devices"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "active_only",
+											"value": "true"
+										}
+									]
+								},
+								"description": "Get AVA4 devices from device API"
+							},
+							"response": []
+						},
+						{
+							"name": "Get AVA4 Device by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/ava4/devices/{{device_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"ava4",
+										"devices",
+										"{{device_id}}"
+									]
+								},
+								"description": "Get specific AVA4 device by ID"
+							},
+							"response": []
+						},
+						{
+							"name": "Send AVA4 Data",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timestamp\": \"2024-01-15T10:30:00.000Z\",\n    \"device_id\": \"AVA4_001\",\n    \"type\": \"blood_pressure\",\n    \"data\": {\n        \"systolic\": 120,\n        \"diastolic\": 80,\n        \"pulse\": 72,\n        \"patient_id\": \"patient123\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/ava4/data",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"ava4",
+										"data"
+									]
+								},
+								"description": "Send data from AVA4 device"
+							},
+							"response": []
+						}
+					],
+					"description": "AVA4 device-specific API endpoints"
+				},
+				{
+					"name": "Kati Watch",
+					"item": [
+						{
+							"name": "Get Kati Devices",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/kati/devices?limit=10&active_only=true",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"kati",
+										"devices"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "active_only",
+											"value": "true"
+										}
+									]
+								},
+								"description": "Get Kati Watch devices from device API"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Kati Device by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/kati/devices/{{device_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"kati",
+										"devices",
+										"{{device_id}}"
+									]
+								},
+								"description": "Get specific Kati Watch device by ID"
+							},
+							"response": []
+						},
+						{
+							"name": "Send Kati Data",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timestamp\": \"2024-01-15T10:30:00.000Z\",\n    \"device_id\": \"KATI_001\",\n    \"type\": \"heart_rate\",\n    \"data\": {\n        \"heart_rate\": 75,\n        \"spo2\": 98,\n        \"steps\": 5000,\n        \"patient_id\": \"patient123\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/kati/data",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"kati",
+										"data"
+									]
+								},
+								"description": "Send data from Kati Watch device"
+							},
+							"response": []
+						},
+						{
+							"name": "Kati Test Endpoint",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/kati/test",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"kati",
+										"test"
+									]
+								},
+								"description": "Simple test endpoint for Kati Watch API"
+							},
+							"response": []
+						}
+					],
+					"description": "Kati Watch device-specific API endpoints"
+				},
+				{
+					"name": "Qube-Vital",
+					"item": [
+						{
+							"name": "Get Qube-Vital Devices",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/qube-vital/devices?limit=10&active_only=true",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"qube-vital",
+										"devices"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "active_only",
+											"value": "true"
+										}
+									]
+								},
+								"description": "Get Qube-Vital devices from device API"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Qube-Vital Device by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/qube-vital/devices/{{device_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"qube-vital",
+										"devices",
+										"{{device_id}}"
+									]
+								},
+								"description": "Get specific Qube-Vital device by ID"
+							},
+							"response": []
+						},
+						{
+							"name": "Send Qube-Vital Data",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timestamp\": \"2024-01-15T10:30:00.000Z\",\n    \"device_id\": \"QUBE_001\",\n    \"type\": \"vital_signs\",\n    \"data\": {\n        \"temperature\": 36.5,\n        \"blood_pressure\": {\n            \"systolic\": 120,\n            \"diastolic\": 80\n        },\n        \"heart_rate\": 72,\n        \"patient_id\": \"patient123\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/qube-vital/data",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"qube-vital",
+										"data"
+									]
+								},
+								"description": "Send data from Qube-Vital device"
+							},
+							"response": []
+						}
+					],
+					"description": "Qube-Vital device-specific API endpoints"
+				}
+			],
+			"description": "Device-specific API endpoints for IoT medical devices"
+		},
+		{
+			"name": "System",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "System health check endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Root Endpoint",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Root API endpoint with basic information"
+					},
+					"response": []
+				}
+			],
+			"description": "System status and information endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5055",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "patient_id",
+			"value": "PATIENT_ID_HERE",
+			"type": "string"
+		},
+		{
+			"key": "device_id",
+			"value": "DEVICE_ID_HERE",
+			"type": "string"
+		}
+	]
+} 
