@@ -333,7 +333,7 @@ async def delete_device_data(
 
 @router.post("/")
 @api_endpoint_timing("device_crud_create_device")
-async def create_device(
+async def api_create_device(
     request: Request,
     device: DeviceCreate,
     current_user: Dict[str, Any] = Depends(require_auth())
@@ -505,7 +505,7 @@ async def get_devices(
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/{device_id}")
-async def get_device(
+async def api_get_device(
     device_id: str,
     device_type: str = Query(..., description="Device type: ava4, kati, qube-vital"),
     current_user: Dict[str, Any] = Depends(require_auth())
@@ -528,7 +528,7 @@ async def get_device(
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.put("/{device_id}")
-async def update_device(
+async def api_update_device(
     device_id: str,
     device: DeviceUpdate,
     device_type: str = Query(..., description="Device type: ava4, kati, qube-vital"),
@@ -575,7 +575,7 @@ async def update_device(
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.delete("/{device_id}")
-async def delete_device(
+async def api_delete_device(
     device_id: str,
     device_type: str = Query(..., description="Device type: ava4, kati, qube-vital"),
     current_user: Dict[str, Any] = Depends(require_auth())

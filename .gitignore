@@ -1,16 +1,16 @@
 # Environment variables and secrets
-.env
-.env.local
-.env.production
-.env.staging
-*.env
+#.env
+# .env.local
+# .env.production
+# .env.staging
+# *.env
 
 # SSL Certificates and Keys
-ssl/
-*.pem
-*.key
-*.crt
-*.cert
+# ssl/
+# *.pem
+# *.key
+# *.crt
+# *.cert
 *.p12
 
 # Logs

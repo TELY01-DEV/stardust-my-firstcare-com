@@ -72,7 +72,7 @@ class MasterDataUpdate(BaseModel):
 
 @router.get("/devices/{device_id}")
 @api_endpoint_timing("admin_crud_get_device")
-async def get_device(
+async def admin_get_device(
     request: Request,
     device_id: str,
     device_type: str = Query(..., description="Device type: ava4, kati, qube-vital"),
@@ -136,7 +136,7 @@ async def get_device(
 
 @router.post("/devices")
 @api_endpoint_timing("admin_crud_create_device")
-async def create_device(
+async def admin_create_device(
     request: Request,
     device: DeviceCreate,
     current_user: Dict[str, Any] = Depends(require_auth())
@@ -245,7 +245,7 @@ async def create_device(
 
 @router.put("/devices/{device_id}")
 @api_endpoint_timing("admin_crud_update_device")
-async def update_device(
+async def admin_update_device(
     request: Request,
     device_id: str,
     device: DeviceUpdate,
@@ -361,7 +361,7 @@ async def update_device(
 
 @router.delete("/devices/{device_id}")
 @api_endpoint_timing("admin_crud_delete_device")
-async def delete_device(
+async def admin_delete_device(
     request: Request,
     device_id: str,
     device_type: str = Query(..., description="Device type: ava4, kati, qube-vital"),
