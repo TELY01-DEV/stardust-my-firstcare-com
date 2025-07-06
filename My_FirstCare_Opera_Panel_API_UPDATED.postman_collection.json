@@ -1,0 +1,954 @@
+{
+	"info": {
+		"_postman_id": "updated-2024-opera-panel-api",
+		"name": "My FirstCare Opera Panel API - Updated 2024",
+		"description": "Complete API collection for My FirstCare Opera Panel with all working endpoints and fixed operation IDs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-login if no token exists",
+					"if (!pm.environment.get('jwt_token') || pm.environment.get('jwt_token') === '') {",
+					"    console.log('No JWT token found, attempting auto-login...');",
+					"    pm.sendRequest({",
+					"        url: pm.environment.get('base_url') + '/auth/login',",
+					"        method: 'POST',",
+					"        header: {'Content-Type': 'application/json'},",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                username: pm.environment.get('username'),",
+					"                password: pm.environment.get('password')",
+					"            })",
+					"        }",
+					"    }, function (err, response) {",
+					"        if (!err && response.code === 200) {",
+					"            const jsonData = response.json();",
+					"            pm.environment.set('jwt_token', jsonData.access_token);",
+					"            console.log('Auto-login successful');",
+					"        } else {",
+					"            console.log('Auto-login failed:', err || response.code);",
+					"        }",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Login successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('access_token');",
+									"    pm.environment.set('jwt_token', jsonData.access_token);",
+									"    if (jsonData.user_id) {",
+									"        pm.environment.set('user_id', jsonData.user_id);",
+									"    }",
+									"    console.log('JWT Token saved:', jsonData.access_token.substring(0, 20) + '...');",
+									"});",
+									"",
+									"pm.test('Response time is less than 2000ms', function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Get Current User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('User info retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response contains user data', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('username');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/me",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "me"]
+						}
+					}
+				},
+				{
+					"name": "Health Check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Health check successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql('healthy');",
+									"    pm.expect(jsonData.data.mongodb).to.eql('connected');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": ["{{base_url}}"],
+							"path": ["health"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin - Patients CRUD",
+			"item": [
+				{
+					"name": "Get All Patients",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patients retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('patients');",
+									"    pm.expect(jsonData).to.have.property('total');",
+									"    if (jsonData.patients.length > 0) {",
+									"        pm.environment.set('patient_id', jsonData.patients[0]._id);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/patients?limit=50&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "patients"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0"},
+								{"key": "search", "value": "", "disabled": true},
+								{"key": "hospital_id", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Patient by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('_id');",
+									"    pm.expect(jsonData).to.have.property('first_name');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/patients/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "patients", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Create Patient",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient created successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    if (jsonData.data && jsonData.data.patient && jsonData.data.patient._id) {",
+									"        pm.environment.set('new_patient_id', jsonData.data.patient._id);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Test\",\n    \"last_name\": \"Patient\",\n    \"gender\": \"male\",\n    \"phone\": \"1234567890\",\n    \"birth_date\": \"1990-01-01T00:00:00Z\",\n    \"email\": \"test@example.com\",\n    \"blood_type\": \"O+\",\n    \"height\": 175.5,\n    \"weight\": 70.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/patients",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "patients"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin - Device CRUD",
+			"item": [
+				{
+					"name": "Get Device by ID (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('device');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/devices/{{device_id}}?device_type=ava4",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "devices", "{{device_id}}"],
+							"query": [
+								{"key": "device_type", "value": "ava4"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Device (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device created successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    if (jsonData.data && jsonData.data.device_id) {",
+									"        pm.environment.set('admin_device_id', jsonData.data.device_id);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"device_type\": \"ava4\",\n    \"mac_address\": \"11:22:33:44:55:66\",\n    \"serial_number\": \"AVA4-ADMIN-001\",\n    \"model\": \"AVA4-Pro\",\n    \"firmware_version\": \"2.1.0\",\n    \"location\": \"Admin Test Room\",\n    \"status\": \"active\",\n    \"notes\": \"Created via Admin API\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/devices",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "devices"]
+						}
+					}
+				},
+				{
+					"name": "Update Device (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device updated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firmware_version\": \"2.1.1\",\n    \"location\": \"Updated Admin Room\",\n    \"notes\": \"Updated via Admin API\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/devices/{{admin_device_id}}?device_type=ava4",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "devices", "{{admin_device_id}}"],
+							"query": [
+								{"key": "device_type", "value": "ava4"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Device (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device deleted successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/devices/{{admin_device_id}}?device_type=ava4",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "devices", "{{admin_device_id}}"],
+							"query": [
+								{"key": "device_type", "value": "ava4"}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "API - Device CRUD",
+			"item": [
+				{
+					"name": "Get All Devices (API)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Devices retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('devices');",
+									"    pm.expect(jsonData).to.have.property('total');",
+									"    if (jsonData.devices.length > 0) {",
+									"        pm.environment.set('device_id', jsonData.devices[0]._id);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices?device_type=ava4&limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["api", "devices"],
+							"query": [
+								{"key": "device_type", "value": "ava4"},
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true},
+								{"key": "hospital_id", "value": "", "disabled": true},
+								{"key": "patient_id", "value": "", "disabled": true},
+								{"key": "status", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Device by ID (API)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('_id');",
+									"    pm.expect(jsonData).to.have.property('device_type');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices/{{device_id}}?device_type=ava4",
+							"host": ["{{base_url}}"],
+							"path": ["api", "devices", "{{device_id}}"],
+							"query": [
+								{"key": "device_type", "value": "ava4"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Device (API)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device created successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    if (jsonData.data && jsonData.data.device_id) {",
+									"        pm.environment.set('api_device_id', jsonData.data.device_id);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"device_type\": \"ava4\",\n    \"mac_address\": \"AA:BB:CC:DD:EE:FF\",\n    \"serial_number\": \"AVA4-API-001\",\n    \"model\": \"AVA4-Pro\",\n    \"firmware_version\": \"1.5.0\",\n    \"location\": \"API Test Room\",\n    \"status\": \"active\",\n    \"notes\": \"Created via Device API\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/devices",
+							"host": ["{{base_url}}"],
+							"path": ["api", "devices"]
+						}
+					}
+				},
+				{
+					"name": "Update Device (API)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device updated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firmware_version\": \"1.5.1\",\n    \"location\": \"Updated API Room\",\n    \"notes\": \"Updated via Device API\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/devices/{{api_device_id}}?device_type=ava4",
+							"host": ["{{base_url}}"],
+							"path": ["api", "devices", "{{api_device_id}}"],
+							"query": [
+								{"key": "device_type", "value": "ava4"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Device (API)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device deleted successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices/{{api_device_id}}?device_type=ava4",
+							"host": ["{{base_url}}"],
+							"path": ["api", "devices", "{{api_device_id}}"],
+							"query": [
+								{"key": "device_type", "value": "ava4"}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Device Data CRUD",
+			"item": [
+				{
+					"name": "Get Device Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device data retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('observations');",
+									"    if (jsonData.data.observations.length > 0) {",
+									"        pm.environment.set('observation_id', jsonData.data.observations[0]._id);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices/data?limit=50&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["api", "devices", "data"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0"},
+								{"key": "device_id", "value": "", "disabled": true},
+								{"key": "device_type", "value": "", "disabled": true},
+								{"key": "data_type", "value": "", "disabled": true},
+								{"key": "patient_id", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Device Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device data created successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    if (jsonData.data && jsonData.data.observation_id) {",
+									"        pm.environment.set('new_observation_id', jsonData.data.observation_id);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timestamp\": \"2024-07-06T16:30:00Z\",\n    \"device_id\": \"AA:BB:CC:DD:EE:FF\",\n    \"device_type\": \"ava4\",\n    \"data_type\": \"blood_pressure\",\n    \"values\": {\n        \"systolic\": 120,\n        \"diastolic\": 80,\n        \"pulse\": 72,\n        \"map\": 93\n    },\n    \"patient_id\": \"{{patient_id}}\",\n    \"notes\": \"Regular measurement\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/devices/data",
+							"host": ["{{base_url}}"],
+							"path": ["api", "devices", "data"]
+						}
+					}
+				},
+				{
+					"name": "Get Device Data by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device data observation retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('observation');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/devices/data/{{observation_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "devices", "data", "{{observation_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Device Specific APIs",
+			"item": [
+				{
+					"name": "Get AVA4 Devices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('AVA4 devices retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('devices');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/devices?device_type=ava4&limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "devices"],
+							"query": [
+								{"key": "device_type", "value": "ava4"},
+								{"key": "limit", "value": "50"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Kati Devices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Kati devices retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('devices');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/kati/devices?limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["api", "kati", "devices"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true},
+								{"key": "active_only", "value": "true", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Kati Device by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Kati device retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('_id');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/kati/devices/{{device_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "kati", "devices", "{{device_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Device Mapping",
+			"item": [
+				{
+					"name": "Get Device Mappings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device mappings retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('mappings');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/device-mapping?limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "device-mapping"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true},
+								{"key": "patient_id", "value": "", "disabled": true},
+								{"key": "device_type", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Device Mapping by Patient ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device mapping retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('patient_name');",
+									"    pm.expect(jsonData).to.have.property('ava4_boxes');",
+									"    pm.expect(jsonData).to.have.property('kati_watches');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/device-mapping/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "device-mapping", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Device Types",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device types retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('device_types');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/device-mapping/device-types",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "device-mapping", "device-types"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "FHIR Audit Log",
+			"item": [
+				{
+					"name": "Get FHIR Audit Logs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('FHIR audit logs retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('logs');",
+									"    pm.expect(jsonData.data).to.have.property('total');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/audit-log?limit=20",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "audit-log"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0", "disabled": true},
+								{"key": "resource_type", "value": "", "disabled": true},
+								{"key": "user_id", "value": "", "disabled": true}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Analytics",
+			"item": [
+				{
+					"name": "Get Analytics Dashboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Analytics retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('analytics');",
+									"    pm.expect(jsonData.analytics).to.have.property('patients');",
+									"    pm.expect(jsonData.analytics).to.have.property('devices');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/analytics",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "analytics"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5054",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "dev_user",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "dev_password",
+			"type": "string"
+		}
+	]
+} 
