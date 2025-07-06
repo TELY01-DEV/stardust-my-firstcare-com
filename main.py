@@ -245,12 +245,48 @@ app.add_middleware(SecurityLoggingMiddleware)
 app.add_middleware(PerformanceLoggingMiddleware, slow_threshold_ms=2000)
 app.add_middleware(RequestLoggingMiddleware, exclude_paths=["/health", "/docs", "/openapi.json", "/favicon.ico"])
 
-# Add CORS middleware
+# Custom CORS function to handle wildcard domains
+def is_cors_allowed(origin: str) -> bool:
+    """Check if origin is allowed for CORS"""
+    if not origin:
+        return False
+    
+    # Allow localhost for development
+    if "localhost" in origin or "127.0.0.1" in origin:
+        return True
+    
+    # Allowed domain patterns
+    allowed_patterns = [
+        ".my-firstcare.com",
+        ".amy.care", 
+        ".amyplatform.com"
+    ]
+    
+    # Allow exact domain matches
+    allowed_domains = [
+        "my-firstcare.com",
+        "amy.care",
+        "amyplatform.com"
+    ]
+    
+    # Check if origin ends with allowed patterns (wildcard subdomain support)
+    for pattern in allowed_patterns:
+        if origin.endswith(pattern):
+            return True
+    
+    # Check exact domain matches
+    for domain in allowed_domains:
+        if origin.endswith(f"//{domain}") or origin.endswith(f"://{domain}"):
+            return True
+    
+    return False
+
+# Add CORS middleware with dynamic origin checking
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$|^https?://.*\.(my-firstcare\.com|amy\.care|amyplatform\.com)$|^https?://(my-firstcare\.com|amy\.care|amyplatform\.com)$",
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
 )
 

@@ -89,12 +89,48 @@ async def refresh_token(refresh_request: RefreshRequest, request: Request):
 
 @router.get("/me")
 async def get_me(request: Request, current_user: dict = Depends(require_auth())):
-    """Get current user info"""
+    """Get comprehensive current user info from Stardust-V1 JWT"""
     request_id = request.headers.get("X-Request-ID")
     
+    # Enhance user data with all available JWT fields
+    enhanced_user_data = {
+        # Core authentication fields
+        "username": current_user.get("username"),
+        "role": current_user.get("role"),
+        
+        # Profile information fields
+        "full_name": current_user.get("full_name"),
+        "email": current_user.get("email"), 
+        "phone": current_user.get("phone"),
+        "profile_photo": current_user.get("profile_photo"),
+        
+        # Additional context fields
+        "permissions": _get_role_permissions(current_user.get("role", "")),
+        "authentication_source": "Stardust-V1",
+        "token_type": "JWT",
+        
+        # System information
+        "system_access": {
+            "can_access_admin": current_user.get("role") in ["admin", "superadmin"],
+            "can_modify_data": current_user.get("role") in ["operator", "admin", "superadmin"], 
+            "can_view_data": current_user.get("role") in ["viewer", "operator", "admin", "superadmin"],
+            "is_superadmin": current_user.get("role") == "superadmin"
+        }
+    }
+    
     success_response = create_success_response(
-        message="User information retrieved successfully",
-        data=current_user,
+        message="Comprehensive user information retrieved successfully from Stardust-V1 JWT",
+        data=enhanced_user_data,
         request_id=request_id
     )
-    return success_response.dict() 
+    return success_response.dict()
+
+def _get_role_permissions(role: str) -> list:
+    """Get role-based permissions"""
+    role_permissions = {
+        "viewer": ["read:patients", "read:devices", "read:history"],
+        "operator": ["read:patients", "read:devices", "read:history", "write:devices", "submit:data"],
+        "admin": ["read:all", "write:all", "delete:data", "manage:devices", "admin:panel"],
+        "superadmin": ["read:all", "write:all", "delete:all", "admin:system", "manage:users", "config:system"]
+    }
+    return role_permissions.get(role, []) 

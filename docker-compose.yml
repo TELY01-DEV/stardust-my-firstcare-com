@@ -13,7 +13,7 @@ services:
       - MONGODB_AUTH_DB=admin
       - MONGODB_SSL=true
       - JWT_AUTH_BASE_URL=https://stardust-v1.my-firstcare.com
-      - ENABLE_JWT_AUTH=false
+      - ENABLE_JWT_AUTH=true
       - DEBUG=false
       - DEV_MODE=false
       - PORT=5054
