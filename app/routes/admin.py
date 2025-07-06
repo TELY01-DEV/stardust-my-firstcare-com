@@ -1049,6 +1049,9 @@ async def get_master_data(
 ):
     """Get master data by type - returns raw document data field by field with relationships"""
     try:
+        # Normalize data_type: convert hyphens to underscores for consistency
+        normalized_data_type = data_type.replace("-", "_")
+        
         # Map data type to collection
         collection_mapping = {
             "hospitals": "hospitals",
@@ -1058,9 +1061,9 @@ async def get_master_data(
             "hospital_types": "master_hospital_types"
         }
         
-        collection_name = collection_mapping.get(data_type)
+        collection_name = collection_mapping.get(normalized_data_type)
         if not collection_name:
-            raise HTTPException(status_code=400, detail="Invalid data type")
+            raise HTTPException(status_code=400, detail=f"Invalid data type: {data_type}. Supported types: {', '.join(collection_mapping.keys())}")
         
         collection = mongodb_service.get_collection(collection_name)
         
@@ -1068,23 +1071,23 @@ async def get_master_data(
         filter_query = {}
         
         # Apply entity-specific filters
-        if data_type == "provinces":
+        if normalized_data_type == "provinces":
             filter_query = {"is_deleted": {"$ne": True}}
-        elif data_type == "districts":
+        elif normalized_data_type == "districts":
             filter_query = {"is_deleted": {"$ne": True}}
             # Filter by province if specified
             if province_code:
                 filter_query["province_code"] = province_code
-        elif data_type == "sub_districts":
+        elif normalized_data_type == "sub_districts":
             filter_query = {"is_deleted": {"$ne": True}}
             # Filter by province and/or district if specified
             if province_code:
                 filter_query["province_code"] = province_code
             if district_code:
                 filter_query["district_code"] = district_code
-        elif data_type == "hospital_types":
+        elif normalized_data_type == "hospital_types":
             filter_query = {"active": True}
-        elif data_type == "hospitals":
+        elif normalized_data_type == "hospitals":
             filter_query = {"is_deleted": {"$ne": True}}
             # Filter by province and/or district if specified
             if province_code:
@@ -1095,19 +1098,19 @@ async def get_master_data(
         # Add search functionality
         if search:
             search_conditions = []
-            if data_type == "hospitals":
+            if normalized_data_type == "hospitals":
                 search_conditions = [
                     {"name.0.name": {"$regex": search, "$options": "i"}},
                     {"name.1.name": {"$regex": search, "$options": "i"}},
                     {"en_name": {"$regex": search, "$options": "i"}}
                 ]
-            elif data_type in ["provinces", "districts", "sub_districts"]:
+            elif normalized_data_type in ["provinces", "districts", "sub_districts"]:
                 search_conditions = [
                     {"name.0.name": {"$regex": search, "$options": "i"}},
                     {"name.1.name": {"$regex": search, "$options": "i"}},
                     {"en_name": {"$regex": search, "$options": "i"}}
                 ]
-            elif data_type == "hospital_types":
+            elif normalized_data_type == "hospital_types":
                 search_conditions = [
                     {"name.th": {"$regex": search, "$options": "i"}},
                     {"name.en": {"$regex": search, "$options": "i"}}
@@ -1120,7 +1123,7 @@ async def get_master_data(
         total = await collection.count_documents(filter_query)
         
         # Get data with sorting
-        sort_field = "created_at" if data_type in ["provinces", "districts", "sub_districts", "hospitals"] else "_id"
+        sort_field = "created_at" if normalized_data_type in ["provinces", "districts", "sub_districts", "hospitals"] else "_id"
         cursor = collection.find(filter_query).sort(sort_field, 1).skip(skip).limit(limit)
         data = await cursor.to_list(length=limit)
         
@@ -1130,7 +1133,7 @@ async def get_master_data(
         response_data = {
             "data": data,
             "total": total,
-            "data_type": data_type,
+            "data_type": normalized_data_type,
             "limit": limit,
             "skip": skip,
             "filters": {
@@ -1138,8 +1141,8 @@ async def get_master_data(
                 "province_code": province_code,
                 "district_code": district_code
             },
-            "fields_info": get_master_data_fields_info(data_type),
-            "relationships": get_master_data_relationships(data_type)
+            "fields_info": get_master_data_fields_info(normalized_data_type),
+            "relationships": get_master_data_relationships(normalized_data_type)
         }
         
         return JSONResponse(content=response_data)
