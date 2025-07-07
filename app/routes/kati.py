@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from typing import Dict, Any, Optional
 from fastapi import APIRouter, HTTPException, Depends, Request, Query
@@ -55,7 +56,7 @@ async def receive_kati_data(
 ):
     """Receive data from Kati Watch"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Validate device exists
         collection = mongodb_service.get_collection("watches")
@@ -146,7 +147,7 @@ async def receive_kati_data(
             },
             request_id=request_id
         )
-        return success_response.dict()
+        return success_response
         
     except HTTPException:
         raise
@@ -156,7 +157,7 @@ async def receive_kati_data(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to process Kati watch data: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -321,7 +322,7 @@ async def get_patient_info_by_imei(
 ):
     """Get patient basic information by Kati watch IMEI for device mapping"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Find watch by IMEI
         watches_collection = mongodb_service.get_collection("watches")
@@ -432,7 +433,7 @@ async def get_patient_info_by_imei(
                 },
                 request_id=request_id
             )
-            return success_response.dict()
+            return success_response
         
         # Check if patient is active
         if patient.get("is_deleted") or not patient.get("is_active", True):
@@ -515,7 +516,7 @@ async def get_patient_info_by_imei(
             },
             request_id=request_id
         )
-        return success_response.dict()
+        return success_response
         
     except HTTPException:
         raise
@@ -525,6 +526,6 @@ async def get_patient_info_by_imei(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve patient information: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         ) 

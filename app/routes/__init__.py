@@ -4,7 +4,8 @@
 from fastapi import APIRouter, HTTPException, Request, Depends
 from pydantic import BaseModel
 from app.services.auth import auth_service, require_auth
-from app.utils.error_definitions import create_error_response, create_success_response
+from app.utils.error_definitions import create_error_response, create_success_response, SuccessResponse
+from typing import Optional
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -15,12 +16,62 @@ class LoginRequest(BaseModel):
 class RefreshRequest(BaseModel):
     refresh_token: str
 
+class TokenResponse(BaseModel):
+    success: bool
+    message: str
+    access_token: str
+    refresh_token: Optional[str] = None
+    token_type: str
+    user: dict = {}
+
 @router.post("/simple-login")
 async def simple_login():
     """Simple test login endpoint"""
     return {"message": "Simple login endpoint working", "status": "ok"}
 
-@router.post("/login")
+@router.post("/login", 
+             response_model=TokenResponse,
+             responses={
+                 200: {
+                     "description": "Login successful",
+                     "content": {
+                         "application/json": {
+                             "example": {
+                                 "success": True,
+                                 "message": "Login successful",
+                                 "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                                 "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                                 "token_type": "bearer",
+                                 "user": {
+                                     "username": "admin",
+                                     "role": "admin",
+                                     "full_name": "Administrator"
+                                 }
+                             }
+                         }
+                     }
+                 },
+                 401: {
+                     "description": "Invalid credentials",
+                     "content": {
+                         "application/json": {
+                             "example": {
+                                 "detail": "Invalid credentials"
+                             }
+                         }
+                     }
+                 },
+                 503: {
+                     "description": "Authentication service unavailable",
+                     "content": {
+                         "application/json": {
+                             "example": {
+                                 "detail": "Authentication service unavailable: Connection timeout"
+                             }
+                         }
+                     }
+                 }
+             })
 async def login(login_request: LoginRequest, request: Request):
     """Login endpoint - Fixed implementation"""
     import requests
@@ -35,14 +86,14 @@ async def login(login_request: LoginRequest, request: Request):
         if response.status_code == 200:
             tokens = response.json()
             # Return in the expected format
-            return {
-                "success": True,
-                "message": "Login successful",
-                "access_token": tokens.get("access_token"),
-                "refresh_token": tokens.get("refresh_token"),
-                "token_type": tokens.get("token_type", "bearer"),
-                "user": tokens.get("user", {})
-            }
+            return TokenResponse(
+                success=True,
+                message="Login successful",
+                access_token=tokens.get("access_token"),
+                refresh_token=tokens.get("refresh_token"),
+                token_type=tokens.get("token_type", "bearer"),
+                user=tokens.get("user", {})
+            )
         else:
             raise HTTPException(
                 status_code=401,
@@ -55,7 +106,35 @@ async def login(login_request: LoginRequest, request: Request):
             detail=f"Authentication service unavailable: {str(e)}"
         )
 
-@router.post("/refresh")
+@router.post("/refresh", 
+             response_model=TokenResponse,
+             responses={
+                 200: {
+                     "description": "Token refreshed successfully",
+                     "content": {
+                         "application/json": {
+                             "example": {
+                                 "success": True,
+                                 "message": "Token refreshed successfully",
+                                 "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                                 "refresh_token": None,
+                                 "token_type": "bearer",
+                                 "user": {}
+                             }
+                         }
+                     }
+                 },
+                 401: {
+                     "description": "Invalid refresh token",
+                     "content": {
+                         "application/json": {
+                             "example": {
+                                 "detail": "Invalid refresh token"
+                             }
+                         }
+                     }
+                 }
+             })
 async def refresh_token(refresh_request: RefreshRequest, request: Request):
     """Refresh token endpoint - Fixed implementation"""
     import requests
@@ -69,12 +148,12 @@ async def refresh_token(refresh_request: RefreshRequest, request: Request):
         
         if response.status_code == 200:
             tokens = response.json()
-            return {
-                "success": True,
-                "message": "Token refreshed successfully",
-                "access_token": tokens.get("access_token"),
-                "token_type": tokens.get("token_type", "bearer")
-            }
+            return TokenResponse(
+                success=True,
+                message="Token refreshed successfully",
+                access_token=tokens.get("access_token"),
+                token_type=tokens.get("token_type", "bearer")
+            )
         else:
             raise HTTPException(
                 status_code=401,
@@ -87,10 +166,54 @@ async def refresh_token(refresh_request: RefreshRequest, request: Request):
             detail=f"Authentication service unavailable: {str(e)}"
         )
 
-@router.get("/me")
+@router.get("/me", 
+            response_model=SuccessResponse,
+            responses={
+                200: {
+                    "description": "User information retrieved successfully",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": True,
+                                "message": "Comprehensive user information retrieved successfully from Stardust-V1 JWT",
+                                "data": {
+                                    "username": "admin",
+                                    "role": "admin",
+                                    "full_name": "Administrator",
+                                    "email": "admin@my-firstcare.com",
+                                    "phone": "+66-XXX-XXX-XXXX",
+                                    "profile_photo": None,
+                                    "permissions": ["read", "write", "admin"],
+                                    "authentication_source": "Stardust-V1",
+                                    "token_type": "JWT",
+                                    "system_access": {
+                                        "can_access_admin": True,
+                                        "can_modify_data": True,
+                                        "can_view_data": True,
+                                        "is_superadmin": False
+                                    }
+                                },
+                                "request_id": "d4e5f6g7-h8i9-0123-defg-456789012345",
+                                "timestamp": "2025-07-07T07:08:07.633870Z"
+                            }
+                        }
+                    }
+                },
+                401: {
+                    "description": "Authentication required",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "detail": "Invalid or expired token"
+                            }
+                        }
+                    }
+                }
+            })
 async def get_me(request: Request, current_user: dict = Depends(require_auth())):
     """Get comprehensive current user info from Stardust-V1 JWT"""
-    request_id = request.headers.get("X-Request-ID")
+    import uuid
+    request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     
     # Enhance user data with all available JWT fields
     enhanced_user_data = {
@@ -123,7 +246,7 @@ async def get_me(request: Request, current_user: dict = Depends(require_auth()))
         data=enhanced_user_data,
         request_id=request_id
     )
-    return success_response.dict()
+    return success_response
 
 def _get_role_permissions(role: str) -> list:
     """Get role-based permissions"""

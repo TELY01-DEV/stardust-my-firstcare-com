@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Dict, Any, Optional, List
+import uuid
 from fastapi import APIRouter, HTTPException, Depends, Request, Query
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
@@ -9,7 +10,7 @@ from app.services.mongo import mongodb_service
 from app.services.auth import require_auth
 from app.services.audit_logger import audit_logger
 from app.utils.json_encoder import serialize_mongodb_response
-from app.utils.error_definitions import create_error_response, create_success_response
+from app.utils.error_definitions import create_error_response, create_success_response, SuccessResponse
 from config import settings
 
 router = APIRouter(prefix="/admin", tags=["Admin Panel"])
@@ -123,7 +124,70 @@ class MasterDataUpdate(BaseModel):
     additional_fields: Optional[Dict[str, Any]] = None
 
 # Patient Management
-@router.get("/patients", response_model=Dict[str, Any])
+@router.get("/patients", 
+            response_model=SuccessResponse,
+            responses={
+                200: {
+                    "description": "Patients retrieved successfully",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": True,
+                                "message": "Patients retrieved successfully",
+                                "data": {
+                                    "patients": [
+                                        {
+                                            "_id": "507f1f77bcf86cd799439011",
+                                            "first_name": "John",
+                                            "last_name": "Doe",
+                                            "gender": "male",
+                                            "birth_date": "1990-01-15",
+                                            "phone": "+66-XXX-XXX-XXXX",
+                                            "hospital_id": "507f1f77bcf86cd799439012"
+                                        }
+                                    ],
+                                    "total": 431,
+                                    "limit": 100,
+                                    "skip": 0
+                                },
+                                "request_id": "e5f6g7h8-i9j0-1234-efgh-567890123456",
+                                "timestamp": "2025-07-07T07:08:07.633870Z"
+                            }
+                        }
+                    }
+                },
+                401: {
+                    "description": "Authentication required",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "detail": "Authentication required"
+                            }
+                        }
+                    }
+                },
+                500: {
+                    "description": "Internal server error",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": False,
+                                "error_count": 1,
+                                "errors": [{
+                                    "error_code": "INTERNAL_SERVER_ERROR",
+                                    "error_type": "system_error",
+                                    "message": "Failed to retrieve patients: Database connection error",
+                                    "field": None,
+                                    "value": None,
+                                    "suggestion": "Please try again later or contact support if the issue persists"
+                                }],
+                                "request_id": "f6g7h8i9-j0k1-2345-fghi-678901234567",
+                                "timestamp": "2025-07-07T07:08:07.633870Z"
+                            }
+                        }
+                    }
+                }
+            })
 async def get_patients(
     request: Request,
     limit: int = Query(100, ge=1, le=1000),
@@ -133,8 +197,9 @@ async def get_patients(
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Get patients with filtering and pagination"""
+    import uuid
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         print(f"DEBUG: Starting get_patients with limit={limit}, skip={skip}, search={search}, hospital_id={hospital_id}")
         
@@ -182,18 +247,19 @@ async def get_patients(
             },
             request_id=request_id
         )
-        return success_response.dict()
+        return success_response
         
     except Exception as e:
         print(f"ERROR in get_patients: {type(e).__name__}: {str(e)}")
         import traceback
         print(f"ERROR traceback: {traceback.format_exc()}")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         raise HTTPException(
             status_code=500,
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve patients: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request_id
             ).dict()
         )
 
@@ -438,8 +504,9 @@ async def get_raw_patient_documents(
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Get raw patient documents from MongoDB without serialization for debugging and analysis"""
+    import uuid
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         collection = mongodb_service.get_collection("patients")
         
@@ -553,18 +620,19 @@ async def get_raw_patient_documents(
             request_id=request_id
         )
         
-        return success_response.dict()
+        return success_response
         
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Error getting raw patient documents: {e}")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         raise HTTPException(
             status_code=500,
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve raw patient documents: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request_id
             ).dict()
         )
 
@@ -953,8 +1021,9 @@ async def get_medical_history(
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Get medical history by type"""
+    import uuid
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Map history type to collection
         collection_mapping = {
@@ -1022,23 +1091,80 @@ async def get_medical_history(
             },
             request_id=request_id
         )
-        return success_response.dict()
+        return success_response
         
     except HTTPException:
         raise
     except Exception as e:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         raise HTTPException(
             status_code=500,
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve medical history: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request_id
             ).dict()
         )
 
 # Master Data Management
-@router.get("/master-data/{data_type}", response_model=Dict[str, Any])
+@router.get("/master-data/{data_type}", 
+            response_model=SuccessResponse,
+            responses={
+                200: {
+                    "description": "Master data retrieved successfully",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": True,
+                                "message": "Master data retrieved successfully",
+                                "data": {
+                                    "provinces": [
+                                        {
+                                            "_id": "507f1f77bcf86cd799439011",
+                                            "province_code": "10",
+                                            "province_name": "Bangkok",
+                                            "province_name_en": "Bangkok"
+                                        },
+                                        {
+                                            "_id": "507f1f77bcf86cd799439012",
+                                            "province_code": "11",
+                                            "province_name": "Samut Prakan",
+                                            "province_name_en": "Samut Prakan"
+                                        }
+                                    ],
+                                    "total": 79,
+                                    "data_type": "provinces"
+                                },
+                                "request_id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
+                                "timestamp": "2025-07-07T07:08:07.633870Z"
+                            }
+                        }
+                    }
+                },
+                400: {
+                    "description": "Invalid data type",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": False,
+                                "error_count": 1,
+                                "errors": [{
+                                    "error_code": "INVALID_DATA_TYPE",
+                                    "error_type": "validation_error",
+                                    "message": "Invalid data type. Supported types: provinces, districts, sub_districts, hospitals, hospital_types",
+                                    "field": "data_type",
+                                    "value": "invalid_type",
+                                    "suggestion": "Please use one of the supported data types"
+                                }],
+                                "request_id": "h8i9j0k1-l2m3-4567-hijk-890123456789",
+                                "timestamp": "2025-07-07T07:08:07.633870Z"
+                            }
+                        }
+                    }
+                }
+            })
 async def get_master_data(
+    request: Request,
     data_type: str,
     limit: int = Query(100, ge=1, le=1000),
     skip: int = Query(0, ge=0),
@@ -1048,6 +1174,7 @@ async def get_master_data(
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Get master data by type - returns raw document data field by field with relationships"""
+    request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     try:
         # Normalize data_type: convert hyphens to underscores for consistency
         normalized_data_type = data_type.replace("-", "_")
@@ -1130,25 +1257,36 @@ async def get_master_data(
         # Serialize ObjectIds to maintain raw document structure
         data = serialize_mongodb_response(data)
         
-        response_data = {
-            "data": data,
-            "total": total,
-            "data_type": normalized_data_type,
-            "limit": limit,
-            "skip": skip,
-            "filters": {
-                "search": search,
-                "province_code": province_code,
-                "district_code": district_code
+        success_response = create_success_response(
+            message="Master data retrieved successfully",
+            data={
+                "data": data,
+                "total": total,
+                "data_type": normalized_data_type,
+                "limit": limit,
+                "skip": skip,
+                "filters": {
+                    "search": search,
+                    "province_code": province_code,
+                    "district_code": district_code
+                },
+                "fields_info": get_master_data_fields_info(normalized_data_type),
+                "relationships": get_master_data_relationships(normalized_data_type)
             },
-            "fields_info": get_master_data_fields_info(normalized_data_type),
-            "relationships": get_master_data_relationships(normalized_data_type)
-        }
+            request_id=request_id
+        )
         
-        return JSONResponse(content=response_data)
+        return success_response
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve master data: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
 
 def get_master_data_fields_info(data_type: str) -> Dict[str, Any]:
     """Get field information for master data types"""
@@ -1312,8 +1450,9 @@ async def get_audit_logs(
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Get audit logs"""
+    import uuid
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         logs = await audit_logger.get_audit_logs(
             limit=limit,
@@ -1336,15 +1475,16 @@ async def get_audit_logs(
             },
             request_id=request_id
         )
-        return success_response.dict()
+        return success_response
         
     except Exception as e:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         raise HTTPException(
             status_code=500,
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve audit logs: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request_id
             ).dict()
         )
 

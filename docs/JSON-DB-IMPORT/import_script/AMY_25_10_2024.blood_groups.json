@@ -1,0 +1,312 @@
+[{
+  "_id": {
+    "$oid": "61f7e7ca3036bd2d8f4bb958"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "AB : Rh-"
+    },
+    {
+      "code": "th",
+      "name": "เอบี : อาร์เอช ลบ"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "AB : Rh-",
+  "created_at": {
+    "$date": "2022-01-31T13:44:42.283Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:44:42.283Z"
+  },
+  "unique_id": 1,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e7da3036bd2d8f4bb959"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "AB : Rh+"
+    },
+    {
+      "code": "th",
+      "name": "เอบี : อาร์เอช บวก"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "AB : Rh+",
+  "created_at": {
+    "$date": "2022-01-31T13:44:58.852Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:44:58.852Z"
+  },
+  "unique_id": 2,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e7eb3036bd2d8f4bb95a"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "O : Rh-"
+    },
+    {
+      "code": "th",
+      "name": "โอ : อาร์เอช ลบ"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "O : Rh-",
+  "created_at": {
+    "$date": "2022-01-31T13:45:15.447Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:45:15.447Z"
+  },
+  "unique_id": 3,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e7fa3036bd2d8f4bb95b"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "O : Rh+"
+    },
+    {
+      "code": "th",
+      "name": "โอ : อาร์เอช บวก"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "O : Rh+",
+  "created_at": {
+    "$date": "2022-01-31T13:45:30.932Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:45:30.932Z"
+  },
+  "unique_id": 4,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e8213036bd2d8f4bb95c"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "B : Rh-"
+    },
+    {
+      "code": "th",
+      "name": "บี : อาร์เอช ลบ"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "B : Rh-",
+  "created_at": {
+    "$date": "2022-01-31T13:46:09.273Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:46:09.273Z"
+  },
+  "unique_id": 5,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e8303036bd2d8f4bb95d"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "B : Rh+"
+    },
+    {
+      "code": "th",
+      "name": "บี : อาร์เอช บวก"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "B : Rh+",
+  "created_at": {
+    "$date": "2022-01-31T13:46:24.827Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:46:24.827Z"
+  },
+  "unique_id": 6,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e83f3036bd2d8f4bb95e"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "A : Rh-"
+    },
+    {
+      "code": "th",
+      "name": "เอ : อาร์เอช ลบ"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "A : Rh-",
+  "created_at": {
+    "$date": "2022-01-31T13:46:39.597Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:46:39.597Z"
+  },
+  "unique_id": 7,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e8553036bd2d8f4bb95f"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "A : Rh+"
+    },
+    {
+      "code": "th",
+      "name": "เอ : อาร์เอช บวก"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "A : Rh+",
+  "created_at": {
+    "$date": "2022-01-31T13:47:01.047Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:47:01.047Z"
+  },
+  "unique_id": 8,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e8623036bd2d8f4bb960"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "AB"
+    },
+    {
+      "code": "th",
+      "name": "เอบี"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "AB",
+  "created_at": {
+    "$date": "2022-01-31T13:47:14.762Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:47:14.762Z"
+  },
+  "unique_id": 9,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e8703036bd2d8f4bb961"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "O"
+    },
+    {
+      "code": "th",
+      "name": "โอ"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "O",
+  "created_at": {
+    "$date": "2022-01-31T13:47:28.568Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:47:28.568Z"
+  },
+  "unique_id": 10,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e87d3036bd2d8f4bb962"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "B"
+    },
+    {
+      "code": "th",
+      "name": "บี"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "B",
+  "created_at": {
+    "$date": "2022-01-31T13:47:41.731Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:47:41.731Z"
+  },
+  "unique_id": 11,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "61f7e88a3036bd2d8f4bb963"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "A"
+    },
+    {
+      "code": "th",
+      "name": "เอ"
+    }
+  ],
+  "is_active": true,
+  "is_deleted": false,
+  "en_name": "A",
+  "created_at": {
+    "$date": "2022-01-31T13:47:54.120Z"
+  },
+  "updated_at": {
+    "$date": "2022-01-31T13:47:54.120Z"
+  },
+  "unique_id": 12,
+  "__v": 0
+}]

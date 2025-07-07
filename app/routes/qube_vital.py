@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from typing import Dict, Any, Optional
 from fastapi import APIRouter, HTTPException, Depends, Request
@@ -32,7 +33,7 @@ async def receive_qube_vital_data(
 ):
     """Receive data from Qube-Vital device"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Validate device exists
         collection = mongodb_service.get_collection("mfc_hv01_boxes")
@@ -150,7 +151,7 @@ async def receive_qube_vital_data(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to process Qube-Vital data: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -246,7 +247,7 @@ async def delete_qube_vital_device(
 ):
     """Delete (soft delete) a Qube-Vital device"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Convert device_id to ObjectId
         try:
@@ -331,7 +332,7 @@ async def delete_qube_vital_device(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to delete device: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -344,7 +345,7 @@ async def assign_device_to_hospital(
 ):
     """Assign a Qube-Vital device to a hospital"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Convert IDs to ObjectId
         try:
@@ -449,7 +450,7 @@ async def assign_device_to_hospital(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to assign device: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -460,7 +461,7 @@ async def get_hospital_analytics(
 ):
     """Get hospital analytics for Qube-Vital devices"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Get collections
         device_collection = mongodb_service.get_collection("mfc_hv01_boxes")
@@ -566,7 +567,7 @@ async def get_hospital_analytics(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve analytics: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -578,7 +579,7 @@ async def get_hospital_info_by_device(
 ):
     """Get hospital information by Qube-Vital device IMEI for hospital mapping"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Find device by IMEI
         device_collection = mongodb_service.get_collection("mfc_hv01_boxes")
@@ -732,7 +733,7 @@ async def get_hospital_info_by_device(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve hospital information: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -747,7 +748,7 @@ async def get_hospital_devices(
 ):
     """Get all Qube-Vital devices assigned to a specific hospital"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Convert hospital_id to ObjectId
         try:
@@ -855,7 +856,7 @@ async def get_hospital_devices(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve hospital devices: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -869,7 +870,7 @@ async def get_hospitals_with_devices(
 ):
     """Get hospitals with their Qube-Vital device counts"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Get hospitals
         hospital_collection = mongodb_service.get_collection("hospitals")
@@ -927,6 +928,6 @@ async def get_hospitals_with_devices(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve hospitals: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         ) 

@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Dict, Any, Optional, List
+import uuid
 from fastapi import APIRouter, HTTPException, Depends, Request, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -520,31 +521,56 @@ async def get_medical_history_record(
 
 @router.get("/master-data/{data_type}/{record_id}")
 async def get_master_data_record(
+    request: Request,
     data_type: str,
     record_id: str,
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Get specific master data record"""
+    request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     try:
         collection_name = get_master_data_collection_name(data_type)
         collection = mongodb_service.get_collection(collection_name)
         
         record = await collection.find_one({"_id": ObjectId(record_id)})
         if not record:
-            raise HTTPException(status_code=404, detail="Master data record not found")
+            raise HTTPException(
+                status_code=404,
+                detail=create_error_response(
+                    "NOT_FOUND",
+                    custom_message="Master data record not found",
+                    request_id=request_id
+                ).dict()
+            )
         
         record = serialize_mongodb_response(record)
-        return JSONResponse(content=record)
+        
+        success_response = create_success_response(
+            message="Master data record retrieved successfully",
+            data={"hospital": record},
+            request_id=request_id
+        )
+        
+        return success_response.dict()
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve master data record: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
 
 @router.post("/master-data")
 async def create_master_data(
+    request: Request,
     master_data: MasterDataCreate,
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Create new master data record"""
+    request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     try:
         collection_name = get_master_data_collection_name(master_data.data_type)
         collection = mongodb_service.get_collection(collection_name)
@@ -553,7 +579,16 @@ async def create_master_data(
         if master_data.code:
             existing_record = await collection.find_one({"code": master_data.code})
             if existing_record:
-                raise HTTPException(status_code=400, detail="Record with this code already exists")
+                raise HTTPException(
+                    status_code=400,
+                    detail=create_error_response(
+                        "DUPLICATE_RECORD",
+                        custom_message="Record with this code already exists",
+                        field="code",
+                        value=master_data.code,
+                        request_id=request_id
+                    ).dict()
+                )
         
         # Prepare master data
         data = {
@@ -597,19 +632,34 @@ async def create_master_data(
             details={"data_type": master_data.data_type, "code": master_data.code}
         )
         
-        return {"success": True, "record_id": str(result.inserted_id)}
+        success_response = create_success_response(
+            message="Master data record created successfully",
+            data={"record_id": str(result.inserted_id)},
+            request_id=request_id
+        )
+        
+        return success_response.dict()
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to create master data record: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
 
 @router.put("/master-data/{data_type}/{record_id}")
 async def update_master_data(
+    request: Request,
     data_type: str,
     record_id: str,
     master_data: MasterDataUpdate,
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Update master data record"""
+    request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     try:
         collection_name = get_master_data_collection_name(data_type)
         collection = mongodb_service.get_collection(collection_name)
@@ -629,7 +679,16 @@ async def update_master_data(
         )
         
         if result.modified_count == 0:
-            raise HTTPException(status_code=404, detail="Master data record not found")
+            raise HTTPException(
+                status_code=404,
+                detail=create_error_response(
+                    "NOT_FOUND",
+                    custom_message="Master data record not found",
+                    field="record_id",
+                    value=record_id,
+                    request_id=request_id
+                ).dict()
+            )
         
         # Log audit trail
         username = current_user.get("username", "unknown")
@@ -641,18 +700,33 @@ async def update_master_data(
             details={"data_type": data_type}
         )
         
-        return {"success": True, "message": "Master data updated successfully"}
+        success_response = create_success_response(
+            message="Master data updated successfully",
+            data={"record_id": record_id},
+            request_id=request_id
+        )
+        
+        return success_response.dict()
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to update master data record: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
 
 @router.delete("/master-data/{data_type}/{record_id}")
 async def delete_master_data(
+    request: Request,
     data_type: str,
     record_id: str,
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Soft delete master data record"""
+    request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     try:
         collection_name = get_master_data_collection_name(data_type)
         collection = mongodb_service.get_collection(collection_name)
@@ -675,7 +749,16 @@ async def delete_master_data(
         )
         
         if result.modified_count == 0:
-            raise HTTPException(status_code=404, detail="Master data record not found")
+            raise HTTPException(
+                status_code=404,
+                detail=create_error_response(
+                    "NOT_FOUND",
+                    custom_message="Master data record not found",
+                    field="record_id",
+                    value=record_id,
+                    request_id=request_id
+                ).dict()
+            )
         
         # Log audit trail
         username = current_user.get("username", "unknown")
@@ -687,10 +770,23 @@ async def delete_master_data(
             details={"data_type": data_type}
         )
         
-        return {"success": True, "message": "Master data deleted successfully"}
+        success_response = create_success_response(
+            message="Master data deleted successfully",
+            data={"record_id": record_id},
+            request_id=request_id
+        )
+        
+        return success_response.dict()
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to delete master data record: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
 
 # ==================== HELPER FUNCTIONS ====================
 

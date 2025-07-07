@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from typing import Dict, Any, Optional, List
 from fastapi import APIRouter, HTTPException, Depends, Query, Request
@@ -194,7 +195,7 @@ async def get_device_types(
 ):
     """Get available device types with their descriptions"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         success_response = create_success_response(
             message="Device types retrieved successfully",
@@ -212,7 +213,7 @@ async def get_device_types(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to get device types: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -225,7 +226,7 @@ async def get_available_ava4_boxes(
 ):
     """Get available AVA4 boxes (not assigned to any patient)"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         boxes_collection = mongodb_service.get_collection("amy_boxes")
         
@@ -255,7 +256,7 @@ async def get_available_ava4_boxes(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to get available AVA4 boxes: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -268,7 +269,7 @@ async def get_available_kati_watches(
 ):
     """Get available Kati watches (not assigned to any patient)"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         watches_collection = mongodb_service.get_collection("watches")
         
@@ -298,7 +299,7 @@ async def get_available_kati_watches(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to get available Kati watches: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -430,7 +431,7 @@ async def assign_ava4_box(
 ):
     """Assign AVA4 box to patient"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Validate patient exists
         patient = await validate_patient_exists(assignment.patient_id)

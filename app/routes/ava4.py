@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional, List
 from fastapi import APIRouter, HTTPException, Depends, Request, Query
@@ -66,7 +67,7 @@ async def receive_ava4_data(
 ):
     """Receive data from AVA4 device"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Validate device exists
         collection = mongodb_service.get_collection("amy_boxes")
@@ -169,7 +170,7 @@ async def receive_ava4_data(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to process AVA4 data: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -259,7 +260,7 @@ async def get_ava4_device(
 ):
     """Get specific AVA4 device"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         collection = mongodb_service.get_collection("amy_boxes")
         device = await collection.find_one({"_id": ObjectId(device_id)})
@@ -295,7 +296,7 @@ async def get_ava4_device(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve AVA4 device: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -349,7 +350,7 @@ async def get_patient_info_by_mac(
 ):
     """Get patient basic information by AVA4 device MAC address for device mapping"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Find device by MAC address
         device_collection = mongodb_service.get_collection("amy_boxes")
@@ -501,7 +502,7 @@ async def get_patient_info_by_mac(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve patient information: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -513,7 +514,7 @@ async def get_ava4_sub_devices(
 ):
     """Get AVA4 sub-devices (medical devices) connected to a specific AVA4 box"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Find the main AVA4 device
         device_collection = mongodb_service.get_collection("amy_boxes")
@@ -731,7 +732,7 @@ async def register_ava4_sub_device(
 ):
     """Register a new AVA4 sub-device (medical device) for a patient"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Validate patient exists
         patient_collection = mongodb_service.get_collection("patients")
@@ -889,7 +890,7 @@ async def register_ava4_sub_device(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to register sub-device: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -906,7 +907,7 @@ async def update_ava4_sub_device(
 ):
     """Update an AVA4 sub-device for a patient"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Validate patient and device type
         try:
@@ -1042,7 +1043,7 @@ async def update_ava4_sub_device(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to update sub-device: {str(e)}",
-                request_id=request.headers.get("X-Request-ID")
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
@@ -1055,7 +1056,7 @@ async def unregister_ava4_sub_device(
 ):
     """Unregister an AVA4 sub-device from a patient"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Validate patient and device type
         try:
@@ -1207,7 +1208,7 @@ async def get_ava4_sub_device_analytics(
 ):
     """Get analytics for AVA4 sub-devices"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Get device analytics
         amy_devices_collection = mongodb_service.get_collection("amy_devices")
@@ -1311,7 +1312,7 @@ async def discover_ava4_sub_devices(
 ):
     """Discover available AVA4 sub-devices for registration"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # This is a mock implementation - in a real system, this would scan for nearby devices
         # For now, we'll return a simulated discovery result
@@ -1384,7 +1385,7 @@ async def get_raw_amy_devices_documents(
 ):
     """Get raw documents to examine structure and relationships - supports both devices and patients"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         if data_type == "patients":
             # Handle patient data
@@ -1570,7 +1571,7 @@ async def analyze_patient_device_relationship(
 ):
     """Analyze the complete relationship between a patient and their devices"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Convert patient_id to ObjectId
         try:
@@ -1844,7 +1845,7 @@ async def get_medical_history_collections(
 ):
     """Get overview of all medical history collections"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Define all medical history collections
         collections_info = {
@@ -2055,7 +2056,7 @@ async def get_patient_medical_history(
 ):
     """Get comprehensive medical history for a specific patient"""
     try:
-        request_id = request.headers.get("X-Request-ID")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
         # Validate patient exists
         patient_collection = mongodb_service.get_collection("patients")
