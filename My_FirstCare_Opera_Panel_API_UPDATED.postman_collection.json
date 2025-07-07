@@ -1212,6 +1212,20 @@
 									"    const jsonData = pm.response.json();",
 									"    pm.expect(jsonData).to.have.property('request_id');",
 									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"});",
+									"",
+									"pm.test('Hospital has enhanced address fields', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.data && jsonData.data.data.length > 0) {",
+									"        const hospital = jsonData.data.data[0];",
+									"        console.log('Hospital address structure:', {",
+									"            basic_address: hospital.address || null,",
+									"            address_details: hospital.address_details || null,",
+									"            location: hospital.location || null,",
+									"            contact: hospital.contact || null,",
+									"            services: hospital.services || null",
+									"        });",
+									"    }",
 									"});"
 								]
 							}
@@ -1230,7 +1244,36 @@
 								{"key": "skip", "value": "0", "disabled": true}
 							]
 						}
-					}
+					},
+					"response": [
+						{
+							"name": "Enhanced Hospital Data with Address Fields",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/admin/master-data/hospitals?search=Bangkok&limit=5",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "master-data", "hospitals"],
+									"query": [
+										{"key": "search", "value": "Bangkok"},
+										{"key": "limit", "value": "5"}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\"success\":true,\"message\":\"Master data retrieved successfully\",\"data\":{\"data\":[{\"_id\":\"507f1f77bcf86cd799439011\",\"name\":[{\"code\":\"en\",\"name\":\"Bangkok General Hospital\"},{\"code\":\"th\",\"name\":\"โรงพยาบาลกรุงเทพ\"}],\"en_name\":\"Bangkok General Hospital\",\"province_code\":10,\"district_code\":1003,\"sub_district_code\":100301,\"organizecode\":1001,\"hospital_area_code\":\"10330\",\"is_active\":true,\"is_deleted\":false,\"address\":\"123 Rama IV Road, Pathum Wan, Bangkok 10330\",\"address_details\":{\"street_address\":\"123 Rama IV Road\",\"building_name\":\"Medical Center Tower\",\"floor\":\"Ground Floor - 15th Floor\",\"room\":\"Reception: Room 101\",\"postal_code\":\"10330\",\"postal_box\":\"P.O. Box 1234\"},\"location\":{\"latitude\":13.7563,\"longitude\":100.5018,\"elevation\":2.5,\"precision\":\"GPS\"},\"contact\":{\"phone\":\"+66-2-123-4567\",\"phone_2\":\"+66-2-123-4568\",\"fax\":\"+66-2-123-4569\",\"mobile\":\"+66-81-123-4567\",\"emergency_phone\":\"+66-2-123-1911\",\"email\":\"info@bgh.co.th\",\"email_admin\":\"admin@bgh.co.th\",\"website\":\"https://www.bgh.co.th\"},\"services\":{\"bed_capacity\":500,\"emergency_services\":true,\"trauma_center\":true,\"icu_beds\":50,\"operating_rooms\":15,\"service_plan_type\":\"A\",\"accreditation\":\"JCI\"},\"phone\":\"+66-2-123-4567\",\"email\":\"info@bgh.co.th\",\"website\":\"https://www.bgh.co.th\",\"bed_capacity\":500,\"service_plan_type\":\"A\",\"image_url\":\"https://cdn.bgh.co.th/logo.png\",\"mac_hv01_box\":\"AA:BB:CC:DD:EE:FF\",\"created_at\":\"2024-01-15T08:00:00.000Z\",\"updated_at\":\"2024-01-15T10:30:00.000Z\"}],\"total\":1,\"data_type\":\"hospitals\",\"limit\":5,\"skip\":0},\"request_id\":\"a1b2c3d4-e5f6-7890-abcd-123456789012\",\"timestamp\":\"2025-01-15T10:30:00.000Z\"}"
+						}
+					]
 				},
 				{
 					"name": "Get Hospital Types",

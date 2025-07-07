@@ -1114,29 +1114,139 @@ async def get_medical_history(
                     "description": "Master data retrieved successfully",
                     "content": {
                         "application/json": {
-                            "example": {
-                                "success": True,
-                                "message": "Master data retrieved successfully",
-                                "data": {
-                                    "provinces": [
-                                        {
-                                            "_id": "507f1f77bcf86cd799439011",
-                                            "province_code": "10",
-                                            "province_name": "Bangkok",
-                                            "province_name_en": "Bangkok"
+                            "examples": {
+                                "hospitals_response": {
+                                    "summary": "Hospital data with enhanced address information",
+                                    "value": {
+                                        "success": True,
+                                        "message": "Master data retrieved successfully",
+                                        "data": {
+                                            "data": [
+                                                {
+                                                    "_id": "507f1f77bcf86cd799439011",
+                                                    "name": [
+                                                        {"code": "en", "name": "Bangkok General Hospital"},
+                                                        {"code": "th", "name": "โรงพยาบาลกรุงเทพ"}
+                                                    ],
+                                                    "en_name": "Bangkok General Hospital",
+                                                    "province_code": 10,
+                                                    "district_code": 1003,
+                                                    "sub_district_code": 100301,
+                                                    "organizecode": 1001,
+                                                    "hospital_area_code": "10330",
+                                                    "is_active": True,
+                                                    "is_deleted": False,
+                                                    
+                                                    # Enhanced address information
+                                                    "address": "123 Rama IV Road, Pathum Wan, Bangkok 10330",
+                                                    "address_details": {
+                                                        "street_address": "123 Rama IV Road",
+                                                        "building_name": "Medical Center Tower",
+                                                        "floor": "Ground Floor - 15th Floor",
+                                                        "room": "Reception: Room 101",
+                                                        "postal_code": "10330",
+                                                        "postal_box": "P.O. Box 1234"
+                                                    },
+                                                    
+                                                    # Geographic coordinates
+                                                    "location": {
+                                                        "latitude": 13.7563,
+                                                        "longitude": 100.5018,
+                                                        "elevation": 2.5,
+                                                        "precision": "GPS"
+                                                    },
+                                                    
+                                                    # Comprehensive contact information
+                                                    "contact": {
+                                                        "phone": "+66-2-123-4567",
+                                                        "phone_2": "+66-2-123-4568", 
+                                                        "fax": "+66-2-123-4569",
+                                                        "mobile": "+66-81-123-4567",
+                                                        "emergency_phone": "+66-2-123-1911",
+                                                        "email": "info@bgh.co.th",
+                                                        "email_admin": "admin@bgh.co.th",
+                                                        "website": "https://www.bgh.co.th"
+                                                    },
+                                                    
+                                                    # Service and capacity information
+                                                    "services": {
+                                                        "bed_capacity": 500,
+                                                        "emergency_services": True,
+                                                        "trauma_center": True,
+                                                        "icu_beds": 50,
+                                                        "operating_rooms": 15,
+                                                        "service_plan_type": "A",
+                                                        "accreditation": "JCI"
+                                                    },
+                                                    
+                                                    # Legacy fields (for backward compatibility)
+                                                    "phone": "+66-2-123-4567",
+                                                    "email": "info@bgh.co.th", 
+                                                    "website": "https://www.bgh.co.th",
+                                                    "bed_capacity": 500,
+                                                    "service_plan_type": "A",
+                                                    
+                                                    # Digital integration fields
+                                                    "image_url": "https://cdn.bgh.co.th/logo.png",
+                                                    "auto_login_liff_id": "1234567890-abcdefgh",
+                                                    "disconnect_liff_id": "1234567890-ijklmnop",
+                                                    "login_liff_id": "1234567890-qrstuvwx",
+                                                    "mac_hv01_box": "AA:BB:CC:DD:EE:FF",
+                                                    "notifyToken": "LINE_NOTIFY_TOKEN_123",
+                                                    
+                                                    # Notification settings
+                                                    "is_acknowledge": True,
+                                                    "is_admit_discard": True,
+                                                    "is_body_data": True,
+                                                    "is_lab_data": True,
+                                                    "is_status_change": True,
+                                                    
+                                                    # Timestamps
+                                                    "created_at": "2024-01-15T08:00:00.000Z",
+                                                    "updated_at": "2024-01-15T10:30:00.000Z",
+                                                    "__v": 2
+                                                }
+                                            ],
+                                            "total": 12350,
+                                            "data_type": "hospitals",
+                                            "limit": 100,
+                                            "skip": 0,
+                                            "filters": {
+                                                "search": None,
+                                                "province_code": None,
+                                                "district_code": None
+                                            }
                                         },
-                                        {
-                                            "_id": "507f1f77bcf86cd799439012",
-                                            "province_code": "11",
-                                            "province_name": "Samut Prakan",
-                                            "province_name_en": "Samut Prakan"
-                                        }
-                                    ],
-                                    "total": 79,
-                                    "data_type": "provinces"
+                                        "request_id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
+                                        "timestamp": "2025-01-15T10:30:00.000Z"
+                                    }
                                 },
-                                "request_id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
-                                "timestamp": "2025-07-07T07:08:07.633870Z"
+                                "provinces_response": {
+                                    "summary": "Province data example",
+                                    "value": {
+                                        "success": True,
+                                        "message": "Master data retrieved successfully",
+                                        "data": {
+                                            "data": [
+                                                {
+                                                    "_id": "507f1f77bcf86cd799439011",
+                                                    "code": 10,
+                                                    "name": [
+                                                        {"code": "en", "name": "Bangkok"},
+                                                        {"code": "th", "name": "กรุงเทพมหานคร"}
+                                                    ],
+                                                    "en_name": "Bangkok",
+                                                    "is_active": True,
+                                                    "is_deleted": False
+                                                }
+                                            ],
+                                            "total": 79,
+                                            "data_type": "provinces"
+                                        },
+                                        "request_id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
+                                        "timestamp": "2025-01-15T10:30:00.000Z"
+                                    }
+                                }
                             }
                         }
                     }
@@ -1157,7 +1267,7 @@ async def get_medical_history(
                                     "suggestion": "Please use one of the supported data types"
                                 }],
                                 "request_id": "h8i9j0k1-l2m3-4567-hijk-890123456789",
-                                "timestamp": "2025-07-07T07:08:07.633870Z"
+                                "timestamp": "2025-01-15T10:30:00.000Z"
                             }
                         }
                     }
@@ -1260,16 +1370,16 @@ async def get_master_data(
         success_response = create_success_response(
             message="Master data retrieved successfully",
             data={
-                "data": data,
-                "total": total,
+            "data": data,
+            "total": total,
                 "data_type": normalized_data_type,
-                "limit": limit,
-                "skip": skip,
-                "filters": {
-                    "search": search,
-                    "province_code": province_code,
-                    "district_code": district_code
-                },
+            "limit": limit,
+            "skip": skip,
+            "filters": {
+                "search": search,
+                "province_code": province_code,
+                "district_code": district_code
+            },
                 "fields_info": get_master_data_fields_info(normalized_data_type),
                 "relationships": get_master_data_relationships(normalized_data_type)
             },
@@ -1349,7 +1459,7 @@ def get_master_data_fields_info(data_type: str) -> Dict[str, Any]:
             }
         },
         "hospitals": {
-            "description": "Hospitals master data with full operational details",
+            "description": "Hospitals master data with full operational details and comprehensive address information",
             "fields": {
                 "_id": "MongoDB ObjectId",
                 "name": "Array of name objects with language codes (en/th)",
@@ -1364,30 +1474,74 @@ def get_master_data_fields_info(data_type: str) -> Dict[str, Any]:
                 "created_at": "Creation timestamp",
                 "updated_at": "Last update timestamp",
                 "__v": "Version key",
-                "bed_capacity": "Number of beds (integer)",
+                
+                # Basic address (legacy)
+                "address": "Basic address string (legacy field)",
+                
+                # Enhanced address details
+                "address_details": {
+                    "street_address": "Street address including house/building number",
+                    "building_name": "Building or complex name",
+                    "floor": "Floor number if applicable",
+                    "room": "Room or suite number",
+                    "postal_code": "Postal/ZIP code",
+                    "postal_box": "P.O. Box if applicable"
+                },
+                
+                # Geographic location
+                "location": {
+                    "latitude": "Latitude coordinate (float)",
+                    "longitude": "Longitude coordinate (float)",
+                    "elevation": "Elevation in meters (float)",
+                    "precision": "GPS precision/accuracy"
+                },
+                
+                # Contact information
+                "contact": {
+                    "phone": "Primary phone number",
+                    "phone_2": "Secondary phone number",
+                    "fax": "Fax number",
+                    "mobile": "Mobile phone number",
+                    "emergency_phone": "Emergency contact number",
+                    "email": "Primary email address",
+                    "email_admin": "Administrative email",
+                    "website": "Hospital website URL"
+                },
+                
+                # Service information
+                "services": {
+                    "bed_capacity": "Total number of beds (integer)",
+                    "emergency_services": "24/7 emergency services available (boolean)",
+                    "trauma_center": "Trauma center designation (boolean)",
+                    "icu_beds": "ICU bed capacity (integer)",
+                    "operating_rooms": "Number of operating rooms (integer)",
+                    "service_plan_type": "Service plan classification",
+                    "accreditation": "Hospital accreditation status"
+                },
+                
+                # Legacy contact fields (for backward compatibility)
+                "phone": "Primary phone (legacy field)",
+                "email": "Primary email (legacy field)",
+                "website": "Website (legacy field)",
+                
+                # Legacy service fields (for backward compatibility)
+                "bed_capacity": "Number of beds (legacy field)",
+                "service_plan_type": "Service plan type (A, F3, etc.)",
+                
+                # Digital integration
                 "image_url": "Hospital image URL (string)",
-                "location": "GPS coordinates [latitude, longitude]",
                 "auto_login_liff_id": "LINE auto login LIFF ID",
                 "disconnect_liff_id": "LINE disconnect LIFF ID", 
                 "login_liff_id": "LINE login LIFF ID",
                 "mac_hv01_box": "MAC address of HV01 box",
                 "notifyToken": "LINE Notify token",
-                "service_plan_type": "Service plan type (A, F3, etc.)",
                 "rich_menu_token": "LINE rich menu token",
                 "telegram_Token": "Telegram notification token",
                 "is_acknowledge": "Acknowledgment notifications enabled",
                 "is_admit_discard": "Admit/discharge notifications enabled",
                 "is_body_data": "Body data monitoring enabled",
                 "is_lab_data": "Lab data monitoring enabled",
-                "is_status_change": "Status change notifications enabled",
-                "is_vs_data": "Vital signs data enabled",
-                "is_vs_notify": "Vital signs notifications enabled",
-                "is_watch_data": "Watch data monitoring enabled",
-                "is_watch_notify": "Watch notifications enabled",
-                "is_watch_status_change": "Watch status change notifications enabled",
-                "is_default_value": "Use default values",
-                "is_line_notify": "LINE notifications enabled",
-                "is_telegram_notify": "Telegram notifications enabled"
+                "is_status_change": "Status change notifications enabled"
             }
         }
     }
@@ -1395,7 +1549,7 @@ def get_master_data_fields_info(data_type: str) -> Dict[str, Any]:
     return fields_info.get(data_type, {"description": "Unknown data type", "fields": {}})
 
 def get_master_data_relationships(data_type: str) -> Dict[str, Any]:
-    """Get relationship information for master data types"""
+    """Get relationship information for master data type"""
     relationships = {
         "provinces": {
             "children": [
@@ -1405,7 +1559,9 @@ def get_master_data_relationships(data_type: str) -> Dict[str, Any]:
             ]
         },
         "districts": {
-            "parent": {"entity": "provinces", "relationship": "districts.province_code = provinces.code"},
+            "parents": [
+                {"entity": "provinces", "relationship": "districts.province_code = provinces.code"}
+            ],
             "children": [
                 {"entity": "sub_districts", "relationship": "sub_districts.district_code = districts.code"},
                 {"entity": "hospitals", "relationship": "hospitals.district_code = districts.code"}
@@ -1422,7 +1578,7 @@ def get_master_data_relationships(data_type: str) -> Dict[str, Any]:
         },
         "hospital_types": {
             "children": [
-                {"entity": "hospitals", "relationship": "hospitals.hospital_type = hospital_types._id"}
+                {"entity": "hospitals", "relationship": "hospitals.hospital_type_id = hospital_types._id"}
             ]
         },
         "hospitals": {
@@ -1430,8 +1586,42 @@ def get_master_data_relationships(data_type: str) -> Dict[str, Any]:
                 {"entity": "provinces", "relationship": "hospitals.province_code = provinces.code"},
                 {"entity": "districts", "relationship": "hospitals.district_code = districts.code"},
                 {"entity": "sub_districts", "relationship": "hospitals.sub_district_code = sub_districts.code"},
-                {"entity": "hospital_types", "relationship": "hospitals.hospital_type = hospital_types._id"}
-            ]
+                {"entity": "hospital_types", "relationship": "hospitals.hospital_type_id = hospital_types._id"}
+            ],
+            "children": [
+                {"entity": "patients", "relationship": "patients.new_hospital_ids contains hospitals._id"},
+                {"entity": "amy_boxes", "relationship": "amy_boxes.hospital_id = hospitals._id"},
+                {"entity": "mfc_hv01_boxes", "relationship": "mfc_hv01_boxes.hospital_id = hospitals._id"}
+            ],
+            "address_structure": {
+                "basic_address": "Simple address string for backward compatibility",
+                "address_details": {
+                    "purpose": "Structured address components for precise location data",
+                    "components": ["street_address", "building_name", "floor", "room", "postal_code", "postal_box"],
+                    "use_cases": ["Delivery services", "Emergency response", "Patient navigation", "Staff coordination"]
+                },
+                "location": {
+                    "purpose": "Geographic coordinates for mapping and routing",
+                    "components": ["latitude", "longitude", "elevation", "precision"],
+                    "use_cases": ["GPS navigation", "Distance calculations", "Emergency dispatch", "Service area mapping"]
+                },
+                "contact": {
+                    "purpose": "Multi-channel communication with hospital departments",
+                    "components": ["phone", "phone_2", "fax", "mobile", "emergency_phone", "email", "email_admin", "website"],
+                    "use_cases": ["Patient communication", "Emergency contact", "Administrative coordination", "Public information"]
+                },
+                "services": {
+                    "purpose": "Hospital capacity and service capabilities",
+                    "components": ["bed_capacity", "emergency_services", "trauma_center", "icu_beds", "operating_rooms", "service_plan_type", "accreditation"],
+                    "use_cases": ["Capacity planning", "Patient referrals", "Emergency dispatch", "Quality assurance"]
+                }
+            },
+            "integration_points": {
+                "device_management": "MAC addresses for IoT device integration",
+                "digital_platforms": "LINE, Telegram integration for notifications",
+                "qr_codes": "LIFF IDs for mobile app integration",
+                "monitoring": "Notification flags for different data types"
+            }
         }
     }
     
