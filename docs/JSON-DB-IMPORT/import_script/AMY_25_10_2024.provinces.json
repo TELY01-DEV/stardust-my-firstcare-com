@@ -1,0 +1,2133 @@
+[{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267306"
+  },
+  "code": 10,
+  "name": [
+    {
+      "code": "en",
+      "name": "Bangkok"
+    },
+    {
+      "code": "th",
+      "name": "กรุงเทพมหานคร"
+    }
+  ],
+  "en_name": "Bangkok",
+  "zone": 13,
+  "is_active": true,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.509Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-08T11:59:01.861Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267307"
+  },
+  "code": 11,
+  "name": [
+    {
+      "code": "en",
+      "name": "Samut Prakarn"
+    },
+    {
+      "code": "th",
+      "name": "สมุทรปราการ"
+    }
+  ],
+  "en_name": "Samut Prakarn",
+  "zone": 6,
+  "is_active": true,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.511Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-07T10:13:32.651Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126730a"
+  },
+  "code": 14,
+  "name": [
+    {
+      "code": "en",
+      "name": "Phra Nakhon Si Ayutthaya"
+    },
+    {
+      "code": "th",
+      "name": "พระนครศรีอยุธยา"
+    }
+  ],
+  "en_name": "Phra Nakhon Si Ayutthaya",
+  "zone": 4,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.513Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-03T10:22:51.479Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267308"
+  },
+  "code": 12,
+  "name": [
+    {
+      "code": "en",
+      "name": "Nonthaburi"
+    },
+    {
+      "code": "th",
+      "name": "นนทบุรี"
+    }
+  ],
+  "en_name": "Nonthaburi",
+  "zone": 4,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.512Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-03T10:23:01.232Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126730b"
+  },
+  "code": 15,
+  "name": [
+    {
+      "code": "en",
+      "name": "Ang Thong"
+    },
+    {
+      "code": "th",
+      "name": "อ่างทอง"
+    }
+  ],
+  "en_name": "Ang Thong",
+  "zone": 4,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.513Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-03T10:22:46.300Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267309"
+  },
+  "code": 13,
+  "name": [
+    {
+      "code": "en",
+      "name": "Pathum Thani"
+    },
+    {
+      "code": "th",
+      "name": "ปทุมธานี"
+    }
+  ],
+  "en_name": "Pathum Thani",
+  "zone": 4,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.512Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:34:48.147Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126730f"
+  },
+  "code": 19,
+  "name": [
+    {
+      "code": "en",
+      "name": "Saraburi"
+    },
+    {
+      "code": "th",
+      "name": "สระบุรี"
+    }
+  ],
+  "en_name": "Saraburi",
+  "zone": 4,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.516Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:34:51.289Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267310"
+  },
+  "code": 20,
+  "name": [
+    {
+      "code": "en",
+      "name": "Chon Buri"
+    },
+    {
+      "code": "th",
+      "name": "ชลบุรี"
+    }
+  ],
+  "en_name": "Chon Buri",
+  "zone": 6,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.517Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:34:54.477Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126730c"
+  },
+  "code": 16,
+  "name": [
+    {
+      "code": "en",
+      "name": "Lop Buri"
+    },
+    {
+      "code": "th",
+      "name": "ลพบุรี"
+    }
+  ],
+  "en_name": "Lop Buri",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.515Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:34:57.759Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126730d"
+  },
+  "code": 17,
+  "name": [
+    {
+      "code": "en",
+      "name": "Sing Buri"
+    },
+    {
+      "code": "th",
+      "name": "สิงห์บุรี"
+    }
+  ],
+  "en_name": "Sing Buri",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.515Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:00.940Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267314"
+  },
+  "code": 24,
+  "name": [
+    {
+      "code": "en",
+      "name": "Chachoengsao"
+    },
+    {
+      "code": "th",
+      "name": "ฉะเชิงเทรา"
+    }
+  ],
+  "en_name": "Chachoengsao",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.519Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:05.052Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267315"
+  },
+  "code": 25,
+  "name": [
+    {
+      "code": "en",
+      "name": "Prachin Buri"
+    },
+    {
+      "code": "th",
+      "name": "ปราจีนบุรี"
+    }
+  ],
+  "en_name": "Prachin Buri",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.519Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:08.046Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267311"
+  },
+  "code": 21,
+  "name": [
+    {
+      "code": "en",
+      "name": "Rayong"
+    },
+    {
+      "code": "th",
+      "name": "ระยอง"
+    }
+  ],
+  "en_name": "Rayong",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.517Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:11.643Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267312"
+  },
+  "code": 22,
+  "name": [
+    {
+      "code": "en",
+      "name": "Chanthaburi"
+    },
+    {
+      "code": "th",
+      "name": "จันทบุรี"
+    }
+  ],
+  "en_name": "Chanthaburi",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.518Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:15.551Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126730e"
+  },
+  "code": 18,
+  "name": [
+    {
+      "code": "en",
+      "name": "Chai Nat"
+    },
+    {
+      "code": "th",
+      "name": "ชัยนาท"
+    }
+  ],
+  "en_name": "Chai Nat",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.516Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:19.126Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267319"
+  },
+  "code": 31,
+  "name": [
+    {
+      "code": "en",
+      "name": "Buri Ram"
+    },
+    {
+      "code": "th",
+      "name": "บุรีรัมย์"
+    }
+  ],
+  "en_name": "Buri Ram",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.521Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:22.059Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126731a"
+  },
+  "code": 32,
+  "name": [
+    {
+      "code": "en",
+      "name": "Surin"
+    },
+    {
+      "code": "th",
+      "name": "สุรินทร์"
+    }
+  ],
+  "en_name": "Surin",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.521Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:26.912Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267313"
+  },
+  "code": 23,
+  "name": [
+    {
+      "code": "en",
+      "name": "Trat"
+    },
+    {
+      "code": "th",
+      "name": "ตราด"
+    }
+  ],
+  "en_name": "Trat",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.518Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:29.927Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267317"
+  },
+  "code": 27,
+  "name": [
+    {
+      "code": "en",
+      "name": "Sa kaeo"
+    },
+    {
+      "code": "th",
+      "name": "สระแก้ว"
+    }
+  ],
+  "en_name": "Sa kaeo",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.520Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:34.081Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267316"
+  },
+  "code": 26,
+  "name": [
+    {
+      "code": "en",
+      "name": "Nakhon Nayok"
+    },
+    {
+      "code": "th",
+      "name": "นครนายก"
+    }
+  ],
+  "en_name": "Nakhon Nayok",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.520Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:36.664Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126731e"
+  },
+  "code": 36,
+  "name": [
+    {
+      "code": "en",
+      "name": "Chaiyaphum"
+    },
+    {
+      "code": "th",
+      "name": "ชัยภูมิ"
+    }
+  ],
+  "en_name": "Chaiyaphum",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.523Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:41.989Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126731c"
+  },
+  "code": 34,
+  "name": [
+    {
+      "code": "en",
+      "name": "Ubon Ratchathani"
+    },
+    {
+      "code": "th",
+      "name": "อุบลราชธานี"
+    }
+  ],
+  "en_name": "Ubon Ratchathani",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.522Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:44.739Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267318"
+  },
+  "code": 30,
+  "name": [
+    {
+      "code": "en",
+      "name": "Nakhon Ratchasima"
+    },
+    {
+      "code": "th",
+      "name": "นครราชสีมา"
+    }
+  ],
+  "en_name": "Nakhon Ratchasima",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.520Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:49.248Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126731f"
+  },
+  "code": 37,
+  "name": [
+    {
+      "code": "en",
+      "name": "Amnat Charoen"
+    },
+    {
+      "code": "th",
+      "name": "อำนาจเจริญ"
+    }
+  ],
+  "en_name": "Amnat Charoen",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.524Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:53.364Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126731b"
+  },
+  "code": 33,
+  "name": [
+    {
+      "code": "en",
+      "name": "Si Sa Ket"
+    },
+    {
+      "code": "th",
+      "name": "ศรีสะเกษ"
+    }
+  ],
+  "en_name": "Si Sa Ket",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.522Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:35:57.101Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267320"
+  },
+  "code": 38,
+  "name": [
+    {
+      "code": "en",
+      "name": "Bueng Kan"
+    },
+    {
+      "code": "th",
+      "name": "บึงกาฬ"
+    }
+  ],
+  "en_name": "Bueng Kan",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.524Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:36:00.128Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126731d"
+  },
+  "code": 35,
+  "name": [
+    {
+      "code": "en",
+      "name": "Yasothon"
+    },
+    {
+      "code": "th",
+      "name": "ยโสธร"
+    }
+  ],
+  "en_name": "Yasothon",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.523Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:36:06.677Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267321"
+  },
+  "code": 39,
+  "name": [
+    {
+      "code": "en",
+      "name": "Nong Bua Lam Phu"
+    },
+    {
+      "code": "th",
+      "name": "หนองบัวลำภู"
+    }
+  ],
+  "en_name": "Nong Bua Lam Phu",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.524Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:36:34.144Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267323"
+  },
+  "code": 41,
+  "name": [
+    {
+      "code": "en",
+      "name": "Udon Thani"
+    },
+    {
+      "code": "th",
+      "name": "อุดรธานี"
+    }
+  ],
+  "en_name": "Udon Thani",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.526Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:37:44.939Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267324"
+  },
+  "code": 42,
+  "name": [
+    {
+      "code": "en",
+      "name": "Loei"
+    },
+    {
+      "code": "th",
+      "name": "เลย"
+    }
+  ],
+  "en_name": "Loei",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.527Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:37:48.572Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267322"
+  },
+  "code": 40,
+  "name": [
+    {
+      "code": "en",
+      "name": "Khon Kaen"
+    },
+    {
+      "code": "th",
+      "name": "ขอนแก่น"
+    }
+  ],
+  "en_name": "Khon Kaen",
+  "zone": 7,
+  "is_active": true,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.526Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-02T08:37:55.954Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267325"
+  },
+  "code": 43,
+  "name": [
+    {
+      "code": "en",
+      "name": "Nong Khai"
+    },
+    {
+      "code": "th",
+      "name": "หนองคาย"
+    }
+  ],
+  "en_name": "Nong Khai",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.527Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:37:56.164Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267326"
+  },
+  "code": 44,
+  "name": [
+    {
+      "code": "en",
+      "name": "Maha Sarakham"
+    },
+    {
+      "code": "th",
+      "name": "มหาสารคาม"
+    }
+  ],
+  "en_name": "Maha Sarakham",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.528Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:37:58.890Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267327"
+  },
+  "code": 45,
+  "name": [
+    {
+      "code": "en",
+      "name": "Roi Et"
+    },
+    {
+      "code": "th",
+      "name": "ร้อยเอ็ด"
+    }
+  ],
+  "en_name": "Roi Et",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.528Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:01.577Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267328"
+  },
+  "code": 46,
+  "name": [
+    {
+      "code": "en",
+      "name": "Kalasin"
+    },
+    {
+      "code": "th",
+      "name": "กาฬสินธุ์"
+    }
+  ],
+  "en_name": "Kalasin",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.529Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:05.567Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267329"
+  },
+  "code": 47,
+  "name": [
+    {
+      "code": "en",
+      "name": "Sakon Nakhon"
+    },
+    {
+      "code": "th",
+      "name": "สกลนคร"
+    }
+  ],
+  "en_name": "Sakon Nakhon",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.529Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:09.160Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126732a"
+  },
+  "code": 48,
+  "name": [
+    {
+      "code": "en",
+      "name": "Nakhon Phanom"
+    },
+    {
+      "code": "th",
+      "name": "นครพนม"
+    }
+  ],
+  "en_name": "Nakhon Phanom",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.529Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:13.704Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126732b"
+  },
+  "code": 49,
+  "name": [
+    {
+      "code": "en",
+      "name": "Mukdahan"
+    },
+    {
+      "code": "th",
+      "name": "มุกดาหาร"
+    }
+  ],
+  "en_name": "Mukdahan",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.530Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:16.605Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126732c"
+  },
+  "code": 50,
+  "name": [
+    {
+      "code": "en",
+      "name": "Chiang Mai"
+    },
+    {
+      "code": "th",
+      "name": "เชียงใหม่"
+    }
+  ],
+  "en_name": "Chiang Mai",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.530Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:20.032Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126732d"
+  },
+  "code": 51,
+  "name": [
+    {
+      "code": "en",
+      "name": "Lamphun"
+    },
+    {
+      "code": "th",
+      "name": "ลำพูน"
+    }
+  ],
+  "en_name": "Lamphun",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.531Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:26.557Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126732e"
+  },
+  "code": 52,
+  "name": [
+    {
+      "code": "en",
+      "name": "Lampang"
+    },
+    {
+      "code": "th",
+      "name": "ลำปาง"
+    }
+  ],
+  "en_name": "Lampang",
+  "zone": 1,
+  "is_active": true,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.531Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-09T07:24:50.942Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126732f"
+  },
+  "code": 53,
+  "name": [
+    {
+      "code": "en",
+      "name": "Uttaradit"
+    },
+    {
+      "code": "th",
+      "name": "อุตรดิตถ์"
+    }
+  ],
+  "en_name": "Uttaradit",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.531Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:34.142Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267330"
+  },
+  "code": 54,
+  "name": [
+    {
+      "code": "en",
+      "name": "Phrae"
+    },
+    {
+      "code": "th",
+      "name": "แพร่"
+    }
+  ],
+  "en_name": "Phrae",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.532Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:36.831Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267331"
+  },
+  "code": 55,
+  "name": [
+    {
+      "code": "en",
+      "name": "Nan"
+    },
+    {
+      "code": "th",
+      "name": "น่าน"
+    }
+  ],
+  "en_name": "Nan",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.532Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:39.966Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267333"
+  },
+  "code": 57,
+  "name": [
+    {
+      "code": "en",
+      "name": "Chiang Rai"
+    },
+    {
+      "code": "th",
+      "name": "เชียงราย"
+    }
+  ],
+  "en_name": "Chiang Rai",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.533Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-03T10:21:20.180Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267332"
+  },
+  "code": 56,
+  "name": [
+    {
+      "code": "en",
+      "name": "Phayao"
+    },
+    {
+      "code": "th",
+      "name": "พะเยา"
+    }
+  ],
+  "en_name": "Phayao",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.533Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:45.488Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267334"
+  },
+  "code": 58,
+  "name": [
+    {
+      "code": "en",
+      "name": "Mae Hong Son"
+    },
+    {
+      "code": "th",
+      "name": "แม่ฮ่องสอน"
+    }
+  ],
+  "en_name": "Mae Hong Son",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.534Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:50.122Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267335"
+  },
+  "code": 60,
+  "name": [
+    {
+      "code": "en",
+      "name": "Nakhon Sawan"
+    },
+    {
+      "code": "th",
+      "name": "นครสวรรค์"
+    }
+  ],
+  "en_name": "Nakhon Sawan",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.535Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:54.364Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267336"
+  },
+  "code": 61,
+  "name": [
+    {
+      "code": "en",
+      "name": "Uthai Thani"
+    },
+    {
+      "code": "th",
+      "name": "อุทัยธานี"
+    }
+  ],
+  "en_name": "Uthai Thani",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.536Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:38:58.184Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267338"
+  },
+  "code": 63,
+  "name": [
+    {
+      "code": "en",
+      "name": "Tak"
+    },
+    {
+      "code": "th",
+      "name": "ตาก"
+    }
+  ],
+  "en_name": "Tak",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.537Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:01.204Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267337"
+  },
+  "code": 62,
+  "name": [
+    {
+      "code": "en",
+      "name": "Kamphaeng Phet"
+    },
+    {
+      "code": "th",
+      "name": "กำแพงเพชร"
+    }
+  ],
+  "en_name": "Kamphaeng Phet",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.536Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:08.607Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126733d"
+  },
+  "code": 70,
+  "name": [
+    {
+      "code": "en",
+      "name": "Ratchaburi"
+    },
+    {
+      "code": "th",
+      "name": "ราชบุรี"
+    }
+  ],
+  "en_name": "Ratchaburi",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.539Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:11.898Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267339"
+  },
+  "code": 64,
+  "name": [
+    {
+      "code": "en",
+      "name": "Sukhothai"
+    },
+    {
+      "code": "th",
+      "name": "สุโขทัย"
+    }
+  ],
+  "en_name": "Sukhothai",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.537Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:14.846Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126733b"
+  },
+  "code": 66,
+  "name": [
+    {
+      "code": "en",
+      "name": "Phichit"
+    },
+    {
+      "code": "th",
+      "name": "พิจิตร"
+    }
+  ],
+  "en_name": "Phichit",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.538Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-08T07:29:27.719Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126733c"
+  },
+  "code": 67,
+  "name": [
+    {
+      "code": "en",
+      "name": "Phetchabun"
+    },
+    {
+      "code": "th",
+      "name": "เพชรบูรณ์"
+    }
+  ],
+  "en_name": "Phetchabun",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.538Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:17.914Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267342"
+  },
+  "code": 75,
+  "name": [
+    {
+      "code": "en",
+      "name": "Samut Songkhram"
+    },
+    {
+      "code": "th",
+      "name": "สมุทรสงคราม"
+    }
+  ],
+  "en_name": "Samut Songkhram",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.541Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:20.684Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126733a"
+  },
+  "code": 65,
+  "name": [
+    {
+      "code": "en",
+      "name": "Phitsanulok"
+    },
+    {
+      "code": "th",
+      "name": "พิษณุโลก"
+    }
+  ],
+  "en_name": "Phitsanulok",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.537Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:24.299Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126733e"
+  },
+  "code": 71,
+  "name": [
+    {
+      "code": "en",
+      "name": "Kanchanaburi"
+    },
+    {
+      "code": "th",
+      "name": "กาญจนบุรี"
+    }
+  ],
+  "en_name": "Kanchanaburi",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.539Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:27.273Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267340"
+  },
+  "code": 73,
+  "name": [
+    {
+      "code": "en",
+      "name": "Nakhon Pathom"
+    },
+    {
+      "code": "th",
+      "name": "นครปฐม"
+    }
+  ],
+  "en_name": "Nakhon Pathom",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.540Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:30.003Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267347"
+  },
+  "code": 82,
+  "name": [
+    {
+      "code": "en",
+      "name": "Phang-nga"
+    },
+    {
+      "code": "th",
+      "name": "พังงา"
+    }
+  ],
+  "en_name": "Phang-nga",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.543Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:34.259Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267341"
+  },
+  "code": 74,
+  "name": [
+    {
+      "code": "en",
+      "name": "Samut Sakhon"
+    },
+    {
+      "code": "th",
+      "name": "สมุทรสาคร"
+    }
+  ],
+  "en_name": "Samut Sakhon",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.540Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:39.168Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267343"
+  },
+  "code": 76,
+  "name": [
+    {
+      "code": "en",
+      "name": "Phetchaburi"
+    },
+    {
+      "code": "th",
+      "name": "เพชรบุรี"
+    }
+  ],
+  "en_name": "Phetchaburi",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.541Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:41.824Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126733f"
+  },
+  "code": 72,
+  "name": [
+    {
+      "code": "en",
+      "name": "Suphan Buri"
+    },
+    {
+      "code": "th",
+      "name": "สุพรรณบุรี"
+    }
+  ],
+  "en_name": "Suphan Buri",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.539Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:39:48.162Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267345"
+  },
+  "code": 80,
+  "name": [
+    {
+      "code": "en",
+      "name": "Nakhon Si Thammarat"
+    },
+    {
+      "code": "th",
+      "name": "นครศรีธรรมราช"
+    }
+  ],
+  "en_name": "Nakhon Si Thammarat",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.542Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:40:20.354Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126734c"
+  },
+  "code": 90,
+  "name": [
+    {
+      "code": "en",
+      "name": "Songkhla"
+    },
+    {
+      "code": "th",
+      "name": "สงขลา"
+    }
+  ],
+  "en_name": "Songkhla",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.546Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-25T04:12:40.993Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267346"
+  },
+  "code": 81,
+  "name": [
+    {
+      "code": "en",
+      "name": "Krabi"
+    },
+    {
+      "code": "th",
+      "name": "กระบี่"
+    }
+  ],
+  "en_name": "Krabi",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.542Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:40:27.148Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267348"
+  },
+  "code": 83,
+  "name": [
+    {
+      "code": "en",
+      "name": "Phuket"
+    },
+    {
+      "code": "th",
+      "name": "ภูเก็ต"
+    }
+  ],
+  "en_name": "Phuket",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.543Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:40:30.068Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267344"
+  },
+  "code": 77,
+  "name": [
+    {
+      "code": "en",
+      "name": "Prachuap Khiri Khan"
+    },
+    {
+      "code": "th",
+      "name": "ประจวบคีรีขันธ์"
+    }
+  ],
+  "en_name": "Prachuap Khiri Khan",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.541Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:40:35.079Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126734a"
+  },
+  "code": 85,
+  "name": [
+    {
+      "code": "en",
+      "name": "Ranong"
+    },
+    {
+      "code": "th",
+      "name": "ระนอง"
+    }
+  ],
+  "en_name": "Ranong",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.545Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:40:38.176Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267351"
+  },
+  "code": 95,
+  "name": [
+    {
+      "code": "en",
+      "name": "Yala"
+    },
+    {
+      "code": "th",
+      "name": "ยะลา"
+    }
+  ],
+  "en_name": "Yala",
+  "zone": 1,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.551Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:40:40.877Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126734b"
+  },
+  "code": 86,
+  "name": [
+    {
+      "code": "en",
+      "name": "Chumphon"
+    },
+    {
+      "code": "th",
+      "name": "ชุมพร"
+    }
+  ],
+  "en_name": "Chumphon",
+  "zone": 11,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.546Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:41:35.206Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126734d"
+  },
+  "code": 91,
+  "name": [
+    {
+      "code": "en",
+      "name": "Satun"
+    },
+    {
+      "code": "th",
+      "name": "สตูล"
+    }
+  ],
+  "en_name": "Satun",
+  "zone": 12,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.547Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:40:54.809Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267349"
+  },
+  "code": 84,
+  "name": [
+    {
+      "code": "en",
+      "name": "Surat Thani"
+    },
+    {
+      "code": "th",
+      "name": "สุราษฎร์ธานี"
+    }
+  ],
+  "en_name": "Surat Thani",
+  "zone": 11,
+  "is_active": true,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.545Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:41:31.807Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126734f"
+  },
+  "code": 93,
+  "name": [
+    {
+      "code": "en",
+      "name": "Phatthalung"
+    },
+    {
+      "code": "th",
+      "name": "พัทลุง"
+    }
+  ],
+  "en_name": "Phatthalung",
+  "zone": 12,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.550Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:41:04.425Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267350"
+  },
+  "code": 94,
+  "name": [
+    {
+      "code": "en",
+      "name": "Pattani"
+    },
+    {
+      "code": "th",
+      "name": "ปัตตานี"
+    }
+  ],
+  "en_name": "Pattani",
+  "zone": 12,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.551Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:41:09.081Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267352"
+  },
+  "code": 96,
+  "name": [
+    {
+      "code": "en",
+      "name": "Narathiwat"
+    },
+    {
+      "code": "th",
+      "name": "นราธิวาส"
+    }
+  ],
+  "en_name": "Narathiwat",
+  "zone": 12,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.551Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:41:13.104Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab1126734e"
+  },
+  "code": 92,
+  "name": [
+    {
+      "code": "en",
+      "name": "Trang"
+    },
+    {
+      "code": "th",
+      "name": "ตรัง"
+    }
+  ],
+  "en_name": "Trang",
+  "zone": 12,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.547Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:41:17.311Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267354"
+  },
+  "code": 324324,
+  "name": [
+    {
+      "code": "en",
+      "name": "test"
+    },
+    {
+      "code": "th",
+      "name": "ทดสอบ"
+    }
+  ],
+  "en_name": "test",
+  "zone": 232,
+  "is_active": false,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.552Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-06T10:41:21.722Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "61a9f12fa47a09ab11267353"
+  },
+  "code": 0,
+  "name": [
+    {
+      "code": "en",
+      "name": "TELY360"
+    },
+    {
+      "code": "th",
+      "name": "จังหวัดเทลลี่360"
+    }
+  ],
+  "en_name": "TELY360",
+  "zone": 14,
+  "is_active": true,
+  "is_deleted": false,
+  "created_at": {
+    "$date": "2021-12-03T10:27:59.552Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-12T16:31:31.033Z"
+  },
+  "__v": 2
+}]

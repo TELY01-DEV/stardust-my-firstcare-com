@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "updated-2024-opera-panel-api",
-		"name": "My FirstCare Opera Panel API - Updated 2024",
+		"_postman_id": "updated-2025-opera-panel-api",
+		"name": "My FirstCare Opera Panel API - Updated 2025",
 		"description": "Complete API collection for My FirstCare Opera Panel with all working endpoints and fixed operation IDs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "12345678"
@@ -115,6 +115,24 @@
 									"pm.test('Response contains user data', function () {",
 									"    const jsonData = pm.response.json();",
 									"    pm.expect(jsonData).to.have.property('username');",
+									"});",
+									"",
+									"// NEW: Test request_id is present and valid",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"    pm.expect(jsonData.request_id).to.not.be.undefined;",
+									"    pm.expect(jsonData.request_id).to.be.a('string');",
+									"    pm.expect(jsonData.request_id.length).to.be.above(0);",
+									"    console.log('Request ID:', jsonData.request_id);",
+									"});",
+									"",
+									"// NEW: Test request_id is UUID format when no X-Request-ID header provided",
+									"pm.test('Request ID is valid UUID format', function () {",
+									"    const jsonData = pm.response.json();",
+									"    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;",
+									"    pm.expect(jsonData.request_id).to.match(uuidRegex);",
 									"});"
 								]
 							}
@@ -142,6 +160,24 @@
 									"    const jsonData = pm.response.json();",
 									"    pm.expect(jsonData.data.status).to.eql('healthy');",
 									"    pm.expect(jsonData.data.mongodb).to.eql('connected');",
+									"});",
+									"",
+									"// NEW: Test request_id is present and valid",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"    pm.expect(jsonData.request_id).to.not.be.undefined;",
+									"    pm.expect(jsonData.request_id).to.be.a('string');",
+									"    pm.expect(jsonData.request_id.length).to.be.above(0);",
+									"    console.log('Health Check Request ID:', jsonData.request_id);",
+									"});",
+									"",
+									"// NEW: Test request_id is UUID format when no X-Request-ID header provided",
+									"pm.test('Request ID is valid UUID format', function () {",
+									"    const jsonData = pm.response.json();",
+									"    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;",
+									"    pm.expect(jsonData.request_id).to.match(uuidRegex);",
 									"});"
 								]
 							}
@@ -153,6 +189,49 @@
 						},
 						"method": "GET",
 						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": ["{{base_url}}"],
+							"path": ["health"]
+						}
+					}
+				},
+				{
+					"name": "Health Check with Custom Request ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Health check successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql('healthy');",
+									"});",
+									"",
+									"// NEW: Test custom X-Request-ID header is preserved",
+									"pm.test('Custom Request ID is preserved', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.eql('test-postman-12345');",
+									"    console.log('Custom Request ID preserved:', jsonData.request_id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "test-postman-12345",
+								"description": "Custom request ID to test header preservation"
+							}
+						],
 						"url": {
 							"raw": "{{base_url}}/health",
 							"host": ["{{base_url}}"],
@@ -901,6 +980,336 @@
 			]
 		},
 		{
+			"name": "Master Data - Geographic & Hospitals",
+			"item": [
+				{
+					"name": "Get All Provinces",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Provinces retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('total');",
+									"    console.log('Provinces found:', jsonData.data.total);",
+									"});",
+									"",
+									"// NEW: Test request_id validation",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"    pm.expect(jsonData.request_id).to.be.a('string');",
+									"    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;",
+									"    pm.expect(jsonData.request_id).to.match(uuidRegex);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/provinces?limit=100&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "provinces"],
+							"query": [
+								{"key": "limit", "value": "100"},
+								{"key": "skip", "value": "0"},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Districts by Province",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Districts retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    console.log('Districts found:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/districts?province_code=10&limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "districts"],
+							"query": [
+								{"key": "province_code", "value": "10", "description": "Bangkok province code"},
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Sub-Districts by Province & District",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Sub-districts retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    console.log('Sub-districts found:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/sub_districts?province_code=10&district_code=1003&limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "sub_districts"],
+							"query": [
+								{"key": "province_code", "value": "10", "description": "Bangkok province code"},
+								{"key": "district_code", "value": "1003", "description": "District code in Bangkok"},
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Hospitals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Hospitals retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('total');",
+									"    console.log('Hospitals found:', jsonData.data.total);",
+									"    if (jsonData.data.data.length > 0) {",
+									"        pm.environment.set('hospital_id', jsonData.data.data[0]._id);",
+									"        console.log('Hospital ID saved:', jsonData.data.data[0]._id);",
+									"    }",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/hospitals?limit=50&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "hospitals"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0"},
+								{"key": "search", "value": "", "disabled": true},
+								{"key": "province_code", "value": "", "disabled": true},
+								{"key": "district_code", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Hospitals by Province",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Hospitals by province retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    console.log('Hospitals in province found:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/hospitals?province_code=10&limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "hospitals"],
+							"query": [
+								{"key": "province_code", "value": "10", "description": "Bangkok province code"},
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Search Hospitals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Hospital search successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    console.log('Hospitals found by search:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/hospitals?search=Hospital&limit=20",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "hospitals"],
+							"query": [
+								{"key": "search", "value": "Hospital", "description": "Search term for hospital names"},
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Hospital Types",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Hospital types retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    console.log('Hospital types found:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/hospital_types?limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "hospital_types"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Specific Hospital by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Hospital retrieved by ID successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('hospital');",
+									"    pm.expect(jsonData.data.hospital).to.have.property('_id');",
+									"    pm.expect(jsonData.data.hospital).to.have.property('name');",
+									"    console.log('Hospital details:', jsonData.data.hospital.name);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/hospitals/{{hospital_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "hospitals", "{{hospital_id}}"]
+						}
+					}
+				}
+			],
+			"description": "Master data endpoints for geographic data (provinces, districts, sub-districts) and hospital information"
+		},
+		{
 			"name": "Analytics",
 			"item": [
 				{
@@ -948,6 +1357,11 @@
 		{
 			"key": "password",
 			"value": "dev_password",
+			"type": "string"
+		},
+		{
+			"key": "hospital_id",
+			"value": "",
 			"type": "string"
 		}
 	]

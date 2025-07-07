@@ -15,6 +15,99 @@ Following the resolution of FastAPI duplicate Operation ID warnings, the Postman
 - `My_FirstCare_Opera_Panel_API_CRUD.postman_collection.json`
 - `Device_Mapping_API.postman_collection.json`
 
+## 🆕 **Latest Update: Request ID Validation (2024-07-07)**
+
+### **🔧 Request ID Fix Validation**
+
+The collection has been updated to test the recent **request_id null issue fix**:
+
+#### **What Was Fixed**
+- All API endpoints previously returned `"request_id": null`
+- Now automatically generates UUID when no `X-Request-ID` header provided
+- Preserves custom `X-Request-ID` headers when provided
+
+#### **New Test Scripts Added**
+
+**1. Request ID Presence Validation**
+```javascript
+pm.test('Response contains valid request_id', function () {
+    const jsonData = pm.response.json();
+    pm.expect(jsonData).to.have.property('request_id');
+    pm.expect(jsonData.request_id).to.not.be.null;
+    pm.expect(jsonData.request_id).to.not.be.undefined;
+    pm.expect(jsonData.request_id).to.be.a('string');
+    pm.expect(jsonData.request_id.length).to.be.above(0);
+});
+```
+
+**2. UUID Format Validation**
+```javascript
+pm.test('Request ID is valid UUID format', function () {
+    const jsonData = pm.response.json();
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    pm.expect(jsonData.request_id).to.match(uuidRegex);
+});
+```
+
+**3. Custom Header Preservation Test**
+```javascript
+pm.test('Custom Request ID is preserved', function () {
+    const jsonData = pm.response.json();
+    pm.expect(jsonData.request_id).to.eql('test-postman-12345');
+});
+```
+
+#### **Updated Endpoints**
+
+✅ **Authentication Endpoints**:
+- `GET /auth/me` - Now validates request_id is valid UUID
+- `GET /health` - Tests both auto-generated and custom request IDs
+- `GET /health` (with custom header) - Tests header preservation
+
+#### **Recommended Test Script for All Endpoints**
+
+Add this test script to **any endpoint** to validate request_id behavior:
+
+```javascript
+// Standard Request ID Validation
+pm.test('API Response Structure - Request ID', function () {
+    const jsonData = pm.response.json();
+    
+    // Test request_id is present
+    pm.expect(jsonData).to.have.property('request_id');
+    pm.expect(jsonData.request_id).to.not.be.null;
+    pm.expect(jsonData.request_id).to.be.a('string');
+    pm.expect(jsonData.request_id.length).to.be.above(0);
+    
+    // Test it's either a UUID or custom value
+    const customRequestId = pm.request.headers.get('X-Request-ID');
+    if (customRequestId) {
+        pm.expect(jsonData.request_id).to.eql(customRequestId);
+        console.log('Custom Request ID preserved:', jsonData.request_id);
+    } else {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        pm.expect(jsonData.request_id).to.match(uuidRegex);
+        console.log('Auto-generated UUID:', jsonData.request_id);
+    }
+});
+```
+
+#### **Testing Both Scenarios**
+
+**Scenario 1: Auto-Generated UUID**
+```bash
+# Request without X-Request-ID header
+curl -X GET "http://localhost:5054/health"
+# Response: "request_id": "a3c3ee46-ddfa-4d94-9e8a-ca2590d9d9fd"
+```
+
+**Scenario 2: Custom Request ID**
+```bash
+# Request with custom X-Request-ID header
+curl -X GET "http://localhost:5054/health" -H "X-Request-ID: my-custom-id-123"
+# Response: "request_id": "my-custom-id-123"
+```
+
 ## 🔧 **Key Updates Made**
 
 ### **1. Fixed Function Name Conflicts**
