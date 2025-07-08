@@ -427,21 +427,39 @@ class FHIRMigrationService:
         """Migrate a single hospital to FHIR Organization"""
         org_id = str(ObjectId())
         
-        # Extract hospital name from NameModel or fallback to string
+        # Extract hospital name from actual AMY database structure
         hospital_name = "Unknown Hospital"
-        if "name" in hospital_doc:
-            name_obj = hospital_doc["name"]
-            if isinstance(name_obj, dict):
-                # NameModel format: {"en": "English Name", "th": "Thai Name"}
-                hospital_name = name_obj.get("en") or name_obj.get("th") or "Unknown Hospital"
-            elif isinstance(name_obj, str):
-                hospital_name = name_obj
-        elif hospital_doc.get("hospital_name"):
-            # Fallback for sample data format
+        
+        # Try the name field first (array of language objects)
+        if "name" in hospital_doc and isinstance(hospital_doc["name"], list):
+            name_array = hospital_doc["name"]
+            # Look for English name first, then Thai, then any
+            for name_obj in name_array:
+                if isinstance(name_obj, dict):
+                    if name_obj.get("code") == "en" and name_obj.get("name"):
+                        hospital_name = name_obj["name"]
+                        break
+                    elif name_obj.get("code") == "th" and name_obj.get("name"):
+                        hospital_name = name_obj["name"]
+        
+        # Fallback to en_name field if name array didn't work
+        if hospital_name == "Unknown Hospital" and hospital_doc.get("en_name"):
+            hospital_name = hospital_doc["en_name"]
+        
+        # Fallback to hospital_name for sample data compatibility
+        if hospital_name == "Unknown Hospital" and hospital_doc.get("hospital_name"):
             hospital_name = hospital_doc["hospital_name"]
         
-        # Extract hospital code
-        hospital_code = hospital_doc.get("code") or hospital_doc.get("hospital_code")
+        # Extract hospital code - try multiple possible fields
+        hospital_code = None
+        if hospital_doc.get("code"):
+            hospital_code = hospital_doc["code"]
+        elif hospital_doc.get("hospital_code"):
+            hospital_code = hospital_doc["hospital_code"]
+        elif hospital_doc.get("organizecode"):
+            hospital_code = str(hospital_doc["organizecode"])
+        elif hospital_doc.get("hospital_area_code"):
+            hospital_code = hospital_doc["hospital_area_code"]
         
         # Build Organization identifiers
         identifiers = []
