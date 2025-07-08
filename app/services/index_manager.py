@@ -275,6 +275,429 @@ class IndexManager:
                     "keys": [("agent.who.identifier.value", ASCENDING)],
                     "background": True
                 }
+            ],
+            
+            # =============== FHIR R5 Collection Indexes ===============
+            
+            "fhir_patients": [
+                {
+                    "name": "resource_id_idx",
+                    "keys": [("resource_id", ASCENDING)],
+                    "unique": True,
+                    "background": True
+                },
+                {
+                    "name": "patient_active_idx",
+                    "keys": [("is_active", ASCENDING), ("is_deleted", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "patient_identifier_idx",
+                    "keys": [("resource_data.identifier.value", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "patient_name_idx",
+                    "keys": [("resource_data.name.family", ASCENDING), ("resource_data.name.given", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "patient_birth_date_idx",
+                    "keys": [("resource_data.birthDate", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "patient_organization_idx",
+                    "keys": [("organization_id", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "patient_created_idx",
+                    "keys": [("created_at", DESCENDING)],
+                    "background": True
+                }
+            ],
+            
+            "fhir_observations": [
+                {
+                    "name": "resource_id_idx",
+                    "keys": [("resource_id", ASCENDING)],
+                    "unique": True,
+                    "background": True
+                },
+                {
+                    "name": "obs_patient_idx",
+                    "keys": [("patient_id", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "obs_device_idx",
+                    "keys": [("device_id", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "obs_effective_time_idx",
+                    "keys": [("effective_datetime", DESCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "obs_patient_time_idx",
+                    "keys": [("patient_id", ASCENDING), ("effective_datetime", DESCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "obs_status_idx",
+                    "keys": [("status", ASCENDING), ("is_deleted", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "obs_category_idx",
+                    "keys": [("resource_data.category.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "obs_code_idx",
+                    "keys": [("resource_data.code.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "obs_device_mac_idx",
+                    "keys": [("device_mac_address", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "obs_source_system_idx",
+                    "keys": [("source_system", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "obs_encounter_idx",
+                    "keys": [("encounter_id", ASCENDING)],
+                    "background": True
+                }
+            ],
+            
+            "fhir_devices": [
+                {
+                    "name": "resource_id_idx",
+                    "keys": [("resource_id", ASCENDING)],
+                    "unique": True,
+                    "background": True
+                },
+                {
+                    "name": "device_identifier_idx",
+                    "keys": [("resource_data.identifier.value", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "device_serial_idx",
+                    "keys": [("resource_data.serialNumber", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "device_status_idx",
+                    "keys": [("resource_data.status", ASCENDING), ("is_deleted", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "device_type_idx",
+                    "keys": [("resource_data.type.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "device_manufacturer_idx",
+                    "keys": [("resource_data.manufacturer", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "device_model_idx",
+                    "keys": [("resource_data.modelNumber", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "device_owner_idx",
+                    "keys": [("resource_data.owner.reference", ASCENDING)],
+                    "background": True
+                }
+            ],
+            
+            "fhir_organizations": [
+                {
+                    "name": "resource_id_idx",
+                    "keys": [("resource_id", ASCENDING)],
+                    "unique": True,
+                    "background": True
+                },
+                {
+                    "name": "org_identifier_idx",
+                    "keys": [("resource_data.identifier.value", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "org_name_idx",
+                    "keys": [("resource_data.name", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "org_type_idx",
+                    "keys": [("resource_data.type.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "org_active_idx",
+                    "keys": [("resource_data.active", ASCENDING), ("is_deleted", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "org_part_of_idx",
+                    "keys": [("resource_data.partOf.reference", ASCENDING)],
+                    "background": True
+                }
+            ],
+            
+            "fhir_locations": [
+                {
+                    "name": "resource_id_idx",
+                    "keys": [("resource_id", ASCENDING)],
+                    "unique": True,
+                    "background": True
+                },
+                {
+                    "name": "location_identifier_idx",
+                    "keys": [("resource_data.identifier.value", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "location_name_idx",
+                    "keys": [("resource_data.name", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "location_type_idx",
+                    "keys": [("resource_data.type.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "location_status_idx",
+                    "keys": [("resource_data.status", ASCENDING), ("is_deleted", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "location_managing_org_idx",
+                    "keys": [("resource_data.managingOrganization.reference", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "location_part_of_idx",
+                    "keys": [("resource_data.partOf.reference", ASCENDING)],
+                    "background": True
+                }
+            ],
+            
+            "fhir_conditions": [
+                {
+                    "name": "resource_id_idx",
+                    "keys": [("resource_id", ASCENDING)],
+                    "unique": True,
+                    "background": True
+                },
+                {
+                    "name": "condition_patient_idx",
+                    "keys": [("patient_id", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "condition_clinical_status_idx",
+                    "keys": [("resource_data.clinicalStatus.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "condition_verification_status_idx",
+                    "keys": [("resource_data.verificationStatus.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "condition_category_idx",
+                    "keys": [("resource_data.category.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "condition_code_idx",
+                    "keys": [("resource_data.code.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "condition_onset_idx",
+                    "keys": [("resource_data.onsetDateTime", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "condition_recorded_idx",
+                    "keys": [("resource_data.recordedDate", DESCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "condition_encounter_idx",
+                    "keys": [("encounter_id", ASCENDING)],
+                    "background": True
+                }
+            ],
+            
+            "fhir_medications": [
+                {
+                    "name": "resource_id_idx",
+                    "keys": [("resource_id", ASCENDING)],
+                    "unique": True,
+                    "background": True
+                },
+                {
+                    "name": "medication_identifier_idx",
+                    "keys": [("resource_data.identifier.value", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "medication_code_idx",
+                    "keys": [("resource_data.code.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "medication_status_idx",
+                    "keys": [("resource_data.status", ASCENDING), ("is_deleted", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "medication_form_idx",
+                    "keys": [("resource_data.doseForm.coding.code", ASCENDING)],
+                    "background": True
+                }
+            ],
+            
+            "fhir_allergies": [
+                {
+                    "name": "resource_id_idx",
+                    "keys": [("resource_id", ASCENDING)],
+                    "unique": True,
+                    "background": True
+                },
+                {
+                    "name": "allergy_patient_idx",
+                    "keys": [("patient_id", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "allergy_clinical_status_idx",
+                    "keys": [("resource_data.clinicalStatus.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "allergy_verification_status_idx",
+                    "keys": [("resource_data.verificationStatus.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "allergy_category_idx",
+                    "keys": [("resource_data.category", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "allergy_criticality_idx",
+                    "keys": [("resource_data.criticality", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "allergy_code_idx",
+                    "keys": [("resource_data.code.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "allergy_recorded_idx",
+                    "keys": [("resource_data.recordedDate", DESCENDING)],
+                    "background": True
+                }
+            ],
+            
+            "fhir_encounters": [
+                {
+                    "name": "resource_id_idx",
+                    "keys": [("resource_id", ASCENDING)],
+                    "unique": True,
+                    "background": True
+                },
+                {
+                    "name": "encounter_patient_idx",
+                    "keys": [("patient_id", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "encounter_status_idx",
+                    "keys": [("resource_data.status", ASCENDING), ("is_deleted", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "encounter_class_idx",
+                    "keys": [("resource_data.class.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "encounter_type_idx",
+                    "keys": [("resource_data.type.coding.code", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "encounter_service_provider_idx",
+                    "keys": [("resource_data.serviceProvider.reference", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "encounter_period_idx",
+                    "keys": [("resource_data.actualPeriod.start", DESCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "encounter_identifier_idx",
+                    "keys": [("resource_data.identifier.value", ASCENDING)],
+                    "background": True
+                }
+            ],
+            
+            # =============== FHIR Pattern Indexes (applied to all FHIR collections) ===============
+            
+            "fhir_resource_pattern": [
+                {
+                    "name": "fhir_created_at_idx",
+                    "keys": [("created_at", DESCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "fhir_updated_at_idx",
+                    "keys": [("updated_at", DESCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "fhir_source_system_idx",
+                    "keys": [("source_system", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "fhir_version_idx",
+                    "keys": [("fhir_version", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "fhir_resource_type_idx",
+                    "keys": [("resource_type", ASCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "fhir_last_updated_idx",
+                    "keys": [("resource_data.meta.lastUpdated", DESCENDING)],
+                    "background": True
+                },
+                {
+                    "name": "fhir_profile_idx",
+                    "keys": [("resource_data.meta.profile", ASCENDING)],
+                    "background": True
+                }
             ]
         }
     
@@ -299,16 +722,28 @@ class IndexManager:
             "admit_data_histories"
         ]
         
+        # FHIR R5 collections
+        fhir_collections = [
+            "fhir_patients", "fhir_observations", "fhir_devices", 
+            "fhir_organizations", "fhir_locations", "fhir_conditions",
+            "fhir_medications", "fhir_allergies", "fhir_encounters", "fhir_provenance"
+        ]
+
         # Create indexes for each collection
         for collection_name, indexes in self.index_definitions.items():
             if collection_name == "medical_history_pattern":
                 # Apply pattern to all medical history collections
                 for history_collection in medical_history_collections:
                     await self._create_collection_indexes(history_collection, indexes)
+            elif collection_name == "fhir_resource_pattern":
+                # Apply pattern to all FHIR R5 collections
+                for fhir_collection in fhir_collections:
+                    await self._create_collection_indexes(fhir_collection, indexes)
             else:
                 await self._create_collection_indexes(collection_name, indexes)
         
         # Apply master data pattern to all master data collections
+        # Note: Some collections may have restricted permissions
         master_data_collections = [
             "nations", "human_skin_colors", "ward_lists",
             "staff_types", "underlying_diseases", "provinces",
@@ -316,8 +751,16 @@ class IndexManager:
         ]
         
         master_data_indexes = self.index_definitions.get("blood_groups", [])
-        for collection in master_data_collections:
+        
+        # Test permissions first and only proceed with collections we can modify
+        accessible_collections = await self._check_collection_permissions(master_data_collections)
+        
+        for collection in accessible_collections:
             await self._create_collection_indexes(collection, master_data_indexes)
+        
+        if len(accessible_collections) < len(master_data_collections):
+            skipped = len(master_data_collections) - len(accessible_collections)
+            logger.info(f"⚠️ Skipped {skipped} collections due to insufficient permissions")
         
         logger.info("✅ Database index creation completed")
         
@@ -327,7 +770,11 @@ class IndexManager:
     async def _create_collection_indexes(self, collection_name: str, indexes: List[Dict[str, Any]]):
         """Create indexes for a specific collection"""
         try:
-            collection = mongodb_service.get_collection(collection_name)
+            # Use appropriate database based on collection name
+            if collection_name.startswith('fhir_'):
+                collection = mongodb_service.get_fhir_collection(collection_name)
+            else:
+                collection = mongodb_service.get_collection(collection_name)
             
             for index_def in indexes:
                 try:
@@ -362,11 +809,50 @@ class IndexManager:
                 except OperationFailure as e:
                     if "already exists" in str(e):
                         logger.debug(f"Index '{name}' already exists on '{collection_name}'")
+                    elif e.code == 13:  # Authorization error
+                        logger.debug(f"Insufficient permissions to create index '{name}' on '{collection_name}' - skipping")
                     else:
                         logger.error(f"Failed to create index '{name}' on '{collection_name}': {e}")
                         
         except Exception as e:
             logger.error(f"Failed to create indexes for collection '{collection_name}': {e}")
+    
+    async def _check_collection_permissions(self, collection_names: List[str]) -> List[str]:
+        """Check which collections we have permission to create indexes on"""
+        accessible_collections = []
+        
+        for collection_name in collection_names:
+            try:
+                # Use appropriate database based on collection name
+                if collection_name.startswith('fhir_'):
+                    collection = mongodb_service.get_fhir_collection(collection_name)
+                else:
+                    collection = mongodb_service.get_collection(collection_name)
+                
+                # Test permission by trying to create a simple index
+                test_index_name = f"_permission_test_{collection_name}"
+                
+                try:
+                    # Try to create a test index
+                    await collection.create_index([("_id", 1)], name=test_index_name, background=True)
+                    # If successful, drop the test index
+                    await collection.drop_index(test_index_name)
+                    accessible_collections.append(collection_name)
+                    logger.debug(f"✅ Index permissions confirmed for '{collection_name}'")
+                    
+                except Exception as e:
+                    if hasattr(e, 'code') and getattr(e, 'code', None) == 13:  # Authorization error
+                        logger.debug(f"⚠️ No index permissions for '{collection_name}' - skipping")
+                    else:
+                        # Other errors might indicate the collection doesn't exist yet, which is OK
+                        logger.debug(f"⚠️ Cannot test permissions for '{collection_name}': {e}")
+                        # Include it anyway, we'll handle the error during actual index creation
+                        accessible_collections.append(collection_name)
+                        
+            except Exception as e:
+                logger.debug(f"⚠️ Cannot access collection '{collection_name}': {e}")
+                
+        return accessible_collections
     
     async def _log_index_summary(self):
         """Log a summary of created indexes"""

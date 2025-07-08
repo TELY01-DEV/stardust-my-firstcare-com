@@ -117,7 +117,7 @@ class FHIRR5Service:
             }
             
             # Generate blockchain hash for the resource
-            blockchain_hash_obj = blockchain_hash_service.generate_resource_hash(
+            blockchain_hash_obj = await blockchain_hash_service.generate_resource_hash(
                 resource_data=resource_data,
                 include_merkle=True
             )
@@ -154,7 +154,10 @@ class FHIRR5Service:
             
             # Store in appropriate FHIR collection
             collection = mongodb_service.get_fhir_collection(self.fhir_collections[resource_type])
-            result = await collection.insert_one(fhir_doc.dict(by_alias=True))
+            
+            # Convert to dict and exclude None values (especially _id: null)
+            doc_dict = fhir_doc.dict(by_alias=True, exclude_none=True)
+            result = await collection.insert_one(doc_dict)
             
             logger.info(f"Created FHIR {resource_type} resource: {resource_data['id']} with blockchain hash: {blockchain_hash_obj.resource_hash[:16]}...")
             
