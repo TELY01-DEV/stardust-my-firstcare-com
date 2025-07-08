@@ -2385,6 +2385,610 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Realtime Events & WebSocket",
+			"item": [
+				{
+					"name": "Get Realtime Events (SSE)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Realtime events endpoint accessible', function () {",
+									"    pm.response.to.have.status(200);",
+									"    console.log('Realtime events SSE endpoint connected');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/realtime/events",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "events"]
+						}
+					}
+				},
+				{
+					"name": "Get Patient Realtime Events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient realtime events accessible', function () {",
+									"    pm.response.to.have.status(200);",
+									"    console.log('Patient SSE endpoint connected for:', pm.environment.get('patient_id'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/realtime/events/patient/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "events", "patient", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Hospital Realtime Events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Hospital realtime events accessible', function () {",
+									"    pm.response.to.have.status(200);",
+									"    console.log('Hospital SSE endpoint connected for:', pm.environment.get('hospital_id'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/realtime/events/hospital/{{hospital_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "events", "hospital", "{{hospital_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get WebSocket Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('WebSocket statistics retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('stats');",
+									"    console.log('WebSocket stats:', jsonData.data.stats);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/realtime/stats",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "stats"]
+						}
+					}
+				},
+				{
+					"name": "Test Publish Event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Test event published successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('Test event published:', jsonData.message);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"event_type\": \"test\", \"data\": {\"message\": \"Test realtime event\", \"timestamp\": \"2024-01-15T10:30:00Z\"}}"
+						},
+						"url": {
+							"raw": "{{base_url}}/realtime/test/publish",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "test", "publish"]
+						}
+					}
+				}
+			],
+			"description": "Real-time event streaming and WebSocket endpoints for live patient monitoring, hospital events, and device status updates"
+		},
+		{
+			"name": "Reports Management",
+			"item": [
+				{
+					"name": "Create Report Template",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report template created successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('template_id');",
+									"    pm.environment.set('template_id', jsonData.data.template_id);",
+									"    console.log('Template created with ID:', jsonData.data.template_id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Patient Summary Report\", \"description\": \"Comprehensive patient health summary\", \"type\": \"patient\", \"fields\": [\"vitals\", \"medications\", \"appointments\"], \"format\": \"pdf\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reports/templates",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "templates"]
+						}
+					}
+				},
+				{
+					"name": "List Report Templates",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report templates listed successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('templates');",
+									"    console.log('Found templates:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reports/templates?limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "templates"],
+							"query": [
+								{"key": "limit", "value": "50"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Generate Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report generation initiated successfully', function () {",
+									"    pm.response.to.have.status(202);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('job_id');",
+									"    pm.environment.set('job_id', jsonData.data.job_id);",
+									"    console.log('Report job started:', jsonData.data.job_id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"patient_id\": \"{{patient_id}}\", \"date_range\": {\"start\": \"2024-01-01\", \"end\": \"2024-01-31\"}, \"include_charts\": true}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reports/generate/{{template_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "generate", "{{template_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Report Job Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report job status retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('job');",
+									"    console.log('Job status:', jsonData.data.job.status);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reports/jobs/{{job_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "jobs", "{{job_id}}"]
+						}
+					}
+				}
+			],
+			"description": "Comprehensive report management system for creating templates, generating reports, and managing report jobs"
+		},
+		{
+			"name": "Data Visualization",
+			"item": [
+				{
+					"name": "Get Patient Demographics Chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient demographics chart generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('chart');",
+									"    console.log('Demographics chart generated');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/visualization/charts/patient-demographics",
+							"host": ["{{base_url}}"],
+							"path": ["visualization", "charts", "patient-demographics"]
+						}
+					}
+				},
+				{
+					"name": "Get Vital Trends Chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Vital trends chart generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('chart');",
+									"    console.log('Vital trends chart for patient:', pm.environment.get('patient_id'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/visualization/charts/vital-trends/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["visualization", "charts", "vital-trends", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get System Overview Charts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('System overview charts generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('charts');",
+									"    console.log('System overview charts generated');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/visualization/charts/system-overview",
+							"host": ["{{base_url}}"],
+							"path": ["visualization", "charts", "system-overview"]
+						}
+					}
+				}
+			],
+			"description": "Data visualization endpoints for generating charts, graphs, and visual representations of patient data and system metrics"
+		},
+		{
+			"name": "Performance Monitoring",
+			"item": [
+				{
+					"name": "Get Cache Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Cache statistics retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('stats');",
+									"    console.log('Cache stats:', jsonData.data.stats);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/performance/cache/stats",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "performance", "cache", "stats"]
+						}
+					}
+				},
+				{
+					"name": "Clear Cache",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Cache cleared successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('Cache cleared:', jsonData.message);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"cache_type\": \"all\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/performance/cache/clear",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "performance", "cache", "clear"]
+						}
+					}
+				},
+				{
+					"name": "Get Database Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Database statistics retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('stats');",
+									"    console.log('Database stats:', jsonData.data.stats);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/performance/database/stats",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "performance", "database", "stats"]
+						}
+					}
+				}
+			],
+			"description": "Performance monitoring and optimization endpoints for cache management and database statistics"
+		},
+		{
+			"name": "Security Management",
+			"item": [
+				{
+					"name": "Get Security Events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Security events retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('events');",
+									"    console.log('Security events found:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/security/audit/events?limit=20",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "audit", "events"],
+							"query": [
+								{"key": "limit", "value": "20"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Security Summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Security summary retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('summary');",
+									"    console.log('Security summary:', jsonData.data.summary);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/security/audit/summary",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "audit", "summary"]
+						}
+					}
+				},
+				{
+					"name": "Get Active Alerts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Active alerts retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('alerts');",
+									"    console.log('Active alerts:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/security/alerts/active",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "alerts", "active"]
+						}
+					}
+				},
+				{
+					"name": "Generate API Key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('API key generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('api_key');",
+									"    console.log('API key generated');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Test API Key\", \"permissions\": [\"read\"], \"expires_in\": \"30d\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/security/encryption/generate-api-key",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "encryption", "generate-api-key"]
+						}
+					}
+				}
+			],
+			"description": "Security management endpoints for audit events, alerts, and encryption key management"
 		}
 	],
 	"variable": [
@@ -2405,6 +3009,31 @@
 		},
 		{
 			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "patient_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "device_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hospital_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "template_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "job_id",
 			"value": "",
 			"type": "string"
 		}

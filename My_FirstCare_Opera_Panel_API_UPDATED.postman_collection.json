@@ -1833,7 +1833,7 @@
 			"name": "Analytics",
 			"item": [
 				{
-					"name": "Get Analytics Dashboard",
+					"name": "Get Admin Analytics Dashboard",
 					"event": [
 						{
 							"listen": "test",
@@ -1859,8 +1859,1830 @@
 							"path": ["admin", "analytics"]
 						}
 					}
+				},
+				{
+					"name": "Get Patient Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient statistics retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('statistics');",
+									"    console.log('Patient statistics:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/analytics/patients/statistics",
+							"host": ["{{base_url}}"],
+							"path": ["analytics", "patients", "statistics"]
+						}
+					}
+				},
+				{
+					"name": "Get Vital Signs Analytics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Vital signs analytics retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('vitals');",
+									"    console.log('Vital signs analytics for patient:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/analytics/vitals/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["analytics", "vitals", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Device Utilization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device utilization retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('utilization');",
+									"    console.log('Device utilization:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/analytics/devices/utilization",
+							"host": ["{{base_url}}"],
+							"path": ["analytics", "devices", "utilization"]
+						}
+					}
+				},
+				{
+					"name": "Get Health Risk Predictions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Health risk predictions retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('risks');",
+									"    console.log('Health risks for patient:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/analytics/health-risks/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["analytics", "health-risks", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Vital Trends",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Vital trends retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('trends');",
+									"    console.log('Vital trends:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/analytics/trends/vitals",
+							"host": ["{{base_url}}"],
+							"path": ["analytics", "trends", "vitals"]
+						}
+					}
+				},
+				{
+					"name": "Detect Anomalies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Anomaly detection completed successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('anomalies');",
+									"    console.log('Detected anomalies:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/analytics/anomalies/detect",
+							"host": ["{{base_url}}"],
+							"path": ["analytics", "anomalies", "detect"]
+						}
+					}
+				},
+				{
+					"name": "Generate Summary Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Summary report generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('report');",
+									"    console.log('Summary report:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/analytics/reports/summary/patient",
+							"host": ["{{base_url}}"],
+							"path": ["analytics", "reports", "summary", "patient"]
+						}
+					}
+				},
+				{
+					"name": "Export Analytics Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Analytics data exported successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('Analytics data exported:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"start_date\": \"2024-01-01\", \"end_date\": \"2024-01-31\", \"include_metadata\": true}"
+						},
+						"url": {
+							"raw": "{{base_url}}/analytics/export/json",
+							"host": ["{{base_url}}"],
+							"path": ["analytics", "export", "json"]
+						}
+					}
 				}
-			]
+			],
+			"description": "Advanced analytics endpoints for patient statistics, vital signs analysis, device utilization, health risk predictions, and anomaly detection"
+		},
+		{
+			"name": "AVA4 Medical Devices API",
+			"item": [
+				{
+					"name": "Submit AVA4 Device Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('AVA4 data submitted successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('AVA4 data processed:', jsonData.message);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"timestamp\": \"2024-01-15T10:30:00Z\", \"device_id\": \"AA:BB:CC:DD:EE:FF\", \"type\": \"BLOOD_PRESSURE\", \"data\": {\"systolic\": 120, \"diastolic\": 80, \"pulse\": 72, \"value\": 120, \"unit\": \"mmHg\", \"unit_code\": \"mm[Hg]\"}}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ava4/data",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ava4", "data"]
+						}
+					}
+				},
+				{
+					"name": "Get All AVA4 Devices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('AVA4 devices retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('devices');",
+									"    console.log('AVA4 devices found:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/devices?limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ava4", "devices"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get AVA4 Device by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('AVA4 device retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('device');",
+									"    console.log('AVA4 device details:', jsonData.data.device);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/devices/{{device_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ava4", "devices", "{{device_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete AVA4 Device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('AVA4 device deleted successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('AVA4 device deleted:', jsonData.message);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/devices/{{device_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ava4", "devices", "{{device_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Patient Info by MAC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient info retrieved by MAC successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('patient');",
+									"    console.log('Patient found by MAC:', jsonData.data.patient);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/patient-info?mac_address=AA:BB:CC:DD:EE:FF",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ava4", "patient-info"],
+							"query": [
+								{"key": "mac_address", "value": "AA:BB:CC:DD:EE:FF", "description": "Device MAC address"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get AVA4 Sub-Devices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('AVA4 sub-devices retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('sub_devices');",
+									"    console.log('AVA4 sub-devices found:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/sub-devices?limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ava4", "sub-devices"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Register AVA4 Sub-Device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('AVA4 sub-device registered successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('AVA4 sub-device registered:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"patient_id\": \"{{patient_id}}\", \"device_type\": \"BLOOD_PRESSURE\", \"device_id\": \"BP001\", \"device_name\": \"Blood Pressure Monitor\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ava4/sub-devices",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ava4", "sub-devices"]
+						}
+					}
+				},
+				{
+					"name": "Get Patient Medical History",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient medical history retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('history');",
+									"    console.log('Medical history for patient:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/medical-history/patient/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ava4", "medical-history", "patient", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Patient Medical Trends",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient medical trends retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('trends');",
+									"    console.log('Medical trends for patient:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/medical-history/trends/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ava4", "medical-history", "trends", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get AVA4 Raw Patient Documents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('AVA4 raw patient documents retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('raw_documents');",
+									"    console.log('Raw patient documents found:', jsonData.data.total_count);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/patients/raw-documents?limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ava4", "patients", "raw-documents"],
+							"query": [
+								{"key": "limit", "value": "10"},
+								{"key": "skip", "value": "0", "disabled": true},
+								{"key": "include_deleted", "value": "false", "disabled": true}
+							]
+						}
+					}
+				}
+			],
+			"description": "Complete AVA4 medical device integration endpoints for data submission, device management, patient information, and medical history tracking"
+		},
+		{
+			"name": "Qube-Vital API",
+			"item": [
+				{
+					"name": "Submit Qube-Vital Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Qube-Vital data submitted successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('Qube-Vital data processed:', jsonData.message);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"device_id\": \"QV001\", \"timestamp\": \"2024-01-15T10:30:00Z\", \"vital_signs\": {\"heart_rate\": 72, \"blood_pressure\": {\"systolic\": 120, \"diastolic\": 80}, \"temperature\": 36.5}}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/qube-vital/data",
+							"host": ["{{base_url}}"],
+							"path": ["api", "qube-vital", "data"]
+						}
+					}
+				},
+				{
+					"name": "Get All Qube-Vital Devices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Qube-Vital devices retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('devices');",
+									"    console.log('Qube-Vital devices found:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/qube-vital/devices?limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["api", "qube-vital", "devices"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Qube-Vital Device by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Qube-Vital device retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('device');",
+									"    console.log('Qube-Vital device details:', jsonData.data.device);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/qube-vital/devices/{{device_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "qube-vital", "devices", "{{device_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Hospital Analytics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Hospital analytics retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('analytics');",
+									"    console.log('Hospital analytics:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/qube-vital/analytics/hospitals",
+							"host": ["{{base_url}}"],
+							"path": ["api", "qube-vital", "analytics", "hospitals"]
+						}
+					}
+				},
+				{
+					"name": "Get Hospital Info by Device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Hospital info retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('hospital');",
+									"    console.log('Hospital info:', jsonData.data.hospital);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/qube-vital/hospital-info?device_id={{device_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "qube-vital", "hospital-info"],
+							"query": [
+								{"key": "device_id", "value": "{{device_id}}", "description": "Qube-Vital device ID"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Hospitals with Devices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Hospitals with devices retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('hospitals');",
+									"    console.log('Hospitals with devices:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/qube-vital/hospitals",
+							"host": ["{{base_url}}"],
+							"path": ["api", "qube-vital", "hospitals"]
+						}
+					}
+				},
+				{
+					"name": "Assign Device to Hospital",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device assigned to hospital successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('Device assignment updated:', jsonData.message);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"hospital_id\": \"{{hospital_id}}\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/qube-vital/devices/{{device_id}}/hospital",
+							"host": ["{{base_url}}"],
+							"path": ["api", "qube-vital", "devices", "{{device_id}}", "hospital"]
+						}
+					}
+				}
+			],
+			"description": "Qube-Vital medical device integration endpoints for data submission, device management, and hospital analytics"
+		},
+		{
+			"name": "Realtime Events & WebSocket",
+			"item": [
+				{
+					"name": "Get Realtime Events (SSE)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Realtime events endpoint accessible', function () {",
+									"    pm.response.to.have.status(200);",
+									"    console.log('Realtime events SSE endpoint connected');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/realtime/events",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "events"]
+						}
+					}
+				},
+				{
+					"name": "Get Patient Realtime Events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient realtime events accessible', function () {",
+									"    pm.response.to.have.status(200);",
+									"    console.log('Patient SSE endpoint connected for:', pm.environment.get('patient_id'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/realtime/events/patient/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "events", "patient", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Hospital Realtime Events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Hospital realtime events accessible', function () {",
+									"    pm.response.to.have.status(200);",
+									"    console.log('Hospital SSE endpoint connected for:', pm.environment.get('hospital_id'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/realtime/events/hospital/{{hospital_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "events", "hospital", "{{hospital_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Device Realtime Events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device realtime events accessible', function () {",
+									"    pm.response.to.have.status(200);",
+									"    console.log('Device SSE endpoint connected for:', pm.environment.get('device_id'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/realtime/events/device/ava4/{{device_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "events", "device", "ava4", "{{device_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get WebSocket Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('WebSocket statistics retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('stats');",
+									"    console.log('WebSocket stats:', jsonData.data.stats);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/realtime/stats",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "stats"]
+						}
+					}
+				},
+				{
+					"name": "Test Publish Event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Test event published successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('Test event published:', jsonData.message);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"event_type\": \"test\", \"data\": {\"message\": \"Test realtime event\", \"timestamp\": \"2024-01-15T10:30:00Z\"}}"
+						},
+						"url": {
+							"raw": "{{base_url}}/realtime/test/publish",
+							"host": ["{{base_url}}"],
+							"path": ["realtime", "test", "publish"]
+						}
+					}
+				}
+			],
+			"description": "Real-time event streaming and WebSocket endpoints for live patient monitoring, hospital events, and device status updates"
+		},
+		{
+			"name": "Reports Management",
+			"item": [
+				{
+					"name": "Create Report Template",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report template created successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('template_id');",
+									"    pm.environment.set('template_id', jsonData.data.template_id);",
+									"    console.log('Template created with ID:', jsonData.data.template_id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Patient Summary Report\", \"description\": \"Comprehensive patient health summary\", \"type\": \"patient\", \"fields\": [\"vitals\", \"medications\", \"appointments\"], \"format\": \"pdf\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reports/templates",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "templates"]
+						}
+					}
+				},
+				{
+					"name": "List Report Templates",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report templates listed successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('templates');",
+									"    console.log('Found templates:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reports/templates?limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "templates"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Report Template",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report template retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('template');",
+									"    console.log('Template details:', jsonData.data.template);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reports/templates/{{template_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "templates", "{{template_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Generate Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report generation initiated successfully', function () {",
+									"    pm.response.to.have.status(202);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('job_id');",
+									"    pm.environment.set('job_id', jsonData.data.job_id);",
+									"    console.log('Report job started:', jsonData.data.job_id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"patient_id\": \"{{patient_id}}\", \"date_range\": {\"start\": \"2024-01-01\", \"end\": \"2024-01-31\"}, \"include_charts\": true}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reports/generate/{{template_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "generate", "{{template_id}}"]
+						}
+					}
+				},
+				{
+					"name": "List Report Jobs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report jobs listed successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('jobs');",
+									"    console.log('Found report jobs:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reports/jobs?limit=20",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "jobs"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "status", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Report Job Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report job status retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('job');",
+									"    console.log('Job status:', jsonData.data.job.status);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reports/jobs/{{job_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "jobs", "{{job_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Report Output",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report output retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    console.log('Report output downloaded, size:', pm.response.responseSize);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reports/jobs/{{job_id}}/output",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "jobs", "{{job_id}}", "output"]
+						}
+					}
+				},
+				{
+					"name": "Get Report Types",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Report types retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('types');",
+									"    console.log('Available report types:', jsonData.data.types.length);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/reports/types",
+							"host": ["{{base_url}}"],
+							"path": ["reports", "types"]
+						}
+					}
+				}
+			],
+			"description": "Comprehensive report management system for creating templates, generating reports, and managing report jobs"
+		},
+		{
+			"name": "Data Visualization",
+			"item": [
+				{
+					"name": "Get Patient Demographics Chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient demographics chart generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('chart');",
+									"    console.log('Demographics chart generated');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/visualization/charts/patient-demographics",
+							"host": ["{{base_url}}"],
+							"path": ["visualization", "charts", "patient-demographics"]
+						}
+					}
+				},
+				{
+					"name": "Get Vital Trends Chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Vital trends chart generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('chart');",
+									"    console.log('Vital trends chart for patient:', pm.environment.get('patient_id'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/visualization/charts/vital-trends/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["visualization", "charts", "vital-trends", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Risk Distribution Chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Risk distribution chart generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('chart');",
+									"    console.log('Risk distribution chart generated');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/visualization/charts/risk-distribution",
+							"host": ["{{base_url}}"],
+							"path": ["visualization", "charts", "risk-distribution"]
+						}
+					}
+				},
+				{
+					"name": "Get Device Utilization Chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device utilization chart generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('chart');",
+									"    console.log('Device utilization chart generated');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/visualization/charts/device-utilization",
+							"host": ["{{base_url}}"],
+							"path": ["visualization", "charts", "device-utilization"]
+						}
+					}
+				},
+				{
+					"name": "Get Anomaly Scatter Chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Anomaly scatter chart generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('chart');",
+									"    console.log('Anomaly scatter chart for patient:', pm.environment.get('patient_id'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/visualization/charts/anomaly-scatter/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["visualization", "charts", "anomaly-scatter", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Risk Gauge Chart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Risk gauge chart generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('chart');",
+									"    console.log('Risk gauge chart for patient:', pm.environment.get('patient_id'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/visualization/charts/risk-gauge/{{patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["visualization", "charts", "risk-gauge", "{{patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Get System Overview Charts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('System overview charts generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('charts');",
+									"    console.log('System overview charts generated');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/visualization/charts/system-overview",
+							"host": ["{{base_url}}"],
+							"path": ["visualization", "charts", "system-overview"]
+						}
+					}
+				}
+			],
+			"description": "Data visualization endpoints for generating charts, graphs, and visual representations of patient data, system metrics, and analytics"
+		},
+		{
+			"name": "Performance Monitoring",
+			"item": [
+				{
+					"name": "Get Cache Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Cache statistics retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('stats');",
+									"    console.log('Cache stats:', jsonData.data.stats);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/performance/cache/stats",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "performance", "cache", "stats"]
+						}
+					}
+				},
+				{
+					"name": "Clear Cache",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Cache cleared successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('Cache cleared:', jsonData.message);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"cache_type\": \"all\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/performance/cache/clear",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "performance", "cache", "clear"]
+						}
+					}
+				},
+				{
+					"name": "Get Index Usage",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Index usage retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('indexes');",
+									"    console.log('Index usage for collection:', jsonData.data);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/performance/indexes/patients",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "performance", "indexes", "patients"]
+						}
+					}
+				},
+				{
+					"name": "Get Slow Queries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Slow queries retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('queries');",
+									"    console.log('Found slow queries:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/performance/slow-queries?limit=10",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "performance", "slow-queries"],
+							"query": [
+								{"key": "limit", "value": "10"},
+								{"key": "threshold", "value": "1000", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Database Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Database statistics retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('stats');",
+									"    console.log('Database stats:', jsonData.data.stats);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/performance/database/stats",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "performance", "database", "stats"]
+						}
+					}
+				},
+				{
+					"name": "Recommend Indexes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Index recommendations generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('recommendations');",
+									"    console.log('Index recommendations:', jsonData.data.recommendations.length);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"collection\": \"patients\", \"analyze_queries\": true}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/performance/indexes/recommend",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "performance", "indexes", "recommend"]
+						}
+					}
+				}
+			],
+			"description": "Performance monitoring and optimization endpoints for cache management, database statistics, and index optimization"
+		},
+		{
+			"name": "Security Management",
+			"item": [
+				{
+					"name": "Get Security Events",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Security events retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('events');",
+									"    console.log('Security events found:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/security/audit/events?limit=20",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "audit", "events"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "severity", "value": "", "disabled": true},
+								{"key": "event_type", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Security Summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Security summary retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('summary');",
+									"    console.log('Security summary:', jsonData.data.summary);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/security/audit/summary",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "audit", "summary"]
+						}
+					}
+				},
+				{
+					"name": "Get Active Alerts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Active alerts retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('alerts');",
+									"    console.log('Active alerts:', jsonData.data.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/security/alerts/active",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "alerts", "active"]
+						}
+					}
+				},
+				{
+					"name": "Get Rate Limit Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Rate limit status retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('rate_limit');",
+									"    console.log('Rate limit status:', jsonData.data.rate_limit);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/security/rate-limits/192.168.1.100",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "rate-limits", "192.168.1.100"]
+						}
+					}
+				},
+				{
+					"name": "Add IP to Blacklist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('IP added to blacklist successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('IP blacklisted:', jsonData.message);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"reason\": \"Suspicious activity detected\", \"duration\": \"24h\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/security/blacklist/192.168.1.200",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "blacklist", "192.168.1.200"]
+						}
+					}
+				},
+				{
+					"name": "Generate API Key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('API key generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('api_key');",
+									"    console.log('API key generated');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Test API Key\", \"permissions\": [\"read\"], \"expires_in\": \"30d\"}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/security/encryption/generate-api-key",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "encryption", "generate-api-key"]
+						}
+					}
+				},
+				{
+					"name": "Get Security Config",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Security config retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('config');",
+									"    console.log('Security config:', jsonData.data.config);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/security/config",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "security", "config"]
+						}
+					}
+				}
+			],
+			"description": "Security management endpoints for audit events, alerts, rate limiting, blacklisting, and encryption key management"
 		}
 	],
 	"variable": [
@@ -1880,7 +3702,32 @@
 			"type": "string"
 		},
 		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "patient_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "device_id",
+			"value": "",
+			"type": "string"
+		},
+		{
 			"key": "hospital_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "template_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "job_id",
 			"value": "",
 			"type": "string"
 		}
