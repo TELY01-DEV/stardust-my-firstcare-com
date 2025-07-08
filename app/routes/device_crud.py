@@ -7,6 +7,7 @@ from bson import ObjectId
 from app.services.mongo import mongodb_service
 from app.services.auth import require_auth
 from app.services.audit_logger import audit_logger
+from app.services.realtime_events import realtime_events
 from app.utils.json_encoder import serialize_mongodb_response
 from app.utils.error_definitions import create_error_response, create_success_response
 from app.utils.performance_decorators import api_endpoint_timing
@@ -90,6 +91,47 @@ async def create_device_data(
             observation_id=observation_id,
             user_id=current_user.get("username")
         )
+        
+        # Publish real-time event
+        if device.get("patient_id"):
+            patient_id = str(device.get("patient_id"))
+            
+            # Publish device data update
+            await realtime_events.publish_device_data(
+                device_type=data.device_type,
+                device_id=data.device_id,
+                data_type=data.data_type,
+                values=data.values
+            )
+            
+            # Publish patient vitals update if applicable
+            if data.data_type in ["blood_pressure", "heart_rate", "temperature", "spo2"]:
+                await realtime_events.publish_patient_vitals(
+                    patient_id=patient_id,
+                    vitals_data={
+                        data.data_type: data.values,
+                        "device_id": data.device_id,
+                        "device_type": data.device_type,
+                        "timestamp": data.timestamp.isoformat()
+                    }
+                )
+                
+            # Check for alerts (example: high blood pressure)
+            if data.data_type == "blood_pressure":
+                systolic = data.values.get("systolic", 0)
+                diastolic = data.values.get("diastolic", 0)
+                if systolic > 140 or diastolic > 90:
+                    await realtime_events.publish_patient_alert(
+                        patient_id=patient_id,
+                        alert_type="high_blood_pressure",
+                        severity="warning",
+                        message=f"High blood pressure detected: {systolic}/{diastolic}",
+                        data={
+                            "systolic": systolic,
+                            "diastolic": diastolic,
+                            "device_id": data.device_id
+                        }
+                    )
         
         success_response = create_success_response(
             message="Device data created successfully",

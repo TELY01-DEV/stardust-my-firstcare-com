@@ -375,6 +375,10 @@ def get_structured_logger():
     """Get the structured logger instance"""
     return structured_logger.get_logger()
 
+def get_logger(name=None):
+    """Get the logger instance (alias for compatibility)"""
+    return structured_logger.get_logger()
+
 def log_with_context(**context):
     """Create a logging context"""
     return LoggingContext(**context) 

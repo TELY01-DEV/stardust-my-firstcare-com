@@ -651,7 +651,7 @@ async def create_master_data(
         )
 
 @router.put("/master-data/{data_type}/{record_id}")
-async def update_master_data(
+async def update_master_data_crud(
     request: Request,
     data_type: str,
     record_id: str,
@@ -719,7 +719,7 @@ async def update_master_data(
         )
 
 @router.delete("/master-data/{data_type}/{record_id}")
-async def delete_master_data(
+async def delete_master_data_crud(
     request: Request,
     data_type: str,
     record_id: str,
@@ -738,7 +738,7 @@ async def delete_master_data(
         }
         
         # Set deletion fields based on data type
-        if data_type in ["provinces", "districts", "sub_districts", "hospitals"]:
+        if data_type in ["provinces", "districts", "sub_districts", "hospitals", "blood_groups", "human_skin_colors", "nations"]:
             update_data["is_deleted"] = True
         elif data_type == "hospital_types":
             update_data["active"] = False
@@ -831,7 +831,10 @@ def get_master_data_collection_name(data_type: str, request_id: Optional[str] = 
         "provinces": "provinces", 
         "districts": "districts",
         "sub_districts": "sub_districts",
-        "hospital_types": "master_hospital_types"
+        "hospital_types": "master_hospital_types",
+        "blood_groups": "blood_groups",
+        "human_skin_colors": "human_skin_colors",
+        "nations": "nations"
     }
     
     collection_name = collection_mapping.get(data_type)

@@ -5,6 +5,8 @@ services:
     ports:
       - "5054:5054"
     environment:
+      - ENVIRONMENT=development
+
       - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin
       - MONGODB_HOST=coruscant.my-firstcare.com
       - MONGODB_PORT=27023
@@ -20,10 +22,15 @@ services:
       - HOST=0.0.0.0
       - LOG_LEVEL=INFO
       - NODE_ENV=production
+      - REDIS_URL=redis://redis:6374/0
+      - ENABLE_CACHE=true
+      - ENCRYPTION_MASTER_KEY=mg409-8dtxc4WOTPr0Q0VYSDhIVFaTVcqYGxfchBUJw=
     volumes:
       - ./logs:/app/logs
       - ./ssl:/app/ssl:ro
     restart: unless-stopped
+    depends_on:
+      - redis
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5054/health').read()"]
       interval: 30s
@@ -33,6 +40,27 @@ services:
     networks:
       - stardust-network
 
+  redis:
+    image: redis:7-alpine
+    container_name: stardust-redis
+    command: redis-server --port 6374 --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6374:6374"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - stardust-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "6374", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 networks:
   stardust-network:
-    driver: bridge 
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local 

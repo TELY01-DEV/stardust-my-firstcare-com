@@ -1,0 +1,225 @@
+[{
+  "_id": {
+    "$oid": "667c12928cbee167c0a48b6f"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "ER"
+    },
+    {
+      "code": "th",
+      "name": "ฉุกเฉิน"
+    }
+  ],
+  "is_active": true,
+  "en_name": "ER",
+  "created_at": {
+    "$date": "2024-06-26T13:07:30.355Z"
+  },
+  "updated_at": {
+    "$date": "2025-01-15T13:47:45.279Z"
+  },
+  "unique_id": 1,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "667c12a38cbee167c0a48ba2"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "OPD"
+    },
+    {
+      "code": "th",
+      "name": "ผู้ป่วยนอก"
+    }
+  ],
+  "is_active": true,
+  "en_name": "OPD",
+  "created_at": {
+    "$date": "2024-06-26T13:07:47.248Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-26T13:07:47.248Z"
+  },
+  "unique_id": 2,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "667c12b38cbee167c0a48bd4"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "IPD"
+    },
+    {
+      "code": "th",
+      "name": "ผู้ป่วยใน"
+    }
+  ],
+  "is_active": true,
+  "en_name": "IPD",
+  "created_at": {
+    "$date": "2024-06-26T13:08:03.595Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-26T13:08:03.595Z"
+  },
+  "unique_id": 3,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "668dfd03793e2577beebbf5d"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "Home Ward"
+    },
+    {
+      "code": "th",
+      "name": "ดูแลตัวเองที่บ้าน"
+    }
+  ],
+  "is_active": true,
+  "en_name": "Home Ward",
+  "created_at": {
+    "$date": "2024-07-10T03:16:19.542Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-10T03:16:19.542Z"
+  },
+  "unique_id": 4,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "669202052df134c3a8ace3e1"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "SLEEP LAB"
+    },
+    {
+      "code": "th",
+      "name": "SLEEP LAB"
+    }
+  ],
+  "is_active": true,
+  "en_name": "SLEEP LAB",
+  "created_at": {
+    "$date": "2024-07-13T04:26:45.584Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-13T04:26:45.584Z"
+  },
+  "unique_id": 5,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "669208462df134c3a8ace83d"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "Developer"
+    },
+    {
+      "code": "th",
+      "name": "สำหรับเดฟ"
+    }
+  ],
+  "is_active": true,
+  "en_name": "Developer",
+  "created_at": {
+    "$date": "2024-07-13T04:53:26.219Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-13T04:53:26.219Z"
+  },
+  "unique_id": 6,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "669208592df134c3a8ace84b"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "KATI"
+    },
+    {
+      "code": "th",
+      "name": "กระทิ"
+    }
+  ],
+  "is_active": true,
+  "en_name": "KATI",
+  "created_at": {
+    "$date": "2024-07-13T04:53:45.068Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-13T04:53:45.068Z"
+  },
+  "unique_id": 7,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "669208882df134c3a8ace86d"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "R&D"
+    },
+    {
+      "code": "th",
+      "name": "งานวิจัย"
+    }
+  ],
+  "is_active": true,
+  "en_name": "R&D",
+  "created_at": {
+    "$date": "2024-07-13T04:54:32.561Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-13T04:54:41.482Z"
+  },
+  "unique_id": 8,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6720c5ece6938c0337c71ad5"
+  },
+  "name": [
+    {
+      "code": "en",
+      "name": "."
+    },
+    {
+      "code": "th",
+      "name": "."
+    }
+  ],
+  "is_active": true,
+  "en_name": ".",
+  "created_at": {
+    "$date": "2024-10-29T11:24:28.093Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-29T11:24:28.093Z"
+  },
+  "unique_id": 9,
+  "__v": 0
+}]

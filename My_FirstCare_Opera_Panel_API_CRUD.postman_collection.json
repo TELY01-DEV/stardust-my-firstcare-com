@@ -35,9 +35,24 @@
 					"            })",
 					"        }",
 					"    }, function (err, response) {",
-					"        if (response.code === 200) {",
-					"            const jsonData = response.json();",
-					"            pm.environment.set('jwt_token', jsonData.access_token);",
+					"        if (err) {",
+					"            console.log('Login request failed:', err);",
+					"            return;",
+					"        }",
+					"        if (response && response.code === 200) {",
+					"            try {",
+					"                const jsonData = response.json();",
+					"                if (jsonData && jsonData.access_token) {",
+					"                    pm.environment.set('jwt_token', jsonData.access_token);",
+					"                    console.log('JWT token set successfully');",
+					"                } else {",
+					"                    console.log('No access_token in response');",
+					"                }",
+					"            } catch (e) {",
+					"                console.log('Error parsing login response:', e);",
+					"            }",
+					"        } else {",
+					"            console.log('Login failed with status:', response ? response.code : 'undefined response');",
 					"        }",
 					"    });",
 					"}"
@@ -277,6 +292,138 @@
 								"admin",
 								"patients",
 								"{{patient_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Raw Patient Documents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Raw patient documents retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"    pm.expect(jsonData.data).to.have.property('raw_documents');",
+									"    pm.expect(jsonData.data).to.have.property('field_analysis');",
+									"    pm.expect(jsonData.data).to.have.property('total_count');",
+									"    console.log('Total patient documents:', jsonData.data.total_count);",
+									"    console.log('Returned documents:', jsonData.data.returned_count);",
+									"    console.log('Field analysis for', Object.keys(jsonData.data.field_analysis).length, 'fields');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/patients-raw-documents?limit=5&skip=0&include_deleted=false",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"patients-raw-documents"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "Number of raw documents to return (1-50)"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Number of documents to skip"
+								},
+								{
+									"key": "patient_id",
+									"value": "",
+									"disabled": true,
+									"description": "Filter by specific patient ID"
+								},
+								{
+									"key": "include_deleted",
+									"value": "false",
+									"description": "Include soft-deleted patients"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Raw Hospital Documents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Raw hospital documents retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"    pm.expect(jsonData.data).to.have.property('raw_documents');",
+									"    pm.expect(jsonData.data).to.have.property('field_analysis');",
+									"    pm.expect(jsonData.data).to.have.property('total_count');",
+									"    console.log('Total hospital documents:', jsonData.data.total_count);",
+									"    console.log('Returned documents:', jsonData.data.returned_count);",
+									"    console.log('Field analysis for', Object.keys(jsonData.data.field_analysis).length, 'fields');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/hospitals-raw-documents?limit=5&skip=0&include_deleted=false",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"hospitals-raw-documents"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "Number of raw documents to return (1-50)"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Number of documents to skip"
+								},
+								{
+									"key": "hospital_id",
+									"value": "",
+									"disabled": true,
+									"description": "Filter by specific hospital ID"
+								},
+								{
+									"key": "province_code",
+									"value": "",
+									"disabled": true,
+									"description": "Filter by province code"
+								},
+								{
+									"key": "district_code",
+									"value": "",
+									"disabled": true,
+									"description": "Filter by district code"
+								},
+								{
+									"key": "include_deleted",
+									"value": "false",
+									"description": "Include soft-deleted hospitals"
+								}
 							]
 						}
 					}
@@ -911,6 +1058,332 @@
 			]
 		},
 		{
+			"name": "Hospital Users - CRUD",
+			"item": [
+				{
+					"name": "Get All Hospital Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has users data', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"    pm.expect(jsonData.data).to.have.property('users');",
+									"    pm.expect(jsonData.data).to.have.property('total');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/hospital-users?limit=50&skip=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"hospital-users"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "hospital_id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Hospital User by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has user data', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"    pm.expect(jsonData.data).to.have.property('user');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/hospital-users/{{hospital_user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"hospital-users",
+								"{{hospital_user_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Hospital User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 201', function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test('Hospital user created successfully', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"    pm.expect(jsonData.data).to.have.property('user_id');",
+									"    pm.environment.set('hospital_user_id', jsonData.data.user_id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test.user@hospital.com\",\n    \"password\": \"SecurePass123!\",\n    \"first_name\": \"Test\",\n    \"last_name\": \"User\",\n    \"user_title\": \"Dr.\",\n    \"phone\": \"0123456789\",\n    \"country_phone_code\": \"+66\",\n    \"country_code\": \"TH\",\n    \"country_name\": \"Thailand\",\n    \"hospital_id\": \"6241716c2420fcbc3cab2c77\",\n    \"type\": \"663224739f05965bd5b7745e\",\n    \"image_url\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/hospital-users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"hospital-users"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Hospital User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Hospital user updated successfully', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Updated Test\",\n    \"last_name\": \"User Updated\",\n    \"phone\": \"0987654321\",\n    \"user_title\": \"Prof.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/hospital-users/{{hospital_user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"hospital-users",
+								"{{hospital_user_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Hospital User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Hospital user deleted successfully', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/hospital-users/{{hospital_user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"hospital-users",
+								"{{hospital_user_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Search Hospital Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Search completed successfully', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"    pm.expect(jsonData.data).to.have.property('users');",
+									"    pm.expect(jsonData.data).to.have.property('search_criteria');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"search\": \"test\",\n    \"hospital_id\": null,\n    \"type\": null,\n    \"email\": null,\n    \"first_name\": null,\n    \"last_name\": null,\n    \"phone\": null,\n    \"is_active\": true,\n    \"is_deleted\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/hospital-users/search?limit=20&skip=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"hospital-users",
+								"search"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Hospital Users Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Statistics retrieved successfully', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"    pm.expect(jsonData.data).to.have.property('total_users');",
+									"    pm.expect(jsonData.data).to.have.property('users_by_hospital');",
+									"    pm.expect(jsonData.data).to.have.property('users_by_type');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/hospital-users/stats/summary",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"hospital-users",
+								"stats",
+								"summary"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
 			"name": "Master Data - CRUD",
 			"item": [
 				{
@@ -1227,6 +1700,98 @@
 							]
 						}
 					}
+				},
+				{
+					"name": "Get Blood Groups",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/blood_groups?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"blood_groups"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Human Skin Colors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/human_skin_colors?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"human_skin_colors"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Nations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/nations?limit=100",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"master-data",
+								"nations"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "100"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					}
 				}
 			]
 		},
@@ -1390,6 +1955,128 @@
 							]
 						}
 					}
+				},
+				{
+					"name": "Get AVA4 Raw Patient Documents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('AVA4 raw patient documents retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"    pm.expect(jsonData.data).to.have.property('raw_documents');",
+									"    pm.expect(jsonData.data).to.have.property('field_analysis');",
+									"    pm.expect(jsonData.data).to.have.property('standard_patient_fields');",
+									"    console.log('Total patient documents:', jsonData.data.total_count);",
+									"    console.log('Standard patient fields:', jsonData.data.standard_patient_fields.length);",
+									"    console.log('AVA4 integration fields found');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/patients/raw-documents?limit=5&skip=0&include_deleted=false",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ava4",
+								"patients",
+								"raw-documents"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "Number of raw documents to return (1-50)"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Number of documents to skip"
+								},
+								{
+									"key": "patient_id",
+									"value": "",
+									"disabled": true,
+									"description": "Filter by specific patient ID"
+								},
+								{
+									"key": "include_deleted",
+									"value": "false",
+									"description": "Include soft-deleted patients"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get AVA4 Raw Sub-Device Documents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('AVA4 raw sub-device documents retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success', true);",
+									"    pm.expect(jsonData.data).to.have.property('raw_documents');",
+									"    console.log('Data type:', jsonData.data.metadata.data_type);",
+									"    console.log('Total documents:', jsonData.data.total_count);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ava4/sub-devices/raw-documents?limit=5&data_type=devices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ava4",
+								"sub-devices",
+								"raw-documents"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "Number of raw documents to return"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"disabled": true,
+									"description": "Number of documents to skip"
+								},
+								{
+									"key": "patient_id",
+									"value": "",
+									"disabled": true,
+									"description": "Filter by specific patient ID"
+								},
+								{
+									"key": "data_type",
+									"value": "devices",
+									"description": "Type of data: 'devices' or 'patients'"
+								}
+							]
+						}
+					}
 				}
 			]
 		},
@@ -1440,17 +2127,22 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://stardust.myfirstcare.com:5054",
+			"value": "http://localhost:5054",
 			"type": "string"
 		},
 		{
 			"key": "username",
-			"value": "admin",
+			"value": "operapanel",
 			"type": "string"
 		},
 		{
 			"key": "password",
 			"value": "Sim!443355",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
 			"type": "string"
 		}
 	]

@@ -7,7 +7,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=False,
-        extra='allow'
+        extra='allow',
+        populate_by_name=True  # This replaces allow_population_by_field_name
     )
     
     # MongoDB Configuration
@@ -47,7 +48,16 @@ class Settings(BaseSettings):
     log_rotation: str = "1 day"
     log_retention: str = "30 days"
     
-    # Production Settings
+    # Redis Configuration
+    redis_url: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+    redis_host: str = os.getenv("REDIS_HOST", "localhost")
+    redis_port: int = int(os.getenv("REDIS_PORT", "6379"))
+    redis_password: Optional[str] = os.getenv("REDIS_PASSWORD", None)
+    redis_db: int = int(os.getenv("REDIS_DB", "0"))
+    enable_cache: bool = os.getenv("ENABLE_CACHE", "true").lower() == "true"
+    
+    # Environment Settings
+    environment: str = os.getenv("ENVIRONMENT", "production")
     node_env: str = "production"
 
 # Initialize settings

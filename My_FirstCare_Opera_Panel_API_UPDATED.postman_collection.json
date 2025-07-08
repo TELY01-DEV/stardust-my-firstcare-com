@@ -1314,6 +1314,220 @@
 					}
 				},
 				{
+					"name": "Get All Blood Groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Blood groups retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('total');",
+									"    console.log('Blood groups found:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;",
+									"    pm.expect(jsonData.request_id).to.match(uuidRegex);",
+									"});",
+									"",
+									"pm.test('Blood group data structure is correct', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.data && jsonData.data.data.length > 0) {",
+									"        const bloodGroup = jsonData.data.data[0];",
+									"        pm.expect(bloodGroup).to.have.property('_id');",
+									"        pm.expect(bloodGroup).to.have.property('name');",
+									"        pm.expect(bloodGroup).to.have.property('en_name');",
+									"        pm.expect(bloodGroup.name).to.be.an('array');",
+									"        console.log('Sample blood group:', bloodGroup.en_name);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/blood_groups?limit=50&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "blood_groups"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0"},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Human Skin Colors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Human skin colors retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('total');",
+									"    console.log('Human skin colors found:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;",
+									"    pm.expect(jsonData.request_id).to.match(uuidRegex);",
+									"});",
+									"",
+									"pm.test('Skin color data structure is correct', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.data && jsonData.data.data.length > 0) {",
+									"        const skinColor = jsonData.data.data[0];",
+									"        pm.expect(skinColor).to.have.property('_id');",
+									"        pm.expect(skinColor).to.have.property('name');",
+									"        pm.expect(skinColor).to.have.property('en_name');",
+									"        pm.expect(skinColor.name).to.be.an('array');",
+									"        console.log('Sample skin color:', skinColor.en_name);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/human_skin_colors?limit=50&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "human_skin_colors"],
+							"query": [
+								{"key": "limit", "value": "50"},
+								{"key": "skip", "value": "0"},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Nations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Nations retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('total');",
+									"    console.log('Nations found:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;",
+									"    pm.expect(jsonData.request_id).to.match(uuidRegex);",
+									"});",
+									"",
+									"pm.test('Nation data structure is correct', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.data && jsonData.data.data.length > 0) {",
+									"        const nation = jsonData.data.data[0];",
+									"        pm.expect(nation).to.have.property('_id');",
+									"        pm.expect(nation).to.have.property('name');",
+									"        pm.expect(nation).to.have.property('en_name');",
+									"        pm.expect(nation.name).to.be.an('array');",
+									"        console.log('Sample nation:', nation.en_name);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/nations?limit=100&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "nations"],
+							"query": [
+								{"key": "limit", "value": "100"},
+								{"key": "skip", "value": "0"},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Search Nations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Nation search successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('data');",
+									"    console.log('Nations found by search:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_id).to.not.be.null;",
+									"});",
+									"",
+									"pm.test('Search results contain Thailand', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.data && jsonData.data.data.length > 0) {",
+									"        const thailand = jsonData.data.data.find(nation => ",
+									"            nation.en_name && nation.en_name.toLowerCase().includes('thailand')",
+									"        );",
+									"        if (thailand) {",
+									"            console.log('Thailand found:', thailand.en_name);",
+									"            pm.expect(thailand).to.have.property('unique_id');",
+									"        }",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/master-data/nations?search=Thailand&limit=20",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "master-data", "nations"],
+							"query": [
+								{"key": "search", "value": "Thailand", "description": "Search for Thailand"},
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0", "disabled": true}
+							]
+						}
+					}
+				},
+				{
 					"name": "Get Specific Hospital by ID",
 					"event": [
 						{
@@ -1350,7 +1564,7 @@
 					}
 				}
 			],
-			"description": "Master data endpoints for geographic data (provinces, districts, sub-districts) and hospital information"
+			"description": "Master data endpoints for geographic data (provinces, districts, sub-districts), hospital information, and medical reference data (blood groups, human skin colors, nations/countries)"
 		},
 		{
 			"name": "Analytics",

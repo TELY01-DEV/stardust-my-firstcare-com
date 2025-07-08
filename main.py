@@ -1,22 +1,36 @@
 import os
 import uuid
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Depends, BackgroundTasks
+from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.openapi.utils import get_openapi
+from fastapi.exceptions import RequestValidationError, ResponseValidationError
+from fastapi.encoders import jsonable_encoder
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from contextlib import asynccontextmanager
 from config import settings, logger
 from app.services.mongo import mongodb_service
+from app.services.cache_service import cache_service
+from app.services.index_manager import index_manager
+from app.services.websocket_manager import websocket_manager
+from app.services.realtime_events import realtime_events
+from app.services.rate_limiter import rate_limiter
 from app.routes import ava4, kati, qube_vital
 from app.utils.error_definitions import create_error_response, create_validation_error_response, create_success_response, SuccessResponse, ErrorResponse, ErrorDetail
 from app.middleware.logging_middleware import RequestLoggingMiddleware, PerformanceLoggingMiddleware, SecurityLoggingMiddleware
+from app.middleware.rate_limit_middleware import RateLimitMiddleware
+from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.utils.structured_logging import structured_logger, get_structured_logger
 from app.utils.alert_system import alert_manager, configure_email_alerts, configure_slack_alerts
+from app.utils.json_encoder import MongoJSONEncoder
 from datetime import datetime
+import json
 
 # Import routes
+from app.routes import router as auth_router
 from app.routes.ava4 import router as ava4_router
 from app.routes.kati import router as kati_router
 from app.routes.qube_vital import router as qube_vital_router
@@ -24,6 +38,15 @@ from app.routes.admin import router as admin_router
 from app.routes.admin_crud import router as admin_crud_router
 from app.routes.device_crud import router as device_crud_router
 from app.routes.device_mapping import router as device_mapping_router
+from app.routes.performance import router as performance_router
+from app.routes.realtime import router as realtime_router
+from app.routes.security import router as security_router
+from app.routes.analytics import router as analytics_router
+from app.routes.visualization import router as visualization_router
+from app.routes.reports import router as reports_router
+
+from app.services.rate_limiter import rate_limiter
+from app.services.scheduler import report_scheduler
 from app.routes import router as auth_router
 
 @asynccontextmanager
@@ -44,6 +67,33 @@ async def lifespan(app: FastAPI):
         # Connect to MongoDB
         await mongodb_service.connect()
         logger.info("✅ MongoDB connected successfully")
+        
+        # Create database indexes
+        await index_manager.create_all_indexes()
+        logger.info("✅ Database indexes created")
+        
+        # Connect to Redis cache if enabled
+        if settings.enable_cache:
+            await cache_service.connect()
+            if cache_service.redis_client:
+                logger.info("✅ Redis cache connected")
+            else:
+                logger.warning("⚠️ Redis cache failed to connect - running without cache")
+            
+            # Connect real-time event handler
+            await realtime_events.connect()
+            logger.info("✅ Real-time event handler connected")
+            
+            # Connect rate limiter
+            await rate_limiter.connect()
+            await rate_limiter.load_blacklist()
+            logger.info("✅ Rate limiter connected")
+            
+            # Start report scheduler
+            await report_scheduler.start()
+            logger.info("✅ Report scheduler started")
+        else:
+            logger.info("ℹ️ Cache disabled - running without Redis")
         
         # Create TTL indexes for audit logs
         audit_collection = mongodb_service.get_collection("fhir_provenance")
@@ -76,7 +126,13 @@ async def lifespan(app: FastAPI):
     
     # Shutdown
     logger.info("🛑 Shutting down My FirstCare Opera Panel...")
+    
+    # Disconnect services
     await mongodb_service.disconnect()
+    if settings.enable_cache:
+        await cache_service.disconnect()
+        await realtime_events.disconnect()
+        await rate_limiter.disconnect()
 
 def _register_response_models():
     """Force registration of response models in FastAPI's OpenAPI schema"""
@@ -109,7 +165,13 @@ def _register_response_models():
     # This is a workaround to ensure OpenAPI schema generation includes these models
     logger.info(f"Registered models: {type(_dummy_success).__name__}, {type(_dummy_error).__name__}, {type(_dummy_error_detail).__name__}")
 
-# Create FastAPI app
+# Custom JSON encoder function for FastAPI
+def custom_json_encoder(obj):
+    """Custom JSON encoder that handles MongoDB types"""
+    encoder = MongoJSONEncoder()
+    return encoder.default(obj)
+
+# Create FastAPI app with custom JSON encoder
 app = FastAPI(
     title=settings.app_name,
     version=settings.app_version,
@@ -276,7 +338,32 @@ The API uses structured error responses with:
     openapi_url="/openapi.json"
 )
 
-# Add logging middleware (order matters - first added is outermost)
+# Configure global JSON encoder for MongoDB compatibility
+from fastapi.responses import JSONResponse
+
+# Override the default JSON encoder for all JSONResponse instances
+original_render = JSONResponse.render
+
+def mongodb_compatible_render(self, content):
+    """Custom render method that uses MongoDB-compatible JSON encoding"""
+    if content is None:
+        return b""
+    return json.dumps(
+        content,
+        cls=MongoJSONEncoder,
+        ensure_ascii=False,
+        allow_nan=False,
+        indent=None,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+JSONResponse.render = mongodb_compatible_render
+
+# Add security middleware (order matters - first added is outermost)
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(RateLimitMiddleware, exclude_paths=["/health", "/docs", "/openapi.json", "/favicon.ico"])
+
+# Add logging middleware
 app.add_middleware(SecurityLoggingMiddleware)
 app.add_middleware(PerformanceLoggingMiddleware, slow_threshold_ms=2000)
 app.add_middleware(RequestLoggingMiddleware, exclude_paths=["/health", "/docs", "/openapi.json", "/favicon.ico"])
@@ -326,15 +413,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
-app.include_router(auth_router)
-app.include_router(ava4_router)
-app.include_router(kati_router)
-app.include_router(qube_vital_router)
-app.include_router(admin_router)
-app.include_router(admin_crud_router)
-app.include_router(device_crud_router)
-app.include_router(device_mapping_router)
+# Include routers (routers already have their own prefixes defined)
+app.include_router(auth_router, tags=["authentication"])          # has prefix /auth
+app.include_router(ava4_router, tags=["ava4"])                    # has prefix /api/ava4
+app.include_router(kati_router, tags=["kati"])                    # has prefix /api/kati
+app.include_router(qube_vital_router, tags=["qube-vital"])        # has prefix /api/qube-vital
+app.include_router(admin_router, tags=["admin"])                  # has prefix /admin
+app.include_router(admin_crud_router, tags=["admin-crud"])        # has prefix /admin
+app.include_router(device_crud_router, tags=["device-crud"])      # has prefix /api/devices
+app.include_router(device_mapping_router, tags=["device-mapping"]) # has prefix /admin/device-mapping
+app.include_router(performance_router, tags=["performance"])       # has prefix /admin/performance
+app.include_router(realtime_router, tags=["realtime"])             # has prefix /realtime
+app.include_router(security_router, tags=["security"])             # has prefix /admin/security
+app.include_router(analytics_router, tags=["analytics"])             # has prefix /admin/analytics
+app.include_router(visualization_router, tags=["visualization"])       # has prefix /admin/visualization
+app.include_router(reports_router, tags=["reports"])             # has prefix /admin/reports
 
 # Health check endpoint
 @app.get("/health", 
@@ -536,6 +629,37 @@ async def test_schema_endpoint():
     )
 
 # Global Exception Handlers
+@app.exception_handler(ResponseValidationError)
+async def response_validation_exception_handler(request: Request, exc: ResponseValidationError):
+    """Handle response validation errors - typically when ErrorResponse is returned from SuccessResponse routes"""
+    request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+    logger.error(f"Response Validation Error: {request.url} - {exc.errors()}")
+    
+    # Extract the original ErrorResponse from the validation error if possible
+    try:
+        # The actual error response is in the 'input' field of the validation error
+        if exc.errors() and 'input' in exc.errors()[0]:
+            error_input = exc.errors()[0]['input']
+            if hasattr(error_input, 'dict'):
+                # Return the original error response properly with the correct status code
+                return JSONResponse(
+                    status_code=getattr(error_input, 'status_code', 500),
+                    content=error_input.dict()
+                )
+    except Exception as e:
+        logger.debug(f"Could not extract original error: {e}")
+    
+    # Fallback to generic error response
+    error_response = create_error_response(
+        "INTERNAL_SERVER_ERROR",
+        custom_message="An unexpected error occurred during response validation",
+        request_id=request_id
+    )
+    return JSONResponse(
+        status_code=500,
+        content=error_response.dict()
+    )
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     """Handle validation errors with detailed error definitions"""
@@ -579,6 +703,10 @@ async def internal_error_handler(request: Request, exc: Exception):
     """Handle 500 errors"""
     request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     logger.error(f"500 Internal Server Error: {request.url} - {type(exc).__name__}: {exc}")
+    
+    # Don't handle HTTPExceptions here - they should be handled by FastAPI's default handler
+    if isinstance(exc, HTTPException):
+        raise exc
     
     # Send alert for 500 errors
     await alert_manager.process_event({

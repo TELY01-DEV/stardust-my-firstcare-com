@@ -1,7 +1,96 @@
 from datetime import datetime
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 from .base import BaseDocument, PyObjectId
+
+# Medical History Base Models
+class MedicalHistoryBase(BaseModel):
+    patient_id: str = Field(..., description="Patient ID reference")
+    device_id: Optional[str] = Field(None, description="Device ID that recorded the data")
+    device_type: Optional[str] = Field(None, description="Type of device (AVA4, Kati, Qube-Vital)")
+    timestamp: Optional[datetime] = Field(None, description="When the measurement was taken")
+    notes: Optional[str] = Field(None, description="Additional notes")
+
+class MedicalHistoryCreate(MedicalHistoryBase):
+    history_type: str = Field(..., description="Type of medical history (blood_pressure, blood_sugar, etc.)")
+    values: Dict[str, Any] = Field(..., description="Medical data values specific to history type")
+
+class MedicalHistoryUpdate(BaseModel):
+    device_id: Optional[str] = None
+    device_type: Optional[str] = None
+    timestamp: Optional[datetime] = None
+    values: Optional[Dict[str, Any]] = None
+    notes: Optional[str] = None
+
+class MedicalHistory(BaseDocument):
+    patient_id: PyObjectId = Field(...)
+    device_id: Optional[str] = None
+    device_type: Optional[str] = None
+    data: List[Dict[str, Any]] = Field(default_factory=list, description="Array of medical data entries")
+    timestamp: Optional[datetime] = None
+    notes: Optional[str] = None
+
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.isoformat(),
+            PyObjectId: lambda v: str(v)
+        }
+
+class MedicalHistoryResponse(BaseModel):
+    id: str = Field(alias="_id")
+    patient_id: str
+    device_id: Optional[str] = None
+    device_type: Optional[str] = None
+    data: List[Dict[str, Any]] = Field(default_factory=list)
+    timestamp: Optional[datetime] = None
+    notes: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        populate_by_name = True
+        json_encoders = {
+            datetime: lambda v: v.isoformat()
+        }
+
+# Search and Filter Models
+class MedicalHistorySearchQuery(BaseModel):
+    search: Optional[str] = Field(None, description="General search across data fields")
+    patient_id: Optional[str] = Field(None, description="Filter by patient ID")
+    device_id: Optional[str] = Field(None, description="Filter by device ID")
+    device_type: Optional[str] = Field(None, description="Filter by device type")
+    date_from: Optional[datetime] = Field(None, description="Start date filter")
+    date_to: Optional[datetime] = Field(None, description="End date filter")
+    value_min: Optional[float] = Field(None, description="Minimum value filter (for numeric data)")
+    value_max: Optional[float] = Field(None, description="Maximum value filter (for numeric data)")
+
+# Statistics Models
+class MedicalHistoryStats(BaseModel):
+    total_records: int = Field(..., description="Total number of medical history records")
+    records_by_type: List[Dict[str, Any]] = Field(..., description="Record counts by history type")
+    records_by_patient: List[Dict[str, Any]] = Field(..., description="Record counts by patient")
+    records_by_device: List[Dict[str, Any]] = Field(..., description="Record counts by device")
+    date_range: Dict[str, Any] = Field(..., description="Date range of records")
+
+# Bulk Operations Models
+class BulkMedicalHistoryDelete(BaseModel):
+    record_ids: List[str] = Field(..., description="List of record IDs to delete")
+    history_type: str = Field(..., description="Type of medical history")
+
+class BulkMedicalHistoryUpdate(BaseModel):
+    record_ids: List[str] = Field(..., description="List of record IDs to update")
+    history_type: str = Field(..., description="Type of medical history")
+    update_data: Dict[str, Any] = Field(..., description="Data to update")
+
+# Collection Info Model
+class MedicalHistoryCollectionInfo(BaseModel):
+    collection_name: str = Field(..., description="MongoDB collection name")
+    display_name: str = Field(..., description="Human-readable name")
+    description: str = Field(..., description="Collection description")
+    record_count: int = Field(..., description="Number of records")
+    last_updated: Optional[datetime] = Field(None, description="Last update timestamp")
+    data_fields: List[str] = Field(..., description="Available data fields")
+    status: str = Field(..., description="Collection status")
 
 class MedicationDetail(BaseModel):
     medication_detail: str

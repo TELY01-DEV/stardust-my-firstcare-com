@@ -2,6 +2,46 @@ from datetime import datetime
 from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field
 
+# Error Code Constants for easy import
+class ErrorCode:
+    """Error code constants for easy access in other modules"""
+    # Validation Errors (1000-1999)
+    VALIDATION_MISSING_FIELD = "VALIDATION_MISSING_FIELD"
+    VALIDATION_INVALID_TYPE = "VALIDATION_INVALID_TYPE"
+    VALIDATION_INVALID_FORMAT = "VALIDATION_INVALID_FORMAT"
+    VALIDATION_INVALID_JSON = "VALIDATION_INVALID_JSON"
+    VALIDATION_FIELD_TOO_SHORT = "VALIDATION_FIELD_TOO_SHORT"
+    VALIDATION_FIELD_TOO_LONG = "VALIDATION_FIELD_TOO_LONG"
+    
+    # Resource Errors (2000-2999)
+    RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND"
+    PATIENT_NOT_FOUND = "PATIENT_NOT_FOUND"
+    DEVICE_NOT_FOUND = "DEVICE_NOT_FOUND"
+    AVA4_BOX_NOT_FOUND = "AVA4_BOX_NOT_FOUND"
+    KATI_WATCH_NOT_FOUND = "KATI_WATCH_NOT_FOUND"
+    MEDICAL_DEVICE_NOT_FOUND = "MEDICAL_DEVICE_NOT_FOUND"
+    
+    # Business Logic Errors (3000-3999)
+    DEVICE_ALREADY_ASSIGNED = "DEVICE_ALREADY_ASSIGNED"
+    DEVICE_NOT_ASSIGNED = "DEVICE_NOT_ASSIGNED"
+    INVALID_DEVICE_TYPE = "INVALID_DEVICE_TYPE"
+    INVALID_OBJECT_ID = "INVALID_OBJECT_ID"
+    INVALID_MAC_ADDRESS = "INVALID_MAC_ADDRESS"
+    DUPLICATE_ASSIGNMENT = "DUPLICATE_ASSIGNMENT"
+    
+    # Authentication Errors (4000-4999)
+    AUTHENTICATION_REQUIRED = "AUTHENTICATION_REQUIRED"
+    INVALID_TOKEN = "INVALID_TOKEN"
+    INSUFFICIENT_PERMISSIONS = "INSUFFICIENT_PERMISSIONS"
+    
+    # System Errors (5000-5999)
+    DATABASE_ERROR = "DATABASE_ERROR"
+    INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR"
+    INTERNAL_ERROR = "INTERNAL_SERVER_ERROR"  # Alias for convenience
+    SERVICE_UNAVAILABLE = "SERVICE_UNAVAILABLE"
+    TIMEOUT_ERROR = "TIMEOUT_ERROR"
+    RATE_LIMIT_EXCEEDED = "RATE_LIMIT_EXCEEDED"
+
 # Error Response Models
 class ErrorDetail(BaseModel):
     error_code: str = Field(..., description="Unique error code")
@@ -153,6 +193,11 @@ ERROR_CODES = {
         "type": "system_error",
         "message": "Request timeout",
         "suggestion": "Please try again with a smaller request or contact support"
+    },
+    "RATE_LIMIT_EXCEEDED": {
+        "type": "system_error",
+        "message": "Rate limit exceeded",
+        "suggestion": "Please wait before making more requests"
     }
 }
 

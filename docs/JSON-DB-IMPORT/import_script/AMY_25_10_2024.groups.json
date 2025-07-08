@@ -1,0 +1,1140 @@
+[{
+  "_id": {
+    "$oid": "65f18a678b6853e5d141c3ba"
+  },
+  "group_name": "R&D Diabetes Bann Ta Khun",
+  "patient": [
+    {
+      "$oid": "65e88a9c0705ee793b74e983"
+    },
+    {
+      "$oid": "65f70467c24dd6a8f8949546"
+    },
+    {
+      "$oid": "65e88a680705ee793b74e96f"
+    },
+    {
+      "$oid": "65e88b5d0705ee793b74e9df"
+    },
+    {
+      "$oid": "65e88ac00705ee793b74e993"
+    },
+    {
+      "$oid": "65e86b820705ee793b74de6c"
+    },
+    {
+      "$oid": "65e88ace0705ee793b74e99c"
+    },
+    {
+      "$oid": "65e889c50705ee793b74e92e"
+    },
+    {
+      "$oid": "65e88b3d0705ee793b74e9cf"
+    },
+    {
+      "$oid": "65e88b1d0705ee793b74e9c2"
+    },
+    {
+      "$oid": "65e889b50705ee793b74e92a"
+    },
+    {
+      "$oid": "65e88b4b0705ee793b74e9d6"
+    },
+    {
+      "$oid": "65e88b0b0705ee793b74e9b9"
+    },
+    {
+      "$oid": "65e88ba30705ee793b74e9fc"
+    },
+    {
+      "$oid": "65e88aeb0705ee793b74e9a9"
+    },
+    {
+      "$oid": "65e88bb50705ee793b74ea05"
+    },
+    {
+      "$oid": "65e88bc90705ee793b74ea0e"
+    },
+    {
+      "$oid": "65e88c1b0705ee793b74ea30"
+    },
+    {
+      "$oid": "65e88adc0705ee793b74e9a0"
+    },
+    {
+      "$oid": "65f8eb65c24dd6a8f896c52d"
+    },
+    {
+      "$oid": "65e889970705ee793b74e91b"
+    },
+    {
+      "$oid": "65e88af80705ee793b74e9b0"
+    },
+    {
+      "$oid": "65e88bf50705ee793b74ea20"
+    },
+    {
+      "$oid": "65e88c360705ee793b74ea40"
+    },
+    {
+      "$oid": "65e88b850705ee793b74e9f1"
+    },
+    {
+      "$oid": "65e88b2e0705ee793b74e9c6"
+    },
+    {
+      "$oid": "65e88b700705ee793b74e9e8"
+    },
+    {
+      "$oid": "65e88a8c0705ee793b74e97a"
+    },
+    {
+      "$oid": "65e88aae0705ee793b74e98c"
+    }
+  ],
+  "user": [
+    {
+      "$oid": "627ddca64b8ec2f57f0790d8"
+    }
+  ],
+  "created_at": {
+    "$date": "2024-03-13T11:13:43.607Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-16T02:58:45.422Z"
+  },
+  "unique_id": 1,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65f18cdd8b6853e5d141c76f"
+  },
+  "group_name": "MFC's Staff",
+  "patient": [
+    {
+      "$oid": "6296067a05ac0298d2becf95"
+    }
+  ],
+  "user": [
+    {
+      "$oid": "627de2014b8ec2f57f079296"
+    }
+  ],
+  "created_at": {
+    "$date": "2024-03-13T11:24:13.193Z"
+  },
+  "updated_at": {
+    "$date": "2024-04-02T13:19:56.799Z"
+  },
+  "unique_id": 2,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65f18dbd8b6853e5d141c8ad"
+  },
+  "group_name": "Keawsuk Family",
+  "patient": [
+    {
+      "$oid": "6260146b79b00113f9bbdf22"
+    },
+    {
+      "$oid": "6296067a05ac0298d2becf95"
+    },
+    {
+      "$oid": "626a48cacc8269328b021f88"
+    },
+    {
+      "$oid": "624afd10c4b7d0133863e143"
+    }
+  ],
+  "user": [
+    {
+      "$oid": "627de2014b8ec2f57f079296"
+    }
+  ],
+  "created_at": {
+    "$date": "2024-03-13T11:27:57.025Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-02T07:34:02.203Z"
+  },
+  "unique_id": 3,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65f18dfb8b6853e5d141c905"
+  },
+  "group_name": "TELY 360 Staff",
+  "patient": [
+    {
+      "$oid": "6266a44703089d36dcba38d2"
+    },
+    {
+      "$oid": "6267471903089d36dcba6e11"
+    },
+    {
+      "$oid": "624ad28050e04d00f351eee1"
+    },
+    {
+      "$oid": "66233dc652cddddd4d40b7c2"
+    },
+    {
+      "$oid": "662340b952cddddd4d40bc21"
+    },
+    {
+      "$oid": "623aa2ccf9e69c3b67a9af28"
+    },
+    {
+      "$oid": "623c133cf9e69c3b67a9af64"
+    },
+    {
+      "$oid": "626a48decc8269328b021f93"
+    },
+    {
+      "$oid": "62786365d3f70d131f6a9d26"
+    },
+    {
+      "$oid": "626b5af1cc8269328b027935"
+    }
+  ],
+  "user": [
+    {
+      "$oid": "627de2014b8ec2f57f079296"
+    }
+  ],
+  "created_at": {
+    "$date": "2024-03-13T11:28:59.271Z"
+  },
+  "updated_at": {
+    "$date": "2024-08-01T07:12:09.461Z"
+  },
+  "unique_id": 4,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65f18e658b6853e5d141c997"
+  },
+  "group_name": "KKU Lab Test",
+  "patient": [
+    {
+      "$oid": "62611baf79b00113f9bbebaf"
+    },
+    {
+      "$oid": "624b0014c4b7d0133863e148"
+    },
+    {
+      "$oid": "62397637f9e69c3b67a9af0a"
+    },
+    {
+      "$oid": "626d037503b7ee1b75127028"
+    },
+    {
+      "$oid": "626d01b703b7ee1b75126fbb"
+    },
+    {
+      "$oid": "6246960e576e198cc6240aae"
+    },
+    {
+      "$oid": "626a7de0cc8269328b02332c"
+    },
+    {
+      "$oid": "6269f681f06c9d4561158647"
+    },
+    {
+      "$oid": "626a0ad1f06c9d4561158d9b"
+    },
+    {
+      "$oid": "62694b88f06c9d456115509f"
+    }
+  ],
+  "user": [
+    {
+      "$oid": "627de2014b8ec2f57f079296"
+    }
+  ],
+  "created_at": {
+    "$date": "2024-03-13T11:30:45.311Z"
+  },
+  "updated_at": {
+    "$date": "2024-03-29T15:58:07.462Z"
+  },
+  "unique_id": 5,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65f18eb68b6853e5d141ca0b"
+  },
+  "group_name": "JO's Family",
+  "patient": [
+    {
+      "$oid": "6260a80279b00113f9bbe501"
+    },
+    {
+      "$oid": "6253f93e81b72a332b364187"
+    },
+    {
+      "$oid": "6253f7cf81b72a332b364172"
+    },
+    {
+      "$oid": "6253d55d40fff815a52097e7"
+    },
+    {
+      "$oid": "6253d6d340fff815a52097ec"
+    },
+    {
+      "$oid": "623c109df9e69c3b67a9af62"
+    }
+  ],
+  "user": [
+    {
+      "$oid": "627de2014b8ec2f57f079296"
+    }
+  ],
+  "created_at": {
+    "$date": "2024-03-13T11:32:06.187Z"
+  },
+  "updated_at": {
+    "$date": "2024-03-29T15:57:36.480Z"
+  },
+  "unique_id": 6,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65f18ee18b6853e5d141ca47"
+  },
+  "group_name": "Maitree Family",
+  "patient": [
+    {
+      "$oid": "625ce462e405cfa083081f33"
+    },
+    {
+      "$oid": "622035a5fd26d7b6d9b7730c"
+    },
+    {
+      "$oid": "662b36eae9986cae44b241a4"
+    },
+    {
+      "$oid": "623aa2ccf9e69c3b67a9af28"
+    },
+    {
+      "$oid": "66362c899d1455f0ff045b0d"
+    },
+    {
+      "$oid": "626a48decc8269328b021f93"
+    },
+    {
+      "$oid": "6253feef81b72a332b3641af"
+    }
+  ],
+  "user": [
+    {
+      "$oid": "627de2014b8ec2f57f079296"
+    }
+  ],
+  "created_at": {
+    "$date": "2024-03-13T11:32:49.454Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-27T14:42:16.636Z"
+  },
+  "unique_id": 7,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65f82d32c24dd6a8f895c154"
+  },
+  "group_name": "Staff R&D Diabetes Bann Ta Khun",
+  "patient": [
+    {
+      "$oid": "627de20f4b8ec2f57f07929b"
+    },
+    {
+      "$oid": "627e158d4b8ec2f57f079e67"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-03-18T12:01:54.565Z"
+  },
+  "updated_at": {
+    "$date": "2024-03-29T15:58:11.659Z"
+  },
+  "unique_id": 8,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65fad7d4f1d8bfaecd31177c"
+  },
+  "group_name": "KM God Bless",
+  "patient": [
+    {
+      "$oid": "623c133cf9e69c3b67a9af64"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-03-20T12:34:28.627Z"
+  },
+  "updated_at": {
+    "$date": "2024-03-29T15:58:37.479Z"
+  },
+  "unique_id": 9,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65fad9cff1d8bfaecd3119ef"
+  },
+  "group_name": "CK",
+  "patient": [
+    {
+      "$oid": "627de0ea4b8ec2f57f079243"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-03-20T12:42:55.908Z"
+  },
+  "updated_at": {
+    "$date": "2024-04-10T06:28:44.246Z"
+  },
+  "unique_id": 10,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660661cde47a01db80db3ea3"
+  },
+  "group_name": "รพ. ตาขุน",
+  "patient": [
+    {
+      "$oid": "6605091000df0d8b0c5a349e"
+    },
+    {
+      "$oid": "660508fc00df0d8b0c5a3484"
+    },
+    {
+      "$oid": "660508d400df0d8b0c5a3456"
+    },
+    {
+      "$oid": "6605099c00df0d8b0c5a3554"
+    },
+    {
+      "$oid": "660509f300df0d8b0c5a35b6"
+    },
+    {
+      "$oid": "660509d700df0d8b0c5a359e"
+    },
+    {
+      "$oid": "660509c200df0d8b0c5a3584"
+    },
+    {
+      "$oid": "660509aa00df0d8b0c5a356b"
+    },
+    {
+      "$oid": "6605096f00df0d8b0c5a351d"
+    },
+    {
+      "$oid": "6605098700df0d8b0c5a3537"
+    },
+    {
+      "$oid": "6605095800df0d8b0c5a3505"
+    },
+    {
+      "$oid": "6605094800df0d8b0c5a34e8"
+    },
+    {
+      "$oid": "6605092d00df0d8b0c5a34cc"
+    },
+    {
+      "$oid": "6605067800df0d8b0c5a318e"
+    },
+    {
+      "$oid": "6605087000df0d8b0c5a33dd"
+    },
+    {
+      "$oid": "6605084300df0d8b0c5a33ad"
+    },
+    {
+      "$oid": "6605092100df0d8b0c5a34b7"
+    },
+    {
+      "$oid": "660508c400df0d8b0c5a343b"
+    },
+    {
+      "$oid": "6604f5e200df0d8b0c5a1e34"
+    },
+    {
+      "$oid": "6605080400df0d8b0c5a3362"
+    },
+    {
+      "$oid": "660cefbaff9ad052fcc39141"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-03-29T06:38:05.631Z"
+  },
+  "updated_at": {
+    "$date": "2024-04-03T05:59:51.349Z"
+  },
+  "unique_id": 11,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660a476e634e39fc034387ad"
+  },
+  "group_name": "Staff's Takhun",
+  "patient": [
+    {
+      "$oid": "660a4579634e39fc0343855e"
+    },
+    {
+      "$oid": "65e88c270705ee793b74ea37"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-04-01T05:34:38.431Z"
+  },
+  "updated_at": {
+    "$date": "2024-04-01T05:34:38.431Z"
+  },
+  "unique_id": 12,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661685362724947bc33cea65"
+  },
+  "group_name": "Maroot’s family",
+  "patient": [
+    {
+      "$oid": "62792a904b8ec2f57f05caf6"
+    },
+    {
+      "$oid": "662237855af730b6943431a3"
+    },
+    {
+      "$oid": "662237c75af730b694343203"
+    },
+    {
+      "$oid": "662237de5af730b69434321c"
+    },
+    {
+      "$oid": "6622382d5af730b69434327e"
+    },
+    {
+      "$oid": "6622384e5af730b69434329b"
+    },
+    {
+      "$oid": "662891d4cf6c48cef3bb97c2"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-04-10T12:25:26.321Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-14T13:28:17.966Z"
+  },
+  "unique_id": 13,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661688422724947bc33ced9b"
+  },
+  "group_name": "Staff’s NBTC Project ",
+  "patient": [
+    {
+      "$oid": "62516610762e75d318c034f4"
+    },
+    {
+      "$oid": "62635af508e389411192a987"
+    },
+    {
+      "$oid": "6260cdbf79b00113f9bbe76c"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-04-10T12:38:26.446Z"
+  },
+  "updated_at": {
+    "$date": "2024-04-10T12:38:26.446Z"
+  },
+  "unique_id": 14,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "662239b55af730b694343451"
+  },
+  "group_name": "Re-Use",
+  "patient": [
+    {
+      "$oid": "626a48decc8269328b021f93"
+    },
+    {
+      "$oid": "62961e5b05ac0298d2bed576"
+    },
+    {
+      "$oid": "624ea7f43c00f99f7a13c6fe"
+    },
+    {
+      "$oid": "62458803576e198cc6240a6d"
+    },
+    {
+      "$oid": "626b641ccc8269328b027bf2"
+    },
+    {
+      "$oid": "6267976403089d36dcba9bbf"
+    },
+    {
+      "$oid": "626b4e1acc8269328b027590"
+    },
+    {
+      "$oid": "6296348b05ac0298d2bedaee"
+    },
+    {
+      "$oid": "624ba6d2c4b7d0133863e170"
+    },
+    {
+      "$oid": "62bac882861cb35df30df80f"
+    },
+    {
+      "$oid": "624adfb0c4b7d0133863e12b"
+    },
+    {
+      "$oid": "62c41c144befaa91946c0ad6"
+    },
+    {
+      "$oid": "65f6a814c24dd6a8f8943122"
+    },
+    {
+      "$oid": "65e88be70705ee793b74ea1c"
+    },
+    {
+      "$oid": "626f621103b7ee1b75129c92"
+    },
+    {
+      "$oid": "62204349fd26d7b6d9b7731d"
+    },
+    {
+      "$oid": "6270a2f103b7ee1b7512ebcc"
+    },
+    {
+      "$oid": "6274ca1fd3f70d131f698234"
+    },
+    {
+      "$oid": "6274dc48d3f70d131f6986e5"
+    },
+    {
+      "$oid": "62786365d3f70d131f6a9d26"
+    },
+    {
+      "$oid": "625e3face405cfa083082ec7"
+    },
+    {
+      "$oid": "62792a904b8ec2f57f05caf4"
+    },
+    {
+      "$oid": "627b5d774b8ec2f57f06fa78"
+    },
+    {
+      "$oid": "627b6ba74b8ec2f57f07039f"
+    },
+    {
+      "$oid": "627c6ddf4b8ec2f57f074eaa"
+    },
+    {
+      "$oid": "627cfa9a4b8ec2f57f0768fa"
+    },
+    {
+      "$oid": "627d01cd4b8ec2f57f0769c3"
+    },
+    {
+      "$oid": "627cfc784b8ec2f57f07692e"
+    },
+    {
+      "$oid": "624fbd2e3c00f99f7a13c996"
+    },
+    {
+      "$oid": "627dd8164b8ec2f57f078fba"
+    },
+    {
+      "$oid": "627dd81a4b8ec2f57f078fbf"
+    },
+    {
+      "$oid": "627dd8284b8ec2f57f078fc1"
+    },
+    {
+      "$oid": "627dd82e4b8ec2f57f078fc6"
+    },
+    {
+      "$oid": "627dd8394b8ec2f57f078fc8"
+    },
+    {
+      "$oid": "627dda744b8ec2f57f079053"
+    },
+    {
+      "$oid": "627ddb9d4b8ec2f57f079097"
+    },
+    {
+      "$oid": "627ddcae4b8ec2f57f0790db"
+    },
+    {
+      "$oid": "627e15a24b8ec2f57f079e77"
+    },
+    {
+      "$oid": "627a622c4b8ec2f57f066abb"
+    },
+    {
+      "$oid": "627dd7f64b8ec2f57f078fb5"
+    },
+    {
+      "$oid": "62694ac5f06c9d4561155054"
+    },
+    {
+      "$oid": "626cb92503b7ee1b75125cd5"
+    },
+    {
+      "$oid": "6260224a79b00113f9bbdfdc"
+    },
+    {
+      "$oid": "6278c486ad1ea4d245b88a87"
+    },
+    {
+      "$oid": "6247b434576e198cc6240aec"
+    },
+    {
+      "$oid": "627a5af74b8ec2f57f06660e"
+    },
+    {
+      "$oid": "6274ec87d3f70d131f698ac2"
+    },
+    {
+      "$oid": "626b5af1cc8269328b027935"
+    },
+    {
+      "$oid": "626a0bbbf06c9d4561158df7"
+    },
+    {
+      "$oid": "623aa3d7f9e69c3b67a9af2b"
+    },
+    {
+      "$oid": "627b1a514b8ec2f57f06cf72"
+    },
+    {
+      "$oid": "6279d29b4b8ec2f57f0613c1"
+    },
+    {
+      "$oid": "62612bd879b00113f9bbed02"
+    },
+    {
+      "$oid": "627d04004b8ec2f57f076a12"
+    },
+    {
+      "$oid": "627d00874b8ec2f57f07699a"
+    },
+    {
+      "$oid": "627cfc804b8ec2f57f076931"
+    },
+    {
+      "$oid": "626ffbf103b7ee1b7512ca6f"
+    },
+    {
+      "$oid": "62330b75f9e69c3b67a9aedb"
+    },
+    {
+      "$oid": "624569a780c248fad0258b0d"
+    },
+    {
+      "$oid": "62331a53f9e69c3b67a9aeea"
+    },
+    {
+      "$oid": "62515bff762e75d318c034d2"
+    },
+    {
+      "$oid": "6254048e81b72a332b3641e2"
+    },
+    {
+      "$oid": "6254027a81b72a332b3641c4"
+    },
+    {
+      "$oid": "62480223576e198cc6240afd"
+    },
+    {
+      "$oid": "622ae81cfd26d7b6d9b7736f"
+    },
+    {
+      "$oid": "623bfb2df9e69c3b67a9af5d"
+    },
+    {
+      "$oid": "62459690576e198cc6240a91"
+    },
+    {
+      "$oid": "62458c2b576e198cc6240a79"
+    },
+    {
+      "$oid": "62457f95576e198cc6240a55"
+    },
+    {
+      "$oid": "623c182ef9e69c3b67a9af7e"
+    },
+    {
+      "$oid": "6243c42880c248fad0258b06"
+    },
+    {
+      "$oid": "62270e96fd26d7b6d9b7733e"
+    },
+    {
+      "$oid": "62396d77f9e69c3b67a9af07"
+    },
+    {
+      "$oid": "622866a1fd26d7b6d9b77357"
+    },
+    {
+      "$oid": "62396761f9e69c3b67a9aefb"
+    },
+    {
+      "$oid": "6237de93f9e69c3b67a9aef7"
+    },
+    {
+      "$oid": "623316eaf9e69c3b67a9aee4"
+    },
+    {
+      "$oid": "62295be4fd26d7b6d9b77360"
+    },
+    {
+      "$oid": "62295be4fd26d7b6d9b7735f"
+    },
+    {
+      "$oid": "622866a2fd26d7b6d9b77359"
+    },
+    {
+      "$oid": "62270804fd26d7b6d9b77333"
+    },
+    {
+      "$oid": "6228174dfd26d7b6d9b77350"
+    },
+    {
+      "$oid": "62271701fd26d7b6d9b7734e"
+    },
+    {
+      "$oid": "62271048fd26d7b6d9b77348"
+    },
+    {
+      "$oid": "62552a42342454686b5f65fc"
+    },
+    {
+      "$oid": "62694385f06c9d4561154ddb"
+    },
+    {
+      "$oid": "6260257479b00113f9bbdff9"
+    },
+    {
+      "$oid": "624ba781c4b7d0133863e173"
+    },
+    {
+      "$oid": "6253feef81b72a332b3641af"
+    },
+    {
+      "$oid": "62514f75762e75d318c0347a"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-04-19T09:30:29.965Z"
+  },
+  "updated_at": {
+    "$date": "2024-04-19T09:30:29.965Z"
+  },
+  "unique_id": 15,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6635d9dc9d1455f0ff03dfcc"
+  },
+  "group_name": "Ladda's family",
+  "patient": [
+    {
+      "$oid": "6635d9c99d1455f0ff03dfab"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-05-04T06:46:52.125Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-04T06:46:52.125Z"
+  },
+  "unique_id": 16,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641bdc02c0a79188f6f2982"
+  },
+  "group_name": "Lalabell's Family",
+  "patient": [
+    {
+      "$oid": "66233dc652cddddd4d40b7c2"
+    },
+    {
+      "$oid": "6641bdf02c0a79188f6f29b5"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-05-13T07:14:08.195Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-13T07:15:12.658Z"
+  },
+  "unique_id": 17,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66584468749f132ef0d8a3cb"
+  },
+  "group_name": "Lalabell's Family",
+  "patient": [
+    {
+      "$oid": "66233dc652cddddd4d40b7c2"
+    },
+    {
+      "$oid": "6641bdf02c0a79188f6f29b5"
+    },
+    {
+      "$oid": "665843cd749f132ef0d8a288"
+    },
+    {
+      "$oid": "666aa6ee9ceff7395fbff6fe"
+    },
+    {
+      "$oid": "666aabe59ceff7395fc000cb"
+    },
+    {
+      "$oid": "666aab3e9ceff7395fbfff84"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-05-30T09:18:32.889Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-13T12:23:47.186Z"
+  },
+  "unique_id": 18,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6673fae0aeef8fa79672f81f"
+  },
+  "group_name": "All Surat Hopsital",
+  "patient": [
+    {
+      "$oid": "6605087000df0d8b0c5a33dd"
+    },
+    {
+      "$oid": "6604f5e200df0d8b0c5a1e34"
+    },
+    {
+      "$oid": "6605095800df0d8b0c5a3505"
+    },
+    {
+      "$oid": "6605067800df0d8b0c5a318e"
+    },
+    {
+      "$oid": "6605092d00df0d8b0c5a34cc"
+    },
+    {
+      "$oid": "6605080400df0d8b0c5a3362"
+    },
+    {
+      "$oid": "66724fc912980c56f7e688aa"
+    },
+    {
+      "$oid": "6605094800df0d8b0c5a34e8"
+    },
+    {
+      "$oid": "660508d400df0d8b0c5a3456"
+    },
+    {
+      "$oid": "6605091000df0d8b0c5a349e"
+    },
+    {
+      "$oid": "660508c400df0d8b0c5a343b"
+    },
+    {
+      "$oid": "660509d700df0d8b0c5a359e"
+    },
+    {
+      "$oid": "666fee6d5e6afbc968764f66"
+    },
+    {
+      "$oid": "666fd1ce5e6afbc968760588"
+    },
+    {
+      "$oid": "666fd1865e6afbc9687604ff"
+    },
+    {
+      "$oid": "660509f300df0d8b0c5a35b6"
+    },
+    {
+      "$oid": "667008005e6afbc96876876c"
+    },
+    {
+      "$oid": "660509c200df0d8b0c5a3584"
+    },
+    {
+      "$oid": "6605099c00df0d8b0c5a3554"
+    },
+    {
+      "$oid": "666fdde85e6afbc96876242c"
+    },
+    {
+      "$oid": "666fd2115e6afbc968760640"
+    },
+    {
+      "$oid": "660508fc00df0d8b0c5a3484"
+    },
+    {
+      "$oid": "667be914601343dfc75e35a6"
+    },
+    {
+      "$oid": "6684ebcaea1a3e9e87d22108"
+    },
+    {
+      "$oid": "6605084300df0d8b0c5a33ad"
+    },
+    {
+      "$oid": "66a067dcfd3958a3edad2086"
+    },
+    {
+      "$oid": "66874dd5fa51925f6e66483a"
+    },
+    {
+      "$oid": "6684b6eb84d0d45376d5cab4"
+    },
+    {
+      "$oid": "667be934601343dfc75e35e1"
+    },
+    {
+      "$oid": "6684f400ea1a3e9e87d239c7"
+    },
+    {
+      "$oid": "66876e4cfa51925f6e669812"
+    },
+    {
+      "$oid": "660a4579634e39fc0343855e"
+    },
+    {
+      "$oid": "66878012fa51925f6e66cf89"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-06-20T09:48:16.471Z"
+  },
+  "updated_at": {
+    "$date": "2024-08-01T07:15:28.662Z"
+  },
+  "unique_id": 19,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "668b6843dfd9d0fba0ad0161"
+  },
+  "group_name": "NBTC Project",
+  "patient": [
+    {
+      "$oid": "62271048fd26d7b6d9b77348"
+    },
+    {
+      "$oid": "660cefbaff9ad052fcc39141"
+    },
+    {
+      "$oid": "668932e6dfd9d0fba0abc927"
+    },
+    {
+      "$oid": "66893349dfd9d0fba0abc962"
+    },
+    {
+      "$oid": "62458803576e198cc6240a6d"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-07-08T04:17:07.870Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-08T04:17:07.870Z"
+  },
+  "unique_id": 20,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6691ffdf2df134c3a8ace277"
+  },
+  "group_name": "CBD SLEEP TEST PROJECT(Kati)",
+  "patient": [
+    {
+      "$oid": "669201812df134c3a8ace38c"
+    },
+    {
+      "$oid": "669202312df134c3a8ace3fa"
+    },
+    {
+      "$oid": "669202ab2df134c3a8ace465"
+    },
+    {
+      "$oid": "669203312df134c3a8ace4c3"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-07-13T04:17:35.441Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-13T04:35:07.478Z"
+  },
+  "unique_id": 21,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66cea9813ec71962dc2626e4"
+  },
+  "group_name": "โรงพยาบาลเคียนซา",
+  "patient": [
+    {
+      "$oid": "666bcaf556ef6490f300edf7"
+    }
+  ],
+  "user": [],
+  "created_at": {
+    "$date": "2024-08-28T04:37:21.068Z"
+  },
+  "updated_at": {
+    "$date": "2024-08-28T04:37:21.068Z"
+  },
+  "unique_id": 22,
+  "__v": 0
+}]

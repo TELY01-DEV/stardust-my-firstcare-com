@@ -1,0 +1,3901 @@
+[{
+  "_id": {
+    "$oid": "6107cf2a0b51639fda16b349"
+  },
+  "server_token": "zwNKCZCBkhZS47T1pO51aB0RTZ1BaRxA",
+  "amy_id": "AMY-0000001",
+  "social_id": "",
+  "email": "amy01@amyplatform.com",
+  "password": "0b0b8d2da73ba5ef187d1dc1d20a8471",
+  "social_ids": [],
+  "first_name": "No",
+  "last_name": "Use",
+  "country_phone_code": "+91",
+  "phone": "9898989898",
+  "country_code": "IN",
+  "country_name": "",
+  "created_at": {
+    "$date": "2021-08-02T10:55:38.773Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 1,
+  "__v": 0,
+  "image_url": "",
+  "user_title": "",
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "610d5284ce480525a2fcdd6c"
+  },
+  "server_token": "GCKLsVoJ8hOecw4dAjevrjncztkCwlEo",
+  "amy_id": "AMY-0000007",
+  "social_id": "",
+  "email": "watch@imede.app",
+  "password": "c33367701511b4f6020ec61ded352059",
+  "social_ids": [],
+  "first_name": "IMEDE",
+  "image_url": "",
+  "last_name": "Watch",
+  "country_phone_code": "+66",
+  "phone": "8136187666",
+  "country_code": "TH",
+  "country_name": "",
+  "created_at": {
+    "$date": "2021-08-06T15:17:24.207Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 7,
+  "__v": 0,
+  "user_title": "",
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "621f66a3fd26d7b6d9b77308"
+  },
+  "server_token": "sPVqDeNSrV9gfx1RQJ6tv87y19y4pcmN",
+  "amy_id": "AMY-0000059",
+  "social_id": "",
+  "email": "0819584338@mfc.com",
+  "password": "265e9a8a5b8cc0df85f15c9360380a8a",
+  "social_ids": [],
+  "first_name": "เจริญ",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "แก้วสุก",
+  "country_phone_code": "+91",
+  "phone": "819584338",
+  "country_code": "IN",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-03-02T12:44:19.898Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 59,
+  "__v": 1,
+  "patient": [
+    {
+      "$oid": "6260146b79b00113f9bbdf22"
+    }
+  ],
+  "group_id": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "622042cffd26d7b6d9b7731c"
+  },
+  "server_token": "5HCSNBC4X1hGhXH9WyISl1FnkCNGYmCO",
+  "amy_id": "AMY-0000060",
+  "social_id": "",
+  "email": "00000025@mfc.com",
+  "password": "98ab5524446b359535c9517372b400d5",
+  "social_ids": [],
+  "first_name": "เชาวลิต",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "ช่วยสงค์",
+  "country_phone_code": "+91",
+  "phone": "25",
+  "country_code": "IN",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-03-03T04:23:43.578Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 60,
+  "__v": 0,
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "65f70467c24dd6a8f8949546"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6245966e576e198cc6240a90"
+  },
+  "server_token": "2NpZnNEDxiDhVdJnVXvMQoNfoZfrN58H",
+  "amy_id": "AMY-0000081",
+  "social_id": "",
+  "email": "thanadon_s@kkumail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "50 ธนดล",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "ศีลดาใต้",
+  "country_phone_code": "+91",
+  "phone": "981939326",
+  "country_code": "IN",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-03-31T11:54:22.244Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 81,
+  "__v": 0,
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "patient": [
+    {
+      "$oid": "626d037503b7ee1b75127028"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "62469607576e198cc6240aad"
+  },
+  "device_token": "null",
+  "server_token": "FBfG5D6ML8AbASEUTISRD5lDTcGsL550",
+  "device_type": "android",
+  "amy_id": "AMY-0000082",
+  "social_id": "",
+  "email": "kanyarat.net21@gmail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "49 กัญญารัตน์",
+  "user_title": "Mr.",
+  "image_url": "user_profiles/62469607576e198cc6240aadjqHO.jpg",
+  "last_name": "เนตรแสงศรี",
+  "country_phone_code": "+66",
+  "phone": "614909888",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.7",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-01T06:04:55.225Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 82,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "626d01b703b7ee1b75126fbb"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "624abf3c576e198cc6240b07"
+  },
+  "server_token": "fe9siqxhD5PHgNny4HN3HpNibgIR9ghA",
+  "amy_id": "AMY-0000084",
+  "social_id": "",
+  "email": "kwanwp24@gmail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "48 วทานิยา",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "เพชรฤทธิ์",
+  "country_phone_code": "+91",
+  "phone": "647429366",
+  "country_code": "INR",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-04T09:49:48.288Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 84,
+  "__v": 0,
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "patient": [
+    {
+      "$oid": "626a7de0cc8269328b02332c"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "624adfa5c4b7d0133863e12a"
+  },
+  "server_token": "UTx06G0OIwkSr8gcikycRVMBSra7K3xM",
+  "amy_id": "AMY-0000086",
+  "social_id": "",
+  "email": "supaporn@pmub-cluster.org",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "47 สุภาภรณ์",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "อุตสาหะ",
+  "country_phone_code": "+91",
+  "phone": "897150581",
+  "country_code": "IN",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-04T12:08:05.362Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 86,
+  "__v": 0,
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "patient": [
+    {
+      "$oid": "62694b88f06c9d456115509f"
+    }
+  ],
+  "device_token": "",
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "624b000fc4b7d0133863e147"
+  },
+  "server_token": "baCmSKy4aECiHMFjonX4TsPMFz05eRSB",
+  "amy_id": "AMY-0000088",
+  "social_id": "",
+  "email": "khawoat.home@gmail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "46 สุรเชษฐ์",
+  "user_title": "Mrs.",
+  "image_url": "",
+  "last_name": "ทองประสงค์",
+  "country_phone_code": "+66",
+  "phone": "910167841",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-04T14:26:23.150Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 88,
+  "__v": 1,
+  "patient": [
+    {
+      "$oid": "626a0ad1f06c9d4561158d9b"
+    }
+  ],
+  "group_id": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "624ba760c4b7d0133863e172"
+  },
+  "device_token": "null",
+  "server_token": "kswUmGIDw25zmCKBwJdVjxUKd4yDTwES",
+  "device_type": "android",
+  "amy_id": "AMY-0000090",
+  "social_id": "",
+  "email": "ponlapat37890@gmail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "45 พลพัทธ์",
+  "user_title": "Miss",
+  "image_url": "user_profiles/624ba760c4b7d0133863e1729sqe.jpg",
+  "last_name": "ทองสง",
+  "country_phone_code": "+66",
+  "phone": "934727299",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.7",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-05T02:20:16.940Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 90,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "6269f681f06c9d4561158647"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "624e9ca73c00f99f7a13c6eb"
+  },
+  "server_token": "j6CHcLqjJX24D4UpmuFUivhqLDZanJfZ",
+  "amy_id": "AMY-0000095",
+  "social_id": "",
+  "email": "potaza_love@hotmail.co.th",
+  "password": "1374fe9f217c98747460fc121fca1bb4",
+  "social_ids": [],
+  "first_name": "TKH RN สุชานันท์",
+  "user_title": "Mrs.",
+  "image_url": "user_profiles/624e9ca73c00f99f7a13c6ebXkFr.jpg",
+  "last_name": "เบ้าไธสง",
+  "country_phone_code": "+66",
+  "phone": "924601736",
+  "country_code": "TH",
+  "country_name": "Thailand",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-07T08:11:19.664Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 95,
+  "__v": 1,
+  "patient": [
+    {
+      "$oid": "65e88c270705ee793b74ea37"
+    }
+  ],
+  "group_id": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "62514b67762e75d318c03472"
+  },
+  "device_token": "null",
+  "server_token": "jDHvIWj9jcqnDo2LFCT91AZgnviTVPfm",
+  "device_type": "android",
+  "amy_id": "AMY-0000098",
+  "social_id": "",
+  "email": "Patcharee_ho@kkumail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "44 พัชรี",
+  "user_title": "Mr.",
+  "image_url": "user_profiles/62514b67762e75d318c03472TGgz.jpg",
+  "last_name": "หงษ์ทอง",
+  "country_phone_code": "+91",
+  "phone": "811954615",
+  "country_code": "IN",
+  "country_name": "",
+  "app_version": "1.0.7",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-09T09:01:27.354Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 98,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "6246960e576e198cc6240aae"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "62514ef3762e75d318c03479"
+  },
+  "server_token": "vXE4EUt9KWHvsRU4omDNPr0ffa2DOOnQ",
+  "amy_id": "AMY-0000099",
+  "social_id": "",
+  "email": "chotika_c@kkumail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "43 โชติกา",
+  "user_title": "Mr.",
+  "image_url": "user_profiles/62514ef3762e75d318c03479x19W.jpg",
+  "last_name": "ฉัตรเกษม",
+  "country_phone_code": "+91",
+  "phone": "850138670",
+  "country_code": "IN",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-09T09:16:35.188Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 99,
+  "__v": 0,
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "patient": [
+    {
+      "$oid": "62611baf79b00113f9bbebaf"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6260222379b00113f9bbdfd6"
+  },
+  "server_token": "x8DfiZhk6HrKYGxrre6vXNG0wijg4X6v",
+  "amy_id": "AMY-0000105",
+  "social_id": "",
+  "email": "takhun1@mfc.com",
+  "password": "3b0fe2978434d4cdce68dd60c2e8eb7d",
+  "social_ids": [],
+  "first_name": "นพ.เอกพล",
+  "user_title": "Mr.",
+  "image_url": "prefix_images/prefix_01.png",
+  "last_name": "พิศาล",
+  "country_phone_code": "+66",
+  "phone": "835214400",
+  "country_code": "TH",
+  "country_name": "Thailand",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-20T15:09:23.117Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 105,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "6605087000df0d8b0c5a33dd"
+    },
+    {
+      "$oid": "6605084300df0d8b0c5a33ad"
+    },
+    {
+      "$oid": "6604f5e200df0d8b0c5a1e34"
+    },
+    {
+      "$oid": "660508c400df0d8b0c5a343b"
+    },
+    {
+      "$oid": "6605080400df0d8b0c5a3362"
+    },
+    {
+      "$oid": "6605067800df0d8b0c5a318e"
+    },
+    {
+      "$oid": "660508fc00df0d8b0c5a3484"
+    },
+    {
+      "$oid": "6605091000df0d8b0c5a349e"
+    },
+    {
+      "$oid": "660508d400df0d8b0c5a3456"
+    },
+    {
+      "$oid": "6605092d00df0d8b0c5a34cc"
+    },
+    {
+      "$oid": "6605094800df0d8b0c5a34e8"
+    },
+    {
+      "$oid": "6605095800df0d8b0c5a3505"
+    },
+    {
+      "$oid": "6605096f00df0d8b0c5a351d"
+    },
+    {
+      "$oid": "6605098700df0d8b0c5a3537"
+    },
+    {
+      "$oid": "6605099c00df0d8b0c5a3554"
+    },
+    {
+      "$oid": "660509aa00df0d8b0c5a356b"
+    },
+    {
+      "$oid": "660509c200df0d8b0c5a3584"
+    },
+    {
+      "$oid": "660509d700df0d8b0c5a359e"
+    },
+    {
+      "$oid": "660509f300df0d8b0c5a35b6"
+    },
+    {
+      "$oid": "6605092100df0d8b0c5a34b7"
+    },
+    {
+      "$oid": "65e88c270705ee793b74ea37"
+    },
+    {
+      "$oid": "660a4579634e39fc0343855e"
+    },
+    {
+      "$oid": "660cefbaff9ad052fcc39141"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6260256479b00113f9bbdff7"
+  },
+  "device_token": "null",
+  "server_token": "OuJYi0P21ETu1fs2CBmSeKp76A3ge3Tz",
+  "device_type": "android",
+  "amy_id": "AMY-0000106",
+  "social_id": "",
+  "email": "sakaowrat@pmub-cluster.org",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "42 สกาวรัตน์",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "มาสา",
+  "country_phone_code": "+66",
+  "phone": "634658995",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.7",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-20T15:23:16.620Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 106,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "62397637f9e69c3b67a9af0a"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6266a43f03089d36dcba38ce"
+  },
+  "server_token": "o6JeV1cmXB01p14FrtQuywRAoXWEvED7",
+  "amy_id": "AMY-0000110",
+  "social_id": "",
+  "email": "mighter1608@gmail.com",
+  "password": "b8e7bfe7f022f5e3c3c30820a25c8ee4",
+  "social_ids": [],
+  "first_name": "สุพิชญนันทน์",
+  "user_title": "Miss",
+  "image_url": "user_profiles/6266a43f03089d36dcba38ceVHSs.jpg",
+  "last_name": "อิงคนินันท์",
+  "country_phone_code": "+66",
+  "phone": "6253889558",
+  "country_code": "TH",
+  "country_name": "Thailand",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-25T13:38:07.910Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 110,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "6266a44703089d36dcba38d2"
+    },
+    {
+      "$oid": "66233dc652cddddd4d40b7c2"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "62676ed203089d36dcba80b7"
+  },
+  "server_token": "6XjTlXUjejRTclBK91PGJGtYocvJPp9r",
+  "amy_id": "AMY-0000111",
+  "social_id": "",
+  "email": "0808876007@mfc.com",
+  "password": "807ee5e386a2e4d49653973149316ae9",
+  "social_ids": [],
+  "first_name": "ภิญโญ",
+  "user_title": "Miss",
+  "image_url": "prefix_images/prefix_01.png",
+  "last_name": "บุญลึก",
+  "country_phone_code": "+66",
+  "phone": "808876007",
+  "country_code": "TH",
+  "country_name": "Thailand",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-26T04:02:26.874Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 111,
+  "__v": 0,
+  "app_version": "",
+  "device_token": "",
+  "device_type": "",
+  "patient": [
+    {
+      "$oid": "65e88bb50705ee793b74ea05"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "62694374f06c9d4561154dd4"
+  },
+  "server_token": "2yvFTvW6Q75AARvT0EFe2KR260QtcL2n",
+  "amy_id": "AMY-0000113",
+  "social_id": "",
+  "email": "maroot@mfc.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "Maroot",
+  "user_title": "Mr",
+  "image_url": "",
+  "last_name": "MFC",
+  "country_phone_code": "+66",
+  "phone": "896927449",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-27T13:21:56.069Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 113,
+  "__v": 2,
+  "patient": [
+    {
+      "$oid": "662237855af730b6943431a3"
+    },
+    {
+      "$oid": "62792a904b8ec2f57f05caf6"
+    },
+    {
+      "$oid": "662891d4cf6c48cef3bb97c2"
+    }
+  ],
+  "group_id": [],
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "new_hospital_ids": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "62694b5ef06c9d4561155092"
+  },
+  "device_token": "",
+  "server_token": "7d1wXLj3MlCDzr5VS7GxE2xToqjKD66E",
+  "device_type": "ios",
+  "amy_id": "AMY-0000114",
+  "social_id": "",
+  "email": "no-use@gmai.com",
+  "password": "08deb24593c869b9a2ce0f2260c429c8",
+  "social_ids": [],
+  "first_name": "No",
+  "user_title": "Mr",
+  "image_url": "user_profiles/62694b5ef06c9d4561155092JoPb.jpg",
+  "last_name": "Use",
+  "country_phone_code": "+66",
+  "phone": "321342432",
+  "country_code": "TH",
+  "country_name": "Thailand",
+  "app_version": "1.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-27T13:55:42.910Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 114,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6269f670f06c9d4561158641"
+  },
+  "device_token": "",
+  "server_token": "I699wku1QNNdH34UZYYEtMwzQREfXEaU",
+  "device_type": "ios",
+  "amy_id": "AMY-0000115",
+  "social_id": "",
+  "email": "0636543442@mfc.com",
+  "password": "ddc2158f049663f2f9b055afe88a7abc",
+  "social_ids": [],
+  "first_name": "อัมพร",
+  "user_title": "Mr",
+  "image_url": "",
+  "last_name": "ศรอินทร์",
+  "country_phone_code": "+66",
+  "phone": "636543442",
+  "country_code": "TH",
+  "country_name": "Thailand",
+  "app_version": "1.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-28T02:05:36.137Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 115,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88ba30705ee793b74e9fc"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "626a7dd4cc8269328b023328"
+  },
+  "device_token": "null",
+  "server_token": "aXpV3oA5uNLKbr4DF3Psmi17hHUl9kpM",
+  "device_type": "android",
+  "amy_id": "AMY-0000118",
+  "social_id": "",
+  "email": "0821900350@mfc.com",
+  "password": "f404d28808bd2382f85e943ebb7c59a6",
+  "social_ids": [],
+  "first_name": "อาริยา",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "ขวัญกุล",
+  "country_phone_code": "+66",
+  "phone": "821900350",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.7",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-28T11:43:16.506Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 118,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88b4b0705ee793b74e9d6"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "626b5ab6cc8269328b027928"
+  },
+  "server_token": "JxlnimESEEcZv1q5dSps9qN3Ae2WOys6",
+  "amy_id": "AMY-0000120",
+  "social_id": "",
+  "email": "0895909075@mfc.com",
+  "password": "bcc57f13a5660e8303274f4a0a9b23b3",
+  "social_ids": [],
+  "first_name": "ไพรัช",
+  "user_title": "Miss",
+  "image_url": "",
+  "last_name": "เกตุนุสิทธิ",
+  "country_phone_code": "+66",
+  "phone": "895909075",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-29T03:25:42.443Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 120,
+  "__v": 0,
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "patient": [
+    {
+      "$oid": "65e88b0b0705ee793b74e9b9"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "626d01ad03b7ee1b75126fb8"
+  },
+  "server_token": "hLfjFL3QUKaGxV2bUNgKLi2BqjUwmI5K",
+  "amy_id": "AMY-0000121",
+  "social_id": "",
+  "email": "chalisa.jantoy@gmail.com",
+  "password": "3589ccfe67f76f0cfe6ea7c5a0b3fa0f",
+  "social_ids": [],
+  "first_name": "TKH RN ชาลิสา",
+  "user_title": "Miss",
+  "image_url": "",
+  "last_name": "จันทร์ต้อย",
+  "country_phone_code": "+66",
+  "phone": "862708057",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-30T09:30:21.072Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 121,
+  "__v": 1,
+  "patient": [
+    {
+      "$oid": "660a4579634e39fc0343855e"
+    }
+  ],
+  "group_id": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "626d036c03b7ee1b75127025"
+  },
+  "device_token": "null",
+  "server_token": "PMP1pzJuSX2njeiPZ76mfZ07RsMmmBMD",
+  "device_type": "android",
+  "amy_id": "AMY-0000122",
+  "social_id": "",
+  "email": "0953608878@mfc.com",
+  "password": "868189e935312f9800b1576c8462c20a",
+  "social_ids": [],
+  "first_name": "จันทร์เพ็ญ",
+  "user_title": "Miss",
+  "image_url": "",
+  "last_name": "พัฒแทน",
+  "country_phone_code": "+66",
+  "phone": "953608878",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.7",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-04-30T09:37:48.172Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 122,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88b3d0705ee793b74e9cf"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "626f5ece03b7ee1b75129c5e"
+  },
+  "server_token": "4Fd8XwVkemDP9KdHkAezM2PxSLZhA448",
+  "amy_id": "AMY-0000123",
+  "social_id": "",
+  "email": "0980230615@mfc.com",
+  "password": "e7ba0e753badd52cdc0618c0b1c74a5a",
+  "social_ids": [],
+  "first_name": "วัลภา",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "โภคัย",
+  "country_phone_code": "+66",
+  "phone": "980230615",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-02T04:32:14.376Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 123,
+  "__v": 0,
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "patient": [
+    {
+      "$oid": "65e88b1d0705ee793b74e9c2"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6270a2df03b7ee1b7512ebca"
+  },
+  "device_token": "",
+  "server_token": "NPtoJTqloaateKQlhjt445WsIgUTQ0DU",
+  "device_type": "ios",
+  "amy_id": "AMY-0000125",
+  "social_id": "",
+  "email": "0652734262@mfc.com",
+  "password": "2b47ac4c03dbfae0739e21864016a441",
+  "social_ids": [],
+  "first_name": "สาคร",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "บุญลึก",
+  "country_phone_code": "+66",
+  "phone": "652734262",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-03T03:34:55.098Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 125,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88b2e0705ee793b74e9c6"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "62712fb4bbdf06859fe70fe8"
+  },
+  "server_token": "pvyDlWERlDzdqj5EBUWxAJ0a7ZiCleZK",
+  "amy_id": "AMY-0000126",
+  "social_id": "",
+  "email": "0819856755@mfc.com",
+  "password": "6be85f4d82b8ed011546d7dd372c8d1d",
+  "social_ids": [],
+  "first_name": "เชาวลิต",
+  "user_title": "Mr",
+  "image_url": "user_profiles/62712fb4bbdf06859fe70fe8LuxF.jpg",
+  "last_name": "ช่วยสงค์",
+  "country_phone_code": "+66",
+  "phone": "819856755",
+  "country_code": "TH",
+  "country_name": "Thailand",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-03T13:35:48.439Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 126,
+  "__v": 0,
+  "app_version": "1.0.0",
+  "device_token": "",
+  "device_type": "ios",
+  "patient": [
+    {
+      "$oid": "65f70467c24dd6a8f8949546"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6274dc40d3f70d131f6986e3"
+  },
+  "device_token": "",
+  "server_token": "h8RvDsAdpYfpKDNNGkGOkdoSX0IAfErJ",
+  "device_type": "ios",
+  "amy_id": "AMY-0000128",
+  "social_id": "",
+  "email": "0821818035@mfc.com",
+  "password": "61ab2fcc201977ce7fe1b1827a9b8a1a",
+  "social_ids": [],
+  "first_name": "สง่า",
+  "user_title": "Miss",
+  "image_url": "",
+  "last_name": "ผาสุข",
+  "country_phone_code": "+66",
+  "phone": "821818035",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-06T08:28:48.940Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 128,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88b5d0705ee793b74e9df"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6278635dd3f70d131f6a9d23"
+  },
+  "device_token": "",
+  "server_token": "KR6sC1lIvVTIHvWqDMaRLqtd0jnFXpOB",
+  "device_type": "ios",
+  "amy_id": "AMY-0000130",
+  "social_id": "",
+  "email": "0987238241@mfc.com",
+  "password": "b644601b86a7f065c9b6a13cc2cf2dd9",
+  "social_ids": [],
+  "first_name": "สมจิตร",
+  "user_title": "Miss",
+  "image_url": "",
+  "last_name": "แก้วกัน",
+  "country_phone_code": "+66",
+  "phone": "987238241",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-09T00:42:05.115Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 130,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88b700705ee793b74e9e8"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "62792a3b4b8ec2f57f05cad0"
+  },
+  "device_token": "null",
+  "server_token": "ZwNwoieDnLLa6nkXvw3hs82IXjvE2lmJ",
+  "device_type": "android",
+  "amy_id": "AMY-0000131",
+  "social_id": "",
+  "email": "mimwatch@amy.care",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "Mim",
+  "user_title": "Miss",
+  "image_url": "user_profiles/62792a3b4b8ec2f57f05cad0Ub3v.jpg",
+  "last_name": "L18",
+  "country_phone_code": "+66",
+  "phone": "623464949787",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-09T14:50:35.168Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 131,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "62792a834b8ec2f57f05caef"
+  },
+  "server_token": "JaL1TAySbVYR9aXy70DudgTLKxU9Brxy",
+  "amy_id": "AMY-0000132",
+  "social_id": "",
+  "email": "kku_02@mfc.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "KKU",
+  "user_title": "Mr.",
+  "image_url": "user_profiles/62792a834b8ec2f57f05caefk6fV.jpg",
+  "last_name": "02",
+  "country_phone_code": "+66",
+  "phone": "62855545555",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-09T14:51:47.740Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 132,
+  "__v": 2,
+  "patient": [
+    {
+      "$oid": "626d037503b7ee1b75127028"
+    },
+    {
+      "$oid": "6246960e576e198cc6240aae"
+    },
+    {
+      "$oid": "626a0ad1f06c9d4561158d9b"
+    },
+    {
+      "$oid": "62397637f9e69c3b67a9af0a"
+    },
+    {
+      "$oid": "624b0014c4b7d0133863e148"
+    },
+    {
+      "$oid": "62694b88f06c9d456115509f"
+    },
+    {
+      "$oid": "626d01b703b7ee1b75126fbb"
+    },
+    {
+      "$oid": "626a7de0cc8269328b02332c"
+    },
+    {
+      "$oid": "62611baf79b00113f9bbebaf"
+    },
+    {
+      "$oid": "6269f681f06c9d4561158647"
+    }
+  ],
+  "group_id": [],
+  "idToken": "",
+  "new_hospital_ids": [],
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627a5ad44b8ec2f57f0665f4"
+  },
+  "server_token": "S4KuRvQ8m07kfgudTsJMVEZb3TA801W1",
+  "amy_id": "AMY-0000134",
+  "social_id": "",
+  "email": "adminkku@mfc.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "Admin",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "KKU",
+  "country_phone_code": "+91",
+  "phone": "1234569999",
+  "country_code": "IN",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-10T12:30:12.171Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 134,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "624b0014c4b7d0133863e148"
+    },
+    {
+      "$oid": "62397637f9e69c3b67a9af0a"
+    },
+    {
+      "$oid": "62611baf79b00113f9bbebaf"
+    },
+    {
+      "$oid": "6246960e576e198cc6240aae"
+    },
+    {
+      "$oid": "6269f681f06c9d4561158647"
+    },
+    {
+      "$oid": "626a0ad1f06c9d4561158d9b"
+    },
+    {
+      "$oid": "62694b88f06c9d456115509f"
+    },
+    {
+      "$oid": "626a7de0cc8269328b02332c"
+    },
+    {
+      "$oid": "626d01b703b7ee1b75126fbb"
+    },
+    {
+      "$oid": "626d037503b7ee1b75127028"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627a621e4b8ec2f57f066ab4"
+  },
+  "server_token": "yCGhFFAWPrcYHplJA0xFSeoYARdRYMpH",
+  "amy_id": "AMY-0000135",
+  "social_id": "",
+  "email": "bantakhun_hp@mfc.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "Ban Ta Khun",
+  "user_title": "Mr.",
+  "image_url": "",
+  "last_name": "Hospital",
+  "country_phone_code": "+91",
+  "phone": "123456789654",
+  "country_code": "IN",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-10T13:01:18.456Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-03T09:04:15.348Z"
+  },
+  "unique_id": 135,
+  "__v": 2,
+  "patient": [
+    {
+      "$oid": "6604f5e200df0d8b0c5a1e34"
+    },
+    {
+      "$oid": "6605067800df0d8b0c5a318e"
+    },
+    {
+      "$oid": "6605080400df0d8b0c5a3362"
+    },
+    {
+      "$oid": "6605084300df0d8b0c5a33ad"
+    },
+    {
+      "$oid": "6605087000df0d8b0c5a33dd"
+    },
+    {
+      "$oid": "660508c400df0d8b0c5a343b"
+    },
+    {
+      "$oid": "660508d400df0d8b0c5a3456"
+    },
+    {
+      "$oid": "660508fc00df0d8b0c5a3484"
+    },
+    {
+      "$oid": "6605091000df0d8b0c5a349e"
+    },
+    {
+      "$oid": "6605092100df0d8b0c5a34b7"
+    },
+    {
+      "$oid": "65e88c270705ee793b74ea37"
+    }
+  ],
+  "group_id": [],
+  "idToken": "",
+  "userId": "",
+  "new_hospital_ids": []
+},
+{
+  "_id": {
+    "$oid": "627b1a364b8ec2f57f06cf5f"
+  },
+  "device_token": "null",
+  "server_token": "iFuMRCdaH7gwCTGjKMyaLeRTBdFNxXML",
+  "device_type": "android",
+  "amy_id": "AMY-0000136",
+  "social_id": "",
+  "email": "0890591780@mfc.com",
+  "password": "d0240a56672cd2178223d2b34a9165e5",
+  "social_ids": [],
+  "first_name": "ซั้น",
+  "user_title": "Mr.",
+  "image_url": "user_profiles/627b1a364b8ec2f57f06cf5fQLWQ.jpg",
+  "last_name": "ช่วยเพชร",
+  "country_phone_code": "+66",
+  "phone": "890591780",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-11T02:06:46.269Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 136,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88aeb0705ee793b74e9a9"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627b5d404b8ec2f57f06fa4e"
+  },
+  "device_token": "",
+  "server_token": "F8aKiTc6BQP8x9jAXDtXedJ1QZrnykKV",
+  "device_type": "ios",
+  "amy_id": "AMY-0000137",
+  "social_id": "",
+  "email": "0817875808@mfc.com",
+  "password": "ea262e675c9a4536097af49eb83906a0",
+  "social_ids": [],
+  "first_name": "อุบลรัตน์",
+  "user_title": "Mr",
+  "image_url": "user_profiles/627b5d404b8ec2f57f06fa4eyUmZ.jpg",
+  "last_name": "ชนะพล",
+  "country_phone_code": "+66",
+  "phone": "817875808",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-11T06:52:48.372Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 137,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88ace0705ee793b74e99c"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627b6a694b8ec2f57f0702c9"
+  },
+  "server_token": "msG2WnKoRTjNTHoioB2UDJiFbmI0dwNz",
+  "amy_id": "AMY-0000138",
+  "social_id": "",
+  "email": "0811403987@mfc.com",
+  "password": "39698d53e364ec07505f77fee32cdd38",
+  "social_ids": [],
+  "first_name": "มาลี",
+  "user_title": "Mrs.",
+  "image_url": "",
+  "last_name": "โภคัย",
+  "country_phone_code": "+66",
+  "phone": "811403987",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-11T07:48:57.724Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 138,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e889b50705ee793b74e92a"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627c6dd74b8ec2f57f074ea8"
+  },
+  "server_token": "HEIKBVrRpZZnG4ACjAdcbabq38bP3Egm",
+  "amy_id": "AMY-0000139",
+  "social_id": "",
+  "email": "0818465031@mfc.com",
+  "password": "c296b14db503268d53a960871a32e155",
+  "social_ids": [],
+  "first_name": "ปทุม",
+  "user_title": "Mr",
+  "image_url": "",
+  "last_name": "บัวสุวรรณ",
+  "country_phone_code": "+66",
+  "phone": "818465031",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-12T02:15:51.786Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 139,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88a8c0705ee793b74e97a"
+    }
+  ],
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627cfa8e4b8ec2f57f0768f9"
+  },
+  "device_token": "",
+  "server_token": "WJAkWP6GKWQFh8VqXkAKpBMm2WZNdigQ",
+  "device_type": "ios",
+  "amy_id": "AMY-0000140",
+  "social_id": "",
+  "email": "0823983034@mfc.com",
+  "password": "f546e49ffc7b7f17ca2bca819dc0587c",
+  "social_ids": [],
+  "first_name": "บุญศรี",
+  "user_title": "Mr",
+  "image_url": "",
+  "last_name": "ทองใหญ่",
+  "country_phone_code": "+66",
+  "phone": "823983034",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-12T12:16:14.909Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 140,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88a9c0705ee793b74e983"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627cfc694b8ec2f57f07692d"
+  },
+  "server_token": "ryDEPnsRonJ0UEnv6bSgK7O8zZG32Xd1",
+  "amy_id": "AMY-0000141",
+  "social_id": "",
+  "email": "0872711589@mfc.com",
+  "password": "eab54b7361d3e7a1b395ce7abc6010c1",
+  "social_ids": [],
+  "first_name": "พริ้ง",
+  "user_title": "Mr",
+  "image_url": "",
+  "last_name": "อังกาบ",
+  "country_phone_code": "+66",
+  "phone": "872711589",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-12T12:24:09.738Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 141,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e889c50705ee793b74e92e"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627d00814b8ec2f57f076999"
+  },
+  "device_token": "",
+  "server_token": "NFWM7gEozc1BmiCkSNg2aJKl7MYehFPZ",
+  "device_type": "ios",
+  "amy_id": "AMY-0000142",
+  "social_id": "",
+  "email": "0950266052@mfc.com",
+  "password": "54845aca01be58efad93d1562b003721",
+  "social_ids": [],
+  "first_name": "สมบูรณ์",
+  "user_title": "Mr",
+  "image_url": "",
+  "last_name": "แซ่มไล่",
+  "country_phone_code": "+66",
+  "phone": "950266052",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-12T12:41:37.925Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 142,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88a680705ee793b74e96f"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627d01c74b8ec2f57f0769c1"
+  },
+  "device_token": "",
+  "server_token": "k3nnSK9q4ZyENSMPue1bQgjfq9TBGpea",
+  "device_type": "ios",
+  "amy_id": "AMY-0000143",
+  "social_id": "",
+  "email": "0655869211@mfc.com",
+  "password": "db4ec35df5ae349bcd642cfad660eb79",
+  "social_ids": [],
+  "first_name": "อารี",
+  "user_title": "Mr",
+  "image_url": "",
+  "last_name": "ศรีนิล",
+  "country_phone_code": "+66",
+  "phone": "655869211",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-12T12:47:03.379Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 143,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88aae0705ee793b74e98c"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627d03fa4b8ec2f57f076a10"
+  },
+  "device_token": "",
+  "server_token": "5gTc3tlGJP4kN0c32qox1myKeF3xWRZB",
+  "device_type": "ios",
+  "amy_id": "AMY-0000144",
+  "social_id": "",
+  "email": "0822801828@mfc.com",
+  "password": "4c701a1d9dda5aaa1d93755f5bf3629f",
+  "social_ids": [],
+  "first_name": "จำเนียน",
+  "user_title": "Mr",
+  "image_url": "",
+  "last_name": "พิทักษ์",
+  "country_phone_code": "+66",
+  "phone": "9898981425",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-12T12:56:26.498Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 144,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e889970705ee793b74e91b"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627dd7ee4b8ec2f57f078fb0"
+  },
+  "server_token": "YFhx7KdYfxv4BXWQv6nAC6xnNG0yK1ow",
+  "amy_id": "AMY-0000145",
+  "social_id": "",
+  "email": "0918264219@mfc.com",
+  "password": "54c4a9eca603d0a6f9b264c4efbdbf17",
+  "social_ids": [],
+  "first_name": "วิจัด",
+  "user_title": "Mr",
+  "image_url": "",
+  "last_name": "ชูเพชร",
+  "country_phone_code": "+66",
+  "phone": "918264219",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-13T04:00:46.592Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 145,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e86b820705ee793b74de6c"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627dda6d4b8ec2f57f07904f"
+  },
+  "server_token": "LjwNEqyDwLSpkP27kvFgzxydfdSIVSs4",
+  "amy_id": "AMY-0000146",
+  "social_id": "",
+  "email": "0931704076@mfc.com",
+  "password": "e8b956b890edc52f51388703767ff48a",
+  "social_ids": [],
+  "first_name": "จุรีวรรณ",
+  "user_title": "Mr.",
+  "image_url": "prefix_images/prefix_02.png",
+  "last_name": "ทองสัมฤทธิ์",
+  "country_phone_code": "+66",
+  "phone": "931704076",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-13T04:11:25.049Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 146,
+  "__v": 0,
+  "app_version": "",
+  "device_token": "",
+  "device_type": "",
+  "patient": [
+    {
+      "$oid": "65e88ac00705ee793b74e993"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627ddb944b8ec2f57f079093"
+  },
+  "device_token": "",
+  "server_token": "M8qXtdKo9UzbgDuIVAOO0ApMm9TCwoho",
+  "device_type": "ios",
+  "amy_id": "AMY-0000147",
+  "social_id": "",
+  "email": "0923865198@mfc.com",
+  "password": "70a47a11785a88d7e55f251cb5b4acc1",
+  "social_ids": [],
+  "first_name": "จรวย",
+  "user_title": "Mr",
+  "image_url": "",
+  "last_name": "ทองอนันท์",
+  "country_phone_code": "+66",
+  "phone": "923865198",
+  "country_code": "TH",
+  "country_name": "",
+  "app_version": "1.0.0",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-13T04:16:20.809Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 147,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "65e88af80705ee793b74e9b0"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "627ddca64b8ec2f57f0790d8"
+  },
+  "server_token": "LFpvg9QWKieMCEpyz7N8WCkybkEcmQFn",
+  "amy_id": "AMY-0000148",
+  "social_id": "",
+  "email": "mintra.a@mfc.com",
+  "password": "28ed45f0eec4bf1f6e9368be6a639044",
+  "social_ids": [],
+  "first_name": "มินตรา",
+  "user_title": "Mr",
+  "image_url": "user_profiles/627ddca64b8ec2f57f0790d8yYNA.jpg",
+  "last_name": "อัสดาธร",
+  "country_phone_code": "+66",
+  "phone": "623484848",
+  "country_code": "TH",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-13T04:20:54.997Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 148,
+  "__v": 0,
+  "patient": [
+    {
+      "$oid": "623c109df9e69c3b67a9af62"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "62961e4205ac0298d2bed571"
+  },
+  "server_token": "BRnbogaNYplKskC7cWv27kLkDrNUB1p5",
+  "amy_id": "AMY-0000153",
+  "social_id": "",
+  "email": "tely360admin@mfc.com",
+  "password": "b8e7bfe7f022f5e3c3c30820a25c8ee4",
+  "social_ids": [],
+  "first_name": "เทลลี่360",
+  "user_title": "Mr.",
+  "image_url": "prefix_images/prefix_29.png",
+  "last_name": "แอดมิน",
+  "country_phone_code": "+91",
+  "phone": "864077171",
+  "country_code": "IN",
+  "country_name": "",
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2022-05-31T13:55:14.883Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 153,
+  "__v": 0,
+  "patient": [],
+  "group_id": [
+    {
+      "$oid": "661685362724947bc33cea65"
+    },
+    {
+      "$oid": "65f18ee18b6853e5d141ca47"
+    },
+    {
+      "$oid": "65f18dfb8b6853e5d141c905"
+    },
+    {
+      "$oid": "65f18a678b6853e5d141c3ba"
+    },
+    {
+      "$oid": "660661cde47a01db80db3ea3"
+    },
+    {
+      "$oid": "65f18cdd8b6853e5d141c76f"
+    },
+    {
+      "$oid": "660a476e634e39fc034387ad"
+    },
+    {
+      "$oid": "65fad7d4f1d8bfaecd31177c"
+    },
+    {
+      "$oid": "65f18dbd8b6853e5d141c8ad"
+    },
+    {
+      "$oid": "65f82d32c24dd6a8f895c154"
+    },
+    {
+      "$oid": "65f18e658b6853e5d141c997"
+    },
+    {
+      "$oid": "65f18eb68b6853e5d141ca0b"
+    },
+    {
+      "$oid": "65fad9cff1d8bfaecd3119ef"
+    },
+    {
+      "$oid": "662239b55af730b694343451"
+    },
+    {
+      "$oid": "661688422724947bc33ced9b"
+    }
+  ],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "660d6cf573ba9612d0d90e02"
+  },
+  "server_token": "r880gqJh7d6k9giw61WDkO5frDLmyJRU",
+  "amy_id": "",
+  "social_id": "",
+  "email": "0818075672@mfc.com",
+  "password": "b4d173d60c94f832082da0e73b88360c",
+  "social_ids": [],
+  "first_name": "Mayura",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "C.",
+  "country_phone_code": "+66",
+  "phone": "818075672",
+  "country_code": "",
+  "country_name": "",
+  "patient": [
+    {
+      "$oid": "625ce462e405cfa083081f33"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-04-03T14:51:33.193Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 156,
+  "__v": 0,
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6635d5479d1455f0ff03d960"
+  },
+  "server_token": "vP7qD9UpMuCzpwMoRYetyEysRprRM78N",
+  "amy_id": "",
+  "social_id": "",
+  "email": "0817378758@mfc.com",
+  "password": "87f24d324170698e35cfbe0fbb12ffa1",
+  "social_ids": [],
+  "first_name": "ลัดดา",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "ทองตัน",
+  "country_phone_code": "+66",
+  "phone": "817378758",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [
+    {
+      "$oid": "65f18a678b6853e5d141c3ba"
+    },
+    {
+      "$oid": "65f82d32c24dd6a8f895c154"
+    },
+    {
+      "$oid": "660661cde47a01db80db3ea3"
+    },
+    {
+      "$oid": "6635d9dc9d1455f0ff03dfcc"
+    }
+  ],
+  "patient": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-05-04T06:27:19.520Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 158,
+  "__v": 0,
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6638ae16f716c54ff49e3db5"
+  },
+  "server_token": "mxEKOwgcgoPip5fUTWkPhXH5QV7yamcu",
+  "amy_id": "",
+  "social_id": "",
+  "email": "shubham@gmail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "test user",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "1",
+  "country_phone_code": "+66",
+  "phone": "7990276118",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6638ac397569814d68143f9e"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-05-06T10:16:54.039Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-25T05:21:24.671Z"
+  },
+  "unique_id": 159,
+  "__v": 1,
+  "idToken": "",
+  "userId": "",
+  "new_hospital_ids": []
+},
+{
+  "_id": {
+    "$oid": "6638bed109ecee510e15a59a"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "thkkmaccuchek@mfc.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "Dev-KM",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Accu-Chek",
+  "country_phone_code": "+66",
+  "phone": "864077171",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6638bed109ecee510e15a599"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-05-06T11:28:17.576Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 160,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "663b6ae6c205820576919d0c"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "tely01f@mfc.com",
+  "password": "0b0b8d2da73ba5ef187d1dc1d20a8471",
+  "social_ids": [],
+  "first_name": "TELY 01gt",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Dev",
+  "country_phone_code": "+66",
+  "phone": "81361876",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-05-08T12:07:02.709Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 161,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "663d0142630e70faa3934962"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "",
+  "password": "",
+  "social_ids": [],
+  "first_name": "ลำอิง",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "บุญล้ำ",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6763aaa132d3aed5b9ae7d27"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-05-09T17:00:50.178Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-19T05:13:47.955Z"
+  },
+  "unique_id": 163,
+  "__v": 24,
+  "new_hospital_ids": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "663e07522bf72fd850d5272a"
+  },
+  "server_token": "b7l3cTNwmr7k23W1EKIMvWpndPa5s30A",
+  "amy_id": "",
+  "social_id": "",
+  "email": "pannees@mfc.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "พรรณี",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "ลิ้มสุขประเสริฐ",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "663cb57af4969eea358a2404"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-05-10T11:38:58.593Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 164,
+  "__v": 1,
+  "app_version": "",
+  "device_token": "",
+  "device_type": "",
+  "new_hospital_ids": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "664ca69190d2c3a5052ca883"
+  },
+  "server_token": "4UZTq0kFSRkQRa42vx8QtQmByJPIrxWA",
+  "amy_id": "",
+  "social_id": "",
+  "email": "tea@mfc.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "Nicola",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Tesla",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "627d04004b8ec2f57f076a12"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-05-21T13:50:09.420Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-08T12:44:28.450Z"
+  },
+  "unique_id": 167,
+  "__v": 1,
+  "phone": "",
+  "app_version": "",
+  "device_token": "",
+  "device_type": "",
+  "idToken": "",
+  "userId": "",
+  "new_hospital_ids": []
+},
+{
+  "_id": {
+    "$oid": "6654779174dbcefc2429a20e"
+  },
+  "server_token": "pl0qtU6GJ7Wb5YBt9VoxiTbRMWTCZHVk",
+  "amy_id": "",
+  "social_id": "",
+  "email": "somboon@tkh.mfc.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "MFC-05 สมบูรณ์ ",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "แช่มไล่",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "65e88a680705ee793b74e96f"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-05-27T12:07:45.377Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-29T05:35:15.373Z"
+  },
+  "unique_id": 168,
+  "__v": 1,
+  "app_version": "",
+  "device_token": "",
+  "device_type": "",
+  "idToken": "",
+  "userId": "",
+  "new_hospital_ids": []
+},
+{
+  "_id": {
+    "$oid": "6656e12afe6e803122864356"
+  },
+  "server_token": "uvsroYyuVlk80Mq0ehecueWDkvWxTue3",
+  "amy_id": "",
+  "social_id": "",
+  "email": "kamonrat@tely360.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "กมลรัตน์",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "เลิศกำจรวัฒน์",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6656ddf8fe6e803122863f84"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-05-29T08:02:50.276Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-04T13:40:20.694Z"
+  },
+  "unique_id": 169,
+  "__v": 1,
+  "app_version": "",
+  "device_token": "",
+  "device_type": "",
+  "new_hospital_ids": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "665843cd749f132ef0d8a289"
+  },
+  "server_token": "rKkY4vDX195RgYGBjaRSyKMcQW6PSjON",
+  "amy_id": "",
+  "social_id": "",
+  "email": "suwisit_art18@tahoo.com",
+  "password": "25f9e794323b453885f5181f1b624d0b",
+  "social_ids": [],
+  "first_name": "Suwisit",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Ingkaninan",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "665843cd749f132ef0d8a288"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-05-30T09:15:57.324Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 170,
+  "__v": 0,
+  "app_version": "",
+  "device_token": "",
+  "device_type": "",
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "treesawat@hotmail.com",
+  "password": "1b8dea81a611f088eea35ab8e2f81d26",
+  "social_ids": [],
+  "first_name": "Treesawat",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Rakharb",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "624ac947576e198cc6240b08"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-06-03T00:00:27.567Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 173,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "666b96c456ef6490f3009e6f"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "supidchayanan@tely360.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "Supidchayanan",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Ingkaninan",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "66233dc652cddddd4d40b7c2"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-06-14T01:03:00.534Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-19T07:23:51.042Z"
+  },
+  "unique_id": 176,
+  "__v": 1,
+  "idToken": "",
+  "userId": "",
+  "phone": "638093535",
+  "new_hospital_ids": []
+},
+{
+  "_id": {
+    "$oid": "666bec0656ef6490f3012cf0"
+  },
+  "server_token": "e5rWS2wh8GJUJdgyyaNnVwP32NIa1WKz",
+  "amy_id": "",
+  "social_id": "",
+  "email": "adisakped17@gmail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "Adisak",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Inthanomkit ",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "666aa6ee9ceff7395fbff6fe"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-06-14T07:06:46.881Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 177,
+  "__v": 1,
+  "new_hospital_ids": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "666fdb1d5e6afbc968761c60"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "",
+  "password": "",
+  "social_ids": [],
+  "first_name": "Poomin",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Duankhan",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "681486ffe1b89fa275c677bc"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-06-17T06:43:41.766Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-02T08:50:17.323Z"
+  },
+  "unique_id": 178,
+  "__v": 10,
+  "new_hospital_ids": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "66741588aeef8fa796732c48"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "tea@mfc.com",
+  "password": "d66f846fd61c160cbf39a55de2109f40",
+  "social_ids": [],
+  "first_name": "Nicola",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Tesla",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "627d04004b8ec2f57f076a12"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-06-20T11:42:00.528Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 181,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6675ba5bf0ca902ad81894d2"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "000008132@gmail.com",
+  "password": "21730d3f4e36fded9dd94cb33971fda3",
+  "social_ids": [],
+  "first_name": "วรรณา ",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "เชาว์ประเทือง",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "66724fc912980c56f7e688aa"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-06-21T17:37:31.304Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 182,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "667a33be92df55f28176801c"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "000093420@gmail.com",
+  "password": "f4c56bf708806c81a7c1f4a7ace101e9",
+  "social_ids": [],
+  "first_name": "ดวงแข",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "อ่อนพัฒน์",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "66791d3f92df55f28174be4c"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-06-25T03:04:30.720Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 184,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6683c64584d0d45376d3a58a"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "jum_1304@hotmail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "ลาวรรณ จีนไทย",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "660509d700df0d8b0c5a359e"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-07-02T09:20:05.599Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 185,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6684ba0584d0d45376d5d342"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "000054534@gmail.com",
+  "password": "a43dc7cc3ab72a0eb53664d97c72e4ce",
+  "social_ids": [],
+  "first_name": "สมศักดิ์ ",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "รตนาภรณ์",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6684b6eb84d0d45376d5cab4"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-07-03T02:40:05.625Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 187,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "66851700ea1a3e9e87d2a1cf"
+  },
+  "server_token": "grNQMQGNipds1Gx2yuPr7hllsysz9H98",
+  "amy_id": "",
+  "social_id": "",
+  "email": "wbp75@mfc.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "WBP",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "75",
+  "country_phone_code": "+376",
+  "phone": "5555544444",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [
+    {
+      "$oid": "6691ffdf2df134c3a8ace277"
+    },
+    {
+      "$oid": "668b6843dfd9d0fba0ad0161"
+    },
+    {
+      "$oid": "6673fae0aeef8fa79672f81f"
+    },
+    {
+      "$oid": "66584468749f132ef0d8a3cb"
+    },
+    {
+      "$oid": "65f18ee18b6853e5d141ca47"
+    },
+    {
+      "$oid": "65f18a678b6853e5d141c3ba"
+    },
+    {
+      "$oid": "661685362724947bc33cea65"
+    },
+    {
+      "$oid": "6641bdc02c0a79188f6f2982"
+    },
+    {
+      "$oid": "6635d9dc9d1455f0ff03dfcc"
+    },
+    {
+      "$oid": "65f18dbd8b6853e5d141c8ad"
+    },
+    {
+      "$oid": "65f18dfb8b6853e5d141c905"
+    },
+    {
+      "$oid": "662239b55af730b694343451"
+    },
+    {
+      "$oid": "661688422724947bc33ced9b"
+    },
+    {
+      "$oid": "65fad9cff1d8bfaecd3119ef"
+    },
+    {
+      "$oid": "660661cde47a01db80db3ea3"
+    },
+    {
+      "$oid": "65f18cdd8b6853e5d141c76f"
+    },
+    {
+      "$oid": "660a476e634e39fc034387ad"
+    },
+    {
+      "$oid": "65fad7d4f1d8bfaecd31177c"
+    },
+    {
+      "$oid": "65f82d32c24dd6a8f895c154"
+    },
+    {
+      "$oid": "65f18e658b6853e5d141c997"
+    },
+    {
+      "$oid": "65f18eb68b6853e5d141ca0b"
+    }
+  ],
+  "patient": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-07-03T09:16:48.508Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 188,
+  "__v": 0,
+  "app_version": "undefined",
+  "device_type": "undefined",
+  "device_token": "",
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "668b6800dfd9d0fba0ad011a"
+  },
+  "server_token": "r9fCp11nXd2IrUETG58pnRj4MwJ8jaOq",
+  "amy_id": "",
+  "social_id": "",
+  "email": "nursenbtc@usermfc.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "เจ้าหน้าที่",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "รับแจ้งเหตุฉุกเฉิน",
+  "country_phone_code": "+247",
+  "phone": "1233333333",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [
+    {
+      "$oid": "668b6843dfd9d0fba0ad0161"
+    }
+  ],
+  "patient": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-07-08T04:16:00.956Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T16:04:50.297Z"
+  },
+  "unique_id": 189,
+  "__v": 1,
+  "new_hospital_ids": [],
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "668ead475bff4bc4b5e4e8b1"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "jum_1304@hotmail.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "ลาวรรณ",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "จีนไทย",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "660509d700df0d8b0c5a359e"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-07-10T15:48:23.154Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-30T10:52:41.267Z"
+  },
+  "unique_id": 190,
+  "__v": 1,
+  "idToken": "",
+  "userId": "",
+  "new_hospital_ids": []
+},
+{
+  "_id": {
+    "$oid": "668f5fda5bff4bc4b5e53ad1"
+  },
+  "server_token": "dagvbIdQdLAJAawcQDK9839u6B1lwak9",
+  "amy_id": "",
+  "social_id": "",
+  "email": "doctorkrit@usermfc.com",
+  "password": "eb5096cbe6175b22b8c85e46846838cd",
+  "social_ids": [],
+  "first_name": "Dr",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Krit",
+  "country_phone_code": "+66",
+  "phone": "866055088",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [
+    {
+      "$oid": "6691ffdf2df134c3a8ace277"
+    }
+  ],
+  "patient": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-07-11T04:30:18.441Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 191,
+  "__v": 0,
+  "idToken": "",
+  "userId": ""
+},
+{
+  "_id": {
+    "$oid": "6696643fd87825d1c07a44c1"
+  },
+  "server_token": "Jv0Sk09aAPiTGGPWQui7BXuVCpYnWCv2",
+  "amy_id": "",
+  "social_id": "",
+  "email": "jitharak@salus.co.th",
+  "password": "ee827ca8ed6f0f54cd197c0b3ae51fc5",
+  "social_ids": [],
+  "first_name": "จิทารัก เภาวัฒนาสุข",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "TEST-03",
+  "country_phone_code": "+66",
+  "phone": "8154067069",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "669202ab2df134c3a8ace465"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-07-16T12:14:55.901Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-07T11:15:59.176Z"
+  },
+  "unique_id": 192,
+  "__v": 1,
+  "app_version": "",
+  "device_token": "",
+  "device_type": "",
+  "idToken": "",
+  "userId": "",
+  "new_hospital_ids": []
+},
+{
+  "_id": {
+    "$oid": "669666dfd87825d1c07a46ae"
+  },
+  "server_token": "kfgDSjUkIygDvGmQvYrJRdXvthALy19D",
+  "amy_id": "",
+  "social_id": "",
+  "email": "chanida@salus.co.th",
+  "password": "",
+  "social_ids": [],
+  "first_name": "ชนิดา หาญยุทธ",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "TEST-04",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "669203312df134c3a8ace4c3"
+    }
+  ],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-07-16T12:26:07.246Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-19T05:49:55.564Z"
+  },
+  "unique_id": 193,
+  "__v": 1,
+  "new_hospital_ids": [],
+  "idToken": "",
+  "userId": "",
+  "app_version": "",
+  "device_token": "",
+  "device_type": ""
+},
+{
+  "_id": {
+    "$oid": "66c773416d76fc2f6bc4a46e"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "shopaholicguy@hotmail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "AVA-4-01",
+  "user_title": "",
+  "image_url": "patient_profile_images/6640c1d12bf72fd850d85f86CpUg.jpg",
+  "last_name": "Instant",
+  "country_phone_code": "+66",
+  "phone": "08640771711",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6640c1d12bf72fd850d85f86"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-08-22T17:20:01.815Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 207,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66dff4b580d76f147a8d01ca"
+  },
+  "server_token": "XZwWYwJ6Re0hw2TCUbp8KEjkGPPPTf1K",
+  "amy_id": "",
+  "social_id": "",
+  "email": "hv69@mfc.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "DEV",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "HV69",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "66dff4b580d76f147a8d01c8"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-09-10T07:26:45.610Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-27T19:25:49.107Z"
+  },
+  "unique_id": 217,
+  "__v": 0,
+  "phone": "",
+  "app_version": "",
+  "device_token": "",
+  "device_type": ""
+},
+{
+  "_id": {
+    "$oid": "66f2d02ab09731030f47460a"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "kanlaya@mfc.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "กัลยา",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "ไมตรี",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "622035a5fd26d7b6d9b7730c"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-09-24T14:43:54.320Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-12T17:01:32.938Z"
+  },
+  "unique_id": 221,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f39558b09731030f4784d0"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "shopaholicguy@hotmail.com",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "AVA-4-01",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Instant",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6640c1d12bf72fd850d85f86"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-09-25T04:45:12.816Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-27T13:06:12.359Z"
+  },
+  "unique_id": 222,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f3c598b09731030f47a014"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "kamonrat@tely360.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "กมลรัตน์",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "เลิศกำจรวัฒน์",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6656ddf8fe6e803122863f84"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-09-25T08:11:04.520Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-25T02:11:28.805Z"
+  },
+  "unique_id": 223,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f8612e24c3f93c27183fd7"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "Ncdchaiburihospital@gmail.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "ละมัย ",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "ว่องย่อง",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "667be934601343dfc75e35e1"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-09-28T20:03:58.239Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-03T07:08:09.361Z"
+  },
+  "unique_id": 236,
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "66f8d9b324c3f93c27186653"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "pueng05092539@gmail.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "คำนวน",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "ช่วยบำรุง",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6605094800df0d8b0c5a34e8"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-09-29T04:38:11.896Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-29T04:38:11.896Z"
+  },
+  "unique_id": 237,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67208370e6938c0337c6da09"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "kanlaya@mfc.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "กัลยา",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "ไมตรี",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "622035a5fd26d7b6d9b7730c"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-10-29T06:40:48.574Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-29T06:40:48.574Z"
+  },
+  "unique_id": 268,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "672ccd835d2cfce25e9d7d47"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "Ncdchaiburihospital@gmail.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "ละมัย ",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "ว่องย่อง",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "667be934601343dfc75e35e1"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-11-07T14:24:03.253Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-04T14:45:11.626Z"
+  },
+  "unique_id": 275,
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "67338ae807740321f152b3ed"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "pueng05092539@gmail.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "คำนวน",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "ช่วยบำรุง",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6605094800df0d8b0c5a34e8"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-11-12T17:05:44.132Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-12T17:05:44.132Z"
+  },
+  "unique_id": 278,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6736f97090ed69c1cfd6e878"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "hv69@mfc.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "DEV",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "HV69",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "66dff4b580d76f147a8d01c8"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-11-15T07:34:08.390Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-15T07:34:08.390Z"
+  },
+  "unique_id": 281,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6737034390ed69c1cfd758cb"
+  },
+  "server_token": "XjqRg9g9rHHHaTPNwbItVw8N3FT733Gk",
+  "amy_id": "",
+  "social_id": "",
+  "email": "sakaowrat@pmub-cluter.org",
+  "password": "d0dc9dade9e1bc155fe90beada59e58e",
+  "social_ids": [],
+  "first_name": "NBTC 42 สกาวรัตน์",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "มาสา",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "62397637f9e69c3b67a9af0a"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-11-15T08:16:03.139Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-15T08:17:14.564Z"
+  },
+  "unique_id": 282,
+  "__v": 0,
+  "phone": ""
+},
+{
+  "_id": {
+    "$oid": "673f558615d28c1a2d8b4105"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "gigballack@hotmail.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "Supidchayanan",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "Ingkaninan",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "66233dc652cddddd4d40b7c2"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-11-21T15:45:10.555Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T15:45:10.555Z"
+  },
+  "unique_id": 286,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "673f627f15d28c1a2d8badbf"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "sakaowrat@pmub-cluter.org",
+  "password": "d0dc9dade9e1bc155fe90beada59e58e",
+  "social_ids": [],
+  "first_name": "NBTC 42 สกาวรัตน์",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "มาสา",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "62397637f9e69c3b67a9af0a"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-11-21T16:40:31.982Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T16:40:31.982Z"
+  },
+  "unique_id": 287,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675aa6a532d3aed5b9433dd5"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "nannanay1207@gmail.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "จิราภรณ์",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "จรรยา",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "672869f37ca74706a0c1df76"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-12-12T09:02:29.934Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T09:02:29.934Z"
+  },
+  "unique_id": 289,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675be44132d3aed5b951d9b6"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "nannanay1207@gmail.com",
+  "password": "",
+  "social_ids": [],
+  "first_name": "จิราภรณ์",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "จรรยา",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "672869f37ca74706a0c1df76"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-12-13T07:37:37.680Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-13T07:37:37.680Z"
+  },
+  "unique_id": 290,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6763de3d32d3aed5b9b15c1c"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "jitharak@salus.co.th",
+  "password": "",
+  "social_ids": [],
+  "first_name": "จิทารัก เภาวัฒนาสุข",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "T-03",
+  "country_phone_code": "+66",
+  "phone": "",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "669202ab2df134c3a8ace465"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2024-12-19T08:50:05.898Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-19T08:50:05.898Z"
+  },
+  "unique_id": 291,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b410a42b58938cb2952d8c"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "bibnarak_mak@hotmail.com",
+  "password": "0322a32c0f02dd97a9649f77c5bb7228",
+  "social_ids": [],
+  "first_name": "อำนาจ",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "นฤมิตร",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "67c6a6610ffd3d0774d01d4f"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2025-02-18T04:46:28.983Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-04T07:06:09.256Z"
+  },
+  "unique_id": 292,
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "67b444812b58938cb297a08d"
+  },
+  "server_token": "5dveSf9uatMHFi2VMScp4XSXIqmbn1pT",
+  "amy_id": "",
+  "social_id": "",
+  "email": "kan.kobkarn@gmail.com",
+  "password": "6ef9a05853d29a32ddb8abb067d1531f",
+  "social_ids": [],
+  "first_name": "ชนะศักดิ์",
+  "user_title": "",
+  "image_url": "patient_profile_images/67b442c02b58938cb29789daKxje.jpg",
+  "last_name": "กอบกาญจน์",
+  "country_phone_code": "+66",
+  "phone": "0655058262",
+  "country_code": "",
+  "country_name": "",
+  "idToken": "eyJraWQiOiI1Y2VlMzdlNjljMzUzNzY2YTNmZTAxZmEwNWJmODIxMjgzNTQxYTg0YTY2OTJjZGVkZGY5NDdkMGMwOTA0MzY3IiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2FjY2Vzcy5saW5lLm1lIiwic3ViIjoiVWIyMTFhN2Q0YWI5ZWEzZmIxNzE1MDgyOTI4MDNiYmU1IiwiYXVkIjoiMjAwNTYxMTY1NiIsImV4cCI6MTczOTg3MDk3MiwiaWF0IjoxNzM5ODY3MzcyLCJuYW1lIjoiSyIsInBpY3R1cmUiOiJodHRwczovL3Byb2ZpbGUubGluZS1zY2RuLm5ldC8waDl6UlFrbllKWmxWdktIZE1Ydm9aQWxOdGFEZ1lCbUFkRjBzdU94NThQVEVTVEhWUlV4b3NNaG9wUHpKSEgzWUtWMHg3TUJnaFBEZEQiLCJlbWFpbCI6Imthbi5rb2JrYXJuQGdtYWlsLmNvbSJ9.Je5-nhYLtJibwBiOjqo7FsAvZGTTybrFb5maVj_fivCGkmHL1UVJ7UuJZW6Rw8qiHbiJ-NtsPJfGO8sTMBpLEA",
+  "userId": "Ub211a7d4ab9ea3fb171508292803bbe5",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "67b442c02b58938cb29789da"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2025-02-18T08:27:45.292Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-18T08:30:25.966Z"
+  },
+  "unique_id": 293,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67d3d5ff84592efc04a7f03c"
+  },
+  "server_token": "lsXNkjrfMhewe5p06BX6NxcJBTKfqXdC",
+  "amy_id": "",
+  "social_id": "",
+  "email": "somwanglove_1944@hotmail.com",
+  "password": "6e2f5d3bd243cb54842f891058a85485",
+  "social_ids": [],
+  "first_name": "สมหวัง",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "ดวงปัน",
+  "country_phone_code": "+66",
+  "phone": "918717223",
+  "country_code": "",
+  "country_name": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "662340b952cddddd4d40bc21"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2025-03-14T07:08:47.435Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-14T07:08:51.574Z"
+  },
+  "unique_id": 298,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67d64d8b84592efc04b78079"
+  },
+  "server_token": "sLltcxrXgXVlkZwRC0alxMr3gbbkyyTk",
+  "amy_id": "",
+  "social_id": "",
+  "email": "kitkamon22@maitree.net",
+  "password": "e10adc3949ba59abbe56e057f20f883e",
+  "social_ids": [],
+  "first_name": "TELY 01",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "DEV ",
+  "country_phone_code": "+66",
+  "phone": "123456789",
+  "country_code": "",
+  "country_name": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "623c133cf9e69c3b67a9af64"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2025-03-16T04:03:23.418Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-16T04:03:59.738Z"
+  },
+  "unique_id": 299,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67efd9bbe155af1a72b14023"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "suwisit_art18@yahoo.com",
+  "password": "959eb3a877542c41f22fa24646620271",
+  "social_ids": [],
+  "first_name": "Suwisit",
+  "user_title": "",
+  "image_url": "patient_profile_images/665843cd749f132ef0d8a288vRje.jpg",
+  "last_name": "Ingkaninan",
+  "country_phone_code": "+66",
+  "phone": "0946141399",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "eyJraWQiOiJlNmE2OTE5Mzg2MTY5YmE1NGRlOWRkMzM2YjQxNDc5YTAxMDEyZGMwYzQyOGJhYWUyZGUxOGU1OWVlMjE0NmRiIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2FjY2Vzcy5saW5lLm1lIiwic3ViIjoiVTY1YWIxNDhjZGVlODdiMjRkMTJhNWVmZWQyM2JmZTI2IiwiYXVkIjoiMjAwNTYxMTY1NiIsImV4cCI6MTc0Mzc3NTYwNCwiaWF0IjoxNzQzNzcyMDA0LCJuYW1lIjoiY2cgbmV2ZXJkaWVzIiwicGljdHVyZSI6Imh0dHBzOi8vcHJvZmlsZS5saW5lLXNjZG4ubmV0LzBoMV84YXBBd1hibkFGR0g0d2ZoRVJKemxkWUIxeU5tZzRmWG9nUVhVYVlFaDdLeTBqYlNzZ1FpQk1PVUF0S2kwdlBpMG1IaVlkTnhSOCIsImVtYWlsIjoic3V3aXNpdF9hcnQxOEB5YWhvby5jb20ifQ.iYcmfFmqP9vXT90V7DUZjxlFrYczlBjbj6GDu9Op0e_iSBvOxjm8xx74tDSmG-25CsGAQcop9s9WWoOkb82vRA",
+  "userId": "U65ab148cdee87b24d12a5efed23bfe26",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "665843cd749f132ef0d8a288"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2025-04-04T13:08:11.319Z"
+  },
+  "updated_at": {
+    "$date": "2025-04-04T13:08:11.319Z"
+  },
+  "unique_id": 300,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6825e82594d407871bd58522"
+  },
+  "device_token": "",
+  "server_token": "",
+  "device_type": "",
+  "amy_id": "",
+  "social_id": "",
+  "email": "tt@gmail.com",
+  "password": "4a74ad32def87871ec2fac9f34992026",
+  "social_ids": [],
+  "first_name": "พี่หยึ",
+  "user_title": "",
+  "image_url": "",
+  "last_name": "ตาหยี",
+  "country_phone_code": "+66",
+  "country_code": "",
+  "country_name": "",
+  "app_version": "",
+  "idToken": "",
+  "userId": "",
+  "group_id": [],
+  "patient": [
+    {
+      "$oid": "6825e82594d407871bd5851e"
+    }
+  ],
+  "new_hospital_ids": [],
+  "voip_user_id": null,
+  "created_at": {
+    "$date": "2025-05-15T13:12:05.800Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-15T13:12:05.800Z"
+  },
+  "unique_id": 301,
+  "__v": 0
+}]

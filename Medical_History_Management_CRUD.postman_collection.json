@@ -1,0 +1,519 @@
+{
+	"info": {
+		"_postman_id": "medical-history-crud-2024",
+		"name": "Medical History Management - Complete CRUD",
+		"description": "Comprehensive medical history management with table view, search, and CRUD operations for all medical data types",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5054",
+			"type": "string"
+		},
+		{
+			"key": "record_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "patient_id", 
+			"value": "622035a5fd26d7b6d9b7730c",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "📊 Medical History Statistics",
+			"item": [
+				{
+					"name": "Get Medical History Overview Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/stats/overview",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "stats", "overview"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🩸 Blood Pressure Management",
+			"item": [
+				{
+					"name": "Get Blood Pressure Records (Table View)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/blood_pressure?limit=20&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "blood_pressure"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0"},
+								{"key": "patient_id", "value": "", "disabled": true},
+								{"key": "device_id", "value": "", "disabled": true},
+								{"key": "device_type", "value": "", "disabled": true},
+								{"key": "search", "value": "", "disabled": true},
+								{"key": "date_from", "value": "", "disabled": true},
+								{"key": "date_to", "value": "", "disabled": true}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Blood Pressure Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"history_type\": \"blood_pressure\",\n  \"device_id\": \"AVA4-001\",\n  \"device_type\": \"AVA4\",\n  \"timestamp\": \"2024-01-15T10:30:00Z\",\n  \"values\": {\n    \"systolic\": 120,\n    \"diastolic\": 80,\n    \"pulse\": 72\n  },\n  \"notes\": \"Morning reading\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/blood_pressure",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "blood_pressure"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Blood Pressure Record",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"device_id\": \"AVA4-002\",\n  \"values\": {\n    \"systolic\": 118,\n    \"diastolic\": 78,\n    \"pulse\": 70\n  },\n  \"notes\": \"Updated reading after medication\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/blood_pressure/{{record_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "blood_pressure", "{{record_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Blood Pressure Record",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/blood_pressure/{{record_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "blood_pressure", "{{record_id}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Advanced Search Blood Pressure",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"search\": \"120\",\n  \"patient_id\": \"{{patient_id}}\",\n  \"device_type\": \"AVA4\",\n  \"value_min\": 100,\n  \"value_max\": 140,\n  \"date_from\": \"2024-01-01T00:00:00Z\",\n  \"date_to\": \"2024-12-31T23:59:59Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/blood_pressure/search?limit=20&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "blood_pressure", "search"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0"}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🍯 Blood Sugar Management",
+			"item": [
+				{
+					"name": "Get Blood Sugar Records (Table View)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/blood_sugar?limit=20&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "blood_sugar"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0"}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Blood Sugar Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"history_type\": \"blood_sugar\",\n  \"device_id\": \"GLUCOSE-001\",\n  \"device_type\": \"Glucometer\",\n  \"timestamp\": \"2024-01-15T08:00:00Z\",\n  \"values\": {\n    \"value\": 95,\n    \"unit\": \"mg/dL\",\n    \"meal_type\": \"fasting\"\n  },\n  \"notes\": \"Fasting glucose test\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/blood_sugar",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "blood_sugar"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🌡️ Temperature Management",
+			"item": [
+				{
+					"name": "Get Temperature Records (Table View)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/temperature?limit=20&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "temperature"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0"}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Temperature Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"history_type\": \"temperature\",\n  \"device_id\": \"TEMP-001\",\n  \"device_type\": \"Digital Thermometer\",\n  \"timestamp\": \"2024-01-15T14:30:00Z\",\n  \"values\": {\n    \"value\": 36.8,\n    \"unit\": \"°C\"\n  },\n  \"notes\": \"Afternoon temperature check\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/temperature",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "temperature"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "💓 SPO2 Management",
+			"item": [
+				{
+					"name": "Get SPO2 Records (Table View)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/spo2?limit=20&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "spo2"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0"}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create SPO2 Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"history_type\": \"spo2\",\n  \"device_id\": \"PULSE-001\",\n  \"device_type\": \"Pulse Oximeter\",\n  \"timestamp\": \"2024-01-15T16:00:00Z\",\n  \"values\": {\n    \"value\": 98\n  },\n  \"notes\": \"Oxygen saturation check\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/spo2",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "spo2"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "⚖️ Body Data Management",
+			"item": [
+				{
+					"name": "Get Body Data Records (Table View)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/body_data?limit=20&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "body_data"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0"}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Body Data Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"history_type\": \"body_data\",\n  \"device_id\": \"SCALE-001\",\n  \"device_type\": \"Smart Scale\",\n  \"timestamp\": \"2024-01-15T07:00:00Z\",\n  \"values\": {\n    \"weight\": 70.5,\n    \"height\": 175,\n    \"bmi\": 23.0,\n    \"body_fat\": 18.5,\n    \"muscle_mass\": 56.8\n  },\n  \"notes\": \"Morning weigh-in\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/body_data",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "body_data"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "👟 Step Management",
+			"item": [
+				{
+					"name": "Get Step Records (Table View)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/step?limit=20&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "step"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0"}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Step Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"history_type\": \"step\",\n  \"device_id\": \"TRACKER-001\",\n  \"device_type\": \"Fitness Tracker\",\n  \"timestamp\": \"2024-01-15T23:59:00Z\",\n  \"values\": {\n    \"steps\": 8543,\n    \"distance\": 6.2,\n    \"calories\": 320\n  },\n  \"notes\": \"Daily activity summary\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/step",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "step"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "💊 Medication Management",
+			"item": [
+				{
+					"name": "Get Medication Records (Table View)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/medication?limit=20&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "medication"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0"}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Medication Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"history_type\": \"medication\",\n  \"timestamp\": \"2024-01-15T09:00:00Z\",\n  \"values\": {\n    \"medication_detail\": \"Lisinopril 10mg - Take once daily for blood pressure\",\n    \"medication_source\": 1\n  },\n  \"notes\": \"Prescribed by Dr. Smith\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/medication",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "medication"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🚨 Allergy Management",
+			"item": [
+				{
+					"name": "Get Allergy Records (Table View)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/allergy?limit=20&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "allergy"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0"}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Allergy Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"history_type\": \"allergy\",\n  \"timestamp\": \"2024-01-15T11:00:00Z\",\n  \"values\": {\n    \"allergen\": \"Penicillin\",\n    \"severity\": \"Severe\",\n    \"symptoms\": \"Rash, difficulty breathing, swelling\"\n  },\n  \"notes\": \"Patient reported severe reaction in 2020\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/allergy",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "allergy"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🏥 Hospital Admission Management",
+			"item": [
+				{
+					"name": "Get Admission Records (Table View)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/admit_data?limit=20&skip=0",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "admit_data"],
+							"query": [
+								{"key": "limit", "value": "20"},
+								{"key": "skip", "value": "0"}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Admission Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"history_type\": \"admit_data\",\n  \"timestamp\": \"2024-01-10T08:00:00Z\",\n  \"values\": {\n    \"hospital_name\": \"Bangkok General Hospital\",\n    \"admit_date\": \"2024-01-10T08:00:00Z\",\n    \"discharge_date\": \"2024-01-12T14:00:00Z\",\n    \"diagnosis\": \"Acute bronchitis\",\n    \"treatment\": \"Antibiotics and rest\"\n  },\n  \"notes\": \"Routine admission for respiratory infection\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/medical-history-management/admit_data",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "medical-history-management", "admit_data"]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Simple token check - set manually if needed",
+					"if (!pm.environment.get('jwt_token')) {",
+					"    console.log('JWT token not set. Please set jwt_token environment variable manually.');",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Extract record_id from response for use in other requests",
+					"if (pm.response.code === 200) {",
+					"    const responseJson = pm.response.json();",
+					"    if (responseJson.data && responseJson.data.record_id) {",
+					"        pm.environment.set('record_id', responseJson.data.record_id);",
+					"        console.log('Record ID saved:', responseJson.data.record_id);",
+					"    }",
+					"    if (responseJson.data && responseJson.data.records && responseJson.data.records.length > 0) {",
+					"        pm.environment.set('record_id', responseJson.data.records[0]._id);",
+					"        console.log('First record ID saved:', responseJson.data.records[0]._id);",
+					"    }",
+					"}"
+				]
+			}
+		}
+	]
+} 
