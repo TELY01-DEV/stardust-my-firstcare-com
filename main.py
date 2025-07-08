@@ -44,6 +44,7 @@ from app.routes.security import router as security_router
 from app.routes.analytics import router as analytics_router
 from app.routes.visualization import router as visualization_router
 from app.routes.reports import router as reports_router
+from app.routes.patient_devices import router as patient_devices_router, router_lookup as patient_devices_lookup_router
 
 from app.services.rate_limiter import rate_limiter
 from app.services.scheduler import report_scheduler
@@ -422,6 +423,8 @@ app.include_router(admin_router, tags=["admin"])                  # has prefix /
 app.include_router(admin_crud_router, tags=["admin-crud"])        # has prefix /admin
 app.include_router(device_crud_router, tags=["device-crud"])      # has prefix /api/devices
 app.include_router(device_mapping_router, tags=["device-mapping"]) # has prefix /admin/device-mapping
+app.include_router(patient_devices_router, tags=["patient-devices"]) # has prefix /api/patients
+app.include_router(patient_devices_lookup_router, tags=["device-lookup"]) # has prefix /api/medical-devices
 app.include_router(performance_router, tags=["performance"])       # has prefix /admin/performance
 app.include_router(realtime_router, tags=["realtime"])             # has prefix /realtime
 app.include_router(security_router, tags=["security"])             # has prefix /admin/security
@@ -566,7 +569,9 @@ async def health_check(request: Request):
                                      "admin": "/admin",
                                      "ava4": "/ava4",
                                      "kati": "/kati",
-                                     "qube_vital": "/qube-vital"
+                                     "qube_vital": "/qube-vital",
+                                     "patient_devices": "/api/patients",
+                                     "device_lookup": "/api/medical-devices"
                                  }
                              },
                              "request_id": "c3d4e5f6-g7h8-9012-cdef-345678901234",

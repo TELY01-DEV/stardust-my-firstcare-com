@@ -1,0 +1,4922 @@
+[{
+  "_id": {
+    "$oid": "624bb4e3c4b7d0133863e18c"
+  },
+  "user_id": {
+    "$oid": "67d64d8b84592efc04b78079"
+  },
+  "patient_id": {
+    "$oid": "623c133cf9e69c3b67a9af64"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "created_at": {
+    "$date": "2022-04-05T03:17:55.866Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-28T13:59:05.188Z"
+  },
+  "unique_id": 2,
+  "__v": 0,
+  "mac_mgss_oxymeter": "",
+  "mac_body_temp": "",
+  "mac_dusun_bps": "ffff111d7226",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_chol": "",
+  "mac_salt_meter": "",
+  "mac_ua": ""
+},
+{
+  "_id": {
+    "$oid": "624eb5ba3c00f99f7a13c725"
+  },
+  "user_id": {
+    "$oid": "67208370e6938c0337c6da09"
+  },
+  "patient_id": {
+    "$oid": "622035a5fd26d7b6d9b7730c"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "ffff10fb3865",
+  "mac_watch": "C90743BC1191",
+  "mac_oxymeter": "402e714932dc",
+  "mac_weight": "A0779E1C1D5C",
+  "mac_gluc": "e4e11276005a",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ef333102789a",
+  "created_at": {
+    "$date": "2022-04-07T09:58:18.774Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-28T12:50:50.690Z"
+  },
+  "unique_id": 6,
+  "__v": 0,
+  "mac_mgss_oxymeter": ""
+},
+{
+  "_id": {
+    "$oid": "6254022981b72a332b3641c2"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6253f7cf81b72a332b364172"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "created_at": {
+    "$date": "2022-04-11T10:25:45.124Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T04:15:08.795Z"
+  },
+  "unique_id": 13,
+  "__v": 0,
+  "mac_mgss_oxymeter": "",
+  "mac_body_temp": "",
+  "mac_dusun_bps": "F58EA25292C8",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "625403c381b72a332b3641d2"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6253f93e81b72a332b364187"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "C2B146E4E1A9",
+  "mac_chol": "",
+  "mac_ua": "",
+  "created_at": {
+    "$date": "2022-04-11T10:32:35.515Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T04:07:08.692Z"
+  },
+  "unique_id": 14,
+  "__v": 0,
+  "mac_mgss_oxymeter": "",
+  "mac_body_temp": "",
+  "mac_dusun_bps": "D3FB34632321",
+  "mac_gluc": "",
+  "mac_oxymeter": "402E714678E9",
+  "mac_weight": "",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "6452807be5ca1d38c3695241"
+  },
+  "user_id": {
+    "$oid": "6638a496f7ce6d32b68120f1"
+  },
+  "patient_id": {
+    "$oid": "627de0ea4b8ec2f57f079243"
+  },
+  "group": "",
+  "mac_gw": "74:4D:BD:83:42:58",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "402e714668cc",
+  "mac_weight": "A0779E1C2444",
+  "mac_gluc": "fc45c318bb70",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f612b71bf2c6",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2023-05-03T15:40:43.003Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-22T12:58:11.658Z"
+  },
+  "unique_id": 41,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "64529a77e5ca1d38c36956fa"
+  },
+  "user_id": {
+    "$oid": "6260145f79b00113f9bbdf21"
+  },
+  "patient_id": {
+    "$oid": "6260146b79b00113f9bbdf22"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c3438b3eba86",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2023-05-03T17:31:35.906Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T02:38:04.259Z"
+  },
+  "unique_id": 42,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "64529a85e5ca1d38c36956ff"
+  },
+  "user_id": {
+    "$oid": "612f12a9ce480525a2fcde6b"
+  },
+  "patient_id": {
+    "$oid": "626a48cacc8269328b021f88"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "CA1E37DF4E28",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2023-05-03T17:31:49.404Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T11:25:43.918Z"
+  },
+  "unique_id": 43,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "64529a8ce5ca1d38c3695701"
+  },
+  "user_id": {
+    "$oid": "663b2ce4c205820576915172"
+  },
+  "patient_id": {
+    "$oid": "624afd10c4b7d0133863e143"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f11520972241",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2023-05-03T17:31:56.520Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-29T09:45:55.286Z"
+  },
+  "unique_id": 44,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6459e16a923df0c15a6e13ff"
+  },
+  "user_id": {
+    "$oid": "627e15654b8ec2f57f079e5a"
+  },
+  "patient_id": {
+    "$oid": "627e158d4b8ec2f57f079e67"
+  },
+  "group": "R&D Bann Ta-Khun",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "FDF7EB3A2272",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbfd88f80",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c5db5050468a",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2023-05-09T06:00:10.686Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T03:43:31.188Z"
+  },
+  "unique_id": 46,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "65a7d4892a82b89e25bb500b"
+  },
+  "user_id": {
+    "$oid": "625ce450e405cfa083081f30"
+  },
+  "patient_id": {
+    "$oid": "625ce462e405cfa083081f33"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "D692997D28F2",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-01-17T13:22:17.031Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T04:08:02.316Z"
+  },
+  "unique_id": 47,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "65ab3ce12a82b89e25bc94a3"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6253d6d340fff815a52097ec"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "402e7149490e",
+  "mac_weight": "",
+  "mac_gluc": "005fbfb76c83",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d80b99f5dd91",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-01-20T03:24:17.003Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-09T09:23:26.101Z"
+  },
+  "unique_id": 49,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "65e8a5910705ee793b74f35e"
+  },
+  "user_id": {
+    "$oid": "6654779174dbcefc2429a20e"
+  },
+  "patient_id": {
+    "$oid": "65e88a680705ee793b74e96f"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "cb561ac379d2",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-06T17:19:13.455Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-05T11:20:33.243Z"
+  },
+  "unique_id": 62,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65e8a5ad0705ee793b74f36a"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "65e88a8c0705ee793b74e97a"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbf58f882",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c9fdcba70697",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-06T17:19:41.579Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T02:32:24.083Z"
+  },
+  "unique_id": 63,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "65e8a8230705ee793b74f454"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "65e88adc0705ee793b74e9a0"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-06T17:30:11.800Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T02:35:55.875Z"
+  },
+  "unique_id": 68,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "fdb7360914c0",
+  "mac_gluc": "005fbf8bd27c",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "65e8a8740705ee793b74f476"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "65e88b0b0705ee793b74e9b9"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-06T17:31:32.403Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T02:38:22.043Z"
+  },
+  "unique_id": 71,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "fc18cf46ef78",
+  "mac_gluc": "005fbf770a7c",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "65e8a88b0705ee793b74f47f"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "65e88b1d0705ee793b74e9c2"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbff5087c",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f280d9b1d987",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-06T17:31:55.352Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T02:34:51.284Z"
+  },
+  "unique_id": 72,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "65e8a8bb0705ee793b74f494"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "65e88b3d0705ee793b74e9cf"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbf7af982",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e642544f1731",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-06T17:32:43.730Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T04:04:04.630Z"
+  },
+  "unique_id": 74,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "65e8a94e0705ee793b74f4d2"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "65e88bb50705ee793b74ea05"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbf558d80",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f1c5272a12b9",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-06T17:35:10.344Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T03:59:46.531Z"
+  },
+  "unique_id": 80,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "65e8a99d0705ee793b74f4f7"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "65e88c1b0705ee793b74ea30"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbfd78d80",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "cfd648f27cef",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-06T17:36:29.796Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T04:06:45.554Z"
+  },
+  "unique_id": 84,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "65e8a9b30705ee793b74f504"
+  },
+  "user_id": {
+    "$oid": "6638bc8209ecee510e15a288"
+  },
+  "patient_id": {
+    "$oid": "65e88c270705ee793b74ea37"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbf542482",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e61ed2c0cd5d",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-06T17:36:51.480Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-05T11:47:56.874Z"
+  },
+  "unique_id": 85,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65f7053ac24dd6a8f8949624"
+  },
+  "user_id": {
+    "$oid": "6638bc8209ecee510e15a288"
+  },
+  "patient_id": {
+    "$oid": "65f70467c24dd6a8f8949546"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbfa3cf80",
+  "mac_dusun_bps": "e21511108fbf",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-17T14:59:06.906Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-07T07:49:40.015Z"
+  },
+  "unique_id": 88,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6604f7cf00df0d8b0c5a2068"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6604f5e200df0d8b0c5a1e34"
+  },
+  "group": "",
+  "mac_gw": "08:D1:F9:6A:C2:C8",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "861265061477805",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f3456cec",
+  "mac_gluc": "78db2fbe2ae7",
+  "mac_dusun_bps": "cf1fcc0d8832",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-28T04:53:35.630Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-10T03:08:23.374Z"
+  },
+  "unique_id": 91,
+  "__v": 0,
+  "mac_chol": "",
+  "mac_salt_meter": "",
+  "mac_ua": ""
+},
+{
+  "_id": {
+    "$oid": "66093018634e39fc0342765e"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6605067800df0d8b0c5a318e"
+  },
+  "group": "",
+  "mac_gw": "08:F9:E0:D1:EA:38",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "861265061480866",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f34431ed",
+  "mac_gluc": "6cb2fdbd83f9",
+  "mac_dusun_bps": "fe48599fb988",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-31T09:42:48.600Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-06T08:27:56.766Z"
+  },
+  "unique_id": 92,
+  "__v": 0,
+  "mac_chol": "",
+  "mac_salt_meter": "",
+  "mac_ua": ""
+},
+{
+  "_id": {
+    "$oid": "6609309c634e39fc03427692"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6605080400df0d8b0c5a3362"
+  },
+  "group": "",
+  "mac_gw": "08:F9:E0:D1:DD:AC",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "861265061492549",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-31T09:45:00.195Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-03T10:59:49.506Z"
+  },
+  "unique_id": 93,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "660930f8634e39fc034276bc"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6605084300df0d8b0c5a33ad"
+  },
+  "group": "",
+  "mac_gw": "08:F9:E0:D1:79:D0",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "861265061482383",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f3442c5e",
+  "mac_gluc": "60e85b85b627",
+  "mac_dusun_bps": "f31e7d803be0",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-31T09:46:32.212Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T04:03:20.879Z"
+  },
+  "unique_id": 94,
+  "__v": 0,
+  "mac_chol": "",
+  "mac_salt_meter": "",
+  "mac_ua": ""
+},
+{
+  "_id": {
+    "$oid": "6609314a634e39fc034276de"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6605087000df0d8b0c5a33dd"
+  },
+  "group": "",
+  "mac_gw": "08:F9:E0:D2:42:88",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "861265061486079",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f3456d8b",
+  "mac_gluc": "78db2fbc3423",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e7e8831848df",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-31T09:47:54.879Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-05T05:35:22.557Z"
+  },
+  "unique_id": 95,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "660931a6634e39fc034276f5"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "660508c400df0d8b0c5a343b"
+  },
+  "group": "",
+  "mac_gw": "08:F9:E0:D1:FE:54",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "861265061482664",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f3456cfd",
+  "mac_gluc": "fc45c3b9ba49",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f35c26149a40",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-31T09:49:26.399Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-11T06:40:46.112Z"
+  },
+  "unique_id": 96,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "66093202634e39fc03427707"
+  },
+  "user_id": {
+    "$oid": "6638bc8209ecee510e15a288"
+  },
+  "patient_id": {
+    "$oid": "660508d400df0d8b0c5a3456"
+  },
+  "group": "",
+  "mac_gw": "08:F9:E0:D1:EF:5C",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "861265061481781",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f34572eb",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c287f97d5baa",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-31T09:50:58.859Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-06T09:51:27.948Z"
+  },
+  "unique_id": 97,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "66093257634e39fc03427716"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "660508fc00df0d8b0c5a3484"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "861265061486129",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-31T09:52:23.734Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-05T05:36:27.254Z"
+  },
+  "unique_id": 98,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "660932ae634e39fc03427730"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6605091000df0d8b0c5a349e"
+  },
+  "group": "",
+  "mac_gw": "08:F9:E0:D1:F2:24",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "861265061477961",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f3474281",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f8c7c0d390e9",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-31T09:53:50.784Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-05T05:32:47.795Z"
+  },
+  "unique_id": 99,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "660932fd634e39fc03427746"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6605092100df0d8b0c5a34b7"
+  },
+  "group": "",
+  "mac_gw": "08:D1:F9:6A:BD:10",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "861265061480353",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-03-31T09:55:09.287Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-03T02:39:52.092Z"
+  },
+  "unique_id": 100,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6626640dcf6c48cef3b86577"
+  },
+  "user_id": {
+    "$oid": "6732351607740321f146417a"
+  },
+  "patient_id": {
+    "$oid": "661f2b5d818cc24bd96a8722"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "ff2301283119",
+  "mac_watch": "",
+  "mac_oxymeter": "ff23041920b4",
+  "mac_weight": "A0779E1C14D7",
+  "mac_gluc": "806fb0750c74",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d616f9641602",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-04-22T13:20:13.742Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-06T14:50:26.040Z"
+  },
+  "unique_id": 102,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "663b38bac205820576916067"
+  },
+  "user_id": {
+    "$oid": "627d03fa4b8ec2f57f076a10"
+  },
+  "patient_id": {
+    "$oid": "627d04004b8ec2f57f076a12"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "ffff10fb3747",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1a3e",
+  "mac_weight": "A0779E1C08F6",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ff0497a2f837",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-08T08:32:58.668Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-24T16:35:47.322Z"
+  },
+  "unique_id": 109,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "663cc39a630e70faa392bbd7"
+  },
+  "user_id": {
+    "$oid": "66603e943a9b0319f699f00b"
+  },
+  "patient_id": {
+    "$oid": "66233dc652cddddd4d40b7c2"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-09T12:37:46.115Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T05:36:15.296Z"
+  },
+  "unique_id": 111,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "663cc8c1630e70faa392c7b9"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "663cb57af4969eea358a2404"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef100b",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "cc85f47dff1a",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-09T12:59:45.668Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-10T11:37:16.005Z"
+  },
+  "unique_id": 112,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641aab82c0a79188f6f11af"
+  },
+  "user_id": {
+    "$oid": "6641aaa52c0a79188f6f1192"
+  },
+  "patient_id": {
+    "$oid": "6641aaa52c0a79188f6f1191"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ffff111d7fc5",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-13T05:52:56.195Z"
+  },
+  "updated_at": {
+    "$date": "2024-08-05T03:52:15.324Z"
+  },
+  "unique_id": 139,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6641be512c0a79188f6f2a36"
+  },
+  "user_id": {
+    "$oid": "6641b87b2c0a79188f6f22c6"
+  },
+  "patient_id": {
+    "$oid": "6641bdf02c0a79188f6f29b5"
+  },
+  "group": "",
+  "mac_gw": "3C:61:05:0C:3A:F0",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-13T07:16:33.987Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-05T12:21:00.969Z"
+  },
+  "unique_id": 140,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_chol": "",
+  "mac_dusun_bps": "ced52c26b511",
+  "mac_gluc": "005fbf582483",
+  "mac_oxymeter": "",
+  "mac_salt_meter": "",
+  "mac_ua": "",
+  "mac_weight": ""
+},
+{
+  "_id": {
+    "$oid": "6643780b343da82f08128006"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "66437616343da82f08127ce8"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "ff230128704d",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0e3f",
+  "mac_weight": "",
+  "mac_gluc": "005fbfd68382",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-14T14:41:15.762Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T02:35:33.950Z"
+  },
+  "unique_id": 141,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "664569d7a477d2e31fee8dde"
+  },
+  "user_id": {
+    "$oid": "627dd7ee4b8ec2f57f078fb0"
+  },
+  "patient_id": {
+    "$oid": "627dd8164b8ec2f57f078fba"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "D55D64B891E0",
+  "created_at": {
+    "$date": "2024-05-16T02:05:11.802Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-07T05:33:02.719Z"
+  },
+  "unique_id": 142,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "D3432A53F3DD",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "66483e90a569a2b026747fe2"
+  },
+  "user_id": {
+    "$oid": "66483f94a569a2b026748189"
+  },
+  "patient_id": {
+    "$oid": "624ac947576e198cc6240b08"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbffc3d83",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f4308cbe24d6",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-18T05:37:20.363Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-08T16:08:52.307Z"
+  },
+  "unique_id": 143,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "66542b07d46398cf86e9d43d"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "660509f300df0d8b0c5a35b6"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "60e85b69562b",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d5d6ffa11788",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-27T06:41:11.024Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-17T09:18:38.699Z"
+  },
+  "unique_id": 149,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66542b17d46398cf86e9d45c"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "660509d700df0d8b0c5a359e"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "60e85b7cc44e",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d45e87244468",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-27T06:41:27.800Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-17T10:01:40.627Z"
+  },
+  "unique_id": 150,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66542b21d46398cf86e9d47a"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6605095800df0d8b0c5a3505"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f3456d64",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-27T06:41:37.200Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T11:32:21.665Z"
+  },
+  "unique_id": 151,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "66542b29d46398cf86e9d481"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6605099c00df0d8b0c5a3554"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-27T06:41:45.357Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T05:26:13.097Z"
+  },
+  "unique_id": 152,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "",
+  "mac_gluc": "48701e9927f6",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "66542b35d46398cf86e9d49b"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6605094800df0d8b0c5a34e8"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f3442443",
+  "mac_gluc": "6c79b8ed8d77",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c7b3f9ed96c3",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-05-27T06:41:57.747Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-17T05:30:33.224Z"
+  },
+  "unique_id": 153,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "666fe5c85e6afbc968763c12"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "666fd1865e6afbc9687604ff"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "6c79b8ab277e",
+  "mac_dusun_bps": "ff4dc55fddca",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-06-17T07:29:12.081Z"
+  },
+  "updated_at": {
+    "$date": "2025-04-02T04:36:35.194Z"
+  },
+  "unique_id": 172,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "666fe8395e6afbc96876423d"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "666fd1ce5e6afbc968760588"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "fc45c39c574e",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d48f0ff894d3",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-06-17T07:39:37.290Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-05T05:31:30.662Z"
+  },
+  "unique_id": 173,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "66791d9a92df55f28174bf00"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "66791d3f92df55f28174be4c"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f34749e3",
+  "mac_gluc": "68e74a15b266",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d37a1b8327d1",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-06-24T07:17:46.474Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-05T05:31:56.920Z"
+  },
+  "unique_id": 180,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "66794d5992df55f281750c07"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6679433c92df55f28174fdb2"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "ffff10fb37dc",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef172a",
+  "mac_weight": "",
+  "mac_gluc": "005fbf10aa81",
+  "mac_dusun_bps": "ffff111d5d96",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-06-24T10:41:29.040Z"
+  },
+  "updated_at": {
+    "$date": "2025-04-25T13:46:44.832Z"
+  },
+  "unique_id": 181,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "667be93c601343dfc75e3609"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "667be914601343dfc75e35a6"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "A0779E1C216A",
+  "mac_gluc": "fc45c3ca0d94",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-06-26T10:11:08.296Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T13:04:56.509Z"
+  },
+  "unique_id": 187,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "667bea40601343dfc75e3881"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "667be8e5601343dfc75e3545"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "A0779E1BF20C",
+  "mac_gluc": "60e85b915433",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-06-26T10:15:28.811Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T05:53:20.091Z"
+  },
+  "unique_id": 189,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6680f29e15aff0f6484183f0"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6680f27f15aff0f6484183a9"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-06-30T05:52:30.680Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-05T05:26:39.782Z"
+  },
+  "unique_id": 192,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f34433e9",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "6682813315aff0f648441ed3"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6680f82715aff0f648418e48"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "48701ea1fd05",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "fc5fd3325e29",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-07-01T10:13:07.715Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-03T04:25:41.936Z"
+  },
+  "unique_id": 194,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6682817415aff0f648441f6e"
+  },
+  "user_id": {
+    "$oid": "66728e17b551a14bd9e69ecd"
+  },
+  "patient_id": {
+    "$oid": "6680fc1b15aff0f64841958a"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-07-01T10:14:12.235Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-21T02:24:15.407Z"
+  },
+  "unique_id": 195,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "6684ba0584d0d45376d5d343"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6684b6eb84d0d45376d5cab4"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f3474781",
+  "mac_gluc": "68e74a16a69c",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ff2a446b339f",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-07-03T02:40:05.632Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-03T02:40:05.632Z"
+  },
+  "unique_id": 196,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6684ec84ea1a3e9e87d22315"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6684ebcaea1a3e9e87d22108"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f3456d5c",
+  "mac_gluc": "84c692867c1e",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c0347db06a0e",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-07-03T06:15:32.976Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-05T05:29:31.496Z"
+  },
+  "unique_id": 197,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "6684f47eea1a3e9e87d23b74"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6684f400ea1a3e9e87d239c7"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f344201f",
+  "mac_gluc": "68e74a1679d5",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f6b0c470672e",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-07-03T06:49:34.733Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T02:32:35.438Z"
+  },
+  "unique_id": 199,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "669a2941f3adfef19aa6c5f6"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "669a292ef3adfef19aa6c5e6"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-07-19T08:52:17.975Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T04:00:01.342Z"
+  },
+  "unique_id": 241,
+  "__v": 0,
+  "mac_body_temp": "fff657777888",
+  "mac_dusun_bps": "cd4e38940613",
+  "mac_gluc": "005fbfc6ea7b",
+  "mac_oxymeter": "gg66556644",
+  "mac_weight": "wrr555555",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "66a067f2fd3958a3edad2093"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "66a067dcfd3958a3edad2086"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-07-24T02:33:22.036Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-05T05:27:08.823Z"
+  },
+  "unique_id": 248,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "eb0b0b054b33",
+  "mac_gluc": "8801f9b7631f",
+  "mac_oxymeter": "",
+  "mac_weight": "5c64f3457318",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "66b1d295ff6526108483b014"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "66b1d184ff6526108483af58"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "F2DB59F4C4F9",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-08-06T07:36:53.172Z"
+  },
+  "updated_at": {
+    "$date": "2025-04-14T11:46:16.393Z"
+  },
+  "unique_id": 251,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "67209d8de6938c0337c6f28c"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "67209b7de6938c0337c6f006"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-10-29T08:32:13.897Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-06T08:31:04.528Z"
+  },
+  "unique_id": 279,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "c67ab12b7527",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "67286a987ca74706a0c1dff1"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "672869f37ca74706a0c1df76"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-11-04T06:32:56.844Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-13T07:40:31.997Z"
+  },
+  "unique_id": 280,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "f897fb7e612f",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": ""
+},
+{
+  "_id": {
+    "$oid": "67594a6d32d3aed5b93b992e"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759487d32d3aed5b93b90e6"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbf150d83",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "dd109307b1cd",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-11T08:16:45.469Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-11T06:41:08.604Z"
+  },
+  "unique_id": 286,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "67594bcf32d3aed5b93b9ee8"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759471532d3aed5b93b8a5e"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e9b0928f9810",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-11T08:22:39.976Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-11T08:22:39.976Z"
+  },
+  "unique_id": 287,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67594c4232d3aed5b93ba138"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759488e32d3aed5b93b9124"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "fe60e5c73a63",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-11T08:24:34.035Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T04:03:44.652Z"
+  },
+  "unique_id": 288,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "67594d8932d3aed5b93ba63c"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "675945de32d3aed5b93b8501"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-11T08:30:01.769Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-07T14:25:41.835Z"
+  },
+  "unique_id": 289,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "f728be341f2b",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a4fcc32d3aed5b940b6cd"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759489632d3aed5b93b9150"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbfeacd82",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e6bd77990372",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T02:51:56.806Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T09:08:59.356Z"
+  },
+  "unique_id": 290,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675a52f932d3aed5b940ce78"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "675947fa32d3aed5b93b8e47"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T03:05:29.078Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T04:05:34.753Z"
+  },
+  "unique_id": 291,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a537832d3aed5b940d1c7"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759483932d3aed5b93b8f83"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbf03a482",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c99e0f70d0d9",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T03:07:36.327Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-07T14:25:19.770Z"
+  },
+  "unique_id": 292,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a625e32d3aed5b94131c2"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759488532d3aed5b93b910e"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "005fbf245782",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e9f84befd1a9",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:11:10.428Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T04:06:42.410Z"
+  },
+  "unique_id": 293,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a63ab32d3aed5b9413ae5"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759487632d3aed5b93b90c3"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ce73ef2917d4",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:16:43.778Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T05:23:17.041Z"
+  },
+  "unique_id": 294,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a642f32d3aed5b9413e63"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759486b32d3aed5b93b9087"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f5a481dacc54",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:18:55.999Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-17T08:16:09.136Z"
+  },
+  "unique_id": 295,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a64ef32d3aed5b9414412"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759486332d3aed5b93b9064"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f67c11566f3d",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:22:07.651Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-07T10:40:14.906Z"
+  },
+  "unique_id": 296,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a655c32d3aed5b9414701"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759485a32d3aed5b93b901c"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "eddc3dc70dd1",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:23:56.759Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T04:06:25.969Z"
+  },
+  "unique_id": 297,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a65cb32d3aed5b9414a27"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759485332d3aed5b93b8ff3"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c166648bd22f",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:25:47.859Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-11T06:46:56.549Z"
+  },
+  "unique_id": 298,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a665732d3aed5b9414ead"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759484b32d3aed5b93b8fd0"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c9f67f2b6ab4",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:28:07.941Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-07T10:29:54.829Z"
+  },
+  "unique_id": 299,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a672932d3aed5b94155b7"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759484132d3aed5b93b8fa5"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e5f2f6b2a8f9",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:31:37.937Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T05:21:30.989Z"
+  },
+  "unique_id": 300,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a69c532d3aed5b94168ea"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759483132d3aed5b93b8f4d"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e0e5c440e55c",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:42:45.547Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T08:30:27.855Z"
+  },
+  "unique_id": 301,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675a6a2632d3aed5b9416bda"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759482832d3aed5b93b8f24"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c09b92a7109a",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:44:22.379Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T05:24:44.404Z"
+  },
+  "unique_id": 302,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a6adf32d3aed5b9417157"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759482032d3aed5b93b8edc"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:47:27.947Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T11:21:51.588Z"
+  },
+  "unique_id": 303,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a6b4e32d3aed5b94174ad"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759481632d3aed5b93b8eaf"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d36c9c135851",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:49:18.923Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T05:22:15.811Z"
+  },
+  "unique_id": 304,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675a6bec32d3aed5b94178f7"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "6759480432d3aed5b93b8e69"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-12T04:51:56.531Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-07T10:30:19.055Z"
+  },
+  "unique_id": 305,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "675bcfdb32d3aed5b950d395"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "675bcf9832d3aed5b950d01d"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2024-12-13T06:10:35.572Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-12T05:21:57.332Z"
+  },
+  "unique_id": 307,
+  "__v": 0,
+  "mac_salt_meter": ""
+},
+{
+  "_id": {
+    "$oid": "67a040148e718ae63690c79c"
+  },
+  "user_id": {
+    "$oid": "663b2ce4c205820576915172"
+  },
+  "patient_id": {
+    "$oid": "67a03e8e8e718ae63690c10c"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "dcea5395040d",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-02-03T04:03:32.288Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-03T04:03:32.288Z"
+  },
+  "unique_id": 309,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a2f93e87d8cefbf73718cf"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "67600bab32d3aed5b980d2f6"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_dusun_bps": "ea50dae9e8a8",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-02-05T05:38:06.068Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-30T04:40:19.086Z"
+  },
+  "unique_id": 310,
+  "__v": 0,
+  "mac_chol": "",
+  "mac_salt_meter": "",
+  "mac_ua": ""
+},
+{
+  "_id": {
+    "$oid": "67a47cc329f0dda2b56b73db"
+  },
+  "user_id": {
+    "$oid": "67a4719860d3c296649759d3"
+  },
+  "patient_id": {
+    "$oid": "67a4756909af987621e9a8ff"
+  },
+  "group": "",
+  "mac_gw": "08:F9:E0:D1:FC:18",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-02-06T09:11:31.340Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-21T04:28:15.878Z"
+  },
+  "unique_id": 311,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "f0e10e2d9de4",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_chol": "",
+  "mac_salt_meter": "",
+  "mac_ua": ""
+},
+{
+  "_id": {
+    "$oid": "67a47e80afad94948164aefb"
+  },
+  "user_id": {
+    "$oid": "67a4719860d3c296649759d3"
+  },
+  "patient_id": {
+    "$oid": "67a475217a8421c6ad92cc98"
+  },
+  "group": "",
+  "mac_gw": "08:D1:F9:6A:C2:50",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-02-06T09:18:56.657Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-07T07:48:06.706Z"
+  },
+  "unique_id": 312,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "d2c3cc93506b",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": ""
+},
+{
+  "_id": {
+    "$oid": "67a47eceafad94948164b21a"
+  },
+  "user_id": {
+    "$oid": "67a4719860d3c296649759d3"
+  },
+  "patient_id": {
+    "$oid": "67a474c27a8421c6ad92c953"
+  },
+  "group": "",
+  "mac_gw": "08:D1:F9:6A:C3:8C",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-02-06T09:20:14.851Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-21T05:36:24.705Z"
+  },
+  "unique_id": 313,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "c4c0f759c2dc",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_chol": "",
+  "mac_salt_meter": "",
+  "mac_ua": ""
+},
+{
+  "_id": {
+    "$oid": "67b410f42b58938cb2953135"
+  },
+  "user_id": {
+    "$oid": "67b410a42b58938cb2952d8c"
+  },
+  "patient_id": {
+    "$oid": "67b410a42b58938cb2952d8a"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-02-18T04:47:48.587Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-05T11:51:34.779Z"
+  },
+  "unique_id": 348,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_dusun_bps": "",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_chol": "",
+  "mac_salt_meter": "",
+  "mac_ua": ""
+},
+{
+  "_id": {
+    "$oid": "67b443a12b58938cb29795ff"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "67b442c02b58938cb29789da"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-02-18T08:24:01.850Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-19T13:35:42.019Z"
+  },
+  "unique_id": 350,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_chol": "",
+  "mac_dusun_bps": "",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_salt_meter": "",
+  "mac_ua": "",
+  "mac_weight": ""
+},
+{
+  "_id": {
+    "$oid": "67b55e9d2b58938cb2a3c9ed"
+  },
+  "user_id": {
+    "$oid": "67b410a42b58938cb2952d8c"
+  },
+  "patient_id": {
+    "$oid": "67b55de72b58938cb2a3c0a1"
+  },
+  "group": "",
+  "mac_gw": "80:65:99:A1:EC:E8",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-02-19T04:31:25.777Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-19T04:44:10.421Z"
+  },
+  "unique_id": 351,
+  "__v": 0,
+  "mac_body_temp": "ffff10fb3cbe",
+  "mac_dusun_bps": "ff22090852a7",
+  "mac_gluc": "",
+  "mac_oxymeter": "ffff10ef1928",
+  "mac_weight": ""
+},
+{
+  "_id": {
+    "$oid": "67c6a6ad0ffd3d0774d01e9d"
+  },
+  "user_id": {
+    "$oid": "67b410a42b58938cb2952d8c"
+  },
+  "patient_id": {
+    "$oid": "67c6a6610ffd3d0774d01d4f"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-03-04T07:07:25.462Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-04T07:30:37.141Z"
+  },
+  "unique_id": 353,
+  "__v": 0,
+  "mac_body_temp": "ffff10fb38a9",
+  "mac_dusun_bps": "ff2209087249",
+  "mac_gluc": "",
+  "mac_oxymeter": "ffff10ef0a09",
+  "mac_weight": ""
+},
+{
+  "_id": {
+    "$oid": "67c825b60ffd3d0774dc88aa"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "67c8259f0ffd3d0774dc87ee"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-03-05T10:21:42.794Z"
+  },
+  "updated_at": {
+    "$date": "2025-04-04T12:58:16.505Z"
+  },
+  "unique_id": 354,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_chol": "",
+  "mac_dusun_bps": "",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_salt_meter": "",
+  "mac_ua": "",
+  "mac_weight": ""
+},
+{
+  "_id": {
+    "$oid": "67eca871e155af1a72a12e15"
+  },
+  "user_id": {
+    "$oid": "663b2ce4c205820576915172"
+  },
+  "patient_id": {
+    "$oid": "626a48decc8269328b021f93"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c12488906de0",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-04-02T03:01:05.029Z"
+  },
+  "updated_at": {
+    "$date": "2025-04-02T03:01:05.029Z"
+  },
+  "unique_id": 359,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67efd7f8e155af1a72b13148"
+  },
+  "user_id": {
+    "$oid": "67efd9bbe155af1a72b14023"
+  },
+  "patient_id": {
+    "$oid": "665843cd749f132ef0d8a288"
+  },
+  "group": "",
+  "mac_gw": "08:F9:E0:D1:FC:A0",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-04-04T13:00:40.862Z"
+  },
+  "updated_at": {
+    "$date": "2025-04-04T13:17:40.429Z"
+  },
+  "unique_id": 360,
+  "__v": 0,
+  "mac_gluc": "005fbfd82c7d",
+  "mac_dusun_bps": "d2574613f419"
+},
+{
+  "_id": {
+    "$oid": "68148749e1b89fa275c67a4f"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "681486ffe1b89fa275c677bc"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-05-02T08:50:17.331Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-02T08:50:17.331Z"
+  },
+  "unique_id": 361,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681488f5e1b89fa275c68385"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "681488d1e1b89fa275c681e3"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-05-02T08:57:25.158Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-02T08:59:52.363Z"
+  },
+  "unique_id": 362,
+  "__v": 0,
+  "mac_chol": "",
+  "mac_salt_meter": "",
+  "mac_ua": ""
+},
+{
+  "_id": {
+    "$oid": "681b58a894d407871b96d8a8"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b587394d407871b96d5e3"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:7C:10",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef196c",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e8b130257404",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-07T12:57:12.185Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:17:01.644Z"
+  },
+  "unique_id": 363,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b58c094d407871b96d9a8"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b57ef94d407871b96d126"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8A:22:70",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0e47",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ec7a00b30f4f",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-07T12:57:36.628Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:15:54.938Z"
+  },
+  "unique_id": 364,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b5fa194d407871b972032"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b5e5994d407871b9712d2"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:08:68",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0d60",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f7c314567ee8",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-07T13:26:57.325Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:18:01.398Z"
+  },
+  "unique_id": 365,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b6bc494d407871b97a92f"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b6b1c94d407871b97a1ed"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:A6:40",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef13ff",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c3ec3c376996",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-07T14:18:44.004Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T10:03:03.004Z"
+  },
+  "unique_id": 366,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681d829a94d407871bae6535"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "681b765c94d407871b982602"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-05-09T04:20:42.237Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-09T04:20:42.237Z"
+  },
+  "unique_id": 367,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215cb594d407871bbfc600"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b7c1994d407871b9867ec"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:85:7C",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0e3c",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c69eeedce6c0",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:28:05.083Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:58:58.486Z"
+  },
+  "unique_id": 368,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215cf694d407871bbfc737"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b7b9c94d407871b98616e"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:85:94",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef092c",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f371ef1953db",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:29:10.758Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:57:16.962Z"
+  },
+  "unique_id": 369,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215d1094d407871bbfc798"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b7b2794d407871b985c2b"
+  },
+  "group": "",
+  "mac_gw": "64:E8:33:76:B6:24",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1788",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e357ec17721e",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:29:36.119Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:56:22.942Z"
+  },
+  "unique_id": 370,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215d2794d407871bbfc817"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b7aab94d407871b985665"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8B:1C:58",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0c8b",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c85fc3562d2b",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:29:59.023Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:55:29.700Z"
+  },
+  "unique_id": 371,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215d3494d407871bbfc8b6"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b79ed94d407871b984e8a"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:73:AC",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef18ce",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ccb13dfb3c1a",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:30:12.365Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:54:00.726Z"
+  },
+  "unique_id": 372,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215d4f94d407871bbfc973"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b796294d407871b984845"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8B:73:04",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1a7c",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ceb6e05f81fa",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:30:39.482Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:50:42.315Z"
+  },
+  "unique_id": 373,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215d7e94d407871bbfcab3"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b788694d407871b983f37"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:90:F4",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1582",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ef013d8c0665",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:31:26.819Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:49:42.753Z"
+  },
+  "unique_id": 374,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215d8e94d407871bbfcb06"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b782b94d407871b983af4"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8B:21:40",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0c87",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f8c59dbd0d7c",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:31:42.322Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:48:45.917Z"
+  },
+  "unique_id": 375,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215e1694d407871bbfccf7"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b77b494d407871b983562"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:8B:B8",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0d5d",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d0661b1eec8d",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:33:58.406Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:46:08.134Z"
+  },
+  "unique_id": 376,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215e2b94d407871bbfcd86"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b770494d407871b982cfb"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:73:70",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0a45",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "fa72f6333577",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:34:19.681Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:44:33.470Z"
+  },
+  "unique_id": 377,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215e8094d407871bbfcf5c"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b75e894d407871b9820f7"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8A:22:EC",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0a0d",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f0e612889af8",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:35:44.177Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:43:28.892Z"
+  },
+  "unique_id": 378,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215e8c94d407871bbfcfc1"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b756894d407871b981aac"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:8A:EC ",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef196e",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c5e0a79a6343",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:35:56.186Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:40:47.196Z"
+  },
+  "unique_id": 379,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215ea894d407871bbfd073"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b749d94d407871b981269"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:2C:9C",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0fc5",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e2807dd102aa",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:36:24.778Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:39:46.098Z"
+  },
+  "unique_id": 380,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215ebd94d407871bbfd0d3"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b73d094d407871b980946"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:75:20",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1588",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "cf824fc0c304",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:36:45.550Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:38:54.977Z"
+  },
+  "unique_id": 381,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215ed094d407871bbfd15a"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b733594d407871b980276"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:7C:9C ",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef117e",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d96ade2b60ba",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:37:04.988Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:38:08.519Z"
+  },
+  "unique_id": 382,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215ee194d407871bbfd1c3"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b72b894d407871b97fd07"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:23:0C",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1846",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f8035bb9e496",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:37:21.132Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:37:17.435Z"
+  },
+  "unique_id": 383,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215efb94d407871bbfd244"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b71c894d407871b97f2ea"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8B:3C:7C",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef143f",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "fa3295af9adb",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:37:47.660Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:36:26.964Z"
+  },
+  "unique_id": 384,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215f0f94d407871bbfd2f1"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b711894d407871b97eb32"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:1B:80",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef12f1",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f769dcac00e2",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:38:07.322Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:35:30.647Z"
+  },
+  "unique_id": 385,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215f2694d407871bbfd35c"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b70a794d407871b97e5b2"
+  },
+  "group": "",
+  "mac_gw": "64:E8:33:7A:47:D8",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1439",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d41994f6b6ea",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:38:30.612Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:30:12.310Z"
+  },
+  "unique_id": 386,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215f3c94d407871bbfd3d4"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b703a94d407871b97e10e"
+  },
+  "group": "",
+  "mac_gw": " F0:9E:9E:20:75:10",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef078f",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d4f692708f11",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:38:52.003Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:29:02.354Z"
+  },
+  "unique_id": 387,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215f4794d407871bbfd438"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b6fcf94d407871b97dba2"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:90:EC",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef183b",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f7ea3ae2ece7",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:39:03.497Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:27:58.810Z"
+  },
+  "unique_id": 388,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215f5f94d407871bbfd4be"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b6f2194d407871b97d478"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:20:C0",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef090d",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c04f09007a98",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:39:27.378Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:26:48.996Z"
+  },
+  "unique_id": 389,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215fa994d407871bbfd5db"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b6ee594d407871b97d188"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:8A:D8",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0e93",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d3b79a7e8397",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:40:41.095Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:25:43.121Z"
+  },
+  "unique_id": 390,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215fdc94d407871bbfd6c6"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b6d9394d407871b97c0ad"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:1E:14",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0e0a",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ee91fb8b10ed",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:41:32.003Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:23:57.663Z"
+  },
+  "unique_id": 391,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68215fed94d407871bbfd729"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b6d1994d407871b97ba37"
+  },
+  "group": "",
+  "mac_gw": " F0:9E:9E:20:85:B8",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ff2304199008",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "cd25be476aae",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:41:49.304Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:22:46.669Z"
+  },
+  "unique_id": 392,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821600294d407871bbfd7e2"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b6c9f94d407871b97b370"
+  },
+  "group": "",
+  "mac_gw": "B4:3A:45:A2:47:B4",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0a48",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "fd50f4414fd2",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:42:10.607Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:23:05.360Z"
+  },
+  "unique_id": 393,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821601294d407871bbfd835"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b6c4194d407871b97af82"
+  },
+  "group": "",
+  "mac_gw": " E4:B0:63:8A:23:F0",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1a3b",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e2039edaadf7",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:42:26.456Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:20:38.487Z"
+  },
+  "unique_id": 394,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821604a94d407871bbfd9ee"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b6a8294d407871b979a8b"
+  },
+  "group": "",
+  "mac_gw": "64:E8:33:4D:2F:BC",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ff2304194068",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ed6256d1a24b",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:43:22.753Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:14:09.437Z"
+  },
+  "unique_id": 395,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821607294d407871bbfdadd"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b6a1e94d407871b979551"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8A:23:E8",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef10f0",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f45af03821c1",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:44:02.016Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:12:52.571Z"
+  },
+  "unique_id": 396,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821608f94d407871bbfdb88"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b698f94d407871b978eae"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:91:04",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0e7b",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c705ed9bd568",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:44:31.537Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:09:44.900Z"
+  },
+  "unique_id": 397,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682160ae94d407871bbfdc3a"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b692294d407871b9789fa"
+  },
+  "group": "",
+  "mac_gw": "64:E8:33:7A:64:68",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0a0a",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e01f1af6ebe2",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:45:02.059Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:08:49.841Z"
+  },
+  "unique_id": 398,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682160ba94d407871bbfdcab"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b681494d407871b977d35"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:92:1C",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef09c1",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "dd28527c183c",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:45:14.693Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:07:53.384Z"
+  },
+  "unique_id": 399,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821616694d407871bbfdfe3"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b679a94d407871b9777ab"
+  },
+  "group": "",
+  "mac_gw": "64:E8:33:76:D6:98",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0adf",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e10f52b2a5b5",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:48:06.609Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:41:03.823Z"
+  },
+  "unique_id": 400,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821617794d407871bbfe052"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b673294d407871b977283"
+  },
+  "group": "",
+  "mac_gw": "64:E8:33:76:B0:50",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0b7b",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f267c26f3e59",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:48:23.891Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:39:16.516Z"
+  },
+  "unique_id": 401,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682161a494d407871bbfe150"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b66b694d407871b976d09"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:90:DC",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1515",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f7283a555837",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:49:08.756Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:17:45.056Z"
+  },
+  "unique_id": 402,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682161b794d407871bbfe1dd"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b665194d407871b976854"
+  },
+  "group": "",
+  "mac_gw": "64:E8:33:7A:11:A8",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0864",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "de182ce8acc1",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:49:27.937Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:16:50.752Z"
+  },
+  "unique_id": 403,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821621794d407871bbfe400"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b65eb94d407871b9763e1"
+  },
+  "group": "",
+  "mac_gw": "B4:3A:45:A2:41:20",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef190a",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f550b45a2766",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:51:03.487Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:15:56.376Z"
+  },
+  "unique_id": 404,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821622794d407871bbfe475"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b653294d407871b975b95"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:7C:30",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0b81",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c6f09b81cb30",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:51:19.359Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:14:54.394Z"
+  },
+  "unique_id": 405,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821626094d407871bbfe5a1"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b647194d407871b975341"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:8B:70",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1807",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "efd46403b79a",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:52:16.012Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:11:52.821Z"
+  },
+  "unique_id": 406,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821627094d407871bbfe5f9"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b63ee94d407871b974d85"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:90:B0",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1761",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "fafa9a28c71f",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:52:32.797Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:10:52.097Z"
+  },
+  "unique_id": 407,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682162e594d407871bbfe801"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b636f94d407871b974855"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:24:D4",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef13fd",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "ebbc1de1bb80",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:54:29.285Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:09:50.906Z"
+  },
+  "unique_id": 408,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821630c94d407871bbfe8e1"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b627494d407871b973dd0"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:85:74",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0d9d",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f897624f0358",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:55:08.340Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:05:39.189Z"
+  },
+  "unique_id": 409,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821631d94d407871bbfe93c"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b618b94d407871b97351e"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8A:16:8C",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0f59",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "cea64fb25b80",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:55:25.640Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:04:11.290Z"
+  },
+  "unique_id": 410,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821633794d407871bbfe9b9"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b60fc94d407871b972f4d"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8B:22:30",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef196d",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "fd0355cc5405",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T02:55:51.116Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:02:17.597Z"
+  },
+  "unique_id": 411,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821657f94d407871bbff2fc"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b607494d407871b97293b"
+  },
+  "group": "",
+  "mac_gw": "64:E8:33:4D:2A:08",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1513",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "dc6d29615630",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T03:05:35.282Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:56:26.960Z"
+  },
+  "unique_id": 412,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821660994d407871bbff5e7"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b5d6e94d407871b9708bd"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:73:68",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0b08",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e73d22de23e8",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T03:07:53.158Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:54:27.584Z"
+  },
+  "unique_id": 413,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821661e94d407871bbff6ac"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b5cc394d407871b9701a5"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:0D:60",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1400",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "de3896c0563c",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T03:08:14.081Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:52:58.528Z"
+  },
+  "unique_id": 414,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821664694d407871bbff788"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b5bee94d407871b96f9b8"
+  },
+  "group": "",
+  "mac_gw": " F0:9E:9E:20:8B:24",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0809",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "c06bf3fb7d81",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T03:08:54.658Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:51:28.534Z"
+  },
+  "unique_id": 415,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821665494d407871bbff828"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b5ac394d407871b96edeb"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8B:22:0C",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef117b",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d77ce6d31d9d",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T03:09:08.396Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:48:42.886Z"
+  },
+  "unique_id": 416,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821667994d407871bbff8c0"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b5a2194d407871b96e7c0"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:1F:92:10",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1909",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d341f1797d52",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T03:09:45.214Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:46:56.963Z"
+  },
+  "unique_id": 417,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6821668594d407871bbff926"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b598294d407871b96e176"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:8E:44",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1a78",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e324765073b6",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T03:09:57.924Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:44:17.305Z"
+  },
+  "unique_id": 418,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682166e794d407871bbffb65"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b572c94d407871b96c99a"
+  },
+  "group": "",
+  "mac_gw": "E4:B0:63:8B:20:9C",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1181",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "d25ff7f501b5",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T03:11:35.147Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:43:34.293Z"
+  },
+  "unique_id": 419,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682166ff94d407871bbffbfb"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b55e894d407871b96be8b"
+  },
+  "group": "",
+  "mac_gw": "F0:9E:9E:20:89:E0",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef0fc3",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "e5fa09ad85f2",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-12T03:11:59.985Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:33:43.805Z"
+  },
+  "unique_id": 420,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68380a08f82f9eebc98e77d2"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b7cfd94d407871b987358"
+  },
+  "group": "",
+  "mac_gw": "64:E8:33:4D:31:54",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1785",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "f09cab5b2a44",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-29T07:17:28.109Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:17:28.109Z"
+  },
+  "unique_id": 421,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68380a98f82f9eebc98e7a18"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "681b7c8094d407871b986cee"
+  },
+  "group": "",
+  "mac_gw": "64:E8:33:76:B6:2C",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "ffff10ef1363",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "da2b3b5dee4a",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-05-29T07:19:52.837Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:19:52.837Z"
+  },
+  "unique_id": 422,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684a7da9047a0307a4b71115"
+  },
+  "user_id": {
+    "$oid": "665d079bfa861ff5cf85f324"
+  },
+  "patient_id": {
+    "$oid": "684a7d46047a0307a4b70e2a"
+  },
+  "group": "",
+  "mac_gw": "08:F9:E0:D1:7D:40",
+  "mac_bps": "",
+  "mac_watch": "",
+  "mac_mgss_oxymeter": "",
+  "created_at": {
+    "$date": "2025-06-12T07:11:37.135Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-12T07:23:48.666Z"
+  },
+  "unique_id": 423,
+  "__v": 0,
+  "mac_body_temp": "",
+  "mac_chol": "",
+  "mac_dusun_bps": "cdd669089b82",
+  "mac_gluc": "",
+  "mac_oxymeter": "",
+  "mac_salt_meter": "",
+  "mac_ua": "",
+  "mac_weight": ""
+},
+{
+  "_id": {
+    "$oid": "685a11ca047a0307a4ec6775"
+  },
+  "user_id": null,
+  "patient_id": {
+    "$oid": "685a1143047a0307a4ec64d2"
+  },
+  "group": "",
+  "mac_gw": "",
+  "mac_bps": "",
+  "mac_body_temp": "",
+  "mac_watch": "",
+  "mac_oxymeter": "",
+  "mac_weight": "",
+  "mac_gluc": "",
+  "mac_chol": "",
+  "mac_ua": "",
+  "mac_dusun_bps": "",
+  "mac_mgss_oxymeter": "",
+  "mac_salt_meter": "",
+  "created_at": {
+    "$date": "2025-06-24T02:47:38.641Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-24T02:47:38.641Z"
+  },
+  "unique_id": 424,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "686a579519b5b30eb4d2bb50"
+  },
+  "patient_id": {
+    "$oid": "625ce462e405cfa083081f33"
+  },
+  "mac_bps": "AA:BB:CC:DD:EE:01",
+  "mac_bps_name": "Omron Blood Pressure Monitor",
+  "mac_bps_model": "HEM-7120",
+  "mac_bps_registered_at": {
+    "$date": "2025-07-06T11:01:41.667Z"
+  },
+  "mac_bps_registered_by": "dev_user",
+  "created_at": {
+    "$date": "2025-07-06T11:01:41.667Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-06T11:01:41.667Z"
+  }
+}]

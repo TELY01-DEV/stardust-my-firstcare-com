@@ -1,0 +1,791 @@
+{
+	"info": {
+		"_postman_id": "fhir-r5-core-2025",
+		"name": "FHIR R5 Core - My FirstCare API",
+		"description": "Core FHIR R5 endpoints for healthcare IoT device data and patient management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-login if no token exists",
+					"if (!pm.environment.get('jwt_token') || pm.environment.get('jwt_token') === '') {",
+					"    console.log('No JWT token found, attempting auto-login...');",
+					"    pm.sendRequest({",
+					"        url: pm.environment.get('base_url') + '/auth/login',",
+					"        method: 'POST',",
+					"        header: {'Content-Type': 'application/json'},",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                username: pm.environment.get('username'),",
+					"                password: pm.environment.get('password')",
+					"            })",
+					"        }",
+					"    }, function (err, response) {",
+					"        if (!err && response.code === 200) {",
+					"            const jsonData = response.json();",
+					"            pm.environment.set('jwt_token', jsonData.access_token);",
+					"            console.log('Auto-login successful');",
+					"        } else {",
+					"            console.log('Auto-login failed:', err || response.code);",
+					"        }",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Login successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('access_token');",
+									"    pm.environment.set('jwt_token', jsonData.access_token);",
+									"    if (jsonData.user_id) {",
+									"        pm.environment.set('user_id', jsonData.user_id);",
+									"    }",
+									"    console.log('JWT Token saved:', jsonData.access_token.substring(0, 20) + '...');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Health Check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Health check successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql('healthy');",
+									"    pm.expect(jsonData.data.mongodb).to.eql('connected');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": ["{{base_url}}"],
+							"path": ["health"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "FHIR R5 Metadata",
+			"item": [
+				{
+					"name": "Get Capability Statement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Capability statement retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('resourceType');",
+									"    pm.expect(jsonData.resourceType).to.eql('CapabilityStatement');",
+									"    pm.expect(jsonData).to.have.property('fhirVersion');",
+									"    pm.expect(jsonData.fhirVersion).to.eql('5.0.0');",
+									"    console.log('FHIR Version:', jsonData.fhirVersion);",
+									"    console.log('Supported Resources:', jsonData.rest[0].resource.length);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/metadata",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "metadata"]
+						}
+					}
+				},
+				{
+					"name": "Get FHIR Analytics Summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('FHIR analytics summary retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('summary');",
+									"    console.log('FHIR Resources Summary:', jsonData.data.summary);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/analytics/summary",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "analytics", "summary"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Patient Resources",
+			"item": [
+				{
+					"name": "Create Patient",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient created successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('resource_id');",
+									"    pm.environment.set('fhir_patient_id', jsonData.data.resource_id);",
+									"    console.log('FHIR Patient ID:', jsonData.data.resource_id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Patient\",\n    \"identifier\": [\n        {\n            \"system\": \"http://my-firstcare.com/patient-id\",\n            \"value\": \"TEST-PAT-001\"\n        }\n    ],\n    \"active\": true,\n    \"name\": [\n        {\n            \"use\": \"official\",\n            \"family\": \"Doe\",\n            \"given\": [\"John\"]\n        }\n    ],\n    \"telecom\": [\n        {\n            \"system\": \"phone\",\n            \"value\": \"+66812345678\",\n            \"use\": \"mobile\"\n        },\n        {\n            \"system\": \"email\",\n            \"value\": \"john.doe@example.com\"\n        }\n    ],\n    \"gender\": \"male\",\n    \"birthDate\": \"1990-01-15\",\n    \"address\": [\n        {\n            \"use\": \"home\",\n            \"line\": [\"123 Main Street\"],\n            \"city\": \"Bangkok\",\n            \"state\": \"Bangkok\",\n            \"postalCode\": \"10110\",\n            \"country\": \"TH\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/Patient",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "Patient"]
+						}
+					}
+				},
+				{
+					"name": "Get Patient by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('resourceType');",
+									"    pm.expect(jsonData.resourceType).to.eql('Patient');",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    console.log('Patient ID:', jsonData.id);",
+									"    console.log('Patient Name:', jsonData.name[0].given[0], jsonData.name[0].family);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/Patient/{{fhir_patient_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "Patient", "{{fhir_patient_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Search Patients",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patients search successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('resourceType');",
+									"    pm.expect(jsonData.resourceType).to.eql('Bundle');",
+									"    pm.expect(jsonData).to.have.property('entry');",
+									"    console.log('Total Patients Found:', jsonData.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/Patient?_count=10&name=John",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "Patient"],
+							"query": [
+								{
+									"key": "_count",
+									"value": "10"
+								},
+								{
+									"key": "name",
+									"value": "John",
+									"disabled": true
+								},
+								{
+									"key": "identifier",
+									"value": "TEST-PAT-001",
+									"disabled": true
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Observation Resources",
+			"item": [
+				{
+					"name": "Create Observation (Blood Pressure)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Observation created successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('resource_id');",
+									"    pm.environment.set('fhir_observation_id', jsonData.data.resource_id);",
+									"    console.log('FHIR Observation ID:', jsonData.data.resource_id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Observation\",\n    \"status\": \"final\",\n    \"category\": [\n        {\n            \"coding\": [\n                {\n                    \"system\": \"http://terminology.hl7.org/CodeSystem/observation-category\",\n                    \"code\": \"vital-signs\",\n                    \"display\": \"Vital Signs\"\n                }\n            ]\n        }\n    ],\n    \"code\": {\n        \"coding\": [\n            {\n                \"system\": \"http://loinc.org\",\n                \"code\": \"85354-9\",\n                \"display\": \"Blood pressure panel with all children optional\"\n            }\n        ]\n    },\n    \"subject\": {\n        \"reference\": \"Patient/{{fhir_patient_id}}\"\n    },\n    \"effectiveDateTime\": \"2024-01-15T10:30:00Z\",\n    \"component\": [\n        {\n            \"code\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://loinc.org\",\n                        \"code\": \"8480-6\",\n                        \"display\": \"Systolic blood pressure\"\n                    }\n                ]\n            },\n            \"valueQuantity\": {\n                \"value\": 120,\n                \"unit\": \"mmHg\",\n                \"system\": \"http://unitsofmeasure.org\",\n                \"code\": \"mm[Hg]\"\n            }\n        },\n        {\n            \"code\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://loinc.org\",\n                        \"code\": \"8462-4\",\n                        \"display\": \"Diastolic blood pressure\"\n                    }\n                ]\n            },\n            \"valueQuantity\": {\n                \"value\": 80,\n                \"unit\": \"mmHg\",\n                \"system\": \"http://unitsofmeasure.org\",\n                \"code\": \"mm[Hg]\"\n            }\n        }\n    ],\n    \"device\": {\n        \"reference\": \"Device/ava4-001\",\n        \"display\": \"AVA4 Blood Pressure Monitor\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/Observation",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "Observation"]
+						}
+					}
+				},
+				{
+					"name": "Get Observation by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Observation retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('resourceType');",
+									"    pm.expect(jsonData.resourceType).to.eql('Observation');",
+									"    pm.expect(jsonData).to.have.property('status');",
+									"    console.log('Observation Code:', jsonData.code.coding[0].display);",
+									"    console.log('Observation Status:', jsonData.status);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/Observation/{{fhir_observation_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "Observation", "{{fhir_observation_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Search Patient Observations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient observations search successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('resourceType');",
+									"    pm.expect(jsonData.resourceType).to.eql('Bundle');",
+									"    pm.expect(jsonData).to.have.property('entry');",
+									"    console.log('Total Observations Found:', jsonData.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/Observation?patient=Patient/{{fhir_patient_id}}&category=vital-signs&_count=20",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "Observation"],
+							"query": [
+								{
+									"key": "patient",
+									"value": "Patient/{{fhir_patient_id}}"
+								},
+								{
+									"key": "category",
+									"value": "vital-signs"
+								},
+								{
+									"key": "_count",
+									"value": "20"
+								},
+								{
+									"key": "code",
+									"value": "85354-9",
+									"disabled": true
+								},
+								{
+									"key": "date",
+									"value": "2024-01-01",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Observation from MQTT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('MQTT Observation created successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('fhir_resource');",
+									"    console.log('MQTT to FHIR conversion successful');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mqtt_payload\": {\n        \"timestamp\": \"2024-01-15T10:30:00Z\",\n        \"device_id\": \"AA:BB:CC:DD:EE:FF\",\n        \"type\": \"BLOOD_PRESSURE\",\n        \"data\": {\n            \"systolic\": 125,\n            \"diastolic\": 82,\n            \"pulse\": 75,\n            \"value\": 125,\n            \"unit\": \"mmHg\",\n            \"unit_code\": \"mm[Hg]\"\n        }\n    },\n    \"patient_id\": \"{{fhir_patient_id}}\",\n    \"device_id\": \"ava4-device-001\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/Observation/from-mqtt",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "Observation", "from-mqtt"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Device Resources",
+			"item": [
+				{
+					"name": "Create Device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Device created successfully', function () {",
+									"    pm.response.to.have.status(201);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('resource_id');",
+									"    pm.environment.set('fhir_device_id', jsonData.data.resource_id);",
+									"    console.log('FHIR Device ID:', jsonData.data.resource_id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Device\",\n    \"identifier\": [\n        {\n            \"system\": \"http://my-firstcare.com/device-mac\",\n            \"value\": \"AA:BB:CC:DD:EE:FF\"\n        }\n    ],\n    \"status\": \"active\",\n    \"manufacturer\": \"AVA Medical\",\n    \"modelNumber\": \"AVA4-Pro\",\n    \"version\": [\n        {\n            \"type\": {\n                \"coding\": [\n                    {\n                        \"system\": \"http://terminology.hl7.org/CodeSystem/device-version-type\",\n                        \"code\": \"firmware\"\n                    }\n                ]\n            },\n            \"value\": \"2.1.0\"\n        }\n    ],\n    \"deviceName\": [\n        {\n            \"name\": \"AVA4 Blood Pressure Monitor\",\n            \"type\": \"manufacturer-name\"\n        }\n    ],\n    \"type\": {\n        \"coding\": [\n            {\n                \"system\": \"http://snomed.info/sct\",\n                \"code\": \"469801002\",\n                \"display\": \"Blood pressure monitoring device\"\n            }\n        ]\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/Device",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "Device"]
+						}
+					}
+				},
+				{
+					"name": "Search Devices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Devices search successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('resourceType');",
+									"    pm.expect(jsonData.resourceType).to.eql('Bundle');",
+									"    pm.expect(jsonData).to.have.property('entry');",
+									"    console.log('Total Devices Found:', jsonData.total);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/Device?manufacturer=AVA&status=active&_count=10",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "Device"],
+							"query": [
+								{
+									"key": "manufacturer",
+									"value": "AVA",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "active"
+								},
+								{
+									"key": "_count",
+									"value": "10"
+								},
+								{
+									"key": "identifier",
+									"value": "AA:BB:CC:DD:EE:FF",
+									"disabled": true
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Blockchain Verification",
+			"item": [
+				{
+					"name": "Verify Resource Hash",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Resource hash verification completed', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('verification');",
+									"    console.log('Hash verification result:', jsonData.data.verification.is_valid);",
+									"    console.log('Current hash:', jsonData.data.verification.current_hash);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/Patient/{{fhir_patient_id}}/$verify",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "Patient", "{{fhir_patient_id}}", "$verify"]
+						}
+					}
+				},
+				{
+					"name": "Get Blockchain Chain Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Blockchain chain info retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('chain_info');",
+									"    console.log('Total resources in chain:', jsonData.data.chain_info.total_resources);",
+									"    console.log('Chain length:', jsonData.data.chain_info.chain_length);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/blockchain/$chain-info",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "blockchain", "$chain-info"]
+						}
+					}
+				},
+				{
+					"name": "Get Blockchain Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Blockchain statistics retrieved', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('statistics');",
+									"    console.log('Blockchain statistics:', jsonData.data.statistics);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/blockchain/$statistics?include_resource_details=true",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "blockchain", "$statistics"],
+							"query": [
+								{
+									"key": "include_resource_details",
+									"value": "true"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Migration & Special Operations",
+			"item": [
+				{
+					"name": "Comprehensive Patient Migration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Comprehensive patient migration completed', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('migration_summary');",
+									"    console.log('Migration summary:', jsonData.data.migration_summary);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"patient_id\": \"{{patient_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/migration/amy/comprehensive-patient",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "migration", "amy", "comprehensive-patient"]
+						}
+					}
+				},
+				{
+					"name": "Migrate Patient Goals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Patient goals migration completed', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    console.log('Goals migrated:', jsonData.data.total_goals);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"patient_id\": \"{{patient_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/fhir/R5/migration/amy/patient-goals",
+							"host": ["{{base_url}}"],
+							"path": ["fhir", "R5", "migration", "amy", "patient-goals"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5054",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "dev_user",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "dev_password",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "dev_user",
+			"type": "string"
+		},
+		{
+			"key": "patient_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "fhir_patient_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "fhir_observation_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "fhir_device_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 

@@ -2201,6 +2201,288 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "qube-vital",
+          "Qube-Vital"
+        ],
+        "summary": "Create Qube Vital Device",
+        "description": "Create a new Qube-Vital device",
+        "operationId": "create_qube_vital_device_api_qube_vital_devices_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QubeVitalDeviceCreate"
+              },
+              "example": {
+                "imei_of_hv01_box": "868334037510868",
+                "device_name": "Qube-Vital-ICU-001",
+                "model": "HV01-2024",
+                "hospital_id": "507f1f77bcf86cd799439012",
+                "location": "ICU Room 1",
+                "status": "active",
+                "is_active": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Qube-Vital device created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "Qube-Vital device created successfully",
+                  "data": {
+                    "device_id": "507f1f77bcf86cd799439015",
+                    "imei_of_hv01_box": "868334037510868",
+                    "device_name": "Qube-Vital-ICU-001",
+                    "model": "HV01-2024",
+                    "status": "active"
+                  },
+                  "request_id": "i9j0k1l2-m3n4-5678-ijkl-901234567890",
+                  "timestamp": "2025-07-07T07:08:07.633870Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Device with IMEI already exists or invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Hospital not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/qube-vital/devices/table": {
+      "get": {
+        "tags": [
+          "qube-vital",
+          "Qube-Vital"
+        ],
+        "summary": "Get Qube Vital Devices Table",
+        "description": "Get Qube-Vital devices in table format with pagination and filtering",
+        "operationId": "get_qube_vital_devices_table_api_qube_vital_devices_table_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "hospital_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Hospital Id"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Search"
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "created_at",
+              "title": "Sort By"
+            }
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "desc",
+              "title": "Sort Order"
+            }
+          },
+          {
+            "name": "columns",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Columns"
+            }
+          },
+          {
+            "name": "export_format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Export Format"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Qube-Vital devices table retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "Qube-Vital devices table retrieved successfully",
+                  "data": {
+                    "table": {
+                      "data": [
+                        {
+                          "device_id": "507f1f77bcf86cd799439015",
+                          "device_name": "Qube-Vital-ICU-001",
+                          "imei_of_hv01_box": "868334037510868",
+                          "model": "HV01-2024",
+                          "status": "active",
+                          "hospital_info": {
+                            "hospital_id": "507f1f77bcf86cd799439012",
+                            "hospital_name": "Bangkok General Hospital",
+                            "location": "Bangkok"
+                          }
+                        }
+                      ],
+                      "columns": ["device_name", "imei_of_hv01_box", "model", "status", "hospital_info"],
+                      "available_columns": ["device_id", "device_name", "imei_of_hv01_box", "model", "hospital_info", "location", "status", "is_active", "created_at", "updated_at"]
+                    },
+                    "pagination": {
+                      "page": 1,
+                      "limit": 25,
+                      "total": 42,
+                      "total_pages": 2,
+                      "has_next": true,
+                      "has_prev": false
+                    }
+                  },
+                  "request_id": "j0k1l2m3-n4o5-6789-jklm-012345678901",
+                  "timestamp": "2025-07-07T07:08:07.633870Z"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/qube-vital/devices/{device_id}": {
@@ -2234,6 +2516,103 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "qube-vital",
+          "Qube-Vital"
+        ],
+        "summary": "Update Qube Vital Device",
+        "description": "Update an existing Qube-Vital device",
+        "operationId": "update_qube_vital_device_api_qube_vital_devices__device_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Device Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QubeVitalDeviceUpdate"
+              },
+              "example": {
+                "device_name": "Updated Qube-Vital Device",
+                "location": "ICU Room 2 - Updated",
+                "status": "maintenance",
+                "is_active": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Qube-Vital device updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "Qube-Vital device updated successfully",
+                  "data": {
+                    "device_id": "507f1f77bcf86cd799439015",
+                    "device_name": "Updated Qube-Vital Device",
+                    "location": "ICU Room 2 - Updated",
+                    "status": "maintenance",
+                    "is_active": false,
+                    "updated_at": "2025-07-07T07:08:07.633870Z"
+                  },
+                  "request_id": "k1l2m3n4-o5p6-7890-klmn-123456789012",
+                  "timestamp": "2025-07-07T07:08:07.633870Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No changes provided or invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Device not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
               }
             }
           },
@@ -2553,6 +2932,623 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patients/{patient_id}/medical-devices": {
+      "get": {
+        "tags": [
+          "patient-devices",
+          "Patient Medical Devices"
+        ],
+        "summary": "Get Patient Medical Devices",
+        "description": "Get all medical devices registered to a specific patient",
+        "operationId": "get_patient_medical_devices_api_patients__patient_id__medical_devices_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Patient Id"
+            }
+          },
+          {
+            "name": "include_device_info",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Include Device Info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient medical devices retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "Patient medical devices retrieved successfully",
+                  "data": {
+                    "patient_id": "622035a5fd26d7b6d9b7730c",
+                    "registered_devices": [
+                      {
+                        "device_type": "bps",
+                        "device_name": "Blood Pressure Monitor",
+                        "mac_address": "AA:BB:CC:DD:EE:FF"
+                      },
+                      {
+                        "device_type": "gluc",
+                        "device_name": "Glucose Meter",
+                        "mac_address": "11:22:33:44:55:66"
+                      }
+                    ],
+                    "device_count": 2,
+                    "patient_info": {
+                      "name": "John Doe",
+                      "hn": "HN001234",
+                      "phone": "+66-XXX-XXX-XXXX"
+                    }
+                  },
+                  "request_id": "f6g7h8i9-j0k1-2345-fghi-678901234567",
+                  "timestamp": "2025-07-07T07:08:07.633870Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Patient not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "patient-devices",
+          "Patient Medical Devices"
+        ],
+        "summary": "Register Patient Medical Devices",
+        "description": "Register medical devices to a patient (create new registry)",
+        "operationId": "register_patient_medical_devices_api_patients__patient_id__medical_devices_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Patient Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientDeviceRegistry"
+              },
+              "example": {
+                "user_id": "67208370e6938c0337c6da09",
+                "group": "ICU-Ward-A",
+                "mac_bps": "AA:BB:CC:DD:EE:FF",
+                "mac_gluc": "11:22:33:44:55:66",
+                "mac_gw": "FF:EE:DD:CC:BB:AA"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patient medical device registry created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Registry already exists or MAC address conflicts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Patient not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "patient-devices",
+          "Patient Medical Devices"
+        ],
+        "summary": "Update Patient Medical Devices",
+        "description": "Update medical devices registry for a patient",
+        "operationId": "update_patient_medical_devices_api_patients__patient_id__medical_devices_put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Patient Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientDeviceRegistryUpdate"
+              },
+              "example": {
+                "mac_bps": "AA:BB:CC:DD:EE:00",
+                "mac_chol": "22:33:44:55:66:77"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patient medical device registry updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "MAC address conflicts or no changes provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Patient or registry not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patients/{patient_id}/medical-devices/{device_type}": {
+      "delete": {
+        "tags": [
+          "patient-devices",
+          "Patient Medical Devices"
+        ],
+        "summary": "Unregister Patient Device",
+        "description": "Unregister a specific device type from a patient",
+        "operationId": "unregister_patient_device_api_patients__patient_id__medical_devices__device_type__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Patient Id"
+            }
+          },
+          {
+            "name": "device_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Device Type",
+              "enum": ["gateway", "bps", "body_temp", "watch", "oxymeter", "weight", "gluc", "chol", "ua", "dusun_bps", "mgss_oxymeter", "salt_meter"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Device unregistered successfully from patient",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid device type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Patient, registry, or device not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patients/medical-devices/table": {
+      "get": {
+        "tags": [
+          "patient-devices",
+          "Patient Medical Devices"
+        ],
+        "summary": "Get Patient Devices Table",
+        "description": "Get patient medical device registries in table format",
+        "operationId": "get_patient_devices_table_api_patients_medical_devices_table_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Search"
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "created_at",
+              "title": "Sort By"
+            }
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "desc",
+              "title": "Sort Order"
+            }
+          },
+          {
+            "name": "columns",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Columns"
+            }
+          },
+          {
+            "name": "export_format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Export Format"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient medical device registries table retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "Patient medical device registries table retrieved successfully",
+                  "data": {
+                    "table": {
+                      "data": [
+                        {
+                          "patient_info": {
+                            "patient_id": "622035a5fd26d7b6d9b7730c",
+                            "name": "John Doe",
+                            "hn": "HN001234"
+                          },
+                          "device_count": 3,
+                          "registered_devices": [
+                            {
+                              "device_type": "bps",
+                              "device_name": "Blood Pressure Monitor",
+                              "mac_address": "AA:BB:CC:DD:EE:FF"
+                            }
+                          ]
+                        }
+                      ],
+                      "columns": ["patient_info", "device_count", "registered_devices"],
+                      "available_columns": ["patient_info", "registry_id", "device_count", "registered_devices", "healthcare_provider", "group", "created_at", "updated_at"]
+                    },
+                    "pagination": {
+                      "page": 1,
+                      "limit": 25,
+                      "total": 150,
+                      "total_pages": 6,
+                      "has_next": true,
+                      "has_prev": false
+                    }
+                  },
+                  "request_id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
+                  "timestamp": "2025-07-07T07:08:07.633870Z"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/medical-devices/patient/{mac_address}": {
+      "get": {
+        "tags": [
+          "device-lookup",
+          "Medical Device Lookup"
+        ],
+        "summary": "Find Patient By Device Mac",
+        "description": "Find which patient a medical device belongs to by MAC address",
+        "operationId": "find_patient_by_device_mac_api_medical_devices_patient__mac_address__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mac_address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Mac Address"
+            }
+          },
+          {
+            "name": "include_patient_info",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Include Patient Info"
+            }
+          },
+          {
+            "name": "include_device_details",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Include Device Details"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient found by medical device MAC address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "Patient found by medical device MAC address",
+                  "data": {
+                    "mac_address": "aa:bb:cc:dd:ee:ff",
+                    "device_type": "bps",
+                    "device_name": "Blood Pressure Monitor",
+                    "patient_info": {
+                      "patient_id": "622035a5fd26d7b6d9b7730c",
+                      "name": "John Doe",
+                      "hn": "HN001234",
+                      "phone": "+66-XXX-XXX-XXXX",
+                      "is_active": true
+                    },
+                    "healthcare_provider": {
+                      "user_id": "67208370e6938c0337c6da09",
+                      "username": "dr.smith",
+                      "name": "Dr. Smith"
+                    }
+                  },
+                  "request_id": "h8i9j0k1-l2m3-4567-hijk-890123456789",
+                  "timestamp": "2025-07-07T07:08:07.633870Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid MAC address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Device not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
               }
             }
           },
@@ -10713,6 +11709,364 @@
         "type": "object",
         "title": "PatientUpdate"
       },
+      "PatientDeviceRegistry": {
+        "properties": {
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Id",
+            "description": "Healthcare provider managing this patient's devices"
+          },
+          "patient_id": {
+            "type": "string",
+            "title": "Patient Id",
+            "description": "Patient ID these devices belong to"
+          },
+          "group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group",
+            "description": "Device group/organization"
+          },
+          "mac_gw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Gw",
+            "description": "Gateway MAC address (AVA4 box)"
+          },
+          "mac_bps": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Bps",
+            "description": "Blood pressure monitor MAC address"
+          },
+          "mac_body_temp": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Body Temp",
+            "description": "Body temperature sensor MAC address"
+          },
+          "mac_watch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Watch",
+            "description": "Smart watch MAC address"
+          },
+          "mac_oxymeter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Oxymeter",
+            "description": "Oximeter MAC address"
+          },
+          "mac_weight": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Weight",
+            "description": "Weight scale MAC address"
+          },
+          "mac_gluc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Gluc",
+            "description": "Glucose meter MAC address"
+          },
+          "mac_chol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Chol",
+            "description": "Cholesterol meter MAC address"
+          },
+          "mac_ua": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Ua",
+            "description": "Uric acid meter MAC address"
+          },
+          "mac_dusun_bps": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Dusun Bps",
+            "description": "Dusun blood pressure monitor MAC address"
+          },
+          "mac_mgss_oxymeter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Mgss Oxymeter",
+            "description": "MGSS oximeter MAC address"
+          },
+          "mac_salt_meter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Salt Meter",
+            "description": "Salt meter MAC address"
+          }
+        },
+        "type": "object",
+        "required": [
+          "patient_id"
+        ],
+        "title": "PatientDeviceRegistry",
+        "description": "Model for patient medical device registry"
+      },
+      "PatientDeviceRegistryUpdate": {
+        "properties": {
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Id",
+            "description": "Healthcare provider managing this patient's devices"
+          },
+          "group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group",
+            "description": "Device group/organization"
+          },
+          "mac_gw": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Gw",
+            "description": "Gateway MAC address (AVA4 box)"
+          },
+          "mac_bps": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Bps",
+            "description": "Blood pressure monitor MAC address"
+          },
+          "mac_body_temp": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Body Temp",
+            "description": "Body temperature sensor MAC address"
+          },
+          "mac_watch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Watch",
+            "description": "Smart watch MAC address"
+          },
+          "mac_oxymeter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Oxymeter",
+            "description": "Oximeter MAC address"
+          },
+          "mac_weight": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Weight",
+            "description": "Weight scale MAC address"
+          },
+          "mac_gluc": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Gluc",
+            "description": "Glucose meter MAC address"
+          },
+          "mac_chol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Chol",
+            "description": "Cholesterol meter MAC address"
+          },
+          "mac_ua": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Ua",
+            "description": "Uric acid meter MAC address"
+          },
+          "mac_dusun_bps": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Dusun Bps",
+            "description": "Dusun blood pressure monitor MAC address"
+          },
+          "mac_mgss_oxymeter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Mgss Oxymeter",
+            "description": "MGSS oximeter MAC address"
+          },
+          "mac_salt_meter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mac Salt Meter",
+            "description": "Salt meter MAC address"
+          }
+        },
+        "type": "object",
+        "title": "PatientDeviceRegistryUpdate",
+        "description": "Model for updating patient medical device registry"
+      },
       "QubeVitalDataRequest": {
         "properties": {
           "timestamp": {
@@ -10770,6 +12124,154 @@
           "message"
         ],
         "title": "QubeVitalDataResponse"
+      },
+      "QubeVitalDeviceCreate": {
+        "properties": {
+          "imei_of_hv01_box": {
+            "type": "string",
+            "maxLength": 15,
+            "minLength": 15,
+            "title": "Imei Of Hv01 Box",
+            "description": "IMEI of the Qube-Vital HV01 box"
+          },
+          "device_name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Device Name",
+            "description": "Display name for the device"
+          },
+          "model": {
+            "type": "string",
+            "default": "HV01",
+            "title": "Model",
+            "description": "Device model"
+          },
+          "hospital_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hospital Id",
+            "description": "Hospital ID to assign the device to"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location",
+            "description": "Physical location of the device"
+          },
+          "status": {
+            "type": "string",
+            "default": "inactive",
+            "title": "Status",
+            "description": "Device status"
+          },
+          "is_active": {
+            "type": "boolean",
+            "default": true,
+            "title": "Is Active",
+            "description": "Whether the device is active"
+          }
+        },
+        "type": "object",
+        "required": [
+          "imei_of_hv01_box",
+          "device_name"
+        ],
+        "title": "QubeVitalDeviceCreate",
+        "description": "Model for creating a new Qube-Vital device"
+      },
+      "QubeVitalDeviceUpdate": {
+        "properties": {
+          "device_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device Name",
+            "description": "Display name for the device"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model",
+            "description": "Device model"
+          },
+          "hospital_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hospital Id",
+            "description": "Hospital ID to assign the device to"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location",
+            "description": "Physical location of the device"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status",
+            "description": "Device status"
+          },
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active",
+            "description": "Whether the device is active"
+          }
+        },
+        "type": "object",
+        "title": "QubeVitalDeviceUpdate",
+        "description": "Model for updating a Qube-Vital device"
       },
       "RefreshRequest": {
         "properties": {

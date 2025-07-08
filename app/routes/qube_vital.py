@@ -1,9 +1,9 @@
 import uuid
 from datetime import datetime
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from bson import ObjectId
 from app.services.mongo import mongodb_service
 from app.services.auth import require_auth
@@ -24,6 +24,38 @@ class QubeVitalDataResponse(BaseModel):
     success: bool
     message: str
     observation_id: Optional[str] = None
+
+class QubeVitalDeviceCreate(BaseModel):
+    """Model for creating a new Qube-Vital device"""
+    imei_of_hv01_box: str = Field(..., description="IMEI of the Qube-Vital HV01 box", min_length=15, max_length=15)
+    device_name: str = Field(..., description="Display name for the device", min_length=1, max_length=100)
+    model: str = Field(default="HV01", description="Device model")
+    hospital_id: Optional[str] = Field(None, description="Hospital ID to assign the device to")
+    location: Optional[str] = Field(None, description="Physical location of the device")
+    status: str = Field(default="inactive", description="Device status")
+    is_active: bool = Field(default=True, description="Whether the device is active")
+
+class QubeVitalDeviceUpdate(BaseModel):
+    """Model for updating a Qube-Vital device"""
+    device_name: Optional[str] = Field(None, description="Display name for the device", min_length=1, max_length=100)
+    model: Optional[str] = Field(None, description="Device model")
+    hospital_id: Optional[str] = Field(None, description="Hospital ID to assign the device to")
+    location: Optional[str] = Field(None, description="Physical location of the device")
+    status: Optional[str] = Field(None, description="Device status")
+    is_active: Optional[bool] = Field(None, description="Whether the device is active")
+
+class QubeVitalBulkCreate(BaseModel):
+    """Model for bulk creating Qube-Vital devices"""
+    devices: List[QubeVitalDeviceCreate] = Field(..., description="List of devices to create")
+
+class QubeVitalBulkUpdate(BaseModel):
+    """Model for bulk updating Qube-Vital devices"""
+    device_id: str = Field(..., description="Device ID to update")
+    updates: QubeVitalDeviceUpdate = Field(..., description="Fields to update")
+
+class QubeVitalBulkUpdateRequest(BaseModel):
+    """Model for bulk update request"""
+    updates: List[QubeVitalBulkUpdate] = Field(..., description="List of device updates")
 
 @router.post("/data", response_model=QubeVitalDataResponse)
 async def receive_qube_vital_data(
@@ -193,31 +225,316 @@ async def route_to_medical_history(data: QubeVitalDataRequest, hospital_id: str)
 
 @router.get("/devices")
 async def get_qube_vital_devices(
+    request: Request,
     limit: int = 100,
     skip: int = 0,
     active_only: bool = True,
+    hospital_id: Optional[str] = None,
+    status: Optional[str] = None,
+    search: Optional[str] = None,
+    sort_by: str = "created_at",
+    sort_order: str = "desc",
+    include_hospital_info: bool = False,
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
-    """Get Qube-Vital devices"""
+    """Get Qube-Vital devices with advanced filtering and search"""
     try:
-        collection = mongodb_service.get_collection("mfc_hv01_boxes")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
+        device_collection = mongodb_service.get_collection("mfc_hv01_boxes")
+        
+        # Build filter query
         filter_query = {}
+        
+        # Active/deleted filter
         if active_only:
             filter_query["is_active"] = True
-            filter_query["is_deleted"] = False
+            filter_query["is_deleted"] = {"$ne": True}
         
-        cursor = collection.find(filter_query).skip(skip).limit(limit)
+        # Hospital filter
+        if hospital_id:
+            try:
+                hospital_obj_id = ObjectId(hospital_id)
+                filter_query["hospital_id"] = hospital_obj_id
+            except Exception as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=create_error_response(
+                        "INVALID_HOSPITAL_ID",
+                        field="hospital_id",
+                        value=hospital_id,
+                        custom_message=f"Invalid hospital ID format: {str(e)}",
+                        request_id=request_id
+                    ).dict()
+                )
+        
+        # Status filter
+        if status:
+            filter_query["status"] = status
+        
+        # Search functionality
+        if search:
+            search_regex = {"$regex": search, "$options": "i"}
+            filter_query["$or"] = [
+                {"device_name": search_regex},
+                {"imei_of_hv01_box": search_regex},
+                {"model": search_regex},
+                {"location": search_regex}
+            ]
+        
+        # Build sort
+        sort_direction = 1 if sort_order.lower() == "asc" else -1
+        valid_sort_fields = ["created_at", "updated_at", "device_name", "imei_of_hv01_box", "status", "model"]
+        if sort_by not in valid_sort_fields:
+            sort_by = "created_at"
+        
+        # Get total count
+        total_count = await device_collection.count_documents(filter_query)
+        
+        # Get devices with pagination and sorting
+        cursor = device_collection.find(filter_query).sort(sort_by, sort_direction).skip(skip).limit(limit)
         devices = await cursor.to_list(length=limit)
         
-        # Serialize ObjectIds
+        # Serialize devices
         serialized_devices = serialize_mongodb_response(devices)
-        response_data = {"devices": serialized_devices, "total": len(devices)}
         
-        return JSONResponse(content=response_data)
+        # Add hospital information if requested
+        if include_hospital_info and isinstance(serialized_devices, list):
+            hospital_collection = mongodb_service.get_collection("hospitals")
+            for device in serialized_devices:
+                if isinstance(device, dict) and device.get("hospital_id"):
+                    try:
+                        hospital_obj_id = ObjectId(device["hospital_id"])
+                        hospital = await hospital_collection.find_one({"_id": hospital_obj_id})
+                        if hospital:
+                            hospital_info = serialize_mongodb_response(hospital)
+                            device["hospital_info"] = {
+                                "hospital_name": hospital_info.get("hospital_name"),
+                                "hospital_code": hospital_info.get("hospital_code"),
+                                "hospital_type": hospital_info.get("hospital_type")
+                            }
+                    except Exception:
+                        device["hospital_info"] = None
         
+        # Calculate pagination info
+        total_pages = (total_count + limit - 1) // limit if limit > 0 else 1
+        current_page = (skip // limit) + 1 if limit > 0 else 1
+        has_next = (skip + len(serialized_devices)) < total_count
+        has_prev = skip > 0
+        
+        success_response = create_success_response(
+            message="Qube-Vital devices retrieved successfully",
+            data={
+                "devices": serialized_devices,
+                "pagination": {
+                    "total": total_count,
+                    "limit": limit,
+                    "skip": skip,
+                    "current_page": current_page,
+                    "total_pages": total_pages,
+                    "has_next": has_next,
+                    "has_prev": has_prev,
+                    "returned_count": len(serialized_devices)
+                },
+                "filters": {
+                    "active_only": active_only,
+                    "hospital_id": hospital_id,
+                    "status": status,
+                    "search": search,
+                    "sort_by": sort_by,
+                    "sort_order": sort_order
+                },
+                "statistics": {
+                    "total_devices": total_count,
+                    "returned_devices": len(serialized_devices)
+                }
+            },
+            request_id=request_id
+        )
+        
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error getting Qube-Vital devices: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve devices: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
+        )
+
+@router.get("/devices/table")
+async def get_qube_vital_devices_table(
+    request: Request,
+    page: int = 1,
+    limit: int = 25,
+    hospital_id: Optional[str] = None,
+    status: Optional[str] = None,
+    search: Optional[str] = None,
+    sort_by: str = "created_at",
+    sort_order: str = "desc",
+    columns: Optional[str] = None,
+    export_format: Optional[str] = None,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Get Qube-Vital devices in table format with advanced features"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Calculate skip from page
+        skip = (page - 1) * limit if page > 0 else 0
+        
+        # Define available columns
+        available_columns = [
+            "device_name", "imei_of_hv01_box", "model", "status", "location",
+            "hospital_info", "is_active", "created_at", "updated_at"
+        ]
+        
+        # Parse requested columns
+        selected_columns = available_columns
+        if columns:
+            requested_cols = [col.strip() for col in columns.split(",")]
+            selected_columns = [col for col in requested_cols if col in available_columns]
+        
+        device_collection = mongodb_service.get_collection("mfc_hv01_boxes")
+        
+        # Build filter query (same as regular get devices)
+        filter_query = {"is_deleted": {"$ne": True}}
+        
+        if hospital_id:
+            try:
+                filter_query["hospital_id"] = ObjectId(hospital_id)
+            except Exception as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=create_error_response(
+                        "INVALID_HOSPITAL_ID",
+                        field="hospital_id",
+                        value=hospital_id,
+                        custom_message=f"Invalid hospital ID format: {str(e)}",
+                        request_id=request_id
+                    ).dict()
+                )
+        
+        if status:
+            filter_query["status"] = status
+        
+        if search:
+            search_regex = {"$regex": search, "$options": "i"}
+            filter_query["$or"] = [
+                {"device_name": search_regex},
+                {"imei_of_hv01_box": search_regex},
+                {"model": search_regex},
+                {"location": search_regex}
+            ]
+        
+        # Build sort
+        sort_direction = 1 if sort_order.lower() == "asc" else -1
+        valid_sort_fields = ["created_at", "updated_at", "device_name", "imei_of_hv01_box", "status", "model"]
+        if sort_by not in valid_sort_fields:
+            sort_by = "created_at"
+        
+        # Get total count
+        total_count = await device_collection.count_documents(filter_query)
+        
+        # Get devices
+        cursor = device_collection.find(filter_query).sort(sort_by, sort_direction).skip(skip).limit(limit)
+        devices = await cursor.to_list(length=limit)
+        
+        # Serialize and add hospital info
+        serialized_devices = serialize_mongodb_response(devices)
+        hospital_collection = mongodb_service.get_collection("hospitals")
+        
+        # Prepare table data
+        table_data = []
+        if isinstance(serialized_devices, list):
+            for device in serialized_devices:
+                if isinstance(device, dict):
+                    row = {}
+                    
+                    # Add selected columns
+                    for col in selected_columns:
+                        if col == "hospital_info" and device.get("hospital_id"):
+                            try:
+                                hospital_obj_id = ObjectId(device["hospital_id"])
+                                hospital = await hospital_collection.find_one({"_id": hospital_obj_id})
+                                if hospital:
+                                    hospital_info = serialize_mongodb_response(hospital)
+                                    row["hospital_info"] = {
+                                        "hospital_name": hospital_info.get("hospital_name"),
+                                        "hospital_code": hospital_info.get("hospital_code")
+                                    }
+                                else:
+                                    row["hospital_info"] = None
+                            except Exception:
+                                row["hospital_info"] = None
+                        else:
+                            row[col] = device.get(col)
+                    
+                    table_data.append(row)
+        
+        # Calculate pagination
+        total_pages = (total_count + limit - 1) // limit if limit > 0 else 1
+        has_next = page < total_pages
+        has_prev = page > 1
+        
+        # Handle export if requested
+        export_data = None
+        if export_format:
+            export_data = {
+                "format": export_format,
+                "total_records": total_count,
+                "generated_at": datetime.utcnow().isoformat(),
+                "download_url": f"/api/qube-vital/devices/export?format={export_format}&filters={request.url.query}"
+            }
+        
+        success_response = create_success_response(
+            message="Qube-Vital devices table data retrieved successfully",
+            data={
+                "table": {
+                    "data": table_data,
+                    "columns": selected_columns,
+                    "available_columns": available_columns
+                },
+                "pagination": {
+                    "page": page,
+                    "limit": limit,
+                    "total": total_count,
+                    "total_pages": total_pages,
+                    "has_next": has_next,
+                    "has_prev": has_prev,
+                    "returned_count": len(table_data)
+                },
+                "filters": {
+                    "hospital_id": hospital_id,
+                    "status": status,
+                    "search": search,
+                    "sort_by": sort_by,
+                    "sort_order": sort_order
+                },
+                "export": export_data
+            },
+            request_id=request_id
+        )
+        
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting Qube-Vital devices table: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve devices table: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
+        )
 
 @router.get("/devices/{device_id}")
 async def get_qube_vital_device(
@@ -238,6 +555,277 @@ async def get_qube_vital_device(
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/devices")
+async def create_qube_vital_device(
+    device_data: QubeVitalDeviceCreate,
+    request: Request,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Create a new Qube-Vital device"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Check if IMEI already exists
+        device_collection = mongodb_service.get_collection("mfc_hv01_boxes")
+        existing_device = await device_collection.find_one({"imei_of_hv01_box": device_data.imei_of_hv01_box})
+        
+        if existing_device:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "DEVICE_ALREADY_EXISTS",
+                    field="imei_of_hv01_box",
+                    value=device_data.imei_of_hv01_box,
+                    custom_message=f"Qube-Vital device with IMEI '{device_data.imei_of_hv01_box}' already exists",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Validate hospital if provided
+        hospital_obj_id = None
+        if device_data.hospital_id:
+            try:
+                hospital_obj_id = ObjectId(device_data.hospital_id)
+                hospital_collection = mongodb_service.get_collection("hospitals")
+                hospital = await hospital_collection.find_one({"_id": hospital_obj_id})
+                
+                if not hospital:
+                    raise HTTPException(
+                        status_code=404,
+                        detail=create_error_response(
+                            "HOSPITAL_NOT_FOUND",
+                            field="hospital_id",
+                            value=device_data.hospital_id,
+                            custom_message=f"Hospital with ID '{device_data.hospital_id}' not found",
+                            request_id=request_id
+                        ).dict()
+                    )
+            except Exception as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=create_error_response(
+                        "INVALID_HOSPITAL_ID",
+                        field="hospital_id",
+                        value=device_data.hospital_id,
+                        custom_message=f"Invalid hospital ID format: {str(e)}",
+                        request_id=request_id
+                    ).dict()
+                )
+        
+        # Create device document
+        device_doc = {
+            "imei_of_hv01_box": device_data.imei_of_hv01_box,
+            "device_name": device_data.device_name,
+            "model": device_data.model,
+            "location": device_data.location,
+            "status": device_data.status,
+            "is_active": device_data.is_active,
+            "is_deleted": False,
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow(),
+            "created_by": current_user.get("username")
+        }
+        
+        # Add hospital_id if provided
+        if hospital_obj_id:
+            device_doc["hospital_id"] = hospital_obj_id
+        
+        # Insert device
+        insert_result = await device_collection.insert_one(device_doc)
+        device_id = str(insert_result.inserted_id)
+        
+        # Log audit trail
+        await audit_logger.log_admin_action(
+            action="CREATE",
+            resource_type="QubevitalDevice",
+            resource_id=device_id,
+            user_id=current_user.get("username") or "unknown",
+            details={
+                "device_imei": device_data.imei_of_hv01_box,
+                "device_name": device_data.device_name,
+                "hospital_id": device_data.hospital_id,
+                "model": device_data.model
+            }
+        )
+        
+        # Get created device with serialization
+        created_device = await device_collection.find_one({"_id": insert_result.inserted_id})
+        serialized_device = serialize_mongodb_response(created_device)
+        
+        success_response = create_success_response(
+            message="Qube-Vital device created successfully",
+            data={
+                "device": serialized_device,
+                "device_id": device_id
+            },
+            request_id=request_id
+        )
+        
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating Qube-Vital device: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to create device: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
+        )
+
+@router.put("/devices/{device_id}")
+async def update_qube_vital_device(
+    device_id: str,
+    device_data: QubeVitalDeviceUpdate,
+    request: Request,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Update a Qube-Vital device"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Convert device_id to ObjectId
+        try:
+            device_obj_id = ObjectId(device_id)
+        except Exception as e:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_DEVICE_ID",
+                    field="device_id",
+                    value=device_id,
+                    custom_message=f"Invalid device ID format: {str(e)}",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Check if device exists
+        device_collection = mongodb_service.get_collection("mfc_hv01_boxes")
+        device = await device_collection.find_one({"_id": device_obj_id})
+        
+        if not device:
+            raise HTTPException(
+                status_code=404,
+                detail=create_error_response(
+                    "DEVICE_NOT_FOUND",
+                    field="device_id",
+                    value=device_id,
+                    custom_message=f"Qube-Vital device with ID '{device_id}' not found",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Build update document
+        update_fields = {"updated_at": datetime.utcnow(), "updated_by": current_user.get("username")}
+        
+        # Add fields that have values
+        if device_data.device_name is not None:
+            update_fields["device_name"] = device_data.device_name
+        if device_data.model is not None:
+            update_fields["model"] = device_data.model
+        if device_data.location is not None:
+            update_fields["location"] = device_data.location
+        if device_data.status is not None:
+            update_fields["status"] = device_data.status
+        if device_data.is_active is not None:
+            update_fields["is_active"] = device_data.is_active
+        
+        # Handle hospital_id if provided
+        if device_data.hospital_id is not None:
+            if device_data.hospital_id == "":
+                # Remove hospital assignment
+                update_fields["$unset"] = {"hospital_id": ""}
+            else:
+                try:
+                    hospital_obj_id = ObjectId(device_data.hospital_id)
+                    hospital_collection = mongodb_service.get_collection("hospitals")
+                    hospital = await hospital_collection.find_one({"_id": hospital_obj_id})
+                    
+                    if not hospital:
+                        raise HTTPException(
+                            status_code=404,
+                            detail=create_error_response(
+                                "HOSPITAL_NOT_FOUND",
+                                field="hospital_id",
+                                value=device_data.hospital_id,
+                                custom_message=f"Hospital with ID '{device_data.hospital_id}' not found",
+                                request_id=request_id
+                            ).dict()
+                        )
+                    
+                    update_fields["hospital_id"] = hospital_obj_id
+                except Exception as e:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=create_error_response(
+                            "INVALID_HOSPITAL_ID",
+                            field="hospital_id",
+                            value=device_data.hospital_id,
+                            custom_message=f"Invalid hospital ID format: {str(e)}",
+                            request_id=request_id
+                        ).dict()
+                    )
+        
+        # Update device
+        update_result = await device_collection.update_one(
+            {"_id": device_obj_id},
+            {"$set": update_fields}
+        )
+        
+        if update_result.modified_count == 0:
+            raise HTTPException(
+                status_code=500,
+                detail=create_error_response(
+                    "UPDATE_FAILED",
+                    custom_message="Failed to update device",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Log audit trail
+        await audit_logger.log_admin_action(
+            action="UPDATE",
+            resource_type="QubevitalDevice",
+            resource_id=device_id,
+            user_id=current_user.get("username") or "unknown",
+            details={
+                "device_imei": device.get("imei_of_hv01_box"),
+                "updated_fields": list(update_fields.keys()),
+                "hospital_id": device_data.hospital_id
+            }
+        )
+        
+        # Get updated device
+        updated_device = await device_collection.find_one({"_id": device_obj_id})
+        serialized_device = serialize_mongodb_response(updated_device)
+        
+        success_response = create_success_response(
+            message="Qube-Vital device updated successfully",
+            data={
+                "device": serialized_device,
+                "device_id": device_id
+            },
+            request_id=request_id
+        )
+        
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating Qube-Vital device: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to update device: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
+        )
 
 @router.delete("/devices/{device_id}")
 async def delete_qube_vital_device(

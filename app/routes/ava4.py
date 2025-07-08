@@ -59,6 +59,31 @@ class Ava4DataResponse(BaseModel):
     message: str
     observation_id: Optional[str] = None
 
+class Ava4DeviceCreate(BaseModel):
+    """Model for creating a new AVA4 device"""
+    mac_address: str = Field(..., description="MAC address of the AVA4 device", min_length=17, max_length=17)
+    box_name: str = Field(..., description="Display name for the AVA4 box", min_length=1, max_length=100)
+    model: str = Field(default="AVA4", description="Device model")
+    imei: Optional[str] = Field(None, description="IMEI of the device", min_length=15, max_length=15)
+    serial_number: Optional[str] = Field(None, description="Serial number of the device")
+    firmware_version: Optional[str] = Field(None, description="Firmware version")
+    location: Optional[str] = Field(None, description="Physical location of the device")
+    status: str = Field(default="inactive", description="Device status")
+    patient_id: Optional[str] = Field(None, description="Patient ID to assign the device to")
+    is_active: bool = Field(default=True, description="Whether the device is active")
+
+class Ava4DeviceUpdate(BaseModel):
+    """Model for updating an AVA4 device"""
+    box_name: Optional[str] = Field(None, description="Display name for the AVA4 box", min_length=1, max_length=100)
+    model: Optional[str] = Field(None, description="Device model")
+    imei: Optional[str] = Field(None, description="IMEI of the device", min_length=15, max_length=15)
+    serial_number: Optional[str] = Field(None, description="Serial number of the device")
+    firmware_version: Optional[str] = Field(None, description="Firmware version")
+    location: Optional[str] = Field(None, description="Physical location of the device")
+    status: Optional[str] = Field(None, description="Device status")
+    patient_id: Optional[str] = Field(None, description="Patient ID to assign the device to")
+    is_active: Optional[bool] = Field(None, description="Whether the device is active")
+
 @router.post("/data", response_model=Ava4DataResponse)
 async def receive_ava4_data(
     data: Ava4DataRequest,
@@ -217,40 +242,341 @@ async def route_to_medical_history(data: Ava4DataRequest, patient_id: str):
 
 @router.get("/devices")
 async def get_ava4_devices(
+    request: Request,
     limit: int = 100,
     skip: int = 0,
-    active_only: bool = True,
+    active_only: Optional[bool] = None,
+    patient_id: Optional[str] = None,
+    status: Optional[str] = None,
+    search: Optional[str] = None,
+    sort_by: str = "created_at",
+    sort_order: str = "desc",
+    include_patient_info: bool = False,
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
-    """Get AVA4 devices"""
+    """Get AVA4 devices with advanced filtering and search"""
     try:
-        print(f"DEBUG: Starting get_ava4_devices with limit={limit}, skip={skip}, active_only={active_only}")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
-        collection = mongodb_service.get_collection("amy_boxes")
-        print(f"DEBUG: Got collection: {collection}")
+        device_collection = mongodb_service.get_collection("amy_boxes")
         
+        # Build filter query
         filter_query = {}
-        if active_only:
+        
+        # Active/deleted filter - only apply if explicitly set
+        if active_only is True:
             filter_query["is_active"] = True
-            filter_query["is_deleted"] = False
+            filter_query["is_deleted"] = {"$ne": True}
+        elif active_only is False:
+            # Show all devices including inactive and deleted
+            pass
+        else:
+            # Default behavior when active_only is None - show only non-deleted
+            filter_query["is_deleted"] = {"$ne": True}
         
-        print(f"DEBUG: Filter query: {filter_query}")
+        # Patient filter
+        if patient_id:
+            try:
+                patient_obj_id = ObjectId(patient_id)
+                filter_query["patient_id"] = patient_obj_id
+            except Exception as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=create_error_response(
+                        "INVALID_PATIENT_ID",
+                        field="patient_id",
+                        value=patient_id,
+                        custom_message=f"Invalid patient ID format: {str(e)}",
+                        request_id=request_id
+                    ).dict()
+                )
         
-        cursor = collection.find(filter_query).skip(skip).limit(limit)
+        # Status filter
+        if status:
+            filter_query["status"] = status
+        
+        # Search functionality
+        if search:
+            search_regex = {"$regex": search, "$options": "i"}
+            filter_query["$or"] = [
+                {"box_name": search_regex},
+                {"mac_address": search_regex},
+                {"model": search_regex},
+                {"location": search_regex},
+                {"imei": search_regex},
+                {"serial_number": search_regex}
+            ]
+        
+        # Build sort
+        sort_direction = 1 if sort_order.lower() == "asc" else -1
+        valid_sort_fields = ["created_at", "updated_at", "box_name", "mac_address", "status", "model"]
+        if sort_by not in valid_sort_fields:
+            sort_by = "created_at"
+        
+        # Get total count
+        total_count = await device_collection.count_documents(filter_query)
+        
+        # Get devices with pagination and sorting
+        cursor = device_collection.find(filter_query).sort(sort_by, sort_direction).skip(skip).limit(limit)
         devices = await cursor.to_list(length=limit)
-        print(f"DEBUG: Found {len(devices)} devices")
         
-        # Serialize ObjectIds
+        # Serialize devices
         serialized_devices = serialize_mongodb_response(devices)
-        response_data = {"devices": serialized_devices, "total": len(devices)}
         
-        return JSONResponse(content=response_data)
+        # Add patient information if requested
+        if include_patient_info and isinstance(serialized_devices, list):
+            patient_collection = mongodb_service.get_collection("patients")
+            for device in serialized_devices:
+                if isinstance(device, dict) and device.get("patient_id"):
+                    try:
+                        patient_obj_id = ObjectId(device["patient_id"])
+                        patient = await patient_collection.find_one({"_id": patient_obj_id})
+                        if patient:
+                            patient_info = serialize_mongodb_response(patient)
+                            device["patient_info"] = {
+                                "patient_name": f"{patient_info.get('first_name', '')} {patient_info.get('last_name', '')}".strip(),
+                                "hn": patient_info.get("hn"),
+                                "phone": patient_info.get("phone"),
+                                "is_active": patient_info.get("is_active")
+                            }
+                    except Exception:
+                        device["patient_info"] = None
         
+        # Calculate pagination info
+        total_pages = (total_count + limit - 1) // limit if limit > 0 else 1
+        current_page = (skip // limit) + 1 if limit > 0 else 1
+        has_next = (skip + len(serialized_devices)) < total_count
+        has_prev = skip > 0
+        
+        success_response = create_success_response(
+            message="AVA4 devices retrieved successfully",
+            data={
+                "devices": serialized_devices,
+                "pagination": {
+                    "total": total_count,
+                    "limit": limit,
+                    "skip": skip,
+                    "current_page": current_page,
+                    "total_pages": total_pages,
+                    "has_next": has_next,
+                    "has_prev": has_prev,
+                    "returned_count": len(serialized_devices)
+                },
+                "filters": {
+                    "active_only": active_only,
+                    "patient_id": patient_id,
+                    "status": status,
+                    "search": search,
+                    "sort_by": sort_by,
+                    "sort_order": sort_order
+                },
+                "statistics": {
+                    "total_devices": total_count,
+                    "returned_devices": len(serialized_devices)
+                }
+            },
+            request_id=request_id
+        )
+        
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
     except Exception as e:
-        print(f"ERROR in get_ava4_devices: {type(e).__name__}: {str(e)}")
-        import traceback
-        print(f"ERROR traceback: {traceback.format_exc()}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error getting AVA4 devices: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve devices: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
+        )
+
+@router.get("/devices/table")
+async def get_ava4_devices_table(
+    request: Request,
+    page: int = 1,
+    limit: int = 25,
+    active_only: Optional[bool] = None,
+    patient_id: Optional[str] = None,
+    status: Optional[str] = None,
+    search: Optional[str] = None,
+    sort_by: str = "created_at",
+    sort_order: str = "desc",
+    columns: Optional[str] = None,
+    export_format: Optional[str] = None,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Get AVA4 devices in table format with advanced features"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Calculate skip from page
+        skip = (page - 1) * limit if page > 0 else 0
+        
+        # Define available columns
+        available_columns = [
+            "box_name", "mac_address", "model", "status", "location", "imei",
+            "serial_number", "firmware_version", "patient_info", "is_active", 
+            "created_at", "updated_at"
+        ]
+        
+        # Parse requested columns
+        selected_columns = available_columns
+        if columns:
+            requested_cols = [col.strip() for col in columns.split(",")]
+            selected_columns = [col for col in requested_cols if col in available_columns]
+        
+        device_collection = mongodb_service.get_collection("amy_boxes")
+        
+        # Build filter query
+        filter_query = {}
+        
+        # Active/deleted filter - only apply if explicitly set
+        if active_only is True:
+            filter_query["is_active"] = True
+            filter_query["is_deleted"] = {"$ne": True}
+        elif active_only is False:
+            # Show all devices including inactive and deleted
+            pass
+        else:
+            # Default behavior when active_only is None - show only non-deleted
+            filter_query["is_deleted"] = {"$ne": True}
+        
+        if patient_id:
+            try:
+                filter_query["patient_id"] = ObjectId(patient_id)
+            except Exception as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=create_error_response(
+                        "INVALID_PATIENT_ID",
+                        field="patient_id",
+                        value=patient_id,
+                        custom_message=f"Invalid patient ID format: {str(e)}",
+                        request_id=request_id
+                    ).dict()
+                )
+        
+        if status:
+            filter_query["status"] = status
+        
+        if search:
+            search_regex = {"$regex": search, "$options": "i"}
+            filter_query["$or"] = [
+                {"box_name": search_regex},
+                {"mac_address": search_regex},
+                {"model": search_regex},
+                {"location": search_regex},
+                {"imei": search_regex},
+                {"serial_number": search_regex}
+            ]
+        
+        # Build sort
+        sort_direction = 1 if sort_order.lower() == "asc" else -1
+        valid_sort_fields = ["created_at", "updated_at", "box_name", "mac_address", "status", "model"]
+        if sort_by not in valid_sort_fields:
+            sort_by = "created_at"
+        
+        # Get total count
+        total_count = await device_collection.count_documents(filter_query)
+        
+        # Get devices
+        cursor = device_collection.find(filter_query).sort(sort_by, sort_direction).skip(skip).limit(limit)
+        devices = await cursor.to_list(length=limit)
+        
+        # Serialize and add patient info
+        serialized_devices = serialize_mongodb_response(devices)
+        patient_collection = mongodb_service.get_collection("patients")
+        
+        # Prepare table data
+        table_data = []
+        if isinstance(serialized_devices, list):
+            for device in serialized_devices:
+                if isinstance(device, dict):
+                    row = {}
+                    
+                    # Add selected columns
+                    for col in selected_columns:
+                        if col == "patient_info" and device.get("patient_id"):
+                            try:
+                                patient_obj_id = ObjectId(device["patient_id"])
+                                patient = await patient_collection.find_one({"_id": patient_obj_id})
+                                if patient:
+                                    patient_info = serialize_mongodb_response(patient)
+                                    row["patient_info"] = {
+                                        "patient_name": f"{patient_info.get('first_name', '')} {patient_info.get('last_name', '')}".strip(),
+                                        "hn": patient_info.get("hn"),
+                                        "phone": patient_info.get("phone")
+                                    }
+                                else:
+                                    row["patient_info"] = None
+                            except Exception:
+                                row["patient_info"] = None
+                        else:
+                            row[col] = device.get(col)
+                    
+                    table_data.append(row)
+        
+        # Calculate pagination
+        total_pages = (total_count + limit - 1) // limit if limit > 0 else 1
+        has_next = page < total_pages
+        has_prev = page > 1
+        
+        # Handle export if requested
+        export_data = None
+        if export_format:
+            export_data = {
+                "format": export_format,
+                "total_records": total_count,
+                "generated_at": datetime.utcnow().isoformat(),
+                "download_url": f"/api/ava4/devices/export?format={export_format}&filters={request.url.query}"
+            }
+        
+        success_response = create_success_response(
+            message="AVA4 devices table data retrieved successfully",
+            data={
+                "table": {
+                    "data": table_data,
+                    "columns": selected_columns,
+                    "available_columns": available_columns
+                },
+                "pagination": {
+                    "page": page,
+                    "limit": limit,
+                    "total": total_count,
+                    "total_pages": total_pages,
+                    "has_next": has_next,
+                    "has_prev": has_prev,
+                    "returned_count": len(table_data)
+                },
+                "filters": {
+                    "patient_id": patient_id,
+                    "status": status,
+                    "search": search,
+                    "sort_by": sort_by,
+                    "sort_order": sort_order
+                },
+                "export": export_data
+            },
+            request_id=request_id
+        )
+        
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting AVA4 devices table: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve devices table: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
+        )
 
 @router.get("/devices/{device_id}")
 async def get_ava4_device(
@@ -300,47 +626,385 @@ async def get_ava4_device(
             ).dict()
         )
 
+@router.post("/devices")
+async def create_ava4_device(
+    device_data: Ava4DeviceCreate,
+    request: Request,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Create a new AVA4 device"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Check if MAC address already exists
+        device_collection = mongodb_service.get_collection("amy_boxes")
+        existing_device = await device_collection.find_one({"mac_address": device_data.mac_address})
+        
+        if existing_device:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "DEVICE_ALREADY_EXISTS",
+                    field="mac_address",
+                    value=device_data.mac_address,
+                    custom_message=f"AVA4 device with MAC address '{device_data.mac_address}' already exists",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Validate patient if provided
+        patient_obj_id = None
+        if device_data.patient_id:
+            try:
+                patient_obj_id = ObjectId(device_data.patient_id)
+                patient_collection = mongodb_service.get_collection("patients")
+                patient = await patient_collection.find_one({"_id": patient_obj_id})
+                
+                if not patient:
+                    raise HTTPException(
+                        status_code=404,
+                        detail=create_error_response(
+                            "PATIENT_NOT_FOUND",
+                            field="patient_id",
+                            value=device_data.patient_id,
+                            custom_message=f"Patient with ID '{device_data.patient_id}' not found",
+                            request_id=request_id
+                        ).dict()
+                    )
+            except Exception as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=create_error_response(
+                        "INVALID_PATIENT_ID",
+                        field="patient_id",
+                        value=device_data.patient_id,
+                        custom_message=f"Invalid patient ID format: {str(e)}",
+                        request_id=request_id
+                    ).dict()
+                )
+        
+        # Create device document
+        device_doc = {
+            "mac_address": device_data.mac_address,
+            "box_name": device_data.box_name,
+            "model": device_data.model,
+            "imei": device_data.imei,
+            "serial_number": device_data.serial_number,
+            "firmware_version": device_data.firmware_version,
+            "location": device_data.location,
+            "status": device_data.status,
+            "is_active": device_data.is_active,
+            "is_deleted": False,
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow(),
+            "created_by": current_user.get("username")
+        }
+        
+        # Add patient_id if provided
+        if patient_obj_id:
+            device_doc["patient_id"] = patient_obj_id
+        
+        # Insert device
+        insert_result = await device_collection.insert_one(device_doc)
+        device_id = str(insert_result.inserted_id)
+        
+        # Log audit trail
+        await audit_logger.log_admin_action(
+            action="CREATE",
+            resource_type="AVA4Device",
+            resource_id=device_id,
+            user_id=current_user.get("username") or "unknown",
+            details={
+                "device_mac": device_data.mac_address,
+                "box_name": device_data.box_name,
+                "patient_id": device_data.patient_id,
+                "model": device_data.model
+            }
+        )
+        
+        # Get created device with serialization
+        created_device = await device_collection.find_one({"_id": insert_result.inserted_id})
+        serialized_device = serialize_mongodb_response(created_device)
+        
+        success_response = create_success_response(
+            message="AVA4 device created successfully",
+            data={
+                "device": serialized_device,
+                "device_id": device_id
+            },
+            request_id=request_id
+        )
+        
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating AVA4 device: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to create device: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
+        )
+
+@router.put("/devices/{device_id}")
+async def update_ava4_device(
+    device_id: str,
+    device_data: Ava4DeviceUpdate,
+    request: Request,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Update an AVA4 device"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Convert device_id to ObjectId
+        try:
+            device_obj_id = ObjectId(device_id)
+        except Exception as e:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_DEVICE_ID",
+                    field="device_id",
+                    value=device_id,
+                    custom_message=f"Invalid device ID format: {str(e)}",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Check if device exists
+        device_collection = mongodb_service.get_collection("amy_boxes")
+        device = await device_collection.find_one({"_id": device_obj_id})
+        
+        if not device:
+            raise HTTPException(
+                status_code=404,
+                detail=create_error_response(
+                    "DEVICE_NOT_FOUND",
+                    field="device_id",
+                    value=device_id,
+                    custom_message=f"AVA4 device with ID '{device_id}' not found",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Build update document
+        update_fields = {"updated_at": datetime.utcnow(), "updated_by": current_user.get("username")}
+        
+        # Add fields that have values
+        if device_data.box_name is not None:
+            update_fields["box_name"] = device_data.box_name
+        if device_data.model is not None:
+            update_fields["model"] = device_data.model
+        if device_data.imei is not None:
+            update_fields["imei"] = device_data.imei
+        if device_data.serial_number is not None:
+            update_fields["serial_number"] = device_data.serial_number
+        if device_data.firmware_version is not None:
+            update_fields["firmware_version"] = device_data.firmware_version
+        if device_data.location is not None:
+            update_fields["location"] = device_data.location
+        if device_data.status is not None:
+            update_fields["status"] = device_data.status
+        if device_data.is_active is not None:
+            update_fields["is_active"] = device_data.is_active
+        
+        # Handle patient_id if provided
+        if device_data.patient_id is not None:
+            if device_data.patient_id == "":
+                # Remove patient assignment
+                update_fields["$unset"] = {"patient_id": ""}
+            else:
+                try:
+                    patient_obj_id = ObjectId(device_data.patient_id)
+                    patient_collection = mongodb_service.get_collection("patients")
+                    patient = await patient_collection.find_one({"_id": patient_obj_id})
+                    
+                    if not patient:
+                        raise HTTPException(
+                            status_code=404,
+                            detail=create_error_response(
+                                "PATIENT_NOT_FOUND",
+                                field="patient_id",
+                                value=device_data.patient_id,
+                                custom_message=f"Patient with ID '{device_data.patient_id}' not found",
+                                request_id=request_id
+                            ).dict()
+                        )
+                    
+                    update_fields["patient_id"] = patient_obj_id
+                except Exception as e:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=create_error_response(
+                            "INVALID_PATIENT_ID",
+                            field="patient_id",
+                            value=device_data.patient_id,
+                            custom_message=f"Invalid patient ID format: {str(e)}",
+                            request_id=request_id
+                        ).dict()
+                    )
+        
+        # Update device
+        update_result = await device_collection.update_one(
+            {"_id": device_obj_id},
+            {"$set": update_fields}
+        )
+        
+        if update_result.modified_count == 0:
+            raise HTTPException(
+                status_code=500,
+                detail=create_error_response(
+                    "UPDATE_FAILED",
+                    custom_message="Failed to update device",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Log audit trail
+        await audit_logger.log_admin_action(
+            action="UPDATE",
+            resource_type="AVA4Device",
+            resource_id=device_id,
+            user_id=current_user.get("username") or "unknown",
+            details={
+                "device_mac": device.get("mac_address"),
+                "updated_fields": list(update_fields.keys()),
+                "patient_id": device_data.patient_id
+            }
+        )
+        
+        # Get updated device
+        updated_device = await device_collection.find_one({"_id": device_obj_id})
+        serialized_device = serialize_mongodb_response(updated_device)
+        
+        success_response = create_success_response(
+            message="AVA4 device updated successfully",
+            data={
+                "device": serialized_device,
+                "device_id": device_id
+            },
+            request_id=request_id
+        )
+        
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating AVA4 device: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to update device: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
+        )
+
 @router.delete("/devices/{device_id}")
 async def delete_ava4_device(
     device_id: str,
+    request: Request,
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
-    """Soft delete AVA4 device"""
+    """Delete (soft delete) an AVA4 device"""
     try:
-        collection = mongodb_service.get_collection("amy_boxes")
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
-        result = await collection.update_one(
-            {"_id": ObjectId(device_id)},
+        # Convert device_id to ObjectId
+        try:
+            device_obj_id = ObjectId(device_id)
+        except Exception as e:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_DEVICE_ID",
+                    field="device_id",
+                    value=device_id,
+                    custom_message=f"Invalid device ID format: {str(e)}",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Check if device exists
+        device_collection = mongodb_service.get_collection("amy_boxes")
+        device = await device_collection.find_one({"_id": device_obj_id})
+        
+        if not device:
+            raise HTTPException(
+                status_code=404,
+                detail=create_error_response(
+                    "DEVICE_NOT_FOUND",
+                    field="device_id",
+                    value=device_id,
+                    custom_message=f"AVA4 device with ID '{device_id}' not found",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Soft delete the device
+        update_result = await device_collection.update_one(
+            {"_id": device_obj_id},
             {
                 "$set": {
                     "is_deleted": True,
+                    "is_active": False,
                     "deleted_at": datetime.utcnow(),
-                    "deleted_by": current_user.get("username"),
-                    "updated_at": datetime.utcnow()
+                    "deleted_by": current_user.get("username")
                 }
             }
         )
         
-        if result.modified_count == 0:
-            raise HTTPException(status_code=404, detail="Device not found")
+        if update_result.modified_count == 0:
+            raise HTTPException(
+                status_code=500,
+                detail=create_error_response(
+                    "DELETE_FAILED",
+                    custom_message="Failed to delete device",
+                    request_id=request_id
+                ).dict()
+            )
         
         # Log audit trail
-        username = current_user.get("username", "unknown")
         await audit_logger.log_admin_action(
             action="DELETE",
-            resource_type="Device",
+            resource_type="AVA4Device",
             resource_id=device_id,
-            user_id=username,
-            details={"device_type": "AVA4"}
+            user_id=current_user.get("username") or "unknown",
+            details={
+                "device_mac": device.get("mac_address"),
+                "box_name": device.get("box_name"),
+                "patient_id": str(device.get("patient_id")) if device.get("patient_id") else None
+            }
         )
         
-        logger.info(f"AVA4 device deleted: {device_id} by {current_user.get('username')}")
+        success_response = create_success_response(
+            message="AVA4 device deleted successfully",
+            data={"device_id": device_id},
+            request_id=request_id
+        )
         
-        return {"success": True, "message": "Device deleted successfully"}
+        return success_response.dict()
         
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.error(f"Failed to delete AVA4 device: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error deleting AVA4 device: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to delete device: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
+        )
+
+
 
 @router.get("/patient-info")
 async def get_patient_info_by_mac(
@@ -671,6 +1335,234 @@ async def get_ava4_sub_devices(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve sub-devices: {str(e)}",
                 request_id=request.headers.get("X-Request-ID")
+            ).dict()
+        )
+
+@router.get("/sub-devices/table")
+async def get_ava4_sub_devices_table(
+    request: Request,
+    page: int = 1,
+    limit: int = 25,
+    patient_id: Optional[str] = None,
+    device_type: Optional[str] = None,
+    search: Optional[str] = None,
+    sort_by: str = "device_name",
+    sort_order: str = "asc",
+    columns: Optional[str] = None,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Get AVA4 sub-devices in table format with advanced filtering"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Calculate skip from page
+        skip = (page - 1) * limit if page > 0 else 0
+        
+        # Define available columns
+        available_columns = [
+            "device_name", "mac_address", "device_type", "patient_info", "is_active",
+            "ava4_device_info", "created_at", "updated_at"
+        ]
+        
+        # Parse requested columns
+        selected_columns = available_columns
+        if columns:
+            requested_cols = [col.strip() for col in columns.split(",")]
+            selected_columns = [col for col in requested_cols if col in available_columns]
+        
+        # Get all sub-devices from amy_devices collection
+        amy_devices_collection = mongodb_service.get_collection("amy_devices")
+        patient_collection = mongodb_service.get_collection("patients")
+        device_collection = mongodb_service.get_collection("amy_boxes")
+        
+        # Build filter query
+        filter_query = {}
+        
+        # Patient filter
+        if patient_id:
+            try:
+                patient_obj_id = ObjectId(patient_id)
+                # Query using both possible formats
+                filter_query = {
+                    "$or": [
+                        {"patient_id": patient_obj_id},
+                        {"patient_id.$oid": patient_id}
+                    ]
+                }
+            except Exception as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=create_error_response(
+                        "INVALID_PATIENT_ID",
+                        field="patient_id",
+                        value=patient_id,
+                        custom_message=f"Invalid patient ID format: {str(e)}",
+                        request_id=request_id
+                    ).dict()
+                )
+        
+        # Get all device records
+        amy_device_records = await amy_devices_collection.find(filter_query).to_list(length=None)
+        
+        # Process all sub-devices
+        all_sub_devices = []
+        device_types = {
+            "mac_dusun_bps": {"type": "blood_pressure", "name": "Blood Pressure Monitor (Dusun)"},
+            "mac_bps": {"type": "blood_pressure", "name": "Blood Pressure Monitor"},
+            "mac_gluc": {"type": "blood_glucose", "name": "Blood Glucose Meter"},
+            "mac_weight": {"type": "weight_scale", "name": "Weight Scale"},
+            "mac_body_temp": {"type": "thermometer", "name": "Body Temperature Sensor"},
+            "mac_oxymeter": {"type": "pulse_oximeter", "name": "Pulse Oximeter"},
+            "mac_mgss_oxymeter": {"type": "pulse_oximeter", "name": "MGSS Pulse Oximeter"},
+            "mac_chol": {"type": "other", "name": "Cholesterol Meter"},
+            "mac_ua": {"type": "other", "name": "Uric Acid Meter"},
+            "mac_salt_meter": {"type": "other", "name": "Salt Meter"}
+        }
+        
+        for record in amy_device_records:
+            for mac_field, device_info in device_types.items():
+                mac_value = record.get(mac_field)
+                if mac_value and mac_value.strip():
+                    # Filter by device type if specified
+                    if device_type and device_info["type"] != device_type:
+                        continue
+                    
+                    # Search functionality
+                    if search:
+                        search_lower = search.lower()
+                        if not any([
+                            search_lower in device_info["name"].lower(),
+                            search_lower in mac_value.lower(),
+                            search_lower in device_info["type"].lower()
+                        ]):
+                            continue
+                    
+                    sub_device = {
+                        "device_id": f"{mac_field}_{record.get('_id')}",
+                        "mac_address": mac_value,
+                        "device_type": device_info["type"],
+                        "device_name": device_info["name"],
+                        "is_active": record.get(f"{mac_field}_active", True),
+                        "patient_id": str(record.get("patient_id", "")),
+                        "created_at": record.get("created_at"),
+                        "updated_at": record.get("updated_at"),
+                        "registered_at": record.get(f"{mac_field}_registered_at"),
+                        "model": record.get(f"{mac_field}_model", ""),
+                        "custom_name": record.get(f"{mac_field}_name", "")
+                    }
+                    
+                    all_sub_devices.append(sub_device)
+        
+        # Apply sorting
+        reverse_sort = sort_order.lower() == "desc"
+        valid_sort_fields = ["device_name", "mac_address", "device_type", "created_at", "updated_at"]
+        if sort_by in valid_sort_fields:
+            all_sub_devices.sort(key=lambda x: x.get(sort_by, ""), reverse=reverse_sort)
+        
+        # Apply pagination
+        total_count = len(all_sub_devices)
+        start_index = skip
+        end_index = skip + limit
+        paginated_devices = all_sub_devices[start_index:end_index]
+        
+        # Prepare table data with selected columns
+        table_data = []
+        for device in paginated_devices:
+            row = {}
+            
+            for col in selected_columns:
+                if col == "patient_info" and device.get("patient_id"):
+                    try:
+                        patient_obj_id = ObjectId(device["patient_id"])
+                        patient = await patient_collection.find_one({"_id": patient_obj_id})
+                        if patient:
+                            patient_info = serialize_mongodb_response(patient)
+                            row["patient_info"] = {
+                                "patient_name": f"{patient_info.get('first_name', '')} {patient_info.get('last_name', '')}".strip(),
+                                "hn": patient_info.get("hn"),
+                                "phone": patient_info.get("phone")
+                            }
+                        else:
+                            row["patient_info"] = None
+                    except Exception:
+                        row["patient_info"] = None
+                elif col == "ava4_device_info" and device.get("patient_id"):
+                    # Find AVA4 device for this patient
+                    try:
+                        patient_obj_id = ObjectId(device["patient_id"])
+                        ava4_device = await device_collection.find_one({"patient_id": patient_obj_id})
+                        if ava4_device:
+                            ava4_info = serialize_mongodb_response(ava4_device)
+                            row["ava4_device_info"] = {
+                                "box_name": ava4_info.get("box_name"),
+                                "mac_address": ava4_info.get("mac_address"),
+                                "status": ava4_info.get("status")
+                            }
+                        else:
+                            row["ava4_device_info"] = None
+                    except Exception:
+                        row["ava4_device_info"] = None
+                else:
+                    row[col] = device.get(col)
+            
+            table_data.append(row)
+        
+        # Calculate pagination
+        total_pages = (total_count + limit - 1) // limit if limit > 0 else 1
+        has_next = page < total_pages
+        has_prev = page > 1
+        
+        success_response = create_success_response(
+            message="AVA4 sub-devices table data retrieved successfully",
+            data={
+                "table": {
+                    "data": table_data,
+                    "columns": selected_columns,
+                    "available_columns": available_columns
+                },
+                "pagination": {
+                    "page": page,
+                    "limit": limit,
+                    "total": total_count,
+                    "total_pages": total_pages,
+                    "has_next": has_next,
+                    "has_prev": has_prev,
+                    "returned_count": len(table_data)
+                },
+                "filters": {
+                    "patient_id": patient_id,
+                    "device_type": device_type,
+                    "search": search,
+                    "sort_by": sort_by,
+                    "sort_order": sort_order
+                },
+                "statistics": {
+                    "total_sub_devices": total_count,
+                    "device_type_counts": {
+                        "blood_pressure": len([d for d in all_sub_devices if d["device_type"] == "blood_pressure"]),
+                        "blood_glucose": len([d for d in all_sub_devices if d["device_type"] == "blood_glucose"]),
+                        "weight_scale": len([d for d in all_sub_devices if d["device_type"] == "weight_scale"]),
+                        "thermometer": len([d for d in all_sub_devices if d["device_type"] == "thermometer"]),
+                        "pulse_oximeter": len([d for d in all_sub_devices if d["device_type"] == "pulse_oximeter"]),
+                        "other": len([d for d in all_sub_devices if d["device_type"] == "other"])
+                    }
+                }
+            },
+            request_id=request_id
+        )
+        
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting AVA4 sub-devices table: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve sub-devices table: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
         )
 
