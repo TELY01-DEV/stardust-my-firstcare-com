@@ -1796,6 +1796,269 @@
 			]
 		},
 		{
+			"name": "Geographic Dropdowns - Frontend Optimized",
+			"item": [
+				{
+					"name": "Provinces Dropdown",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Provinces dropdown retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('provinces');",
+									"    pm.expect(jsonData.data).to.have.property('total');",
+									"    pm.expect(jsonData.data).to.have.property('filters_applied');",
+									"    console.log('Provinces in dropdown:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Province structure is optimized for dropdown', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.provinces && jsonData.data.provinces.length > 0) {",
+									"        const province = jsonData.data.provinces[0];",
+									"        pm.expect(province).to.have.property('code');",
+									"        pm.expect(province).to.have.property('en_name');",
+									"        pm.expect(province).to.have.property('th_name');",
+									"        pm.expect(province).to.have.property('is_active');",
+									"        console.log('Sample province:', province.en_name, '(' + province.th_name + ')');",
+									"    }",
+									"});",
+									"",
+									"pm.test('Filters applied correctly', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.filters_applied).to.have.property('include_inactive');",
+									"    pm.expect(jsonData.data.filters_applied).to.have.property('include_deleted');",
+									"    pm.expect(jsonData.data.filters_applied).to.have.property('search');",
+									"    pm.expect(jsonData.data.filters_applied).to.have.property('limit');",
+									"    pm.expect(jsonData.data.filters_applied).to.have.property('sort_by');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/dropdown/provinces?limit=10&sort_by=en_name",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "dropdown", "provinces"],
+							"query": [
+								{"key": "limit", "value": "10", "description": "Limit results for dropdown"},
+								{"key": "sort_by", "value": "en_name", "description": "Sort by English name"},
+								{"key": "include_inactive", "value": "false", "disabled": true, "description": "Include inactive provinces"},
+								{"key": "include_deleted", "value": "false", "disabled": true, "description": "Include deleted provinces"},
+								{"key": "search", "value": "", "disabled": true, "description": "Search province names"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Provinces Dropdown - With Search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Province search works correctly', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('provinces');",
+									"    pm.expect(jsonData.data.filters_applied.search).to.equal('Bangkok');",
+									"    console.log('Search results for Bangkok:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Search results contain Bangkok', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.provinces.length > 0) {",
+									"        const bangkok = jsonData.data.provinces.find(p => ",
+									"            p.en_name.toLowerCase().includes('bangkok') || p.th_name.includes('กรุงเทพ')",
+									"        );",
+									"        pm.expect(bangkok).to.not.be.undefined;",
+									"        console.log('Bangkok found:', bangkok.en_name);",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/dropdown/provinces?search=Bangkok&limit=5",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "dropdown", "provinces"],
+							"query": [
+								{"key": "search", "value": "Bangkok", "description": "Search for Bangkok"},
+								{"key": "limit", "value": "5"},
+								{"key": "sort_by", "value": "en_name", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Districts Dropdown - Cascading",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Districts dropdown retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('districts');",
+									"    pm.expect(jsonData.data).to.have.property('total');",
+									"    pm.expect(jsonData.data).to.have.property('province_code');",
+									"    pm.expect(jsonData.data).to.have.property('filters_applied');",
+									"    console.log('Districts in Bangkok:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('District structure is optimized for dropdown', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.districts && jsonData.data.districts.length > 0) {",
+									"        const district = jsonData.data.districts[0];",
+									"        pm.expect(district).to.have.property('code');",
+									"        pm.expect(district).to.have.property('en_name');",
+									"        pm.expect(district).to.have.property('th_name');",
+									"        pm.expect(district).to.have.property('is_active');",
+									"        console.log('Sample district:', district.en_name, '(' + district.th_name + ')');",
+									"    }",
+									"});",
+									"",
+									"pm.test('Province code filter applied', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.province_code).to.equal(10);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/dropdown/districts?province_code=10&limit=20",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "dropdown", "districts"],
+							"query": [
+								{"key": "province_code", "value": "10", "description": "Bangkok province code"},
+								{"key": "limit", "value": "20", "description": "Limit results"},
+								{"key": "sort_by", "value": "en_name", "disabled": true},
+								{"key": "include_inactive", "value": "false", "disabled": true},
+								{"key": "include_deleted", "value": "false", "disabled": true},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Sub-Districts Dropdown - Full Cascading",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Sub-districts dropdown retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data).to.have.property('sub_districts');",
+									"    pm.expect(jsonData.data).to.have.property('total');",
+									"    pm.expect(jsonData.data).to.have.property('province_code');",
+									"    pm.expect(jsonData.data).to.have.property('district_code');",
+									"    console.log('Sub-districts found:', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('Sub-district structure is optimized for dropdown', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.sub_districts && jsonData.data.sub_districts.length > 0) {",
+									"        const subDistrict = jsonData.data.sub_districts[0];",
+									"        pm.expect(subDistrict).to.have.property('code');",
+									"        pm.expect(subDistrict).to.have.property('en_name');",
+									"        pm.expect(subDistrict).to.have.property('th_name');",
+									"        console.log('Sample sub-district:', subDistrict.en_name, '(' + subDistrict.th_name + ')');",
+									"    }",
+									"});",
+									"",
+									"pm.test('Cascading filters applied correctly', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.province_code).to.equal(10);",
+									"    pm.expect(jsonData.data.district_code).to.equal(1003);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/dropdown/sub-districts?province_code=10&district_code=1003",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "dropdown", "sub-districts"],
+							"query": [
+								{"key": "province_code", "value": "10", "description": "Bangkok province code"},
+								{"key": "district_code", "value": "1003", "description": "Pathum Wan district code"}
+							]
+						}
+					}
+				},
+				{
+					"name": "Provinces Dropdown - Include All Records",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('All provinces retrieved including inactive/deleted', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"    pm.expect(jsonData.data.filters_applied.include_inactive).to.be.true;",
+									"    pm.expect(jsonData.data.filters_applied.include_deleted).to.be.true;",
+									"    console.log('Total provinces (including inactive/deleted):', jsonData.data.total);",
+									"});",
+									"",
+									"pm.test('May include inactive provinces', function () {",
+									"    const jsonData = pm.response.json();",
+									"    if (jsonData.data.provinces && jsonData.data.provinces.length > 0) {",
+									"        const hasInactive = jsonData.data.provinces.some(p => p.is_active === false);",
+									"        if (hasInactive) {",
+									"            console.log('Found inactive provinces in results');",
+									"        } else {",
+									"            console.log('No inactive provinces found (all are active)');",
+									"        }",
+									"    }",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/dropdown/provinces?include_inactive=true&include_deleted=true&limit=100",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "dropdown", "provinces"],
+							"query": [
+								{"key": "include_inactive", "value": "true", "description": "Include inactive provinces"},
+								{"key": "include_deleted", "value": "true", "description": "Include deleted provinces"},
+								{"key": "limit", "value": "100", "description": "Get all provinces"}
+							]
+						}
+					}
+				}
+			],
+			"description": "Optimized dropdown endpoints for frontend forms with lightweight responses, flexible filtering, and cascading geographic selection. These endpoints are specifically designed for UI dropdowns with minimal data transfer and enhanced user experience."
+		},
+		{
 			"name": "Admin Panel",
 			"item": [
 				{
