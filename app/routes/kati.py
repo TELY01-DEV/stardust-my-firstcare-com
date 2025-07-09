@@ -528,4 +528,488 @@ async def get_patient_info_by_imei(
                 custom_message=f"Failed to retrieve patient information: {str(e)}",
                 request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
             ).dict()
+        )
+
+# =============== NEW KATI WATCH PATIENT FILTERING ENDPOINTS ===============
+
+class KatiPatientInfo(BaseModel):
+    """Patient information for Kati watch system"""
+    patient_id: str
+    first_name: str
+    last_name: str
+    hospital_name: Optional[str] = None
+    watch_imei: Optional[str] = None
+    watch_status: Optional[str] = None
+    is_active: bool = True
+
+@router.get("/patients/with-watch", 
+            response_model=Dict[str, Any],
+            summary="Get Patients with Kati Watch Assignment",
+            description="""
+            ## Patients with Kati Watch Assignment
+            
+            Get list of patients who have been assigned a Kati Watch device.
+            
+            ### Response Fields:
+            - `patient_id`: Unique patient identifier
+            - `first_name`: Patient first name
+            - `last_name`: Patient last name (surname)
+            - `hospital_name`: Hospital name where patient is registered
+            - `watch_imei`: Assigned Kati watch IMEI
+            - `watch_status`: Current watch status (online/offline)
+            - `is_active`: Patient active status
+            
+            ### Filtering Options:
+            - `search`: Search by patient name
+            - `hospital_id`: Filter by specific hospital
+            - `watch_status`: Filter by watch status (online/offline)
+            - Pagination: `limit` and `skip`
+            """)
+async def get_patients_with_watch(
+    request: Request,
+    limit: int = Query(100, ge=1, le=1000, description="Number of patients to return"),
+    skip: int = Query(0, ge=0, description="Number of patients to skip"),
+    search: Optional[str] = Query(None, description="Search by patient name"),
+    hospital_id: Optional[str] = Query(None, description="Filter by hospital ID"),
+    watch_status: Optional[str] = Query(None, description="Filter by watch status (online/offline)"),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Get patients who have assigned Kati watches with hospital names"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Check MongoDB connection
+        if mongodb_service.client is None or mongodb_service.main_db is None:
+            return create_success_response(
+                message="Database connection not available in development environment",
+                data={
+                    "patients": [],
+                    "total": 0,
+                    "limit": limit,
+                    "skip": skip,
+                    "filters": {
+                        "search": search,
+                        "hospital_id": hospital_id,
+                        "watch_status": watch_status
+                    },
+                    "note": "Production database connection required for patient data"
+                },
+                request_id=request_id
+            ).dict()
+        
+        # Simplified approach: Start with basic patient query first
+        patients_collection = mongodb_service.get_collection("patients")
+        
+        # Build basic match conditions
+        match_conditions = {"is_deleted": {"$ne": True}}
+        
+        # Add search filter
+        if search:
+            match_conditions["$or"] = [
+                {"first_name": {"$regex": search, "$options": "i"}},
+                {"last_name": {"$regex": search, "$options": "i"}}
+            ]
+        
+        # Add hospital filter
+        if hospital_id:
+            try:
+                hospital_obj_id = ObjectId(hospital_id)
+                match_conditions["new_hospital_ids"] = hospital_obj_id
+            except Exception:
+                raise HTTPException(status_code=400, detail="Invalid hospital ID format")
+        
+        # Simple aggregation pipeline without complex nesting
+        pipeline = [
+            {"$match": match_conditions},
+            {
+                "$lookup": {
+                    "from": "hospitals",
+                    "localField": "new_hospital_ids",
+                    "foreignField": "_id",
+                    "as": "hospitals"
+                }
+            },
+            {
+                "$addFields": {
+                    "hospital_name": {
+                        "$cond": {
+                            "if": {"$gt": [{"$size": "$hospitals"}, 0]},
+                            "then": {"$arrayElemAt": ["$hospitals.name", 0]},
+                            "else": "No Hospital Assigned"
+                        }
+                    }
+                }
+            },
+            {
+                "$project": {
+                    "patient_id": {"$toString": "$_id"},
+                    "first_name": 1,
+                    "last_name": 1,
+                    "hospital_name": 1,
+                    "watch_mac_address": 1,
+                    "is_active": 1
+                }
+            },
+            {"$skip": skip},
+            {"$limit": limit}
+        ]
+        
+        # Execute aggregation
+        cursor = patients_collection.aggregate(pipeline)
+        all_patients = await cursor.to_list(length=None)
+        
+        # Filter for patients with watches post-aggregation to avoid MongoDB nesting issues
+        patients_with_watches = []
+        
+        # Get watch assignments from watches collection separately
+        watches_collection = mongodb_service.get_collection("watches")
+        watches_with_patients = await watches_collection.find(
+            {"patient_id": {"$exists": True, "$ne": None}}, 
+            {"patient_id": 1, "imei": 1, "status": 1}
+        ).to_list(length=None)
+        
+        # Create watch mapping
+        watch_mapping = {}
+        for watch in watches_with_patients:
+            if watch.get("patient_id"):
+                patient_id_str = str(watch["patient_id"])
+                watch_mapping[patient_id_str] = {
+                    "imei": watch.get("imei", ""),
+                    "status": watch.get("status", "offline")
+                }
+        
+        # Filter patients and add watch info
+        for patient in all_patients:
+            patient_id = patient["patient_id"]
+            has_watch = False
+            
+            # Check if patient has watch via MAC address
+            if patient.get("watch_mac_address"):
+                has_watch = True
+            
+            # Check if patient has watch via watches collection
+            if patient_id in watch_mapping:
+                has_watch = True
+            
+            # Include only patients with watches
+            if has_watch:
+                watch_info = watch_mapping.get(patient_id, {})
+                patient["watch_imei"] = watch_info.get("imei", patient.get("watch_mac_address", ""))
+                patient["watch_status"] = watch_info.get("status", "unknown")
+                
+                # Apply watch status filter if specified
+                if not watch_status or patient["watch_status"] == watch_status:
+                    patients_with_watches.append(patient)
+        
+        # Serialize all patient data to ensure ObjectIds are converted
+        patients_with_watches = serialize_mongodb_response(patients_with_watches)
+        
+        # Get total count - simplified count query
+        count_pipeline = [{"$match": match_conditions}, {"$count": "total"}]
+        count_result = await patients_collection.aggregate(count_pipeline).to_list(length=1)
+        total_in_db = count_result[0]["total"] if count_result else 0
+        
+        # For now, return the filtered count as total (this is approximate)
+        total = len(patients_with_watches)
+        
+        # Log audit trail
+        username = current_user.get("username", "unknown")
+        await audit_logger.log_admin_action(
+            action="query_patients_with_watch",
+            resource_type="kati_patient_list",
+            resource_id="with_watch",
+            user_id=username,
+            details={
+                "filters": {
+                    "search": search,
+                    "hospital_id": hospital_id,
+                    "watch_status": watch_status
+                },
+                "result_count": len(patients_with_watches),
+                "total_count": total
+            }
+        )
+        
+        # Create success response
+        success_response = create_success_response(
+            message="Patients with Kati watch assignment retrieved successfully",
+            data={
+                "patients": patients_with_watches,
+                "total": total,
+                "limit": limit,
+                "skip": skip,
+                "filters": {
+                    "search": search,
+                    "hospital_id": hospital_id,
+                    "watch_status": watch_status
+                }
+            },
+            request_id=request_id
+        )
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve patients with watch assignment: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
+        )
+
+@router.get("/patients/without-watch", 
+            response_model=Dict[str, Any],
+            summary="Get Patients without Kati Watch Assignment",
+            description="""
+            ## Patients without Kati Watch Assignment
+            
+            Get list of patients who have NOT been assigned a Kati Watch device.
+            
+            ### Response Fields:
+            - `patient_id`: Unique patient identifier
+            - `first_name`: Patient first name
+            - `last_name`: Patient last name (surname)
+            - `hospital_name`: Hospital name where patient is registered
+            - `watch_imei`: null (no watch assigned)
+            - `watch_status`: null (no watch assigned)
+            - `is_active`: Patient active status
+            
+            ### Filtering Options:
+            - `search`: Search by patient name
+            - `hospital_id`: Filter by specific hospital
+            - Pagination: `limit` and `skip`
+            """)
+async def get_patients_without_watch(
+    request: Request,
+    limit: int = Query(100, ge=1, le=1000, description="Number of patients to return"),
+    skip: int = Query(0, ge=0, description="Number of patients to skip"),
+    search: Optional[str] = Query(None, description="Search by patient name"),
+    hospital_id: Optional[str] = Query(None, description="Filter by hospital ID"),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Get patients who do NOT have assigned Kati watches with hospital names"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Check MongoDB connection
+        if mongodb_service.client is None or mongodb_service.main_db is None:
+            return create_success_response(
+                message="Database connection not available in development environment",
+                data={
+                    "patients": [],
+                    "total": 0,
+                    "limit": limit,
+                    "skip": skip,
+                    "filters": {
+                        "search": search,
+                        "hospital_id": hospital_id
+                    },
+                    "note": "Production database connection required for patient data"
+                },
+                request_id=request_id
+            ).dict()
+        
+        # Get patient IDs that have watch assignment from watches collection
+        watches_collection = mongodb_service.get_collection("watches")
+        assigned_watches = await watches_collection.find(
+            {"patient_id": {"$exists": True, "$ne": None}}, 
+            {"patient_id": 1}
+        ).to_list(length=None)
+        
+        # Convert patient IDs to ObjectId format consistently
+        assigned_patient_ids = []
+        for watch in assigned_watches:
+            if watch.get("patient_id"):
+                try:
+                    # Ensure all patient IDs are ObjectId format
+                    if isinstance(watch["patient_id"], str):
+                        assigned_patient_ids.append(ObjectId(watch["patient_id"]))
+                    elif isinstance(watch["patient_id"], ObjectId):
+                        assigned_patient_ids.append(watch["patient_id"])
+                except Exception:
+                    continue  # Skip invalid ObjectIds
+        
+        # Build match conditions for patients WITHOUT watch assignment
+        match_conditions = {"is_deleted": {"$ne": True}}
+        
+        # Build all conditions in a clean structure
+        all_conditions = []
+        
+        # Condition 1: No MAC address AND not in watches collection
+        no_watch_condition = {
+            "$and": [
+                {
+                    "$or": [
+                        {"watch_mac_address": {"$exists": False}},
+                        {"watch_mac_address": None},
+                        {"watch_mac_address": ""}
+                    ]
+                }
+            ]
+        }
+        
+        # Only add the $nin condition if we have valid patient IDs
+        if assigned_patient_ids:
+            no_watch_condition["$and"].append({"_id": {"$nin": assigned_patient_ids}})
+        
+        all_conditions.append(no_watch_condition)
+        
+        # Add search filter if specified
+        if search:
+            all_conditions.append({
+                "$or": [
+                    {"first_name": {"$regex": search, "$options": "i"}},
+                    {"last_name": {"$regex": search, "$options": "i"}}
+                ]
+            })
+        
+        # Add hospital filter if specified
+        if hospital_id:
+            try:
+                hospital_obj_id = ObjectId(hospital_id)
+                all_conditions.append({"new_hospital_ids": hospital_obj_id})
+            except Exception:
+                raise HTTPException(status_code=400, detail="Invalid hospital ID format")
+        
+        # Combine all conditions
+        if all_conditions:
+            match_conditions["$and"] = all_conditions
+        
+        pipeline = [{"$match": match_conditions}]
+        
+        # Lookup hospital information
+        pipeline.extend([
+            {
+                "$lookup": {
+                    "from": "hospitals",
+                    "localField": "new_hospital_ids",
+                    "foreignField": "_id",
+                    "as": "hospitals"
+                }
+            },
+            {
+                "$addFields": {
+                    "hospital_name": {
+                        "$cond": {
+                            "if": {"$gt": [{"$size": "$hospitals"}, 0]},
+                            "then": {"$arrayElemAt": ["$hospitals.name", 0]},
+                            "else": "No Hospital Assigned"
+                        }
+                    }
+                }
+            },
+            {
+                "$project": {
+                    "patient_id": {"$toString": "$_id"},
+                    "first_name": 1,
+                    "last_name": 1,
+                    "hospital_name": 1,
+                    "watch_imei": {"$literal": None},
+                    "watch_status": {"$literal": None},
+                    "is_active": 1
+                }
+            },
+            {"$skip": skip},
+            {"$limit": limit}
+        ])
+        
+        # Execute aggregation
+        patients_collection = mongodb_service.get_collection("patients")
+        cursor = patients_collection.aggregate(pipeline)
+        patients = await cursor.to_list(length=None)
+        
+        # Serialize patient data to ensure ObjectIds are converted
+        patients = serialize_mongodb_response(patients)
+        
+        # Get total count with same filters
+        count_match_conditions = {"is_deleted": {"$ne": True}}
+        count_all_conditions = []
+        
+        # Same no-watch condition for count
+        count_no_watch_condition = {
+            "$and": [
+                {
+                    "$or": [
+                        {"watch_mac_address": {"$exists": False}},
+                        {"watch_mac_address": None},
+                        {"watch_mac_address": ""}
+                    ]
+                }
+            ]
+        }
+        
+        # Only add the $nin condition if we have valid patient IDs
+        if assigned_patient_ids:
+            count_no_watch_condition["$and"].append({"_id": {"$nin": assigned_patient_ids}})
+        
+        count_all_conditions.append(count_no_watch_condition)
+        
+        if search:
+            count_all_conditions.append({
+                "$or": [
+                    {"first_name": {"$regex": search, "$options": "i"}},
+                    {"last_name": {"$regex": search, "$options": "i"}}
+                ]
+            })
+        
+        if hospital_id:
+            count_all_conditions.append({"new_hospital_ids": ObjectId(hospital_id)})
+        
+        if count_all_conditions:
+            count_match_conditions["$and"] = count_all_conditions
+        
+        count_pipeline = [{"$match": count_match_conditions}]
+        count_pipeline.append({"$count": "total"})
+        
+        # Execute aggregation
+        count_result = await patients_collection.aggregate(count_pipeline).to_list(length=1)
+        total = count_result[0]["total"] if count_result else 0
+        
+        # Log audit trail
+        username = current_user.get("username", "unknown")
+        await audit_logger.log_admin_action(
+            action="query_patients_without_watch",
+            resource_type="kati_patient_list",
+            resource_id="without_watch",
+            user_id=username,
+            details={
+                "filters": {
+                    "search": search,
+                    "hospital_id": hospital_id
+                },
+                "result_count": len(patients),
+                "total_count": total
+            }
+        )
+        
+        # Create success response
+        success_response = create_success_response(
+            message="Patients without Kati watch assignment retrieved successfully",
+            data={
+                "patients": patients,
+                "total": total,
+                "limit": limit,
+                "skip": skip,
+                "filters": {
+                    "search": search,
+                    "hospital_id": hospital_id
+                }
+            },
+            request_id=request_id
+        )
+        return success_response.dict()
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve patients without watch assignment: {str(e)}",
+                request_id=request.headers.get("X-Request-ID") or str(uuid.uuid4())
+            ).dict()
         ) 
