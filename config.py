@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     mongodb_ssl_ca_file: str = "ssl/ca-latest.pem"
     mongodb_ssl_client_file: str = "ssl/client-combined-latest.pem"
     
+    # Database Names
+    mongodb_main_db: str = "AMY"  # Main application database
+    mongodb_fhir_db: str = "MFC_FHIR_R5"  # FHIR R5 resources database
+    
     # JWT Authentication Configuration
     jwt_auth_base_url: str = "https://stardust-v1.my-firstcare.com"
     jwt_login_endpoint: str = "/auth/login"
@@ -46,7 +50,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     log_file: str = "logs/app.log"
     log_rotation: str = "1 day"
-    log_retention: str = "30 days"
+    log_retention: str = "90 days"
     
     # Redis Configuration
     redis_url: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
@@ -54,6 +58,11 @@ class Settings(BaseSettings):
     redis_port: int = int(os.getenv("REDIS_PORT", "6379"))
     redis_password: Optional[str] = os.getenv("REDIS_PASSWORD", None)
     redis_db: int = int(os.getenv("REDIS_DB", "0"))
+    
+    # Rate Limiting Configuration
+    rate_limit_whitelist: str = os.getenv("RATE_LIMIT_WHITELIST", "127.0.0.1,localhost")
+    rate_limit_blacklist: str = os.getenv("RATE_LIMIT_BLACKLIST", "")
+    rate_limit_enabled: bool = os.getenv("RATE_LIMIT_ENABLED", "true").lower() == "true"
     enable_cache: bool = os.getenv("ENABLE_CACHE", "true").lower() == "true"
     
     # Environment Settings

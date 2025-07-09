@@ -170,7 +170,7 @@ async def get_device_data(
     request_id = getattr(request.state, 'request_id', None)
     
     try:
-        collection = mongodb_service.get_collection("fhir_observations")
+        collection = mongodb_service.get_fhir_collection("fhir_observations")
         
         # Build filter
         filter_query = {"resourceType": "Observation"}
@@ -258,7 +258,7 @@ async def get_device_data_record(
             )
             return JSONResponse(status_code=400, content=error_response.dict())
         
-        collection = mongodb_service.get_collection("fhir_observations")
+        collection = mongodb_service.get_fhir_collection("fhir_observations")
         observation = await collection.find_one({"_id": ObjectId(observation_id)})
         
         if not observation:
@@ -296,7 +296,7 @@ async def update_device_data(
 ):
     """Update device data record"""
     try:
-        collection = mongodb_service.get_collection("fhir_observations")
+        collection = mongodb_service.get_fhir_collection("fhir_observations")
         
         update_data = {}
         if data.values:
@@ -341,7 +341,7 @@ async def delete_device_data(
 ):
     """Soft delete device data record"""
     try:
-        collection = mongodb_service.get_collection("fhir_observations")
+        collection = mongodb_service.get_fhir_collection("fhir_observations")
         
         update_data = {
             "status": "cancelled",
@@ -761,7 +761,7 @@ async def create_fhir_observation(data: DeviceDataCreate, device: Dict[str, Any]
         }
     }
     
-    collection = mongodb_service.get_collection("fhir_observations")
+    collection = mongodb_service.get_fhir_collection("fhir_observations")
     result = await collection.insert_one(observation)
     return str(result.inserted_id)
 
@@ -853,7 +853,7 @@ async def create_fhir_device(device: DeviceCreate, device_id: str):
             }
         }
         
-        collection = mongodb_service.get_collection("fhir_devices")
+        collection = mongodb_service.get_fhir_collection("fhir_devices")
         await collection.insert_one(fhir_device)
         
     except Exception as e:
@@ -862,7 +862,7 @@ async def create_fhir_device(device: DeviceCreate, device_id: str):
 async def update_fhir_device(device_id: str, device: DeviceUpdate):
     """Update FHIR Device resource"""
     try:
-        collection = mongodb_service.get_collection("fhir_devices")
+        collection = mongodb_service.get_fhir_collection("fhir_devices")
         
         update_data = {
             "meta.lastUpdated": datetime.utcnow().isoformat() + "Z"
@@ -888,7 +888,7 @@ async def update_fhir_device(device_id: str, device: DeviceUpdate):
 async def deactivate_fhir_device(device_id: str):
     """Deactivate FHIR Device resource"""
     try:
-        collection = mongodb_service.get_collection("fhir_devices")
+        collection = mongodb_service.get_fhir_collection("fhir_devices")
         
         update_data = {
             "status": "inactive",

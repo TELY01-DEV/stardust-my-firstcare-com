@@ -14,6 +14,8 @@ services:
       - MONGODB_PASSWORD=Sim!443355
       - MONGODB_AUTH_DB=admin
       - MONGODB_SSL=true
+      - MONGODB_MAIN_DB=AMY
+      - MONGODB_FHIR_DB=MFC_FHIR_R5
       - JWT_AUTH_BASE_URL=https://stardust-v1.my-firstcare.com
       - ENABLE_JWT_AUTH=true
       - DEBUG=false

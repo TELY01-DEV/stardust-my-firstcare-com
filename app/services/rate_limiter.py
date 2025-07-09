@@ -72,7 +72,8 @@ class RateLimiter:
         self.whitelist = set([
             "127.0.0.1",
             "localhost",
-            # Add trusted IPs here
+            "49.0.81.155",  # Your external IP
+            # Add more trusted IPs here
         ])
         
         # Blacklist (immediate block)
@@ -295,30 +296,203 @@ class RateLimiter:
             logger.error(f"Failed to reset rate limit: {e}")
             return False
     
-    async def add_to_blacklist(self, ip_address: str, reason: str = ""):
-        """Add IP to blacklist"""
-        self.blacklist.add(ip_address)
-        
-        # Store in Redis for persistence
-        if self.redis_client:
-            await self.redis_client.sadd("rate_limit:blacklist", ip_address)
-            await self.redis_client.hset(
-                "rate_limit:blacklist:reasons",
-                ip_address,
-                f"{reason}:{datetime.utcnow().isoformat()}"
-            )
-        
-        logger.warning(f"Added {ip_address} to blacklist: {reason}")
+    async def add_to_whitelist(self, ip_address: str, reason: str = "", user_id: str = "system") -> Dict[str, Any]:
+        """Add IP to whitelist with response message"""
+        try:
+            # Add to in-memory whitelist
+            self.whitelist.add(ip_address)
+            
+            # Store in Redis for persistence
+            if self.redis_client:
+                await self.redis_client.sadd("rate_limit:whitelist", ip_address)
+                await self.redis_client.hset(
+                    "rate_limit:whitelist:reasons",
+                    ip_address,
+                    f"{reason}:{datetime.utcnow().isoformat()}:{user_id}"
+                )
+            
+            logger.info(f"✅ Added {ip_address} to whitelist: {reason} (by {user_id})")
+            
+            return {
+                "success": True,
+                "message": f"IP {ip_address} successfully added to whitelist",
+                "ip_address": ip_address,
+                "reason": reason,
+                "added_by": user_id,
+                "timestamp": datetime.utcnow().isoformat(),
+                "total_whitelisted": len(self.whitelist)
+            }
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to add {ip_address} to whitelist: {e}")
+            return {
+                "success": False,
+                "message": f"Failed to add IP {ip_address} to whitelist: {str(e)}",
+                "ip_address": ip_address,
+                "error": str(e)
+            }
     
-    async def remove_from_blacklist(self, ip_address: str):
-        """Remove IP from blacklist"""
-        self.blacklist.discard(ip_address)
-        
+    async def remove_from_whitelist(self, ip_address: str, user_id: str = "system") -> Dict[str, Any]:
+        """Remove IP from whitelist with response message"""
+        try:
+            # Remove from in-memory whitelist
+            removed = ip_address in self.whitelist
+            self.whitelist.discard(ip_address)
+            
+            # Remove from Redis
+            if self.redis_client:
+                await self.redis_client.srem("rate_limit:whitelist", ip_address)
+                await self.redis_client.hdel("rate_limit:whitelist:reasons", ip_address)
+            
+            if removed:
+                logger.info(f"✅ Removed {ip_address} from whitelist (by {user_id})")
+                return {
+                    "success": True,
+                    "message": f"IP {ip_address} successfully removed from whitelist",
+                    "ip_address": ip_address,
+                    "removed_by": user_id,
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "total_whitelisted": len(self.whitelist)
+                }
+            else:
+                return {
+                    "success": False,
+                    "message": f"IP {ip_address} was not in whitelist",
+                    "ip_address": ip_address
+                }
+                
+        except Exception as e:
+            logger.error(f"❌ Failed to remove {ip_address} from whitelist: {e}")
+            return {
+                "success": False,
+                "message": f"Failed to remove IP {ip_address} from whitelist: {str(e)}",
+                "ip_address": ip_address,
+                "error": str(e)
+            }
+    
+    async def get_whitelist_status(self) -> Dict[str, Any]:
+        """Get current whitelist status with detailed information"""
+        try:
+            whitelist_details = []
+            
+            # Get reasons from Redis if available
+            reasons = {}
+            if self.redis_client:
+                try:
+                    reasons = await self.redis_client.hgetall("rate_limit:whitelist:reasons")
+                except Exception:
+                    pass
+            
+            for ip in self.whitelist:
+                reason_data = reasons.get(ip, "::system")
+                parts = reason_data.split(":")
+                reason = parts[0] if len(parts) > 0 else "No reason"
+                timestamp = parts[1] if len(parts) > 1 else "Unknown"
+                added_by = parts[2] if len(parts) > 2 else "system"
+                
+                whitelist_details.append({
+                    "ip_address": ip,
+                    "reason": reason,
+                    "added_by": added_by,
+                    "timestamp": timestamp
+                })
+            
+            return {
+                "success": True,
+                "message": f"Retrieved whitelist with {len(self.whitelist)} IP addresses",
+                "total_count": len(self.whitelist),
+                "whitelist": whitelist_details,
+                "timestamp": datetime.utcnow().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to get whitelist status: {e}")
+            return {
+                "success": False,
+                "message": f"Failed to retrieve whitelist: {str(e)}",
+                "error": str(e)
+            }
+    
+    async def load_whitelist(self):
+        """Load whitelist from Redis with logging"""
         if self.redis_client:
-            await self.redis_client.srem("rate_limit:blacklist", ip_address)
-            await self.redis_client.hdel("rate_limit:blacklist:reasons", ip_address)
-        
-        logger.info(f"Removed {ip_address} from blacklist")
+            try:
+                whitelist = await self.redis_client.smembers("rate_limit:whitelist")
+                self.whitelist.update(set(whitelist))
+                logger.info(f"✅ Loaded {len(whitelist)} IPs from Redis whitelist")
+            except Exception as e:
+                logger.error(f"❌ Failed to load whitelist from Redis: {e}")
+
+    async def add_to_blacklist(self, ip_address: str, reason: str = "", user_id: str = "system") -> Dict[str, Any]:
+        """Add IP to blacklist with response message"""
+        try:
+            self.blacklist.add(ip_address)
+            
+            # Store in Redis for persistence
+            if self.redis_client:
+                await self.redis_client.sadd("rate_limit:blacklist", ip_address)
+                await self.redis_client.hset(
+                    "rate_limit:blacklist:reasons",
+                    ip_address,
+                    f"{reason}:{datetime.utcnow().isoformat()}:{user_id}"
+                )
+            
+            logger.warning(f"⚠️ Added {ip_address} to blacklist: {reason} (by {user_id})")
+            
+            return {
+                "success": True,
+                "message": f"IP {ip_address} successfully added to blacklist",
+                "ip_address": ip_address,
+                "reason": reason,
+                "added_by": user_id,
+                "timestamp": datetime.utcnow().isoformat(),
+                "total_blacklisted": len(self.blacklist)
+            }
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to add {ip_address} to blacklist: {e}")
+            return {
+                "success": False,
+                "message": f"Failed to add IP {ip_address} to blacklist: {str(e)}",
+                "ip_address": ip_address,
+                "error": str(e)
+            }
+
+    async def remove_from_blacklist(self, ip_address: str, user_id: str = "system") -> Dict[str, Any]:
+        """Remove IP from blacklist with response message"""
+        try:
+            removed = ip_address in self.blacklist
+            self.blacklist.discard(ip_address)
+            
+            if self.redis_client:
+                await self.redis_client.srem("rate_limit:blacklist", ip_address)
+                await self.redis_client.hdel("rate_limit:blacklist:reasons", ip_address)
+            
+            if removed:
+                logger.info(f"✅ Removed {ip_address} from blacklist (by {user_id})")
+                return {
+                    "success": True,
+                    "message": f"IP {ip_address} successfully removed from blacklist",
+                    "ip_address": ip_address,
+                    "removed_by": user_id,
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "total_blacklisted": len(self.blacklist)
+                }
+            else:
+                return {
+                    "success": False,
+                    "message": f"IP {ip_address} was not in blacklist",
+                    "ip_address": ip_address
+                }
+                
+        except Exception as e:
+            logger.error(f"❌ Failed to remove {ip_address} from blacklist: {e}")
+            return {
+                "success": False,
+                "message": f"Failed to remove IP {ip_address} from blacklist: {str(e)}",
+                "ip_address": ip_address,
+                "error": str(e)
+            }
     
     async def load_blacklist(self):
         """Load blacklist from Redis"""

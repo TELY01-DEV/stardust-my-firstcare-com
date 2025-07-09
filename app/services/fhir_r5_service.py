@@ -93,7 +93,14 @@ class FHIRR5Service:
         resource_type: str, 
         resource_data: Dict[str, Any],
         source_system: str = "manual",
-        device_mac_address: Optional[str] = None
+        device_mac_address: Optional[str] = None,
+        # New audit context parameters
+        user_id: Optional[str] = None,
+        request_id: Optional[str] = None,
+        session_id: Optional[str] = None,
+        batch_id: Optional[str] = None,
+        source_ip: Optional[str] = None,
+        user_agent: Optional[str] = None
     ) -> Dict[str, Any]:
         """Create a new FHIR resource with blockchain hash"""
         try:
@@ -116,10 +123,22 @@ class FHIRR5Service:
                 "profile": [f"http://hl7.org/fhir/StructureDefinition/{resource_type}"]
             }
             
+            # Create audit context for blockchain hash service
+            audit_context = {
+                "source_system": source_system,
+                "source_ip": source_ip,
+                "user_agent": user_agent,
+                "session_id": session_id,
+                "batch_id": batch_id
+            }
+            
             # Generate blockchain hash for the resource
             blockchain_hash_obj = await blockchain_hash_service.generate_resource_hash(
                 resource_data=resource_data,
-                include_merkle=True
+                include_merkle=True,
+                user_id=user_id,
+                request_id=request_id,
+                audit_context=audit_context
             )
             
             # Add blockchain metadata to FHIR resource

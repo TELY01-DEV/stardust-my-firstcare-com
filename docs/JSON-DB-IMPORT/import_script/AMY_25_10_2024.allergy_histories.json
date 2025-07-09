@@ -1,0 +1,681 @@
+[{
+  "_id": {
+    "$oid": "62baaae1861cb35df30df7c9"
+  },
+  "data": [
+    {
+      "allergy_detail": "Cva",
+      "allergy_import_date": {
+        "$date": "2022-06-28T07:16:48.604Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "Insect",
+      "allergy_import_date": {
+        "$date": "2022-06-28T07:17:17.410Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "Insect\nDust",
+      "allergy_import_date": {
+        "$date": "2022-06-28T08:17:49.945Z"
+      },
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "624ea7f43c00f99f7a13c6fe"
+  },
+  "created_at": {
+    "$date": "2022-06-28T07:16:49.289Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-28T08:17:50.705Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "62baf8bc861cb35df30df88a"
+  },
+  "data": [
+    {
+      "allergy_detail": "test",
+      "allergy_import_date": {
+        "$date": "2022-06-28T12:48:59.262Z"
+      },
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62bac882861cb35df30df80f"
+  },
+  "created_at": {
+    "$date": "2022-06-28T12:49:00.246Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-28T12:49:00.246Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62bafd2e861cb35df30df8ad"
+  },
+  "data": [
+    {
+      "allergy_detail": "Hello 👋",
+      "allergy_import_date": {
+        "$date": "2022-06-28T13:07:58.776Z"
+      },
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6267976403089d36dcba9bbf"
+  },
+  "created_at": {
+    "$date": "2022-06-28T13:07:58.849Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-28T13:07:58.849Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62bb016a861cb35df30df8ba"
+  },
+  "data": [
+    {
+      "allergy_detail": "N/A",
+      "allergy_import_date": {
+        "$date": "2022-06-28T13:26:00.746Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "N/A",
+      "allergy_import_date": {
+        "$date": "2022-06-28T13:26:00.746Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "N/A",
+      "allergy_import_date": {
+        "$date": "2022-06-28T13:26:00.746Z"
+      },
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "622035a5fd26d7b6d9b7730c"
+  },
+  "created_at": {
+    "$date": "2022-06-28T13:26:02.284Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-12T17:01:32.936Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "62bbdf48861cb35df30e0286"
+  },
+  "data": [
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-06-29T05:12:40.474Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "งาขาว",
+      "allergy_import_date": {
+        "$date": "2022-07-05T07:57:44.699Z"
+      },
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "623c133cf9e69c3b67a9af64"
+  },
+  "created_at": {
+    "$date": "2022-06-29T05:12:40.556Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-06T17:07:46.326Z"
+  },
+  "__v": 20
+},
+{
+  "_id": {
+    "$oid": "62bbfc60b34f2d5511615ec5"
+  },
+  "data": [
+    {
+      "allergy_detail": "ไม่มี",
+      "allergy_import_date": {
+        "$date": "2022-06-29T07:16:48.840Z"
+      },
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6296348b05ac0298d2bedaee"
+  },
+  "created_at": {
+    "$date": "2022-06-29T07:16:48.973Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-29T07:16:48.973Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "664ca69190d2c3a5052ca882"
+  },
+  "data": [
+    {
+      "allergy_detail": "N.a.",
+      "allergy_import_date": {
+        "$date": "2022-05-12T12:58:42.532Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "N.a.",
+      "allergy_import_date": {
+        "$date": "2022-05-12T12:58:42.532Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "N.a.",
+      "allergy_import_date": {
+        "$date": "2022-05-12T12:58:42.532Z"
+      },
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "627d04004b8ec2f57f076a12"
+  },
+  "created_at": {
+    "$date": "2024-05-21T13:50:09.419Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-20T11:43:25.205Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "664e08b61c7524770ad27c3a"
+  },
+  "data": [
+    {
+      "allergy_detail": "none",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "none",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "none",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6253d6d340fff815a52097ec"
+  },
+  "created_at": {
+    "$date": "2024-05-22T15:01:10.323Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-28T16:12:02.849Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "6683c64584d0d45376d3a588"
+  },
+  "data": [
+    {
+      "allergy_detail": "no",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "no",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "no",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "no",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "no",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "660509d700df0d8b0c5a359e"
+  },
+  "created_at": {
+    "$date": "2024-07-02T09:20:05.597Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-03T03:52:16.241Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "66892d98dfd9d0fba0abc4ab"
+  },
+  "data": [
+    {
+      "allergy_detail": "beru",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "beru",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "beru",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "beru",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62271048fd26d7b6d9b77348"
+  },
+  "created_at": {
+    "$date": "2024-07-06T11:42:16.961Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-07T08:21:37.355Z"
+  },
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "66e9110e376aa29a046050f9"
+  },
+  "data": [
+    {
+      "allergy_detail": "beru",
+      "allergy_import_date": {
+        "$date": "2022-03-08T08:42:40.819Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "beru",
+      "allergy_import_date": {
+        "$date": "2022-03-08T08:42:40.819Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "beru",
+      "allergy_import_date": {
+        "$date": "2022-03-08T08:42:40.819Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "beru",
+      "allergy_import_date": {
+        "$date": "2022-03-08T08:42:40.819Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "beru",
+      "allergy_import_date": {
+        "$date": "2022-03-08T08:42:40.819Z"
+      },
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62271701fd26d7b6d9b7734e"
+  },
+  "created_at": {
+    "$date": "2024-09-17T05:18:06.190Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T16:43:16.603Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "66f2cde7b09731030f47453e"
+  },
+  "data": [
+    {
+      "allergy_detail": "เจาะน้ำตาลวันเว้นวัน\r\nหลังมื้ออาหารเช้า 1 ครั้ง สลับ หลังมื้ออาหารเย็น 1 ครั้ง\r\nนาฬิกาใส่ปกติ",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "65e889c50705ee793b74e92e"
+  },
+  "created_at": {
+    "$date": "2024-09-24T14:34:15.409Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-24T14:34:15.409Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f3959db09731030f47850e"
+  },
+  "data": [
+    {
+      "allergy_detail": "Milk",
+      "allergy_import_date": {
+        "$date": "2022-04-09T11:33:18.045Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "Milk",
+      "allergy_import_date": {
+        "$date": "2022-04-09T11:33:18.045Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "Milk",
+      "allergy_import_date": {
+        "$date": "2022-04-09T11:33:18.045Z"
+      },
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "Milk",
+      "allergy_import_date": {
+        "$date": "2022-04-09T11:33:18.045Z"
+      },
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62516610762e75d318c034f4"
+  },
+  "created_at": {
+    "$date": "2024-09-25T04:46:21.994Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-25T13:01:11.189Z"
+  },
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "67207e2be6938c0337c6d55d"
+  },
+  "data": [
+    {
+      "allergy_detail": "AMLODIPINE\r\nenalapril",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "AMLODIPINE\r\nenalapril",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "AMLODIPINE\r\nenalapril",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "AMLODIPINE\r\nenalapril",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "AMLODIPINE\r\nenalapril",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "AMLODIPINE\r\nenalapril",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6605091000df0d8b0c5a349e"
+  },
+  "created_at": {
+    "$date": "2024-10-29T06:18:19.074Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-06T12:47:49.504Z"
+  },
+  "__v": 5
+},
+{
+  "_id": {
+    "$oid": "672080cde6938c0337c6d7e8"
+  },
+  "data": [
+    {
+      "allergy_detail": "Enalapril",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "Enalapril",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    },
+    {
+      "allergy_detail": "Enalapril",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "660508fc00df0d8b0c5a3484"
+  },
+  "created_at": {
+    "$date": "2024-10-29T06:29:33.959Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-06T06:11:11.669Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "67b443a12b58938cb29795fd"
+  },
+  "data": [
+    {
+      "allergy_detail": "cefalexin",
+      "allergy_import_date": null,
+      "allergy_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "67b442c02b58938cb29789da"
+  },
+  "created_at": {
+    "$date": "2025-02-18T08:24:01.849Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-18T08:24:01.849Z"
+  },
+  "__v": 0
+}]

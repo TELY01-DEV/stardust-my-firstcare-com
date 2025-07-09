@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional, List
 import uuid
 import json
-from fastapi import APIRouter, HTTPException, Depends, Request, Query
+from fastapi import APIRouter, HTTPException, Depends, Request, Query, Body
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
 from bson import ObjectId
@@ -5569,6 +5569,380 @@ async def get_sub_districts_dropdown(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve sub-districts for dropdown: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
+
+# IP Management API Endpoints
+
+@router.get("/rate-limit/whitelist", 
+            response_model=SuccessResponse,
+            responses={
+                200: {
+                    "description": "Whitelist retrieved successfully",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": True,
+                                "message": "Retrieved whitelist with 3 IP addresses",
+                                "data": {
+                                    "total_count": 3,
+                                    "whitelist": [
+                                        {
+                                            "ip_address": "127.0.0.1",
+                                            "reason": "Local development",
+                                            "added_by": "system",
+                                            "timestamp": "2025-07-09T06:30:00.000000Z"
+                                        },
+                                        {
+                                            "ip_address": "49.0.81.155",
+                                            "reason": "Admin access",
+                                            "added_by": "admin",
+                                            "timestamp": "2025-07-09T06:30:00.000000Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+async def get_ip_whitelist(
+    request: Request,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Get current IP whitelist with detailed information"""
+    import uuid
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        from app.services.rate_limiter import rate_limiter
+        
+        # Get whitelist status
+        whitelist_status = await rate_limiter.get_whitelist_status()
+        
+        if whitelist_status["success"]:
+            success_response = create_success_response(
+                message=whitelist_status["message"],
+                data=whitelist_status,
+                request_id=request_id
+            )
+            return success_response.dict()
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail=create_error_response(
+                    "WHITELIST_RETRIEVAL_FAILED",
+                    custom_message=whitelist_status["message"],
+                    request_id=request_id
+                ).dict()
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve IP whitelist: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
+
+@router.post("/rate-limit/whitelist", 
+             response_model=SuccessResponse,
+             responses={
+                 201: {
+                     "description": "IP successfully added to whitelist",
+                     "content": {
+                         "application/json": {
+                             "example": {
+                                 "success": True,
+                                 "message": "IP 203.0.113.45 successfully added to whitelist",
+                                 "data": {
+                                     "ip_address": "203.0.113.45",
+                                     "reason": "Office network",
+                                     "added_by": "admin",
+                                     "timestamp": "2025-07-09T06:30:00.000000Z",
+                                     "total_whitelisted": 4
+                                 }
+                             }
+                         }
+                     }
+                 }
+             })
+async def add_ip_to_whitelist(
+    request: Request,
+    ip_data: Dict[str, str] = Body(..., example={
+        "ip_address": "203.0.113.45", 
+        "reason": "Office network access"
+    }),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Add IP address to whitelist"""
+    import uuid
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Validate input
+        ip_address = ip_data.get("ip_address")
+        reason = ip_data.get("reason", "Added via API")
+        
+        if not ip_address:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "MISSING_IP_ADDRESS",
+                    custom_message="IP address is required",
+                    field="ip_address",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Validate IP format (basic validation)
+        import re
+        ip_pattern = r'^(\d{1,3}\.){3}\d{1,3}$'
+        if not re.match(ip_pattern, ip_address):
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_IP_FORMAT",
+                    custom_message="Invalid IP address format",
+                    field="ip_address",
+                    value=ip_address,
+                    request_id=request_id
+                ).dict()
+            )
+        
+        from app.services.rate_limiter import rate_limiter
+        
+        # Add to whitelist
+        result = await rate_limiter.add_to_whitelist(
+            ip_address=ip_address,
+            reason=reason,
+            user_id=current_user.get("username", "unknown")
+        )
+        
+        if result["success"]:
+            # Log audit trail
+            await audit_logger.log_admin_action(
+                action="ADD_IP_WHITELIST",
+                resource_type="RateLimit",
+                resource_id=ip_address,
+                user_id=current_user.get("username"),
+                details={
+                    "ip_address": ip_address,
+                    "reason": reason,
+                    "total_whitelisted": result.get("total_whitelisted", 0)
+                }
+            )
+            
+            success_response = create_success_response(
+                message=result["message"],
+                data=result,
+                request_id=request_id
+            )
+            return JSONResponse(content=success_response.dict(), status_code=201)
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail=create_error_response(
+                    "WHITELIST_ADD_FAILED",
+                    custom_message=result["message"],
+                    request_id=request_id
+                ).dict()
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to add IP to whitelist: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
+
+@router.delete("/rate-limit/whitelist/{ip_address}", 
+               response_model=SuccessResponse,
+               responses={
+                   200: {
+                       "description": "IP successfully removed from whitelist",
+                       "content": {
+                           "application/json": {
+                               "example": {
+                                   "success": True,
+                                   "message": "IP 203.0.113.45 successfully removed from whitelist",
+                                   "data": {
+                                       "ip_address": "203.0.113.45",
+                                       "removed_by": "admin",
+                                       "timestamp": "2025-07-09T06:30:00.000000Z",
+                                       "total_whitelisted": 3
+                                   }
+                               }
+                           }
+                       }
+                   }
+               })
+async def remove_ip_from_whitelist(
+    ip_address: str,
+    request: Request,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Remove IP address from whitelist"""
+    import uuid
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        from app.services.rate_limiter import rate_limiter
+        
+        # Remove from whitelist
+        result = await rate_limiter.remove_from_whitelist(
+            ip_address=ip_address,
+            user_id=current_user.get("username", "unknown")
+        )
+        
+        if result["success"]:
+            # Log audit trail
+            await audit_logger.log_admin_action(
+                action="REMOVE_IP_WHITELIST",
+                resource_type="RateLimit",
+                resource_id=ip_address,
+                user_id=current_user.get("username"),
+                details={
+                    "ip_address": ip_address,
+                    "total_whitelisted": result.get("total_whitelisted", 0)
+                }
+            )
+            
+            success_response = create_success_response(
+                message=result["message"],
+                data=result,
+                request_id=request_id
+            )
+            return success_response.dict()
+        else:
+            raise HTTPException(
+                status_code=404,
+                detail=create_error_response(
+                    "IP_NOT_IN_WHITELIST",
+                    custom_message=result["message"],
+                    request_id=request_id
+                ).dict()
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to remove IP from whitelist: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
+
+@router.post("/rate-limit/blacklist", 
+             response_model=SuccessResponse,
+             responses={
+                 201: {
+                     "description": "IP successfully added to blacklist",
+                     "content": {
+                         "application/json": {
+                             "example": {
+                                 "success": True,
+                                 "message": "IP 192.0.2.100 successfully added to blacklist",
+                                 "data": {
+                                     "ip_address": "192.0.2.100",
+                                     "reason": "Suspicious activity",
+                                     "added_by": "admin",
+                                     "timestamp": "2025-07-09T06:30:00.000000Z",
+                                     "total_blacklisted": 5
+                                 }
+                             }
+                         }
+                     }
+                 }
+             })
+async def add_ip_to_blacklist(
+    request: Request,
+    ip_data: Dict[str, str] = Body(..., example={
+        "ip_address": "192.0.2.100", 
+        "reason": "Suspicious activity detected"
+    }),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Add IP address to blacklist"""
+    import uuid
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Validate input
+        ip_address = ip_data.get("ip_address")
+        reason = ip_data.get("reason", "Added via API")
+        
+        if not ip_address:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "MISSING_IP_ADDRESS",
+                    custom_message="IP address is required",
+                    field="ip_address",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        from app.services.rate_limiter import rate_limiter
+        
+        # Add to blacklist
+        result = await rate_limiter.add_to_blacklist(
+            ip_address=ip_address,
+            reason=reason,
+            user_id=current_user.get("username", "unknown")
+        )
+        
+        if result["success"]:
+            # Log audit trail
+            await audit_logger.log_admin_action(
+                action="ADD_IP_BLACKLIST",
+                resource_type="RateLimit",
+                resource_id=ip_address,
+                user_id=current_user.get("username"),
+                details={
+                    "ip_address": ip_address,
+                    "reason": reason,
+                    "total_blacklisted": result.get("total_blacklisted", 0)
+                }
+            )
+            
+            success_response = create_success_response(
+                message=result["message"],
+                data=result,
+                request_id=request_id
+            )
+            return JSONResponse(content=success_response.dict(), status_code=201)
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail=create_error_response(
+                    "BLACKLIST_ADD_FAILED",
+                    custom_message=result["message"],
+                    request_id=request_id
+                ).dict()
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to add IP to blacklist: {str(e)}",
                 request_id=request_id
             ).dict()
         )

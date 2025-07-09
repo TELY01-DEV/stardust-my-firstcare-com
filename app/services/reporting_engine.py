@@ -117,7 +117,7 @@ class ReportingEngine:
             )
             
             # Save to database
-            collection = mongodb_service.get_collection(self.collection_templates)
+            collection = mongodb_service.get_fhir_collection(self.collection_templates)
             await collection.insert_one(asdict(template))
             
             logger.info(f"Created report template: {template.name} ({template.id})")
@@ -130,7 +130,7 @@ class ReportingEngine:
     async def update_template(self, template_id: str, updates: Dict[str, Any]) -> bool:
         """Update an existing report template"""
         try:
-            collection = mongodb_service.get_collection(self.collection_templates)
+            collection = mongodb_service.get_fhir_collection(self.collection_templates)
             
             # Add update timestamp
             updates["updated_at"] = datetime.utcnow()
@@ -155,7 +155,7 @@ class ReportingEngine:
     async def delete_template(self, template_id: str) -> bool:
         """Delete a report template"""
         try:
-            collection = mongodb_service.get_collection(self.collection_templates)
+            collection = mongodb_service.get_fhir_collection(self.collection_templates)
             result = await collection.delete_one({"id": template_id})
             return result.deleted_count > 0
             
@@ -166,7 +166,7 @@ class ReportingEngine:
     async def list_templates(self, active_only: bool = True) -> List[Dict[str, Any]]:
         """List all report templates"""
         try:
-            collection = mongodb_service.get_collection(self.collection_templates)
+            collection = mongodb_service.get_fhir_collection(self.collection_templates)
             filter_query = {"active": True} if active_only else {}
             
             templates = await collection.find(filter_query).to_list(None)
@@ -180,7 +180,7 @@ class ReportingEngine:
         """Generate a report immediately"""
         try:
             # Get template
-            collection = mongodb_service.get_collection(self.collection_templates)
+            collection = mongodb_service.get_fhir_collection(self.collection_templates)
             template_doc = await collection.find_one({"id": template_id})
             
             if not template_doc:
@@ -521,7 +521,7 @@ class ReportingEngine:
                 "expires_at": datetime.utcnow() + timedelta(days=30)  # Auto-cleanup after 30 days
             }
             
-            collection = mongodb_service.get_collection(self.collection_outputs)
+            collection = mongodb_service.get_fhir_collection(self.collection_outputs)
             result = await collection.insert_one(output_doc)
             
             return str(result.inserted_id)
@@ -584,7 +584,7 @@ class ReportingEngine:
     async def _update_job_status(self, job_id: str, status: str, **kwargs):
         """Update job status in database"""
         try:
-            collection = mongodb_service.get_collection(self.collection_jobs)
+            collection = mongodb_service.get_fhir_collection(self.collection_jobs)
             update_data = {"status": status, **kwargs}
             
             await collection.update_one(
@@ -598,7 +598,7 @@ class ReportingEngine:
     async def _update_template_generation_time(self, template_id: str, generated_at: datetime):
         """Update template last generation time and calculate next generation"""
         try:
-            collection = mongodb_service.get_collection(self.collection_templates)
+            collection = mongodb_service.get_fhir_collection(self.collection_templates)
             template_doc = await collection.find_one({"id": template_id})
             
             if template_doc:
@@ -645,7 +645,8 @@ class ReportingEngine:
     async def check_scheduled_reports(self):
         """Check for reports that need to be generated (called by scheduler)"""
         try:
-            collection = mongodb_service.get_collection(self.collection_templates)
+            # Use FHIR database for report templates to avoid authorization issues
+            collection = mongodb_service.get_fhir_collection(self.collection_templates)
             now = datetime.utcnow()
             
             # Find templates ready for generation
@@ -666,7 +667,7 @@ class ReportingEngine:
     async def get_report_jobs(self, template_id: Optional[str] = None, limit: int = 50) -> List[Dict[str, Any]]:
         """Get report generation jobs"""
         try:
-            collection = mongodb_service.get_collection(self.collection_jobs)
+            collection = mongodb_service.get_fhir_collection(self.collection_jobs)
             
             filter_query = {}
             if template_id:
@@ -682,7 +683,7 @@ class ReportingEngine:
     async def get_report_output(self, job_id: str) -> Optional[Dict[str, Any]]:
         """Get report output by job ID"""
         try:
-            collection = mongodb_service.get_collection(self.collection_outputs)
+            collection = mongodb_service.get_fhir_collection(self.collection_outputs)
             output = await collection.find_one({"job_id": job_id})
             return output
             

@@ -1,0 +1,579 @@
+[{
+  "_id": {
+    "$oid": "62c014de318089ffd8cf7308"
+  },
+  "data": [
+    {
+      "lipids": 205,
+      "ldl_lipids": 100,
+      "hdl_lipids": 150,
+      "tri_lipids": 120,
+      "lipids_import_date": {
+        "$date": "2022-07-02T09:50:22.415Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 200,
+      "ldl_lipids": 150,
+      "hdl_lipids": 40,
+      "tri_lipids": 150,
+      "lipids_import_date": {
+        "$date": "2022-07-04T06:22:21.919Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 200,
+      "ldl_lipids": 140,
+      "hdl_lipids": 40,
+      "tri_lipids": 200,
+      "lipids_import_date": {
+        "$date": "2022-07-05T08:52:58.690Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 187,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2022-07-09T07:30:54.828Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 197.21699999999998,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-10T02:23:48.147Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 65.739,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-14T02:07:47.459Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 135.345,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-15T00:56:23.651Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 65.739,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-22T01:41:40.069Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 162.41400000000002,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-23T01:59:16.970Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 162.41400000000002,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-23T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 162.41400000000002,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-23T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 162.41400000000002,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-23T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 162.41400000000002,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-23T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 162.41400000000002,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-23T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 162.41400000000002,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-23T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 162.41400000000002,
+      "ldl_lipids": 98,
+      "hdl_lipids": 78,
+      "tri_lipids": 147,
+      "lipids_import_date": {
+        "$date": "2023-07-22T23:00:00Z"
+      },
+      "lipids_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "623c133cf9e69c3b67a9af64"
+  },
+  "created_at": {
+    "$date": "2022-07-02T09:50:22.514Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-06T17:07:46.322Z"
+  },
+  "__v": 15
+},
+{
+  "_id": {
+    "$oid": "62c3fd3f4befaa91946c075f"
+  },
+  "data": [
+    {
+      "lipids": 10,
+      "ldl_lipids": 10,
+      "hdl_lipids": 10,
+      "tri_lipids": 10,
+      "lipids_import_date": {
+        "$date": "2022-07-05T08:58:38.984Z"
+      },
+      "lipids_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62bac882861cb35df30df80f"
+  },
+  "created_at": {
+    "$date": "2022-07-05T08:58:39.797Z"
+  },
+  "updated_at": {
+    "$date": "2022-07-05T08:58:39.797Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62cbe92974ea3a70a325e1a4"
+  },
+  "data": [
+    {
+      "lipids": 180,
+      "ldl_lipids": 150,
+      "hdl_lipids": 40,
+      "tri_lipids": 120,
+      "lipids_import_date": {
+        "$date": "2022-07-11T09:11:05.446Z"
+      },
+      "lipids_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6260a80279b00113f9bbe501"
+  },
+  "created_at": {
+    "$date": "2022-07-11T09:11:05.506Z"
+  },
+  "updated_at": {
+    "$date": "2022-07-11T09:11:05.506Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "665d48defa861ff5cf863f40"
+  },
+  "data": [
+    {
+      "lipids": 17942.88,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-06-03T04:38:54.621Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 17942.88,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-06-03T04:39:28.303Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 7734,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-06-03T04:46:24.803Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 6280.3947,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-06-03T04:50:20.391Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 270.69,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-06-03T04:54:52.730Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 11601,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-06-10T09:02:09.675Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 166.281,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-06-10T09:02:22.157Z"
+      },
+      "lipids_source": 1
+    }
+  ],
+  "patient_id": {
+    "$oid": "627dd8164b8ec2f57f078fba"
+  },
+  "created_at": {
+    "$date": "2024-06-03T04:38:54.635Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-10T09:02:22.171Z"
+  },
+  "__v": 6
+},
+{
+  "_id": {
+    "$oid": "666a565e395a691a184fb86d"
+  },
+  "data": [
+    {
+      "lipids": 398.3,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-06-13T02:15:58.410Z"
+      },
+      "lipids_source": 1
+    },
+    {
+      "lipids": 166.28,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-12-24T13:00:37.490Z"
+      },
+      "lipids_source": 1
+    }
+  ],
+  "patient_id": {
+    "$oid": "661f2b5d818cc24bd96a8722"
+  },
+  "created_at": {
+    "$date": "2024-06-13T02:15:58.427Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-24T13:00:37.510Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "66e827c2b1db6ed759bc8a76"
+  },
+  "data": [
+    {
+      "lipids": 166.28,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-09-16T12:42:42.112Z"
+      },
+      "lipids_source": 1
+    }
+  ],
+  "patient_id": {
+    "$oid": "668bba271e924c00e311fac0"
+  },
+  "created_at": {
+    "$date": "2024-09-16T12:42:42.132Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-16T12:42:42.132Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f3dbaab4b00ade3f1aac16"
+  },
+  "data": [
+    {
+      "lipids": 125,
+      "ldl_lipids": 125,
+      "hdl_lipids": 112,
+      "tri_lipids": 111,
+      "lipids_import_date": {
+        "$date": "2022-04-09T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 125,
+      "ldl_lipids": 125,
+      "hdl_lipids": 112,
+      "tri_lipids": 111,
+      "lipids_import_date": {
+        "$date": "2022-04-09T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 125,
+      "ldl_lipids": 125,
+      "hdl_lipids": 112,
+      "tri_lipids": 111,
+      "lipids_import_date": {
+        "$date": "2022-04-09T00:00:00Z"
+      },
+      "lipids_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62516610762e75d318c034f4"
+  },
+  "created_at": {
+    "$date": "2024-09-25T09:45:14.011Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-25T13:01:11.200Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "66f3ddf8b4b00ade3f1aaddf"
+  },
+  "data": [
+    {
+      "lipids": 99,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-09-18T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 99,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-09-18T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 99,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-09-18T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 99,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-09-18T00:00:00Z"
+      },
+      "lipids_source": 0
+    },
+    {
+      "lipids": 99,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2024-09-18T00:00:00Z"
+      },
+      "lipids_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6686bee9fa51925f6e64ffeb"
+  },
+  "created_at": {
+    "$date": "2024-09-25T09:55:04.290Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-25T10:15:42.540Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "673f62ff15d28c1a2d8bb537"
+  },
+  "data": [
+    {
+      "lipids": 10,
+      "ldl_lipids": 10,
+      "hdl_lipids": 10,
+      "tri_lipids": 10,
+      "lipids_import_date": {
+        "$date": "2022-04-29T23:00:00Z"
+      },
+      "lipids_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "626d037503b7ee1b75127028"
+  },
+  "created_at": {
+    "$date": "2024-11-21T16:42:39.631Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T16:42:39.631Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a2f01c87d8cefbf736edba"
+  },
+  "data": [
+    {
+      "lipids": 166.28,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": "2025-02-05T04:59:08.500Z"
+      },
+      "lipids_source": 1
+    }
+  ],
+  "patient_id": {
+    "$oid": "62786365d3f70d131f6a9d26"
+  },
+  "created_at": {
+    "$date": "2025-02-05T04:59:08.516Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-05T04:59:08.516Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67dbcad284592efc04d87147"
+  },
+  "data": [
+    {
+      "lipids": 10,
+      "ldl_lipids": 0,
+      "hdl_lipids": 0,
+      "tri_lipids": 0,
+      "lipids_import_date": {
+        "$date": {
+          "$numberLong": "-3600000"
+        }
+      },
+      "lipids_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "623aa2ccf9e69c3b67a9af28"
+  },
+  "created_at": {
+    "$date": "2025-03-20T07:59:14.306Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-20T07:59:14.306Z"
+  },
+  "__v": 0
+}]

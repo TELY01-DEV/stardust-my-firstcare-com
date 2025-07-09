@@ -119,7 +119,7 @@ async def receive_kati_data(
         }
         
         # Save observation
-        obs_collection = mongodb_service.get_collection("fhir_observations")
+        obs_collection = mongodb_service.get_fhir_collection("fhir_observations")
         result = await obs_collection.insert_one(observation)
         observation_id = str(result.inserted_id)
         

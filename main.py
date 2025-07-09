@@ -45,6 +45,8 @@ from app.routes.analytics import router as analytics_router
 from app.routes.visualization import router as visualization_router
 from app.routes.reports import router as reports_router
 from app.routes.patient_devices import router as patient_devices_router, router_lookup as patient_devices_lookup_router
+from app.routes.fhir_r5 import router as fhir_r5_router
+from app.routes.hash_audit import router as hash_audit_router
 
 from app.services.rate_limiter import rate_limiter
 from app.services.scheduler import report_scheduler
@@ -96,10 +98,10 @@ async def lifespan(app: FastAPI):
         else:
             logger.info("ℹ️ Cache disabled - running without Redis")
         
-        # Create TTL indexes for audit logs
-        audit_collection = mongodb_service.get_collection("fhir_provenance")
+        # Create TTL indexes for audit logs  
+        audit_collection = mongodb_service.get_fhir_collection("fhir_provenance")
         await audit_collection.create_index("recorded", expireAfterSeconds=15552000)  # 180 days
-        logger.info("✅ TTL index created for audit logs")
+        logger.info("✅ TTL index created for FHIR audit logs")
         
         # Log startup event
         await alert_manager.process_event({
@@ -414,7 +416,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers (routers already have their own prefixes defined)
+# Include routers in FastAPI app
+logger.info("📋 Including routers in FastAPI app...")
+
 app.include_router(auth_router, tags=["authentication"])          # has prefix /auth
 app.include_router(ava4_router, tags=["ava4"])                    # has prefix /api/ava4
 app.include_router(kati_router, tags=["kati"])                    # has prefix /api/kati
@@ -431,6 +435,23 @@ app.include_router(security_router, tags=["security"])             # has prefix 
 app.include_router(analytics_router, tags=["analytics"])             # has prefix /admin/analytics
 app.include_router(visualization_router, tags=["visualization"])       # has prefix /admin/visualization
 app.include_router(reports_router, tags=["reports"])             # has prefix /admin/reports
+app.include_router(hash_audit_router, tags=["hash-audit"])      # has prefix /api/v1/audit/hash
+
+# Add debugging for FHIR router
+try:
+    logger.info(f"🏥 Adding FHIR R5 router with {len(fhir_r5_router.routes)} routes...")
+    app.include_router(fhir_r5_router, tags=["fhir-r5"])             # has prefix /fhir/R5
+    logger.info("✅ FHIR R5 router successfully included")
+except Exception as e:
+    logger.error(f"❌ Failed to include FHIR R5 router: {e}")
+    import traceback
+    logger.error(traceback.format_exc())
+
+logger.info(f"📊 Total app routes after including all routers: {len(app.routes)}")
+
+# Count FHIR routes for debugging
+fhir_route_count = sum(1 for route in app.routes if hasattr(route, 'path') and '/fhir' in route.path)
+logger.info(f"🏥 FHIR routes in app: {fhir_route_count}")
 
 # Health check endpoint
 @app.get("/health", 

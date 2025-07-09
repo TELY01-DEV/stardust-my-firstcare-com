@@ -1,0 +1,975 @@
+[{
+  "_id": {
+    "$oid": "62baaaeb861cb35df30df7cb"
+  },
+  "data": [
+    {
+      "medication_detail": "Caa",
+      "medication_import_date": {
+        "$date": "2022-06-28T07:16:58.883Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "Caa\nCAp",
+      "medication_import_date": {
+        "$date": "2022-06-28T08:14:18.827Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "624ea7f43c00f99f7a13c6fe"
+  },
+  "created_at": {
+    "$date": "2022-06-28T07:16:59.575Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-28T08:14:19.590Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "62baf8d0861cb35df30df88c"
+  },
+  "data": [
+    {
+      "medication_detail": "testabcde",
+      "medication_import_date": {
+        "$date": "2022-06-28T12:49:19.540Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62bac882861cb35df30df80f"
+  },
+  "created_at": {
+    "$date": "2022-06-28T12:49:20.226Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-28T12:49:20.226Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62bafcf3861cb35df30df8a9"
+  },
+  "data": [
+    {
+      "medication_detail": "123",
+      "medication_import_date": {
+        "$date": "2022-06-28T13:06:59.712Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6267976403089d36dcba9bbf"
+  },
+  "created_at": {
+    "$date": "2022-06-28T13:06:59.782Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-28T13:06:59.782Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62bb0167861cb35df30df8b7"
+  },
+  "data": [
+    {
+      "medication_detail": "ไม่มี",
+      "medication_import_date": {
+        "$date": "2022-06-28T13:25:57.497Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "ไม่มี",
+      "medication_import_date": {
+        "$date": "2022-06-28T13:25:57.497Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "ไม่มี",
+      "medication_import_date": {
+        "$date": "2022-06-28T13:25:57.497Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "622035a5fd26d7b6d9b7730c"
+  },
+  "created_at": {
+    "$date": "2022-06-28T13:25:59.078Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-12T17:01:32.933Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "62bbdf44861cb35df30e0284"
+  },
+  "data": [
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-06-29T05:12:36.558Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N/A",
+      "medication_import_date": {
+        "$date": "2022-07-01T11:03:26.228Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "623c133cf9e69c3b67a9af64"
+  },
+  "created_at": {
+    "$date": "2022-06-29T05:12:36.638Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-06T17:07:46.324Z"
+  },
+  "__v": 20
+},
+{
+  "_id": {
+    "$oid": "62bbfc60b34f2d5511615ec3"
+  },
+  "data": [
+    {
+      "medication_detail": "พารา",
+      "medication_import_date": {
+        "$date": "2022-06-29T07:16:48.840Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6296348b05ac0298d2bedaee"
+  },
+  "created_at": {
+    "$date": "2022-06-29T07:16:48.968Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-29T07:16:48.968Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62c7a5bc7c0d4281bbc2ea0e"
+  },
+  "data": [
+    {
+      "medication_detail": "-",
+      "medication_import_date": {
+        "$date": "2022-07-08T03:34:20.002Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "-",
+      "medication_import_date": {
+        "$date": "2022-07-08T03:34:20.002Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "-",
+      "medication_import_date": {
+        "$date": "2022-07-08T03:34:20.002Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "-",
+      "medication_import_date": {
+        "$date": "2022-07-08T03:34:20.002Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "-",
+      "medication_import_date": {
+        "$date": "2022-07-08T03:34:20.002Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "626b641ccc8269328b027bf2"
+  },
+  "created_at": {
+    "$date": "2022-07-08T03:34:20.235Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T16:32:08.555Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "664ca69190d2c3a5052ca881"
+  },
+  "data": [
+    {
+      "medication_detail": "N.a.",
+      "medication_import_date": {
+        "$date": "2022-05-12T12:58:42.532Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N.a.",
+      "medication_import_date": {
+        "$date": "2022-05-12T12:58:42.532Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "N.a.",
+      "medication_import_date": {
+        "$date": "2022-05-12T12:58:42.532Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "627d04004b8ec2f57f076a12"
+  },
+  "created_at": {
+    "$date": "2024-05-21T13:50:09.417Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-20T11:43:25.198Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "664e08b61c7524770ad27c39"
+  },
+  "data": [
+    {
+      "medication_detail": "none",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "none",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "none",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6253d6d340fff815a52097ec"
+  },
+  "created_at": {
+    "$date": "2024-05-22T15:01:10.322Z"
+  },
+  "updated_at": {
+    "$date": "2024-05-28T16:12:02.844Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "666fe0c65e6afbc968762cd9"
+  },
+  "data": [
+    {
+      "medication_detail": "metformin(500mg) 0.5*1",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "metformin(500mg) 0.5*1",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "metformin(500mg) 0.5*1",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "metformin(500mg) 0.5*1",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "666fdde85e6afbc96876242c"
+  },
+  "created_at": {
+    "$date": "2024-06-17T07:07:50.910Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-17T07:12:26.332Z"
+  },
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "6683c64584d0d45376d3a587"
+  },
+  "data": [
+    {
+      "medication_detail": "clopidogrel 75 mg\r\nAtovas 40 mg\r\nASA 81 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "clopidogrel 75 mg\r\nAtovas 40 mg\r\nASA 81 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "clopidogrel 75 mg\r\nAtovas 40 mg\r\nASA 81 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "clopidogrel 75 mg\r\nAtovas 40 mg\r\nASA 81 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "clopidogrel 75 mg\r\nAtovas 40 mg\r\nASA 81 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "660509d700df0d8b0c5a359e"
+  },
+  "created_at": {
+    "$date": "2024-07-02T09:20:05.595Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-03T03:52:16.236Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "6684006984d0d45376d42cb5"
+  },
+  "data": [
+    {
+      "medication_detail": "-",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6260cdbf79b00113f9bbe76c"
+  },
+  "created_at": {
+    "$date": "2024-07-02T13:28:09.185Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-02T13:28:09.185Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66892d82dfd9d0fba0abc499"
+  },
+  "data": [
+    {
+      "medication_detail": "-",
+      "medication_import_date": {
+        "$date": "2022-05-06T07:25:19.367Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "-",
+      "medication_import_date": {
+        "$date": "2022-05-06T07:25:19.367Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "-",
+      "medication_import_date": {
+        "$date": "2022-05-06T07:25:19.367Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "-",
+      "medication_import_date": {
+        "$date": "2022-05-06T07:25:19.367Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "-",
+      "medication_import_date": {
+        "$date": "2022-05-06T07:25:19.367Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62458803576e198cc6240a6d"
+  },
+  "created_at": {
+    "$date": "2024-07-06T11:41:54.375Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-06T11:57:51.453Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "66892d98dfd9d0fba0abc4ac"
+  },
+  "data": [
+    {
+      "medication_detail": "py",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "py",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "py",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "py",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62271048fd26d7b6d9b77348"
+  },
+  "created_at": {
+    "$date": "2024-07-06T11:42:16.963Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-07T08:21:37.353Z"
+  },
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "66d6b7255b289ade5c8174fb"
+  },
+  "data": [
+    {
+      "medication_detail": "Aspirin 300 mg\r\nAcetylcysteine 100 mg (ซอง)\r\nAtorvastatin 40 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "Aspirin 300 mg\r\nAcetylcysteine 100 mg (ซอง)\r\nAtorvastatin 40 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6680f27f15aff0f6484183a9"
+  },
+  "created_at": {
+    "$date": "2024-09-03T07:13:41.486Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-11T13:34:20.027Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "66d6b92f5b289ade5c8175d9"
+  },
+  "data": [
+    {
+      "medication_detail": "Amlodipine 5 mg\r\nmetformin 500 mg (off)\r\nSimvastatin 20 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "Amlodipine 5 mg\r\nmetformin 500 mg (off)\r\nSimvastatin 20 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "Amlodipine 5 mg\r\nmetformin 500 mg (off)\r\nSimvastatin 20 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "666fd1865e6afbc9687604ff"
+  },
+  "created_at": {
+    "$date": "2024-09-03T07:22:23.396Z"
+  },
+  "updated_at": {
+    "$date": "2025-04-02T04:36:35.196Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "66d6ba335b289ade5c817655"
+  },
+  "data": [
+    {
+      "medication_detail": "Amlodipin 5 mg\r\nEnalapril (E5) 5 mg\r\nSimvastatin 20 mg",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "666fd1ce5e6afbc968760588"
+  },
+  "created_at": {
+    "$date": "2024-09-03T07:26:43.222Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-03T07:26:43.222Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66d6c78c5b289ade5c817aea"
+  },
+  "data": [
+    {
+      "medication_detail": "Clopidogrel 75 mg\r\nOmeprazole 40 mg\r\nAtorvastatin 40 mg\r\nBetahistine mesilate 6 mg\r\nNorgesic 450+350 mg\r\nAnalgesic 25 mg\r\nLorazepam 0.5 mg\r\n",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6680f82715aff0f648418e48"
+  },
+  "created_at": {
+    "$date": "2024-09-03T08:23:40.206Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-03T08:23:40.206Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66e9110e376aa29a046050f8"
+  },
+  "data": [
+    {
+      "medication_detail": "belle",
+      "medication_import_date": {
+        "$date": "2022-03-08T08:42:40.819Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "belle",
+      "medication_import_date": {
+        "$date": "2022-03-08T08:42:40.819Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "belle",
+      "medication_import_date": {
+        "$date": "2022-03-08T08:42:40.819Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "belle",
+      "medication_import_date": {
+        "$date": "2022-03-08T08:42:40.819Z"
+      },
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "belle",
+      "medication_import_date": {
+        "$date": "2022-03-08T08:42:40.819Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62271701fd26d7b6d9b7734e"
+  },
+  "created_at": {
+    "$date": "2024-09-17T05:18:06.189Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T16:43:16.612Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "66f1688dd8c62728f251bfdc"
+  },
+  "data": [
+    {
+      "medication_detail": "Abc",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "626b5af1cc8269328b027935"
+  },
+  "created_at": {
+    "$date": "2024-09-23T13:09:33.298Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-23T13:09:33.298Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f2cde7b09731030f47453d"
+  },
+  "data": [
+    {
+      "medication_detail": "เจาะน้ำตาลวันเว้นวัน\r\nหลังมื้ออาหารเช้า 1 ครั้ง สลับ หลังมื้ออาหารเย็น 1 ครั้ง\r\nนาฬิกาใส่ปกติ",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "65e889c50705ee793b74e92e"
+  },
+  "created_at": {
+    "$date": "2024-09-24T14:34:15.407Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-24T14:34:15.407Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67206c59e6938c0337c6c65d"
+  },
+  "data": [
+    {
+      "medication_detail": "แพ้ยา SULFAMETHOXAZOLE, TRIMETHOPRIM, SULFA",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "แพ้ยา SULFAMETHOXAZOLE, TRIMETHOPRIM, SULFA",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "แพ้ยา SULFAMETHOXAZOLE, TRIMETHOPRIM, SULFA",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "แพ้ยา SULFAMETHOXAZOLE, TRIMETHOPRIM, SULFA",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "แพ้ยา SULFAMETHOXAZOLE, TRIMETHOPRIM, SULFA",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "แพ้ยา SULFAMETHOXAZOLE, TRIMETHOPRIM, SULFA",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "แพ้ยา SULFAMETHOXAZOLE, TRIMETHOPRIM, SULFA",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "แพ้ยา SULFAMETHOXAZOLE, TRIMETHOPRIM, SULFA",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6605084300df0d8b0c5a33ad"
+  },
+  "created_at": {
+    "$date": "2024-10-29T05:02:17.922Z"
+  },
+  "updated_at": {
+    "$date": "2025-01-30T03:06:54.987Z"
+  },
+  "__v": 7
+},
+{
+  "_id": {
+    "$oid": "67286e517ca74706a0c1e263"
+  },
+  "data": [
+    {
+      "medication_detail": "Amlo 5mg. 1*1 pcช\r\nSim 20mg. 1*1 hs ",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "Amlo 5mg. 1*1 pcช\r\nSim 20mg. 1*1 hs ",
+      "medication_import_date": null,
+      "medication_source": 0
+    },
+    {
+      "medication_detail": "Amlo 5mg. 1*1 pcช\r\nSim 20mg. 1*1 hs ",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "672869f37ca74706a0c1df76"
+  },
+  "created_at": {
+    "$date": "2024-11-04T06:48:49.914Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-07T14:41:42.250Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "67388da190ed69c1cfe4391a"
+  },
+  "data": [
+    {
+      "medication_detail": "test 123132551",
+      "medication_import_date": {
+        "$date": "2022-03-22T08:50:48.984Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62396d77f9e69c3b67a9af07"
+  },
+  "created_at": {
+    "$date": "2024-11-16T12:18:41.930Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-16T12:18:41.930Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "673f62ff15d28c1a2d8bb530"
+  },
+  "data": [
+    {
+      "medication_detail": "abc",
+      "medication_import_date": {
+        "$date": "2022-04-30T09:43:36.165Z"
+      },
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "626d037503b7ee1b75127028"
+  },
+  "created_at": {
+    "$date": "2024-11-21T16:42:39.623Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T16:42:39.623Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b443a12b58938cb29795f8"
+  },
+  "data": [
+    {
+      "medication_detail": "Atorvas(40)1/2*1",
+      "medication_import_date": null,
+      "medication_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "67b442c02b58938cb29789da"
+  },
+  "created_at": {
+    "$date": "2025-02-18T08:24:01.843Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-18T08:24:01.843Z"
+  },
+  "__v": 0
+}]

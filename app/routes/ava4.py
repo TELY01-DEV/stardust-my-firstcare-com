@@ -8,6 +8,7 @@ from bson import ObjectId
 from app.services.mongo import mongodb_service
 from app.services.auth import require_auth
 from app.services.audit_logger import audit_logger
+from app.services.fhir_r5_service import fhir_service
 from app.utils.json_encoder import serialize_mongodb_response
 from app.utils.error_definitions import create_error_response, create_success_response
 from config import settings, logger
@@ -155,12 +156,15 @@ async def receive_ava4_data(
         }
         
         # Save observation
-        obs_collection = mongodb_service.get_collection("fhir_observations")
+        obs_collection = mongodb_service.get_fhir_collection("fhir_observations")
         result = await obs_collection.insert_one(observation)
         observation_id = str(result.inserted_id)
         
-        # Route to appropriate medical history collection
+        # Route to appropriate medical history collection (legacy)
         await route_to_medical_history(data, device.get("patient_id"))
+        
+        # Create FHIR R5 Observations (new implementation)
+        await create_fhir_observations_from_ava4(data, device.get("patient_id"), data.device_id)
         
         # Log audit trail
         await audit_logger.log_device_data_received(
@@ -239,6 +243,49 @@ async def route_to_medical_history(data: Ava4DataRequest, patient_id: str):
             
     except Exception as e:
         logger.error(f"Failed to route to medical history: {e}")
+
+async def create_fhir_observations_from_ava4(data: Ava4DataRequest, patient_id: str, device_id: str):
+    """Create FHIR R5 Observations from AVA4 data"""
+    try:
+        # Create a simplified MQTT payload structure for the FHIR service
+        mqtt_payload = {
+            "time": int(data.timestamp.timestamp()),
+            "mac": device_id,
+            "data": {
+                "attribute": data.type,
+                "device": "AVA4 Device",
+                "value": {
+                    "device_list": [
+                        {
+                            "scan_time": int(data.timestamp.timestamp()),
+                            "ble_addr": device_id,
+                            **data.data  # Include all the data from AVA4
+                        }
+                    ]
+                }
+            }
+        }
+        
+        # Transform to FHIR Observations
+        observations = await fhir_service.transform_ava4_mqtt_to_fhir(
+            mqtt_payload=mqtt_payload,
+            patient_id=patient_id,
+            device_id=device_id
+        )
+        
+        # Create FHIR resources
+        for obs_data in observations:
+            await fhir_service.create_fhir_resource(
+                resource_type="Observation",
+                resource_data=obs_data,
+                source_system="ava4_api",
+                device_mac_address=device_id
+            )
+        
+        logger.info(f"Created {len(observations)} FHIR Observations from AVA4 data")
+        
+    except Exception as e:
+        logger.error(f"Failed to create FHIR observations from AVA4: {e}")
 
 @router.get("/devices")
 async def get_ava4_devices(

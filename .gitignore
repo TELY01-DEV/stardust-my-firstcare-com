@@ -128,4 +128,7 @@ docs/JSON-DB-IMPORT/*.json
 # Sensitive documentation
 *credentials*
 *password*
-*secret* 
+*secret* # Large data files excluded due to GitHub file size limits
+docs/JSON-DB-IMPORT/import_script/AMY_25_10_2024.blood_pressure_histories.json
+docs/JSON-DB-IMPORT/import_script/AMY_25_10_2024.temprature_data_histories.json
+docs/JSON-DB-IMPORT/import_script/AMY_25_10_2024.spo2_histories.json

@@ -15,15 +15,20 @@ This script migrates:
 import asyncio
 import sys
 import os
-from datetime import datetime
-from typing import Dict, Any, List
+import uuid
+from datetime import datetime, timezone, timedelta
+from typing import Dict, List, Optional, Any, Union
+from enum import Enum
+from dataclasses import dataclass
 from bson import ObjectId
+import socket
+import re
 
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.services.mongo import mongodb_service
-from app.services.fhir_r5_service import fhir_service
+from app.services.fhir_r5_service import FHIRR5Service
 from app.utils.structured_logging import get_logger
 from config import settings
 
@@ -39,6 +44,31 @@ class FHIRMigrationService:
             "organizations": {"total": 0, "migrated": 0, "errors": 0},
             "observations": {"total": 0, "migrated": 0, "errors": 0},
             "conditions": {"total": 0, "migrated": 0, "errors": 0}
+        }
+        
+        # Generate migration session metadata for audit logging
+        self.migration_session_id = str(uuid.uuid4())
+        self.migration_user_id = "migration_system"
+        self.migration_start_time = datetime.utcnow()
+        
+        # Get source system information
+        try:
+            self.source_ip = socket.gethostbyname(socket.gethostname())
+        except:
+            self.source_ip = "127.0.0.1"
+        
+        logger.info(f"🔧 Migration session started: {self.migration_session_id}")
+        logger.info(f"🔧 Migration user: {self.migration_user_id}")
+        logger.info(f"🔧 Source IP: {self.source_ip}")
+        
+    def _create_audit_context(self, batch_id: Optional[str] = None) -> Dict[str, Any]:
+        """Create audit context for migration operations"""
+        return {
+            "session_id": self.migration_session_id,
+            "batch_id": batch_id,
+            "source_ip": self.source_ip,
+            "user_agent": f"FHIR-Migration-Script/{settings.app_version}",
+            "source_system": "migration"
         }
     
     async def migrate_all_data(self, batch_size: int = 100):
@@ -427,6 +457,10 @@ class FHIRMigrationService:
         """Migrate a single hospital to FHIR Organization"""
         org_id = str(ObjectId())
         
+        # Generate batch ID for this organization creation
+        batch_id = f"org-migration-{org_id}"
+        audit_context = self._create_audit_context(batch_id)
+        
         # Extract hospital name from actual AMY database structure
         hospital_name = "Unknown Hospital"
         
@@ -473,50 +507,45 @@ class FHIRMigrationService:
                         "display": "Provider number"
                     }]
                 },
-                "system": "http://thailand.moph.go.th/hospital-code",
+                "system": "https://my-firstcare.com/hospital-codes",
                 "value": hospital_code
             })
         
-        # Build contact information - check multiple possible fields
+        # Add internal ID identifier
+        identifiers.append({
+            "use": "usual",
+            "type": {
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                    "code": "ACSN",
+                    "display": "Accession ID"
+                }]
+            },
+            "system": "https://my-firstcare.com/hospital-ids",
+            "value": str(hospital_doc.get("_id", {}).get("$oid", hospital_doc.get("_id", org_id)))
+        })
+        
+        # Build contact information
         telecom = []
-        phone_number = None
-        
-        # Try contact.phone first (structured format)
-        if hospital_doc.get("contact") and isinstance(hospital_doc["contact"], dict):
-            phone_number = hospital_doc["contact"].get("phone")
-        
-        # Fallback to direct phone field
-        if not phone_number:
-            phone_number = hospital_doc.get("phone") or hospital_doc.get("telephone")
-        
-        if phone_number:
+        if hospital_doc.get("telephone"):
             telecom.append({
                 "system": "phone",
-                "value": phone_number,
+                "value": hospital_doc["telephone"],
                 "use": "work"
             })
         
-        # Add email if available
-        email = None
-        if hospital_doc.get("contact") and isinstance(hospital_doc["contact"], dict):
-            email = hospital_doc["contact"].get("email")
-        if not email:
-            email = hospital_doc.get("email")
-        
-        if email:
+        if hospital_doc.get("email"):
             telecom.append({
                 "system": "email",
-                "value": email,
+                "value": hospital_doc["email"],
                 "use": "work"
             })
         
-        # Build address - handle multiple formats
+        # Build address information
         addresses = []
         address_text = hospital_doc.get("address", "")
-        
-        # Get location details
-        city = hospital_doc.get("district") or ""
-        state = hospital_doc.get("province") or ""
+        city = hospital_doc.get("district", "")
+        state = hospital_doc.get("province", "")
         postal_code = hospital_doc.get("postal_code", "")
         
         # Handle structured address if available
@@ -563,11 +592,17 @@ class FHIRMigrationService:
             "address": addresses
         }
         
-        # Create FHIR Organization
+        # Create FHIR Organization with audit context
         result = await fhir_service.create_fhir_resource(
             "Organization", 
             organization_resource,
-            source_system="migration"
+            source_system="migration",
+            user_id=self.migration_user_id,
+            request_id=str(uuid.uuid4()),
+            session_id=audit_context["session_id"],
+            batch_id=audit_context["batch_id"],
+            source_ip=audit_context["source_ip"],
+            user_agent=audit_context["user_agent"]
         )
         
         logger.info(f"Migrated hospital '{hospital_name}' (code: {hospital_code}) to FHIR Organization {org_id}")
@@ -652,6 +687,10 @@ class FHIRMigrationService:
         """Migrate a single device to FHIR Device"""
         device_id = str(ObjectId())
         
+        # Generate batch ID for this device creation
+        batch_id = f"device-migration-{device_id}"
+        audit_context = self._create_audit_context(batch_id)
+        
         # Build Device identifiers
         identifiers = []
         if device_doc.get("mac_address"):
@@ -724,12 +763,18 @@ class FHIRMigrationService:
                 "value": device_doc["version"]
             }]
         
-        # Create FHIR Device
+        # Create FHIR Device with audit context
         result = await fhir_service.create_fhir_resource(
             "Device", 
             device_resource,
             source_system="migration",
-            device_mac_address=device_doc.get("mac_address")
+            device_mac_address=device_doc.get("mac_address"),
+            user_id=self.migration_user_id,
+            request_id=str(uuid.uuid4()),
+            session_id=audit_context["session_id"],
+            batch_id=audit_context["batch_id"],
+            source_ip=audit_context["source_ip"],
+            user_agent=audit_context["user_agent"]
         )
         
         return device_id
@@ -835,6 +880,10 @@ class FHIRMigrationService:
         """Migrate a single medical history record to FHIR Observation"""
         obs_id = str(ObjectId())
         
+        # Generate batch ID for this observation creation
+        batch_id = f"obs-migration-{obs_id}"
+        audit_context = self._create_audit_context(batch_id)
+        
         # Extract data from the record
         data_list = record.get("data", [])
         if not data_list:
@@ -842,6 +891,9 @@ class FHIRMigrationService:
         
         # Use the first data entry
         data_entry = data_list[0] if isinstance(data_list, list) else data_list
+        
+        # Determine if this is a vital sign based on collection name and LOINC code
+        is_vital_sign = self._is_vital_sign_observation(collection_info["name"], collection_info["loinc_code"])
         
         # Build basic observation
         observation_resource = {
@@ -851,8 +903,8 @@ class FHIRMigrationService:
             "category": [{
                 "coding": [{
                     "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-                    "code": "vital-signs" if "vital" in collection_info["display"].lower() else "laboratory",
-                    "display": "Vital Signs" if "vital" in collection_info["display"].lower() else "Laboratory"
+                    "code": "vital-signs" if is_vital_sign else "laboratory",
+                    "display": "Vital Signs" if is_vital_sign else "Laboratory"
                 }]
             }],
             "code": {
@@ -866,23 +918,67 @@ class FHIRMigrationService:
             "issued": datetime.utcnow().isoformat() + "Z"
         }
         
-        # Add patient reference
+        # Add patient reference - clean up ObjectId format
         if record.get("patient_id"):
+            patient_id = record["patient_id"]
+            # Clean up ObjectId format if present
+            if isinstance(patient_id, dict) and "$oid" in patient_id:
+                patient_id = patient_id["$oid"]
+            elif isinstance(patient_id, str) and patient_id.startswith("{'$oid'"):
+                # Handle string representation of ObjectId dict
+                import re
+                match = re.search(r"'([a-f0-9]{24})'", patient_id)
+                if match:
+                    patient_id = match.group(1)
+            
             observation_resource["subject"] = {
-                "reference": f"Patient/{record['patient_id']}"
+                "reference": f"Patient/{patient_id}"
             }
+        
+        # Debug logging for blood pressure data structure
+        if "blood_pressure" in collection_info["name"]:
+            logger.info(f"🩺 DEBUG - Blood pressure data entry: {data_entry}")
         
         # Add value based on collection type
         self._add_observation_value(observation_resource, data_entry, collection_info["name"])
         
-        # Create FHIR Observation
+        # Create FHIR Observation with audit context
         result = await fhir_service.create_fhir_resource(
             "Observation", 
             observation_resource,
-            source_system="migration"
+            source_system="migration",
+            user_id=self.migration_user_id,
+            request_id=str(uuid.uuid4()),
+            session_id=audit_context["session_id"],
+            batch_id=audit_context["batch_id"],
+            source_ip=audit_context["source_ip"],
+            user_agent=audit_context["user_agent"]
         )
         
         return obs_id
+    
+    def _is_vital_sign_observation(self, collection_name: str, loinc_code: str) -> bool:
+        """Determine if this observation should be categorized as vital signs"""
+        # Define vital signs collections and LOINC codes
+        vital_signs_collections = [
+            "blood_pressure_histories",
+            "temprature_data_histories", 
+            "spo2_histories",
+            "body_data_histories"  # weight measurements
+        ]
+        
+        vital_signs_loinc_codes = [
+            "85354-9",  # Blood pressure panel
+            "8310-5",   # Body temperature
+            "59408-5",  # Oxygen saturation
+            "29463-7",  # Body weight
+            "8480-6",   # Systolic blood pressure
+            "8462-4",   # Diastolic blood pressure
+            "8867-4"    # Heart rate
+        ]
+        
+        return (collection_name in vital_signs_collections or 
+                loinc_code in vital_signs_loinc_codes)
 
     def _extract_datetime(self, data_entry: Dict[str, Any]) -> datetime:
         """Extract datetime from medical history data entry"""
@@ -915,9 +1011,28 @@ class FHIRMigrationService:
         """Add appropriate value to observation based on collection type"""
         
         if "blood_pressure" in collection_name:
-            # Blood pressure has components
+            # Blood pressure has components - use actual field names from AMY database
             components = []
-            if "bp_high" in data_entry:
+            
+            # Systolic blood pressure
+            if "sys_data" in data_entry:
+                components.append({
+                    "code": {
+                        "coding": [{
+                            "system": "http://loinc.org",
+                            "code": "8480-6",
+                            "display": "Systolic blood pressure"
+                        }]
+                    },
+                    "valueQuantity": {
+                        "value": data_entry["sys_data"],
+                        "unit": "mmHg",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "mm[Hg]"
+                    }
+                })
+            # Fallback to bp_high for other data sources
+            elif "bp_high" in data_entry:
                 components.append({
                     "code": {
                         "coding": [{
@@ -934,7 +1049,25 @@ class FHIRMigrationService:
                     }
                 })
             
-            if "bp_low" in data_entry:
+            # Diastolic blood pressure
+            if "dia_data" in data_entry:
+                components.append({
+                    "code": {
+                        "coding": [{
+                            "system": "http://loinc.org",
+                            "code": "8462-4",
+                            "display": "Diastolic blood pressure"
+                        }]
+                    },
+                    "valueQuantity": {
+                        "value": data_entry["dia_data"],
+                        "unit": "mmHg",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "mm[Hg]"
+                    }
+                })
+            # Fallback to bp_low for other data sources
+            elif "bp_low" in data_entry:
                 components.append({
                     "code": {
                         "coding": [{
@@ -945,6 +1078,59 @@ class FHIRMigrationService:
                     },
                     "valueQuantity": {
                         "value": data_entry["bp_low"],
+                        "unit": "mmHg",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "mm[Hg]"
+                    }
+                })
+            
+            # Heart rate/Pulse
+            if "pr_data" in data_entry:
+                components.append({
+                    "code": {
+                        "coding": [{
+                            "system": "http://loinc.org",
+                            "code": "8867-4",
+                            "display": "Heart rate"
+                        }]
+                    },
+                    "valueQuantity": {
+                        "value": data_entry["pr_data"],
+                        "unit": "beats/min",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "/min"
+                    }
+                })
+            # Fallback to PR for other data sources
+            elif "PR" in data_entry:
+                components.append({
+                    "code": {
+                        "coding": [{
+                            "system": "http://loinc.org",
+                            "code": "8867-4",
+                            "display": "Heart rate"
+                        }]
+                    },
+                    "valueQuantity": {
+                        "value": data_entry["PR"],
+                        "unit": "beats/min",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "/min"
+                    }
+                })
+            
+            # Mean Arterial Pressure (optional)
+            if "map_data" in data_entry:
+                components.append({
+                    "code": {
+                        "coding": [{
+                            "system": "http://loinc.org",
+                            "code": "8478-0",
+                            "display": "Mean blood pressure"
+                        }]
+                    },
+                    "valueQuantity": {
+                        "value": round(data_entry["map_data"], 2),
                         "unit": "mmHg",
                         "system": "http://unitsofmeasure.org",
                         "code": "mm[Hg]"
