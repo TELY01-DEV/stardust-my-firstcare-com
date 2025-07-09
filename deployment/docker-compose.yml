@@ -1,6 +1,8 @@
 services:
   stardust-api:
-    build: .
+    build:
+      context: ..
+      dockerfile: Dockerfile
     container_name: stardust-my-firstcare-com
     ports:
       - "5054:5054"
@@ -28,8 +30,8 @@ services:
       - ENABLE_CACHE=true
       - ENCRYPTION_MASTER_KEY=mg409-8dtxc4WOTPr0Q0VYSDhIVFaTVcqYGxfchBUJw=
     volumes:
-      - ./logs:/app/logs
-      - ./ssl:/app/ssl:ro
+      - ../logs:/app/logs
+      - ../ssl:/app/ssl:ro
     restart: unless-stopped
     depends_on:
       - redis

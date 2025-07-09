@@ -426,6 +426,7 @@ class RateLimiter:
     async def add_to_blacklist(self, ip_address: str, reason: str = "", user_id: str = "system") -> Dict[str, Any]:
         """Add IP to blacklist with response message"""
         try:
+            # Add to in-memory blacklist
             self.blacklist.add(ip_address)
             
             # Store in Redis for persistence
@@ -438,7 +439,7 @@ class RateLimiter:
                 )
             
             logger.warning(f"⚠️ Added {ip_address} to blacklist: {reason} (by {user_id})")
-            
+    
             return {
                 "success": True,
                 "message": f"IP {ip_address} successfully added to blacklist",
@@ -461,9 +462,11 @@ class RateLimiter:
     async def remove_from_blacklist(self, ip_address: str, user_id: str = "system") -> Dict[str, Any]:
         """Remove IP from blacklist with response message"""
         try:
+            # Remove from in-memory blacklist
             removed = ip_address in self.blacklist
             self.blacklist.discard(ip_address)
             
+            # Remove from Redis
             if self.redis_client:
                 await self.redis_client.srem("rate_limit:blacklist", ip_address)
                 await self.redis_client.hdel("rate_limit:blacklist:reasons", ip_address)

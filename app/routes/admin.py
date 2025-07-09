@@ -1148,6 +1148,23 @@ async def get_medical_history(
 
 Get master data by type with comprehensive examples and multilingual support.
 
+### Query Parameters:
+- `limit`: Number of records (1-1000, default: 100)
+- `skip`: Pagination offset (default: 0)
+- `search`: Search across data fields
+- `is_active`: **Filter by active status** (true/false, optional) - **Works for ALL data types**
+- `province_code`: Filter by province code (for geographic data)
+- `district_code`: Filter by district code (for geographic data)
+- `sub_district_code`: Filter by sub-district code (for geographic data)
+
+### 🔹 **Active Status Filtering (is_active)**
+**Available for ALL master data types:**
+- `GET /admin/master-data/provinces?is_active=true` - Active provinces only
+- `GET /admin/master-data/districts?is_active=false` - Inactive districts only
+- `GET /admin/master-data/hospitals?is_active=true` - Active hospitals only
+- `GET /admin/master-data/blood_groups?is_active=true` - Active blood groups only
+- And so on for all data types...
+
 ### Supported Data Types:
 
 #### 🩸 **Blood Groups** (`blood_groups`)
@@ -1155,55 +1172,54 @@ Get master data by type with comprehensive examples and multilingual support.
 - **Multilingual**: English and Thai names
 - **Examples**: AB:Rh-, O:Rh+, A:Rh-, B:Rh+, etc.
 - **Usage**: Patient blood type classification
+- **Active Filter**: `?is_active=true/false`
 
 #### 🌍 **Nations** (`nations`) 
 - **229 Countries**: Complete country list
 - **Multilingual**: English and Thai names
 - **Examples**: Thailand, Argentina, United States, etc.
 - **Usage**: Patient nationality classification
+- **Active Filter**: `?is_active=true/false`
 
 #### 🎨 **Human Skin Colors** (`human_skin_colors`)
 - **6 Skin Types**: Complete skin color classification
 - **Multilingual**: English and Thai names  
 - **Examples**: BLACK, Dark Brown, Light Brown, etc.
 - **Usage**: Patient skin color classification
+- **Active Filter**: `?is_active=true/false`
 
 #### 🏥 **Hospital Wards** (`ward_lists`)
 - **9 Ward Types**: Complete hospital ward classification
 - **Multilingual**: English and Thai names
 - **Examples**: ER, OPD, IPD, Home Ward, SLEEP LAB, KATI, R&D, etc.
 - **Usage**: Patient ward classification and hospital department management
+- **Active Filter**: `?is_active=true/false`
 
 #### 👥 **Staff Types** (`staff_types`)
 - **6 Staff Types**: Complete hospital personnel classification
 - **Multilingual**: English and Thai names
 - **Examples**: Doctor, Nurse, Hospital Staff, Medical Staff, Village Health Volunteer, Ambulance Operation Staff
 - **Usage**: Hospital personnel classification and access control
+- **Active Filter**: `?is_active=true/false`
 
 #### 🏥 **Underlying Diseases** (`underlying_diseases`)
 - **8 Disease Types**: Complete underlying disease classification
 - **Multilingual**: English and Thai names
 - **Examples**: Hypertension, Diabetes Mellitus, Dyslipidemia, Cardiovascular Disease, Stroke, Chronic Kidney Disease
 - **Usage**: Patient medical history and disease tracking
+- **Active Filter**: `?is_active=true/false`
 
 #### 🏥 **Hospitals** (`hospitals`)
 - **12,350+ Hospitals**: Complete hospital database
 - **Enhanced Address**: Detailed location information
 - **Contact Info**: Phone, email, website
 - **Services**: Bed capacity, emergency services
+- **Active Filter**: `?is_active=true/false`
 
 #### 🗺️ **Geographic Data**
-- **Provinces** (`provinces`): 79 provinces
-- **Districts** (`districts`): Administrative districts  
-- **Sub-districts** (`sub_districts`): Administrative sub-districts
-
-### Query Parameters:
-- `limit`: Number of records (1-1000, default: 100)
-- `skip`: Pagination offset (default: 0)
-- `search`: Search across data fields
-- `province_code`: Filter by province code (for geographic data)
-- `district_code`: Filter by district code (for geographic data)
-- `sub_district_code`: Filter by sub-district code (for geographic data)
+- **Provinces** (`provinces`): 79 provinces - **Active Filter**: `?is_active=true/false`
+- **Districts** (`districts`): Administrative districts - **Active Filter**: `?is_active=true/false`
+- **Sub-districts** (`sub_districts`): Administrative sub-districts - **Active Filter**: `?is_active=true/false`
 
 ### Response Features:
 - **Multilingual Support**: All data includes English and Thai names
@@ -1733,6 +1749,7 @@ async def get_master_data(
     province_code: Optional[int] = None,
     district_code: Optional[int] = None,
     sub_district_code: Optional[int] = None,
+    is_active: Optional[bool] = Query(None, description="Filter by active status"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Get master data by type - returns raw document data field by field with relationships"""
@@ -1768,13 +1785,22 @@ async def get_master_data(
         # Apply entity-specific filters
         if normalized_data_type == "provinces":
             filter_query = {"is_deleted": {"$ne": True}}
+            # Add is_active filter if specified
+            if is_active is not None:
+                filter_query["is_active"] = is_active
         elif normalized_data_type == "districts":
             filter_query = {"is_deleted": {"$ne": True}}
+            # Add is_active filter if specified
+            if is_active is not None:
+                filter_query["is_active"] = is_active
             # Filter by province if specified
             if province_code:
                 filter_query["province_code"] = province_code
         elif normalized_data_type == "sub_districts":
             filter_query = {"is_deleted": {"$ne": True}}
+            # Add is_active filter if specified
+            if is_active is not None:
+                filter_query["is_active"] = is_active
             # Filter by province and/or district if specified
             if province_code:
                 filter_query["province_code"] = province_code
@@ -1784,6 +1810,9 @@ async def get_master_data(
             filter_query = {"active": True}
         elif normalized_data_type == "hospitals":
             filter_query = {"is_deleted": {"$ne": True}}
+            # Add is_active filter if specified
+            if is_active is not None:
+                filter_query["is_active"] = is_active
             # Filter by province, district, and/or sub-district if specified
             if province_code:
                 filter_query["province_code"] = province_code
@@ -1793,6 +1822,9 @@ async def get_master_data(
                 filter_query["sub_district_code"] = sub_district_code
         elif normalized_data_type in ["blood_groups", "human_skin_colors", "nations", "ward_lists", "staff_types", "underlying_diseases"]:
             filter_query = {"is_deleted": {"$ne": True}}
+            # Add is_active filter if specified
+            if is_active is not None:
+                filter_query["is_active"] = is_active
         
         # Add search functionality
         if search:
@@ -1847,7 +1879,8 @@ async def get_master_data(
                 "search": search,
                 "province_code": province_code,
                 "district_code": district_code,
-                "sub_district_code": sub_district_code
+                "sub_district_code": sub_district_code,
+                "is_active": is_active
             },
                 "fields_info": get_master_data_fields_info(normalized_data_type),
                 "relationships": get_master_data_relationships(normalized_data_type)
