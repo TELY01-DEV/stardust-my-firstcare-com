@@ -402,9 +402,14 @@ async def get_users(request: Request, current_user: dict = Depends(require_auth(
         
         if response.status_code == 200:
             users_data = response.json()
+            # Ensure data is wrapped in a dictionary if it's a list
+            if isinstance(users_data, list):
+                data = {"users": users_data}
+            else:
+                data = users_data
             return create_success_response(
                 message="Users list retrieved successfully",
-                data={"users": users_data},
+                data=data,
                 request_id=request_id
             )
         else:
@@ -1064,9 +1069,15 @@ async def get_registration_requests(
             timeout=10
         )
         if response.status_code == 200:
+            requests_data = response.json()
+            # Ensure data is wrapped in a dictionary if it's a list
+            if isinstance(requests_data, list):
+                data = {"requests": requests_data}
+            else:
+                data = requests_data
             return create_success_response(
                 message="Registration requests retrieved successfully",
-                data=response.json(),
+                data=data,
                 request_id=request_id
             )
         else:
@@ -1170,9 +1181,15 @@ async def get_registration_history(
             timeout=10
         )
         if response.status_code == 200:
+            history_data = response.json()
+            # Ensure data is wrapped in a dictionary if it's a list
+            if isinstance(history_data, list):
+                data = {"history": history_data}
+            else:
+                data = history_data
             return create_success_response(
                 message="Registration request history retrieved successfully",
-                data=response.json(),
+                data=data,
                 request_id=request_id
             )
         else:
