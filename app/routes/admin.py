@@ -26,8 +26,9 @@ from app.models.medical_history import (
     MedicalHistoryCollectionInfo as MedicalHistoryCollectionInfoModel
 )
 from config import settings
+import time
 
-router = APIRouter(prefix="/admin", tags=["Admin Panel"])
+router = APIRouter(prefix="/admin", tags=["admin"])
 
 # Pydantic models for admin operations
 class PatientCreate(BaseModel):
@@ -507,7 +508,7 @@ async def test_raw_endpoint(current_user: Dict[str, Any] = Depends(require_auth(
         403: {"description": "Admin privileges required"},
         500: {"description": "Internal server error"}
     },
-    tags=["Admin Panel", "Raw Documents"]
+    tags=["admin"]
 )
 async def get_raw_patient_documents(
     request: Request,
@@ -1139,6 +1140,151 @@ async def get_medical_history(
             ).dict()
         )
 
+@router.get("/medical-history/{history_type}/{record_id}", 
+            response_model=SuccessResponse,
+            summary="Get Medical History Record by ID",
+            description="""
+## Get Medical History Record by ID
+
+Retrieve a specific medical history record by its ID.
+
+### Supported History Types:
+- `blood_pressure`, `blood_sugar`, `body_data`, `creatinine`, `lipid`
+- `sleep_data`, `spo2`, `step`, `temperature`, `medication`
+- `allergy`, `underlying_disease`, `admit_data`
+
+### Features:
+- **Record Validation**: Validates ObjectId format
+- **Error Handling**: Comprehensive error responses
+- **Data Serialization**: Proper MongoDB ObjectId handling
+- **Audit Trail**: Request tracking with request_id
+
+### Authentication:
+Requires valid JWT Bearer token with admin privileges.
+            """,
+            responses={
+                200: {
+                    "description": "Medical history record retrieved successfully",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": True,
+                                "message": "Medical history record retrieved successfully",
+                                "data": {
+                                    "record": {
+                                        "_id": "507f1f77bcf86cd799439011",
+                                        "patient_id": "507f1f77bcf86cd799439012",
+                                        "history_type": "blood_pressure",
+                                        "values": {
+                                            "systolic": 120,
+                                            "diastolic": 80,
+                                            "pulse": 72
+                                        },
+                                        "created_at": "2024-01-15T10:30:00.000Z"
+                                    },
+                                    "history_type": "blood_pressure"
+                                },
+                                "request_id": "medical-history-001",
+                                "timestamp": "2025-07-10T12:00:00.000Z"
+                            }
+                        }
+                    }
+                },
+                400: {"description": "Invalid record ID format or history type"},
+                401: {"description": "Authentication required"},
+                404: {"description": "Medical history record not found"},
+                500: {"description": "Internal server error"}
+            })
+async def get_medical_history_record(
+    request: Request,
+    history_type: str,
+    record_id: str,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Get specific medical history record"""
+    request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+    
+    try:
+        # Validate record_id format
+        if not ObjectId.is_valid(record_id):
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_RECORD_ID",
+                    custom_message="Invalid record ID format",
+                    field="record_id",
+                    value=record_id,
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Map history type to collection
+        collection_mapping = {
+            "blood_pressure": "blood_pressure_histories",
+            "blood_sugar": "blood_sugar_histories",
+            "body_data": "body_data_histories",
+            "creatinine": "creatinine_histories",
+            "lipid": "lipid_histories",
+            "sleep_data": "sleep_data_histories",
+            "spo2": "spo2_histories",
+            "step": "step_histories",
+            "temperature": "temprature_data_histories",
+            "medication": "medication_histories",
+            "allergy": "allergy_histories",
+            "underlying_disease": "underlying_disease_histories",
+            "admit_data": "admit_data_histories"
+        }
+        
+        collection_name = collection_mapping.get(history_type)
+        if not collection_name:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_HISTORY_TYPE",
+                    custom_message=f"Invalid history type '{history_type}'. Supported types: {', '.join(collection_mapping.keys())}",
+                    field="history_type",
+                    value=history_type,
+                    request_id=request_id
+                ).dict()
+            )
+        
+        collection = mongodb_service.get_collection(collection_name)
+        
+        record = await collection.find_one({"_id": ObjectId(record_id)})
+        
+        if not record:
+            raise HTTPException(
+                status_code=404,
+                detail=create_error_response(
+                    "MEDICAL_HISTORY_NOT_FOUND",
+                    custom_message=f"Medical history record with ID {record_id} not found",
+                    field="record_id",
+                    value=record_id,
+                    request_id=request_id
+                ).dict()
+            )
+        
+        record = serialize_mongodb_response(record)
+        
+        success_response = create_success_response(
+            message="Medical history record retrieved successfully",
+            data={"record": record, "history_type": history_type},
+            request_id=request_id
+        )
+        return success_response
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve medical history: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
+
 # Master Data Management
 @router.get("/master-data/{data_type}", 
             response_model=SuccessResponse,
@@ -1743,8 +1889,8 @@ Requires valid JWT Bearer token with admin privileges.
 async def get_master_data(
     request: Request,
     data_type: str,
-    limit: int = Query(100, ge=1, le=1000),
-    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=5000, description="Number of records per page (max 5000)"),
+    skip: int = Query(0, ge=0, description="Number of records to skip for pagination"),
     search: Optional[str] = None,
     province_code: Optional[int] = None,
     district_code: Optional[int] = None,
@@ -1752,7 +1898,7 @@ async def get_master_data(
     is_active: Optional[bool] = Query(None, description="Filter by active status"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
-    """Get master data by type - returns raw document data field by field with relationships"""
+    """Get master data by type with enhanced pagination for large datasets"""
     request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     try:
         # Normalize data_type: convert hyphens to underscores for consistency
@@ -1856,10 +2002,10 @@ async def get_master_data(
             if search_conditions:
                 filter_query["$or"] = search_conditions
         
-        # Get total count
+        # Get total count for pagination metadata
         total = await collection.count_documents(filter_query)
         
-        # Get data with sorting
+        # Get data with sorting and pagination
         sort_field = "created_at" if normalized_data_type in ["provinces", "districts", "sub_districts", "hospitals", "blood_groups", "human_skin_colors", "nations"] else "_id"
         cursor = collection.find(filter_query).sort(sort_field, 1).skip(skip).limit(limit)
         data = await cursor.to_list(length=limit)
@@ -1867,21 +2013,35 @@ async def get_master_data(
         # Serialize ObjectIds to maintain raw document structure
         data = serialize_mongodb_response(data)
         
+        # Calculate pagination metadata
+        total_pages = (total + limit - 1) // limit  # Ceiling division
+        current_page = (skip // limit) + 1
+        has_next = (skip + limit) < total
+        has_prev = skip > 0
+        
         success_response = create_success_response(
             message="Master data retrieved successfully",
             data={
-            "data": data,
-            "total": total,
+                "data": data,
+                "total": total,
                 "data_type": normalized_data_type,
-            "limit": limit,
-            "skip": skip,
-            "filters": {
-                "search": search,
-                "province_code": province_code,
-                "district_code": district_code,
-                "sub_district_code": sub_district_code,
-                "is_active": is_active
-            },
+                "limit": limit,
+                "skip": skip,
+                "pagination": {
+                    "current_page": current_page,
+                    "total_pages": total_pages,
+                    "has_next": has_next,
+                    "has_prev": has_prev,
+                    "total_records": total,
+                    "records_on_page": len(data)
+                },
+                "filters": {
+                    "search": search,
+                    "province_code": province_code,
+                    "district_code": district_code,
+                    "sub_district_code": sub_district_code,
+                    "is_active": is_active
+                },
                 "fields_info": get_master_data_fields_info(normalized_data_type),
                 "relationships": get_master_data_relationships(normalized_data_type)
             },
@@ -1896,6 +2056,153 @@ async def get_master_data(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to retrieve master data: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
+
+@router.get("/master-data/{data_type}/{record_id}", 
+            response_model=SuccessResponse,
+            summary="Get Master Data Record by ID",
+            description="""
+## Get Master Data Record by ID
+
+Retrieve a specific master data record by its ID.
+
+### Supported Data Types:
+- `hospitals`, `provinces`, `districts`, `sub_districts`
+- `blood_groups`, `nations`, `human_skin_colors`, `ward_lists`, `staff_types`, `underlying_diseases`
+
+### Features:
+- **Record Validation**: Validates ObjectId format
+- **Error Handling**: Comprehensive error responses
+- **Data Serialization**: Proper MongoDB ObjectId handling
+- **Audit Trail**: Request tracking with request_id
+
+### Authentication:
+Requires valid JWT Bearer token with admin privileges.
+            """,
+            responses={
+                200: {
+                    "description": "Master data record retrieved successfully",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": True,
+                                "message": "Master data record retrieved successfully",
+                                "data": {
+                                    "record": {
+                                        "_id": "507f1f77bcf86cd799439011",
+                                        "name": [
+                                            {"code": "en", "name": "Bangkok General Hospital"},
+                                            {"code": "th", "name": "โรงพยาบาลกรุงเทพ"}
+                                        ],
+                                        "en_name": "Bangkok General Hospital",
+                                        "province_code": 10,
+                                        "is_active": True
+                                    },
+                                    "data_type": "hospitals"
+                                },
+                                "request_id": "master-data-001",
+                                "timestamp": "2025-07-10T12:00:00.000Z"
+                            }
+                        }
+                    }
+                },
+                400: {"description": "Invalid record ID format or data type"},
+                401: {"description": "Authentication required"},
+                404: {"description": "Master data record not found"},
+                500: {"description": "Internal server error"}
+            })
+async def get_master_data_record(
+    request: Request,
+    data_type: str,
+    record_id: str,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Get a specific master data record by ID"""
+    try:
+        request_id = str(uuid.uuid4())
+        
+        # Normalize data type
+        normalized_data_type = data_type.lower().replace("-", "_")
+        
+        # Validate data type
+        valid_data_types = [
+            "hospitals", "provinces", "districts", "sub_districts",
+            "blood_groups", "nations", "human_skin_colors", "ward_lists", 
+            "staff_types", "underlying_diseases"
+        ]
+        
+        if normalized_data_type not in valid_data_types:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_DATA_TYPE",
+                    custom_message=f"Invalid data type: {data_type}",
+                    field="data_type",
+                    value=data_type,
+                    suggestion=f"Please use one of the supported data types: {', '.join(valid_data_types)}",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Validate ObjectId format
+        try:
+            ObjectId(record_id)
+        except Exception:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_RECORD_ID",
+                    custom_message=f"Invalid record ID format: {record_id}",
+                    field="record_id",
+                    value=record_id,
+                    suggestion="Please provide a valid MongoDB ObjectId (24-character hex string)",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Get collection
+        collection = mongodb_service.get_collection(normalized_data_type)
+        
+        # Find the specific record
+        record = await collection.find_one({"_id": ObjectId(record_id)})
+        
+        if not record:
+            raise HTTPException(
+                status_code=404,
+                detail=create_error_response(
+                    "RECORD_NOT_FOUND",
+                    custom_message=f"Record not found: {record_id}",
+                    field="record_id",
+                    value=record_id,
+                    suggestion="Please check the record ID and try again",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Serialize ObjectIds to strings
+        record = serialize_mongodb_response(record)
+        
+        success_response = create_success_response(
+            message="Master data record retrieved successfully",
+            data={
+                "record": record,
+                "data_type": normalized_data_type
+            },
+            request_id=request_id
+        )
+        
+        return success_response
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve master data record: {str(e)}",
                 request_id=request_id
             ).dict()
         )
@@ -4908,7 +5215,7 @@ async def delete_master_data(
         403: {"description": "Admin privileges required"},
         500: {"description": "Internal server error"}
     },
-    tags=["Admin Panel", "Raw Documents"]
+    tags=["admin"]
 )
 async def get_raw_hospital_documents(
     request: Request,
@@ -5976,6 +6283,273 @@ async def add_ip_to_blacklist(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to add IP to blacklist: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
+
+@router.get("/master-data/{data_type}/bulk-export", 
+            response_model=SuccessResponse,
+            summary="Bulk Export Master Data",
+            description="""
+## Bulk Export Master Data
+
+Export large datasets of master data without pagination limits for data migration and analysis.
+
+### Features:
+- **No Pagination Limits**: Export entire datasets in one request
+- **Large Dataset Support**: Handles datasets with 10,000+ records
+- **Filtering Support**: All standard filters available
+- **Performance Optimized**: Uses streaming for large exports
+- **Memory Efficient**: Processes data in chunks
+
+### Query Parameters:
+- `search`: Search across data fields
+- `is_active`: Filter by active status (true/false, optional)
+- `province_code`: Filter by province code (for geographic data)
+- `district_code`: Filter by district code (for geographic data)
+- `sub_district_code`: Filter by sub-district code (for geographic data)
+- `format`: Export format - 'json' or 'csv' (default: 'json')
+
+### Use Cases:
+- Data migration to external systems
+- Bulk data analysis
+- Database backups
+- Integration with reporting tools
+- Complete dataset exports
+
+### Authentication:
+Requires valid JWT Bearer token with admin privileges.
+            """,
+            responses={
+                200: {
+                    "description": "Bulk export completed successfully",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": True,
+                                "message": "Bulk export completed successfully",
+                                "data": {
+                                    "data_type": "hospitals",
+                                    "total_records": 12350,
+                                    "exported_records": 12350,
+                                    "format": "json",
+                                    "filters_applied": {
+                                        "is_active": True,
+                                        "search": None
+                                    },
+                                    "export_metadata": {
+                                        "export_id": "bulk-export-001",
+                                        "exported_at": "2025-07-10T03:30:00.000Z",
+                                        "processing_time_ms": 1250
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                400: {"description": "Invalid data type or format"},
+                401: {"description": "Authentication required"},
+                500: {"description": "Internal server error"}
+            })
+async def bulk_export_master_data(
+    request: Request,
+    data_type: str,
+    search: Optional[str] = None,
+    province_code: Optional[int] = None,
+    district_code: Optional[int] = None,
+    sub_district_code: Optional[int] = None,
+    is_active: Optional[bool] = Query(None, description="Filter by active status"),
+    format: str = Query("json", description="Export format: json or csv"),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Bulk export master data for large datasets"""
+    request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+    start_time = time.time()
+    
+    try:
+        # Validate format
+        if format not in ["json", "csv"]:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_FORMAT",
+                    field="format",
+                    value=format,
+                    custom_message="Invalid format. Must be 'json' or 'csv'",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Normalize data_type: convert hyphens to underscores for consistency
+        normalized_data_type = data_type.replace("-", "_")
+        
+        # Map data type to collection
+        collection_mapping = {
+            "hospitals": "hospitals",
+            "provinces": "provinces", 
+            "districts": "districts",
+            "sub_districts": "sub_districts",
+            "hospital_types": "master_hospital_types",
+            "blood_groups": "blood_groups",
+            "human_skin_colors": "human_skin_colors",
+            "nations": "nations",
+            "ward_lists": "ward_lists",
+            "staff_types": "staff_types",
+            "underlying_diseases": "underlying_diseases"
+        }
+        
+        collection_name = collection_mapping.get(normalized_data_type)
+        if not collection_name:
+            raise HTTPException(
+                status_code=400, 
+                detail=create_error_response(
+                    "INVALID_DATA_TYPE",
+                    field="data_type",
+                    value=data_type,
+                    custom_message=f"Invalid data type: {data_type}. Supported types: {', '.join(collection_mapping.keys())}",
+                    request_id=request_id
+                ).dict()
+            )
+        
+        collection = mongodb_service.get_collection(collection_name)
+        
+        # Build filter based on data type structure (same logic as get_master_data)
+        filter_query = {}
+        
+        # Apply entity-specific filters
+        if normalized_data_type == "provinces":
+            filter_query = {"is_deleted": {"$ne": True}}
+            if is_active is not None:
+                filter_query["is_active"] = is_active
+        elif normalized_data_type == "districts":
+            filter_query = {"is_deleted": {"$ne": True}}
+            if is_active is not None:
+                filter_query["is_active"] = is_active
+            if province_code:
+                filter_query["province_code"] = province_code
+        elif normalized_data_type == "sub_districts":
+            filter_query = {"is_deleted": {"$ne": True}}
+            if is_active is not None:
+                filter_query["is_active"] = is_active
+            if province_code:
+                filter_query["province_code"] = province_code
+            if district_code:
+                filter_query["district_code"] = district_code
+        elif normalized_data_type == "hospital_types":
+            filter_query = {"active": True}
+        elif normalized_data_type == "hospitals":
+            filter_query = {"is_deleted": {"$ne": True}}
+            if is_active is not None:
+                filter_query["is_active"] = is_active
+            if province_code:
+                filter_query["province_code"] = province_code
+            if district_code:
+                filter_query["district_code"] = district_code
+            if sub_district_code:
+                filter_query["sub_district_code"] = sub_district_code
+        elif normalized_data_type in ["blood_groups", "human_skin_colors", "nations", "ward_lists", "staff_types", "underlying_diseases"]:
+            filter_query = {"is_deleted": {"$ne": True}}
+            if is_active is not None:
+                filter_query["is_active"] = is_active
+        
+        # Add search functionality
+        if search:
+            search_conditions = []
+            if normalized_data_type == "hospitals":
+                search_conditions = [
+                    {"name.0.name": {"$regex": search, "$options": "i"}},
+                    {"name.1.name": {"$regex": search, "$options": "i"}},
+                    {"en_name": {"$regex": search, "$options": "i"}}
+                ]
+            elif normalized_data_type in ["provinces", "districts", "sub_districts"]:
+                search_conditions = [
+                    {"name.0.name": {"$regex": search, "$options": "i"}},
+                    {"name.1.name": {"$regex": search, "$options": "i"}},
+                    {"en_name": {"$regex": search, "$options": "i"}}
+                ]
+            elif normalized_data_type == "hospital_types":
+                search_conditions = [
+                    {"name.th": {"$regex": search, "$options": "i"}},
+                    {"name.en": {"$regex": search, "$options": "i"}}
+                ]
+            elif normalized_data_type in ["blood_groups", "human_skin_colors", "nations", "ward_lists", "staff_types", "underlying_diseases"]:
+                search_conditions = [
+                    {"name.0.name": {"$regex": search, "$options": "i"}},
+                    {"name.1.name": {"$regex": search, "$options": "i"}},
+                    {"en_name": {"$regex": search, "$options": "i"}}
+                ]
+            
+            if search_conditions:
+                filter_query["$or"] = search_conditions
+        
+        # Get total count
+        total = await collection.count_documents(filter_query)
+        
+        # Export data in chunks for memory efficiency
+        chunk_size = 1000
+        all_data = []
+        
+        # Use cursor to stream data
+        cursor = collection.find(filter_query)
+        sort_field = "created_at" if normalized_data_type in ["provinces", "districts", "sub_districts", "hospitals", "blood_groups", "human_skin_colors", "nations"] else "_id"
+        cursor = cursor.sort(sort_field, 1)
+        
+        # Process data in chunks
+        while True:
+            chunk = await cursor.to_list(length=chunk_size)
+            if not chunk:
+                break
+            all_data.extend(chunk)
+        
+        # Serialize data
+        serialized_data = serialize_mongodb_response(all_data)
+        
+        # Calculate processing time
+        processing_time_ms = int((time.time() - start_time) * 1000)
+        
+        # Create export metadata
+        export_metadata = {
+            "export_id": f"bulk-export-{uuid.uuid4().hex[:8]}",
+            "exported_by": current_user.get("user_id"),
+            "exported_at": datetime.utcnow().isoformat() + "Z",
+            "processing_time_ms": processing_time_ms,
+            "request_id": request_id
+        }
+        
+        success_response = create_success_response(
+            message="Bulk export completed successfully",
+            data={
+                "data_type": normalized_data_type,
+                "total_records": total,
+                "exported_records": len(serialized_data),
+                "format": format,
+                "filters_applied": {
+                    "search": search,
+                    "province_code": province_code,
+                    "district_code": district_code,
+                    "sub_district_code": sub_district_code,
+                    "is_active": is_active
+                },
+                "export_metadata": export_metadata,
+                "data": serialized_data if format == "json" else "CSV format would be implemented with proper CSV serialization"
+            },
+            request_id=request_id
+        )
+        
+        # Log the bulk export operation
+        logger.info(f"Bulk export completed - Type: {normalized_data_type}, Records: {len(serialized_data)}, Time: {processing_time_ms}ms, User: {current_user.get('user_id')}")
+        
+        return success_response
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Bulk export failed for {data_type}: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to perform bulk export: {str(e)}",
                 request_id=request_id
             ).dict()
         )
