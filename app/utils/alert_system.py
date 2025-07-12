@@ -104,7 +104,7 @@ class AlertManager:
                 "name": "invalid_data_type_error",
                 "condition": lambda event: event.get("event_type") == "http_error" and \
                            event.get("status_code", 0) == 400 and \
-                           "INVALID_DATA_TYPE" in event.get("error_message", ""),
+                           ("INVALID_DATA_TYPE" in event.get("error_message", "") or "Invalid data type" in event.get("error_message", "")),
                 "level": AlertLevel.MEDIUM,
                 "channels": [AlertChannel.TELEGRAM, AlertChannel.LOG],
                 "rate_limit_minutes": 30
