@@ -101,6 +101,15 @@ class AlertManager:
                 "rate_limit_minutes": 15
             },
             {
+                "name": "invalid_data_type_error",
+                "condition": lambda event: event.get("event_type") == "http_error" and \
+                           event.get("status_code", 0) == 400 and \
+                           "INVALID_DATA_TYPE" in event.get("error_message", ""),
+                "level": AlertLevel.MEDIUM,
+                "channels": [AlertChannel.TELEGRAM, AlertChannel.LOG],
+                "rate_limit_minutes": 30
+            },
+            {
                 "name": "disk_space_low",
                 "condition": lambda event: event.get("event_type") == "system_resource" and \
                            event.get("disk_usage_percent", 0) > 90,

@@ -92,6 +92,24 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
                 }
             )
             
+            # Trigger alert system
+            try:
+                from app.utils.alert_system import alert_manager
+                await alert_manager.process_event({
+                    "event_type": "http_error",
+                    "status_code": getattr(e, 'status_code', 500),
+                    "error_type": type(e).__name__,
+                    "error_message": str(e),
+                    "request_id": request_id,
+                    "client_ip": request_details.get("client_ip"),
+                    "method": request_details.get("method"),
+                    "path": request_details.get("path"),
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "source": "http_middleware"
+                })
+            except Exception as alert_error:
+                logger.error(f"Failed to trigger alert: {alert_error}")
+            
             # Re-raise the exception
             raise
     
