@@ -1347,6 +1347,13 @@ Get master data by type with comprehensive examples and multilingual support.
 - **Usage**: Patient medical history and disease tracking
 - **Active Filter**: `?is_active=true/false`
 
+#### 🏥 **Hospital Types** (`hospital_types`)
+- **21 Hospital Types**: Complete hospital type classification
+- **Multilingual**: English and Thai names
+- **Examples**: Advance-level Hospital, General hospital, Community Hospital, Private Hospital
+- **Usage**: Hospital classification and categorization
+- **Active Filter**: `?is_active=true/false`
+
 #### 🏥 **Hospitals** (`hospitals`)
 - **12,350+ Hospitals**: Complete hospital database
 - **Enhanced Address**: Detailed location information
@@ -2062,7 +2069,7 @@ Retrieve a specific master data record by its ID.
 
 ### Supported Data Types:
 - `hospitals`, `provinces`, `districts`, `sub_districts`
-- `blood_groups`, `nations`, `human_skin_colors`, `ward_lists`, `staff_types`, `underlying_diseases`
+- `blood_groups`, `nations`, `human_skin_colors`, `ward_lists`, `staff_types`, `underlying_diseases`, `hospital_types`
 
 ### Features:
 - **Record Validation**: Validates ObjectId format
@@ -2122,7 +2129,7 @@ async def get_master_data_record(
         valid_data_types = [
             "hospitals", "provinces", "districts", "sub_districts",
             "blood_groups", "nations", "human_skin_colors", "ward_lists", 
-            "staff_types", "underlying_diseases"
+            "staff_types", "underlying_diseases", "hospital_types"
         ]
         
         if normalized_data_type not in valid_data_types:
