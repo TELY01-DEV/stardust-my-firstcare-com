@@ -15,6 +15,7 @@ class ErrorCode:
     
     # Resource Errors (2000-2999)
     RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND"
+    ENDPOINT_NOT_FOUND = "ENDPOINT_NOT_FOUND"
     PATIENT_NOT_FOUND = "PATIENT_NOT_FOUND"
     DEVICE_NOT_FOUND = "DEVICE_NOT_FOUND"
     AVA4_BOX_NOT_FOUND = "AVA4_BOX_NOT_FOUND"
@@ -97,6 +98,11 @@ ERROR_CODES = {
         "type": "resource_error",
         "message": "Requested resource was not found",
         "suggestion": "Please verify the resource ID exists in the system"
+    },
+    "ENDPOINT_NOT_FOUND": {
+        "type": "routing_error",
+        "message": "The requested endpoint does not exist",
+        "suggestion": "Check the API documentation for valid endpoints"
     },
     "PATIENT_NOT_FOUND": {
         "type": "resource_error",
