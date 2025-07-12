@@ -35,7 +35,6 @@ from app.routes.ava4 import router as ava4_router
 from app.routes.kati import router as kati_router
 from app.routes.qube_vital import router as qube_vital_router
 from app.routes.admin import router as admin_router
-from app.routes.admin_crud import router as admin_crud_router
 from app.routes.device_crud import router as device_crud_router
 from app.routes.device_mapping import router as device_mapping_router
 from app.routes.performance import router as performance_router
@@ -181,22 +180,62 @@ app = FastAPI(
     description="""
 # My FirstCare Opera Panel API
 
-A comprehensive Medical IoT Device Management System for healthcare institutions.
+A comprehensive Medical IoT Device Management System for healthcare institutions with enhanced security and debugging capabilities.
 
-## Features
+## 🔒 **Security Improvements (Latest Update)**
 
-### 🏥 **Device Management**
+### ✅ **Enhanced Security Features**
+- **Debug Information Protection**: Removed debug print statements that exposed sensitive information
+- **Structured Error Handling**: Comprehensive error responses without internal details exposure
+- **Request ID Tracking**: Every API response includes unique request_id for debugging
+- **Audit Trail**: Complete FHIR R5 compliant audit logging
+- **Role-based Access Control**: Fine-grained permissions and authentication
+
+### ✅ **Production-Ready Debugging System**
+- **Request ID Correlation**: Track issues across logs and audit trails
+- **Hash Audit System**: Complete audit trail with blockchain verification
+- **Raw Document Access**: Deep debugging capabilities for data analysis
+- **Performance Monitoring**: Built-in metrics and analytics
+- **Error Analysis**: Structured error responses with actionable information
+
+## 🏥 **Device Management**
 - **AVA4 Devices**: Blood pressure, glucose monitoring
 - **Kati Watches**: Continuous vital sign monitoring 
 - **Qube-Vital**: Advanced medical sensors
 
-### 👥 **Patient Management**
+## 👥 **Patient Management**
 - Complete patient profiles and medical history
 - Real-time device data integration
 - Multi-hospital support
 - **Raw Document Access**: 431 patients with 269 fields per document
 
-### 📋 **Raw Patient Document Analysis**
+## 🔍 **Debugging & Troubleshooting**
+
+### **Request ID System**
+Every API response includes a `request_id` for correlation:
+```json
+{
+  "success": true,
+  "message": "Operation completed",
+  "data": {...},
+  "request_id": "a3c3ee46-ddfa-4d94-9e8a-ca2590d9d9fd",
+  "timestamp": "2025-07-12T03:31:12.123Z"
+}
+```
+
+### **Debugging Endpoints**
+- **Hash Audit Trail**: `/api/v1/audit/hash/logs?fhir_resource_id={request_id}`
+- **Raw Document Analysis**: `/admin/patients-raw-documents`
+- **AVA4 Debug**: `/api/ava4/debug-patient-query/{patient_id}`
+- **Recent Activity**: `/api/v1/audit/hash/recent?minutes=60`
+
+### **How to Debug Issues**
+1. **Get Request ID** from error response
+2. **Search Audit Logs**: Use hash audit system
+3. **Check Application Logs**: Search Docker logs by request_id
+4. **Analyze Raw Data**: Use raw document endpoints
+
+## 📋 **Raw Patient Document Analysis**
 Access complete MongoDB patient documents with comprehensive field analysis:
 
 #### **Core Patient Fields (269 total)**:
@@ -338,7 +377,7 @@ The API uses structured error responses with:
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
-    openapi_url="/openapi.json"
+    openapi_url="/openapi.json"  # Re-enable to use custom OpenAPI function
 )
 
 # Configure global JSON encoder for MongoDB compatibility
@@ -424,7 +463,6 @@ app.include_router(ava4_router, tags=["ava4"])                    # has prefix /
 app.include_router(kati_router, tags=["kati"])                    # has prefix /api/kati
 app.include_router(qube_vital_router, tags=["qube-vital"])        # has prefix /api/qube-vital
 app.include_router(admin_router, tags=["admin"])                  # has prefix /admin
-app.include_router(admin_crud_router, tags=["admin-crud"])        # has prefix /admin
 app.include_router(device_crud_router, tags=["device-crud"])      # has prefix /api/devices
 app.include_router(device_mapping_router, tags=["device-mapping"]) # has prefix /admin/device-mapping
 app.include_router(patient_devices_router, tags=["patient-devices"]) # has prefix /api/patients
@@ -654,6 +692,37 @@ async def test_schema_endpoint():
         timestamp=datetime.utcnow().isoformat() + "Z"
     )
 
+# Custom OpenAPI endpoint to serve the fixed, consolidated spec
+@app.get("/api/openapi.json", include_in_schema=False)
+async def get_openapi_spec():
+    """Serve the fixed OpenAPI specification with consolidated tags"""
+    try:
+        logger.info("📂 Serving fixed OpenAPI specification...")
+        with open("Fixed_OpenAPI_Spec.json", "r") as f:
+            openapi_schema = json.load(f)
+        logger.info("✅ Served fixed OpenAPI specification with consolidated tags")
+        return JSONResponse(content=openapi_schema)
+    except FileNotFoundError:
+        logger.warning("⚠️ Fixed OpenAPI spec not found, serving auto-generated schema")
+        # Fallback to auto-generated schema if file not found
+        openapi_schema = get_openapi(
+            title=app.title,
+            version=app.version,
+            description=app.description,
+            routes=app.routes,
+        )
+        return JSONResponse(content=openapi_schema)
+    except Exception as e:
+        logger.error(f"❌ Error serving fixed OpenAPI spec: {e}")
+        # Fallback to auto-generated schema
+        openapi_schema = get_openapi(
+            title=app.title,
+            version=app.version,
+            description=app.description,
+            routes=app.routes,
+        )
+        return JSONResponse(content=openapi_schema)
+
 # Global Exception Handlers
 @app.exception_handler(ResponseValidationError)
 async def response_validation_exception_handler(request: Request, exc: ResponseValidationError):
@@ -756,6 +825,284 @@ async def internal_error_handler(request: Request, exc: Exception):
         status_code=500,
         content=error_response.dict()
     )
+
+# Custom OpenAPI schema loader to serve dynamic, consolidated spec
+def custom_openapi():
+    """Generate and serve dynamic OpenAPI specification with consolidated tags"""
+    logger.info("🔍 Custom OpenAPI function called")
+    
+    if app.openapi_schema:
+        logger.info("📋 Returning cached OpenAPI schema")
+        return app.openapi_schema
+    
+    try:
+        logger.info("📂 Generating dynamic OpenAPI specification...")
+        # Generate schema dynamically from current routes
+        openapi_schema = get_openapi(
+            title=app.title,
+            version=app.version,
+            description=app.description,
+            routes=app.routes,
+        )
+        
+        # Force update the description with our security improvements
+        updated_description = """
+# My FirstCare Opera Panel API
+
+A comprehensive Medical IoT Device Management System for healthcare institutions with enhanced security and debugging capabilities.
+
+## 🔒 **Security Improvements (Latest Update)**
+
+### ✅ **Enhanced Security Features**
+- **Debug Information Protection**: Removed debug print statements that exposed sensitive information
+- **Structured Error Handling**: Comprehensive error responses without internal details exposure
+- **Request ID Tracking**: Every API response includes unique request_id for debugging
+- **Audit Trail**: Complete FHIR R5 compliant audit logging
+- **Role-based Access Control**: Fine-grained permissions and authentication
+
+### ✅ **Production-Ready Debugging System**
+- **Request ID Correlation**: Track issues across logs and audit trails
+- **Hash Audit System**: Complete audit trail with blockchain verification
+- **Raw Document Access**: Deep debugging capabilities for data analysis
+- **Performance Monitoring**: Built-in metrics and analytics
+- **Error Analysis**: Structured error responses with actionable information
+
+## 🏥 **Device Management**
+- **AVA4 Devices**: Blood pressure, glucose monitoring
+- **Kati Watches**: Continuous vital sign monitoring 
+- **Qube-Vital**: Advanced medical sensors
+
+## 👥 **Patient Management**
+- Complete patient profiles and medical history
+- Real-time device data integration
+- Multi-hospital support
+- **Raw Document Access**: 431 patients with 269 fields per document
+
+## 🔍 **Debugging & Troubleshooting**
+
+### **Request ID System**
+Every API response includes a `request_id` for correlation:
+```json
+{
+  "success": true,
+  "message": "Operation completed",
+  "data": {...},
+  "request_id": "a3c3ee46-ddfa-4d94-9e8a-ca2590d9d9fd",
+  "timestamp": "2025-07-12T03:31:12.123Z"
+}
+```
+
+### **Debugging Endpoints**
+- **Hash Audit Trail**: `/api/v1/audit/hash/logs?fhir_resource_id={request_id}`
+- **Raw Document Analysis**: `/admin/patients-raw-documents`
+- **AVA4 Debug**: `/api/ava4/debug-patient-query/{patient_id}`
+- **Recent Activity**: `/api/v1/audit/hash/recent?minutes=60`
+
+### **How to Debug Issues**
+1. **Get Request ID** from error response
+2. **Search Audit Logs**: Use hash audit system
+3. **Check Application Logs**: Search Docker logs by request_id
+4. **Analyze Raw Data**: Use raw document endpoints
+
+## 📋 **Raw Patient Document Analysis**
+Access complete MongoDB patient documents with comprehensive field analysis:
+
+#### **Core Patient Fields (269 total)**:
+- **Demographics**: `first_name`, `last_name`, `gender`, `birth_date`, `id_card`, `phone`
+- **Location**: `address_1`, `address_2`, `province_code`, `district_code`, `sub_district_code`
+- **Medical IDs**: `amy_id`, `hn_id_no`, `patient_id`
+- **Emergency Contacts**: `emergency_contact_name`, `emergency_contact_phone`
+
+#### **Medical Device Integration (MAC Addresses)**:
+- **AVA4 Devices**: `ava_mac_address`, `ava_box_id`, `ava_sim_card`
+- **Blood Pressure**: `blood_pressure_mac_address`
+- **Blood Glucose**: `blood_glucose_mac_address`
+- **Temperature**: `body_temperature_mac_address`
+- **Pulse Oximetry**: `fingertip_pulse_oximeter_mac_address`
+- **Smartwatches**: `watch_mac_address`
+- **Cholesterol**: `cholesterol_mac_address`
+
+#### **Medical Alert Thresholds**:
+- **Blood Pressure**: `bp_sbp_above`, `bp_sbp_below`, `bp_dbp_above`, `bp_dbp_below`
+- **Blood Sugar**: `glucose_normal_before`, `glucose_normal_after`
+- **Temperature**: `temperature_normal_above`, `temperature_normal_below`
+- **SPO2**: `spo2_normal_above`, `spo2_normal_below`
+- **Cholesterol**: `cholesterol_above`, `cholesterol_below`
+
+#### **Medical History Fields**:
+- **Vital Signs**: Blood pressure, temperature, SPO2, heart rate
+- **Lab Results**: Creatinine, cholesterol, BUN levels
+- **Body Metrics**: Weight, BMI, body composition
+- **Medication**: Current medications, allergies, dosages
+- **Activity**: Sleep data, step counts, exercise patterns
+
+#### **Raw Document Endpoints**:
+- `GET /admin/patients-raw-documents` - Admin access to raw patient documents
+- `GET /api/ava4/patients/raw-documents` - AVA4 specific raw patient data
+- `GET /api/ava4/sub-devices/raw-documents` - Raw device documents with patient linkages
+
+### 🔐 **Security & Authentication**
+- **JWT-based Authentication**: All protected endpoints require Bearer tokens
+- **Stardust-V1 Integration**: Centralized authentication system
+- **FHIR R5 Audit Logging**: Complete audit trail
+- **Role-based Access Control**: Fine-grained permissions
+
+### 📊 **Analytics & Monitoring**
+- Real-time dashboards
+- Performance metrics
+- Alert management
+- Medical trend analysis
+
+## Data Structure Analysis
+
+### **Patient Document Structure (431 Documents)**
+Each patient document contains **269 fields** including:
+
+1. **Core Demographics** (15 fields): Name, contact, identification
+2. **Medical Device MAC Addresses** (12 fields): IoT device integration
+3. **Alert Thresholds** (24 fields): Customizable medical alert limits
+4. **Medical History Integration** (50+ fields): Historical data references
+5. **Hospital Integration** (10 fields): Multi-hospital support
+6. **Audit Fields** (8 fields): Created, updated, deleted tracking
+7. **Additional Medical Data** (150+ fields): Comprehensive health metrics
+
+### **Raw Document Analysis Features**
+- **Field Type Analysis**: Automatic detection of data types per field
+- **Sample Value Extraction**: Preview of actual field values
+- **ObjectId Identification**: MongoDB relationship mapping
+- **Field Usage Statistics**: Count of populated fields across documents
+- **JSON Structure Preservation**: Complete document hierarchy maintained
+
+## Authentication
+
+Most endpoints require authentication using JWT Bearer tokens:
+
+1. **Obtain Token**: Use `/auth/login` with valid credentials
+2. **Use Token**: Include `Authorization: Bearer <token>` header
+3. **Refresh Token**: Use `/auth/refresh` when token expires
+
+### Public Endpoints (No Authentication Required)
+- `GET /` - API information
+- `GET /health` - System health check
+- `GET /docs` - API documentation
+- `GET /api/kati/test` - Kati API test endpoint
+- `POST /auth/login` - Authentication login
+- `POST /auth/refresh` - Token refresh
+
+### Protected Endpoints (Authentication Required)
+- All `/admin/*` endpoints
+- All `/api/*/devices` endpoints  
+- All `/api/*/data` endpoints
+- `/auth/me` - Current user information
+
+### **Raw Patient Document Endpoints** (Authentication Required)
+- `GET /admin/patients` - Complete patient documents (269 fields)
+- `GET /admin/patients-raw-documents` - Raw document analysis
+- `GET /api/ava4/patients/raw-documents` - AVA4 patient raw data
+- `GET /api/ava4/sub-devices/raw-documents` - Device-patient linkages
+
+## Error Handling
+
+The API uses structured error responses with:
+- Consistent error codes and messages
+- Request ID tracking
+- Detailed field validation
+- Security event logging
+
+## Rate Limiting & Security
+
+- Brute force detection
+- SQL injection monitoring  
+- Request rate limiting
+- Comprehensive audit logging
+
+## Database Statistics
+
+- **431 Patients** with complete medical profiles
+- **269 Fields per Patient Document** 
+- **6,898 Medical Records** across 14 collections
+- **Real-time IoT Device Integration**
+- **FHIR R5 Compliant Audit Logging**
+- **Enhanced Security Monitoring**
+"""
+        
+        # Update the description in the OpenAPI schema
+        openapi_schema["info"]["description"] = updated_description
+        
+        # Fix duplicate tags in the auto-generated schema
+        tag_mappings = {
+            "FHIR R5": "fhir-r5",
+            "Admin Panel": "admin",
+            "AVA4 Device": "ava4",
+            "Security Management": "security",
+            "Qube-Vital": "qube-vital",
+            "Device CRUD Operations": "device-crud",
+            "Device Mapping": "device-mapping",
+            "Kati Watch": "kati",
+            "Hash Audit": "hash-audit",
+            "Performance Monitoring": "performance",
+            "Real-time Communication": "realtime",
+            "Patient Medical Devices": "patient-devices",
+            "Medical Device Lookup": "device-lookup",
+            "Medical History": "ava4",
+            "Authentication": "authentication",
+            "Raw Documents": "admin"
+        }
+        
+        # Fix tags in paths
+        for path, path_item in openapi_schema.get("paths", {}).items():
+            for method, operation in path_item.items():
+                if isinstance(operation, dict) and "tags" in operation:
+                    original_tags = operation["tags"].copy()
+                    new_tags = []
+                    
+                    for tag in original_tags:
+                        if tag in tag_mappings:
+                            new_tag = tag_mappings[tag]
+                            if new_tag not in new_tags:
+                                new_tags.append(new_tag)
+                        else:
+                            if tag not in new_tags:
+                                new_tags.append(tag)
+                    
+                    operation["tags"] = new_tags
+        
+        # Log the first 10 tags for debugging
+        all_tags = []
+        for path, path_item in openapi_schema.get("paths", {}).items():
+            for method, operation in path_item.items():
+                if isinstance(operation, dict) and "tags" in operation:
+                    all_tags.extend(operation["tags"])
+        logger.info(f"First 10 tags after fix: {all_tags[:10]}")
+        
+        app.openapi_schema = openapi_schema
+        logger.info("✅ Generated dynamic OpenAPI specification with consolidated tags")
+        return app.openapi_schema
+    except Exception as e:
+        logger.error(f"❌ Error generating OpenAPI spec: {e}")
+        # Fallback to auto-generated schema without tag fixes
+        openapi_schema = get_openapi(
+            title=app.title,
+            version=app.version,
+            description=app.description,
+            routes=app.routes,
+        )
+        app.openapi_schema = openapi_schema
+        return app.openapi_schema
+
+# Override the default OpenAPI schema with our fixed version
+app.openapi = custom_openapi
+app.openapi_schema = None  # Clear cache to force custom function
+logger.info("🔧 Custom OpenAPI function assigned to app.openapi")
+
+# Force clear OpenAPI cache to ensure updated description is used
+def force_clear_openapi_cache():
+    """Force clear OpenAPI cache to ensure updated description is used"""
+    app.openapi_schema = None
+    logger.info("🧹 Forced OpenAPI cache clear")
+
+# Call the function to clear cache
+force_clear_openapi_cache()
 
 if __name__ == "__main__":
     import uvicorn

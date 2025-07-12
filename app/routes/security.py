@@ -12,10 +12,7 @@ from app.utils.error_definitions import create_error_response, create_success_re
 from app.utils.json_encoder import serialize_mongodb_response
 from config import logger
 
-router = APIRouter(
-    prefix="/admin/security",
-    tags=["security", "Security Management"]
-)
+router = APIRouter(prefix="/admin/security", tags=["security"])
 
 # ==================== SECURITY AUDIT ENDPOINTS ====================
 

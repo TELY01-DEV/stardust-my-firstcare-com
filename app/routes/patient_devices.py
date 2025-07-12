@@ -11,7 +11,7 @@ from app.utils.json_encoder import serialize_mongodb_response
 from app.utils.error_definitions import create_error_response, create_success_response
 from config import settings, logger
 
-router = APIRouter(prefix="/api/patients", tags=["Patient Medical Devices"])
+router = APIRouter(prefix="/api/patients", tags=["patient-devices"])
 
 # Pydantic Models
 class PatientDeviceRegistry(BaseModel):
@@ -1105,7 +1105,7 @@ async def get_patient_devices_table(
         ) 
 
 # Change the router prefix to handle both routes
-router_lookup = APIRouter(prefix="/api/medical-devices", tags=["Medical Device Lookup"])
+router_lookup = APIRouter(prefix="/api/medical-devices", tags=["device-lookup"])
 
 @router_lookup.get("/patient/{mac_address}")
 async def find_patient_by_device_mac(

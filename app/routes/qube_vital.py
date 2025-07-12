@@ -12,7 +12,7 @@ from app.utils.json_encoder import serialize_mongodb_response
 from app.utils.error_definitions import create_error_response, create_success_response
 from config import settings, logger
 
-router = APIRouter(prefix="/api/qube-vital", tags=["Qube-Vital"])
+router = APIRouter(prefix="/api/qube-vital", tags=["qube-vital"])
 
 class QubeVitalDataRequest(BaseModel):
     timestamp: datetime

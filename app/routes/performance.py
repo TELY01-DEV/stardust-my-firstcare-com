@@ -9,7 +9,7 @@ from config import logger
 
 router = APIRouter(
     prefix="/admin/performance",
-    tags=["admin", "Performance Monitoring"],
+    tags=["performance"],
     dependencies=[Depends(require_auth())]
 )
 

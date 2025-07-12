@@ -12,7 +12,7 @@ from app.utils.json_encoder import serialize_mongodb_response
 from app.utils.error_definitions import create_error_response, create_success_response
 from config import settings, logger
 
-router = APIRouter(prefix="/api/kati", tags=["Kati Watch"])
+router = APIRouter(prefix="/api/kati", tags=["kati"])
 
 class KatiDataRequest(BaseModel):
     timestamp: datetime

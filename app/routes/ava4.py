@@ -13,7 +13,7 @@ from app.utils.json_encoder import serialize_mongodb_response
 from app.utils.error_definitions import create_error_response, create_success_response
 from config import settings, logger
 
-router = APIRouter(prefix="/api/ava4", tags=["AVA4 Device"])
+router = APIRouter(prefix="/api/ava4", tags=["ava4"])
 
 # Response Models for Swagger Documentation
 class MedicalHistoryCollection(BaseModel):
@@ -2776,7 +2776,7 @@ async def debug_patient_query(
         401: {"description": "Authentication required"},
         500: {"description": "Internal server error"}
     },
-    tags=["Medical History"]
+    tags=["ava4"]
 )
 async def get_medical_history_collections(
     request: Request,
@@ -2981,7 +2981,7 @@ async def get_medical_history_collections(
         401: {"description": "Authentication required"},
         500: {"description": "Internal server error"}
     },
-    tags=["Medical History"]
+    tags=["ava4"]
 )
 async def get_patient_medical_history(
     patient_id: str,
@@ -3270,7 +3270,7 @@ async def get_patient_medical_history(
         401: {"description": "Authentication required"},
         500: {"description": "Internal server error"}
     },
-    tags=["Medical History"]
+    tags=["ava4"]
 )
 async def get_patient_medical_trends(
     patient_id: str,
@@ -3557,7 +3557,7 @@ async def get_patient_medical_trends(
         401: {"description": "Authentication required"},
         500: {"description": "Internal server error"}
     },
-    tags=["Medical History"]
+    tags=["ava4"]
 )
 async def get_medical_history_analytics(
     request: Request,
@@ -3952,7 +3952,7 @@ async def get_patient_medical_analytics(
         401: {"description": "Authentication required"},
         500: {"description": "Internal server error"}
     },
-    tags=["AVA4 Device", "Raw Documents"]
+    tags=["ava4"]
 )
 async def get_raw_patient_documents(
     request: Request,

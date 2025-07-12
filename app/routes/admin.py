@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional, List
 import uuid
 import json
-from fastapi import APIRouter, HTTPException, Depends, Request, Query, Body
+from fastapi import APIRouter, HTTPException, Depends, Request, Query, Body, Path
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
 from bson import ObjectId
@@ -216,14 +216,10 @@ async def get_patients(
     try:
         request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         
-        print(f"DEBUG: Starting get_patients with limit={limit}, skip={skip}, search={search}, hospital_id={hospital_id}")
-        
         collection = mongodb_service.get_collection("patients")
-        print(f"DEBUG: Got collection: {collection}")
         
         # Build filter
         filter_query = {"is_deleted": {"$ne": True}}
-        print(f"DEBUG: Initial filter_query: {filter_query}")
         
         if search:
             filter_query["$or"] = [
@@ -232,22 +228,16 @@ async def get_patients(
                 {"id_card": {"$regex": search, "$options": "i"}},
                 {"phone": {"$regex": search, "$options": "i"}}
             ]
-            print(f"DEBUG: Added search filter: {filter_query}")
         
         if hospital_id:
             filter_query["new_hospital_ids"] = ObjectId(hospital_id)
-            print(f"DEBUG: Added hospital filter: {filter_query}")
         
         # Get total count
-        print(f"DEBUG: Counting documents with filter: {filter_query}")
         total = await collection.count_documents(filter_query)
-        print(f"DEBUG: Total count: {total}")
         
         # Get patients
-        print(f"DEBUG: Finding patients with skip={skip}, limit={limit}")
         cursor = collection.find(filter_query).skip(skip).limit(limit)
         patients = await cursor.to_list(length=limit)
-        print(f"DEBUG: Found {len(patients)} patients")
         
         # Serialize ObjectIds to strings
         patients = serialize_mongodb_response(patients)
@@ -265,9 +255,6 @@ async def get_patients(
         return success_response
         
     except Exception as e:
-        print(f"ERROR in get_patients: {type(e).__name__}: {str(e)}")
-        import traceback
-        print(f"ERROR traceback: {traceback.format_exc()}")
         request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         raise HTTPException(
             status_code=500,
@@ -6553,3 +6540,4 @@ async def bulk_export_master_data(
                 request_id=request_id
             ).dict()
         )
+

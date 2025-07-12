@@ -19,7 +19,7 @@ from app.utils.performance_decorators import api_endpoint_timing
 from app.utils.error_definitions import create_success_response, create_error_response
 
 logger = get_logger(__name__)
-router = APIRouter(prefix="/kati-watch", tags=["Kati Watch FHIR Integration"])
+router = APIRouter(prefix="/kati-watch", tags=["kati"])
 
 # Initialize the Kati Watch FHIR service
 kati_fhir_service = KatiWatchFHIRService()

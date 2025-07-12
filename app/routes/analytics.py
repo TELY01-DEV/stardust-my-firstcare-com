@@ -9,11 +9,11 @@ from app.services.cache_service import cache_service, cache_result
 from app.models.base import SuccessResponse
 from app.utils.structured_logging import get_logger
 
-router = APIRouter()
+router = APIRouter(prefix="/admin/analytics", tags=["analytics"])
 logger = get_logger(__name__)
 analytics_service = healthcare_analytics
 
-@router.get("/analytics/patients/statistics",
+@router.get("/patients/statistics",
             response_model=SuccessResponse,
             responses={
                 200: {"description": "Patient statistics retrieved successfully"},
@@ -57,7 +57,7 @@ async def get_patient_statistics(
             detail="Failed to retrieve patient statistics"
         )
 
-@router.get("/analytics/vitals/{patient_id}",
+@router.get("/vitals/{patient_id}",
             response_model=SuccessResponse,
             responses={
                 200: {"description": "Vital signs analytics retrieved successfully"},
@@ -110,7 +110,7 @@ async def get_vital_signs_analytics(
             detail="Failed to retrieve vital signs analytics"
         )
 
-@router.get("/analytics/devices/utilization",
+@router.get("/devices/utilization",
             response_model=SuccessResponse,
             responses={
                 200: {"description": "Device utilization analytics retrieved successfully"},
@@ -154,7 +154,7 @@ async def get_device_utilization(
             detail="Failed to retrieve device utilization analytics"
         )
 
-@router.get("/analytics/health-risks/{patient_id}",
+@router.get("/health-risks/{patient_id}",
             response_model=SuccessResponse,
             responses={
                 200: {"description": "Health risk predictions retrieved successfully"},
@@ -202,7 +202,7 @@ async def get_health_risk_predictions(
             detail="Failed to retrieve health risk predictions"
         )
 
-@router.get("/analytics/trends/vitals",
+@router.get("/trends/vitals",
             response_model=SuccessResponse,
             responses={
                 200: {"description": "Vital signs trends retrieved successfully"},
@@ -299,7 +299,7 @@ async def get_vital_trends(
             detail="Failed to retrieve vital signs trends"
         )
 
-@router.get("/analytics/anomalies/detect",
+@router.get("/anomalies/detect",
             response_model=SuccessResponse,
             responses={
                 200: {"description": "Anomalies detected successfully"},
@@ -361,7 +361,7 @@ async def detect_anomalies(
             detail="Failed to detect anomalies"
         )
 
-@router.get("/analytics/reports/summary/{report_type}",
+@router.get("/reports/summary/{report_type}",
             response_model=SuccessResponse,
             responses={
                 200: {"description": "Summary report generated successfully"},
@@ -453,7 +453,7 @@ async def generate_summary_report(
             detail=f"Failed to generate {report_type} report"
         )
 
-@router.post("/analytics/export/{format}",
+@router.post("/export/{format}",
              response_model=SuccessResponse,
              responses={
                  200: {"description": "Analytics data exported successfully"},

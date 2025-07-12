@@ -9,7 +9,7 @@ from app.models.base import SuccessResponse
 from app.utils.error_definitions import ErrorCode, ErrorResponse, create_error_response, create_success_response
 from app.utils.structured_logging import get_logger
 
-router = APIRouter(prefix="/reports", tags=["reports"])
+router = APIRouter(prefix="/admin/reports", tags=["reports"])
 logger = get_logger(__name__)
 
 # Pydantic models for request/response

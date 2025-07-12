@@ -12,10 +12,7 @@ from app.services.realtime_events import realtime_events
 from app.utils.error_definitions import create_error_response
 from config import logger
 
-router = APIRouter(
-    prefix="/realtime",
-    tags=["realtime", "Real-time Communication"]
-)
+router = APIRouter(prefix="/realtime", tags=["realtime"])
 
 # WebSocket endpoints
 

@@ -780,9 +780,9 @@ async def get_me(request: Request, current_user: dict = Depends(require_auth()))
                         }
                     }
                 },
-                400: {"description": "Invalid input"},
-                401: {"description": "Unauthorized"}
-            })
+    400: {"description": "Invalid input"},
+    401: {"description": "Unauthorized"}
+})
 async def update_profile(
     request: Request,
     update: UpdateProfileRequest = Body(...),
@@ -825,9 +825,9 @@ async def update_profile(
                         }
                     }
                 },
-                400: {"description": "Invalid input"},
-                401: {"description": "Unauthorized"}
-            })
+    400: {"description": "Invalid input"},
+    401: {"description": "Unauthorized"}
+})
 async def change_password(
     request: Request,
     change: ChangePasswordRequest = Body(...),
@@ -870,9 +870,9 @@ async def change_password(
                            }
                        }
                    },
-                   404: {"description": "Profile photo not found"},
-                   401: {"description": "Unauthorized"}
-               })
+    404: {"description": "Profile photo not found"},
+    401: {"description": "Unauthorized"}
+})
 async def delete_profile_photo(
     request: Request,
     current_user: dict = Depends(require_auth())
@@ -915,9 +915,9 @@ async def delete_profile_photo(
                          }
                      }
                  },
-                 404: {"description": "User not found"},
-                 400: {"description": "Invalid input"}
-             })
+    404: {"description": "User not found"},
+    400: {"description": "Invalid input"}
+})
 async def forgot_password(
     request: Request,
     forgot: ForgotPasswordRequest = Body(...)
@@ -959,8 +959,8 @@ async def forgot_password(
                          }
                      }
                  },
-                 400: {"description": "Invalid or expired token"}
-             })
+    400: {"description": "Invalid or expired token"}
+})
 async def reset_password(
     request: Request,
     reset: ResetPasswordRequest = Body(...)
@@ -1000,9 +1000,9 @@ async def reset_password(
                          }
                      }
                  },
-                 400: {"description": "Invalid input"},
-                 409: {"description": "Request already exists"}
-             })
+    400: {"description": "Invalid input"},
+    409: {"description": "Request already exists"}
+})
 async def register_request(
     request: Request,
     reg_request: RegisterRequestRequest = Body(...)
@@ -1044,8 +1044,8 @@ async def register_request(
                         }
                     }
                 },
-                403: {"description": "Access denied - Admin only"}
-            })
+    403: {"description": "Access denied - Admin only"}
+})
 async def get_registration_requests(
     request: Request,
     current_user: dict = Depends(require_auth())
@@ -1100,9 +1100,9 @@ async def get_registration_requests(
                          }
                      }
                  },
-                 404: {"description": "Request not found"},
-                 403: {"description": "Access denied - Admin only"}
-             })
+    404: {"description": "Request not found"},
+    403: {"description": "Access denied - Admin only"}
+})
 async def approve_registration_request(
     request_id: str,
     request: Request,
@@ -1156,8 +1156,8 @@ async def approve_registration_request(
                         }
                     }
                 },
-                403: {"description": "Access denied - Admin only"}
-            })
+    403: {"description": "Access denied - Admin only"}
+})
 async def get_registration_history(
     request: Request,
     current_user: dict = Depends(require_auth())

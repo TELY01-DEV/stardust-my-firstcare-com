@@ -69,6 +69,10 @@ class Settings(BaseSettings):
     environment: str = os.getenv("ENVIRONMENT", "production")
     node_env: str = "production"
 
+    # Telegram Alert Settings
+    telegram_bot_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    telegram_chat_id: str = os.getenv("TELEGRAM_CHAT_ID", "")
+
 # Initialize settings
 settings = Settings()
 

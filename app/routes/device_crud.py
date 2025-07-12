@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException, Depends, Query, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from bson import ObjectId
+from loguru import logger
 from app.services.mongo import mongodb_service
 from app.services.auth import require_auth
 from app.services.audit_logger import audit_logger
@@ -12,7 +13,7 @@ from app.utils.json_encoder import serialize_mongodb_response
 from app.utils.error_definitions import create_error_response, create_success_response
 from app.utils.performance_decorators import api_endpoint_timing
 
-router = APIRouter(prefix="/api/devices", tags=["Device CRUD Operations"])
+router = APIRouter(prefix="/api/devices", tags=["device-crud"])
 
 # Device Data Models
 class DeviceDataCreate(BaseModel):
@@ -798,7 +799,7 @@ async def route_to_medical_history(data: DeviceDataCreate, patient_id: str):
             
     except Exception as e:
         # Log error but don't fail the main operation
-        print(f"Failed to route to medical history: {e}")
+        logger.error(f"Failed to route to medical history: {e}")
 
 async def create_fhir_device(device: DeviceCreate, device_id: str):
     """Create FHIR Device resource"""
@@ -857,7 +858,7 @@ async def create_fhir_device(device: DeviceCreate, device_id: str):
         await collection.insert_one(fhir_device)
         
     except Exception as e:
-        print(f"Failed to create FHIR device: {e}")
+        logger.error(f"Failed to create FHIR device: {e}")
 
 async def update_fhir_device(device_id: str, device: DeviceUpdate):
     """Update FHIR Device resource"""
@@ -883,7 +884,7 @@ async def update_fhir_device(device_id: str, device: DeviceUpdate):
         )
         
     except Exception as e:
-        print(f"Failed to update FHIR device: {e}")
+        logger.error(f"Failed to update FHIR device: {e}")
 
 async def deactivate_fhir_device(device_id: str):
     """Deactivate FHIR Device resource"""
@@ -901,4 +902,4 @@ async def deactivate_fhir_device(device_id: str):
         )
         
     except Exception as e:
-        print(f"Failed to deactivate FHIR device: {e}") 
+        logger.error(f"Failed to deactivate FHIR device: {e}") 

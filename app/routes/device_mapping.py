@@ -17,7 +17,7 @@ from app.utils.error_definitions import (
     SuccessResponse
 )
 
-router = APIRouter(prefix="/admin/device-mapping", tags=["Device Mapping"])
+router = APIRouter(prefix="/admin/device-mapping", tags=["device-mapping"])
 
 # Note: Error definitions are now imported from app.utils.error_definitions
 

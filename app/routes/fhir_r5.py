@@ -25,7 +25,7 @@ from app.utils.structured_logging import get_logger
 from app.utils.performance_decorators import api_endpoint_timing
 
 logger = get_logger(__name__)
-router = APIRouter(prefix="/fhir/R5", tags=["FHIR R5"])
+router = APIRouter(prefix="/fhir/R5", tags=["fhir-r5"])
 
 # =============== FHIR R5 Capability Statement ===============
 

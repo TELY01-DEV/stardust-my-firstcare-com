@@ -28,7 +28,7 @@ from app.utils.performance_decorators import api_endpoint_timing
 from app.utils.structured_logging import get_logger
 
 logger = get_logger(__name__)
-router = APIRouter(prefix="/api/v1/audit/hash", tags=["Hash Audit"])
+router = APIRouter(prefix="/api/v1/audit/hash", tags=["hash-audit"])
 
 # =============== Request/Response Models ===============
 

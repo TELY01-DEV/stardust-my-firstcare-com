@@ -25,6 +25,7 @@ class AlertChannel(Enum):
     SLACK = "slack"
     WEBHOOK = "webhook"
     LOG = "log"
+    TELEGRAM = "telegram"
 
 
 @dataclass
@@ -64,28 +65,28 @@ class AlertManager:
                 "name": "database_connection_failure",
                 "condition": lambda event: event.get("error_type") == "database_connection_error",
                 "level": AlertLevel.CRITICAL,
-                "channels": [AlertChannel.EMAIL, AlertChannel.SLACK, AlertChannel.LOG],
+                "channels": [AlertChannel.EMAIL, AlertChannel.SLACK, AlertChannel.TELEGRAM, AlertChannel.LOG],
                 "rate_limit_minutes": 5
             },
             {
                 "name": "authentication_failures",
-                "condition": lambda event: event.get("event_type") == "security_event" and 
+                "condition": lambda event: event.get("event_type") == "security_event" and \
                            "authentication_failure" in event.get("security_events", []),
                 "level": AlertLevel.HIGH,
-                "channels": [AlertChannel.EMAIL, AlertChannel.LOG],
+                "channels": [AlertChannel.EMAIL, AlertChannel.TELEGRAM, AlertChannel.LOG],
                 "rate_limit_minutes": 10
             },
             {
                 "name": "brute_force_attack",
-                "condition": lambda event: event.get("event_type") == "security_alert" and 
+                "condition": lambda event: event.get("event_type") == "security_alert" and \
                            "BRUTE_FORCE_DETECTED" in event.get("message", ""),
                 "level": AlertLevel.CRITICAL,
-                "channels": [AlertChannel.EMAIL, AlertChannel.SLACK, AlertChannel.LOG],
+                "channels": [AlertChannel.EMAIL, AlertChannel.SLACK, AlertChannel.TELEGRAM, AlertChannel.LOG],
                 "rate_limit_minutes": 1
             },
             {
                 "name": "slow_database_queries",
-                "condition": lambda event: event.get("event_type") == "database_performance" and 
+                "condition": lambda event: event.get("event_type") == "database_performance" and \
                            event.get("duration_ms", 0) > 5000,
                 "level": AlertLevel.MEDIUM,
                 "channels": [AlertChannel.LOG],
@@ -93,18 +94,18 @@ class AlertManager:
             },
             {
                 "name": "high_error_rate",
-                "condition": lambda event: event.get("event_type") == "http_error" and 
+                "condition": lambda event: event.get("event_type") == "http_error" and \
                            event.get("status_code", 0) >= 500,
                 "level": AlertLevel.HIGH,
-                "channels": [AlertChannel.EMAIL, AlertChannel.LOG],
+                "channels": [AlertChannel.EMAIL, AlertChannel.TELEGRAM, AlertChannel.LOG],
                 "rate_limit_minutes": 15
             },
             {
                 "name": "disk_space_low",
-                "condition": lambda event: event.get("event_type") == "system_resource" and 
+                "condition": lambda event: event.get("event_type") == "system_resource" and \
                            event.get("disk_usage_percent", 0) > 90,
                 "level": AlertLevel.HIGH,
-                "channels": [AlertChannel.EMAIL, AlertChannel.SLACK, AlertChannel.LOG],
+                "channels": [AlertChannel.EMAIL, AlertChannel.SLACK, AlertChannel.TELEGRAM, AlertChannel.LOG],
                 "rate_limit_minutes": 60
             }
         ]
@@ -195,6 +196,8 @@ class AlertManager:
                 await self._send_slack_alert(alert)
             elif channel == AlertChannel.WEBHOOK:
                 await self._send_webhook_alert(alert)
+            elif channel == AlertChannel.TELEGRAM:
+                await self._send_telegram_alert(alert)
             elif channel == AlertChannel.LOG:
                 self._log_alert(alert)
         except Exception as e:
@@ -312,6 +315,27 @@ Additional Details:
             
         except Exception as e:
             logger.error(f"Failed to send webhook alert: {str(e)}")
+    
+    async def _send_telegram_alert(self, alert: Alert):
+        """Send alert via Telegram bot"""
+        token = settings.telegram_bot_token
+        chat_id = settings.telegram_chat_id
+        if not token or not chat_id:
+            logger.warning("Telegram bot token or chat ID not configured.")
+            return
+        try:
+            message = f"🚨 <b>{alert.title}</b>\nLevel: <b>{alert.level.value.upper()}</b>\nSource: <b>{alert.source}</b>\nTime: <b>{alert.timestamp.strftime('%Y-%m-%d %H:%M:%S')}</b>\n\n{alert.message}"
+            url = f"https://api.telegram.org/bot{token}/sendMessage"
+            payload = {
+                "chat_id": chat_id,
+                "text": message,
+                "parse_mode": "HTML"
+            }
+            response = requests.post(url, json=payload, timeout=10)
+            response.raise_for_status()
+            logger.info(f"Telegram alert sent for {alert.id}")
+        except Exception as e:
+            logger.error(f"Failed to send Telegram alert: {str(e)}")
     
     def _log_alert(self, alert: Alert):
         """Log alert to application logs"""
@@ -470,3 +494,17 @@ def configure_webhook_alerts(url: str, headers: Optional[Dict[str, str]] = None)
         "url": url,
         "headers": headers or {}
     }) 
+
+if __name__ == "__main__":
+    import asyncio
+    from datetime import datetime
+    class DummyAlert:
+        id = "test"
+        title = "Test Alert"
+        level = AlertLevel.CRITICAL
+        source = "test_system"
+        timestamp = datetime.utcnow()
+        message = "This is a test alert from the system."
+    print("Sending test Telegram alert...")
+    asyncio.run(alert_manager._send_telegram_alert(DummyAlert()))
+    print("Done.") 
