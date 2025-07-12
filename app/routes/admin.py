@@ -207,6 +207,7 @@ async def get_patients(
     request: Request,
     limit: int = Query(100, ge=1, le=1000),
     skip: int = Query(0, ge=0),
+    page: Optional[int] = Query(None, ge=1, description="Page number (alternative to skip)"),
     search: Optional[str] = None,
     hospital_id: Optional[str] = None,
     current_user: Dict[str, Any] = Depends(require_auth())
@@ -234,9 +235,13 @@ async def get_patients(
         
         # Get total count
         total = await collection.count_documents(filter_query)
-        
-        # Get patients
-        cursor = collection.find(filter_query).skip(skip).limit(limit)
+
+        # Handle pagination - support both page and skip parameters
+        if page is not None:
+            skip = (page - 1) * limit
+
+        # Get patients with consistent ordering for pagination
+        cursor = collection.find(filter_query).sort("_id", 1).skip(skip).limit(limit)
         patients = await cursor.to_list(length=limit)
         
         # Serialize ObjectIds to strings
@@ -305,8 +310,8 @@ async def search_patients_post(
         # Get total count
         total = await collection.count_documents(filter_query)
         
-        # Get patients
-        cursor = collection.find(filter_query).skip(skip).limit(limit)
+        # Get patients with consistent ordering for pagination
+        cursor = collection.find(filter_query).sort("_id", 1).skip(skip).limit(limit)
         patients = await cursor.to_list(length=limit)
         
         # Serialize ObjectIds to strings
@@ -533,7 +538,7 @@ async def get_raw_patient_documents(
                 )
         
         # Get raw documents without serialization
-        cursor = collection.find(filter_query).skip(skip).limit(limit)
+        cursor = collection.find(filter_query).sort("_id", 1).skip(skip).limit(limit)
         raw_documents = await cursor.to_list(length=limit)
         
         # Get total count
@@ -808,7 +813,7 @@ async def get_devices(
         total = await collection.count_documents(filter_query)
         
         # Get devices
-        cursor = collection.find(filter_query).skip(skip).limit(limit)
+        cursor = collection.find(filter_query).sort("_id", 1).skip(skip).limit(limit)
         devices = await cursor.to_list(length=limit)
         
         # Serialize ObjectIds
@@ -5252,7 +5257,7 @@ async def get_raw_hospital_documents(
             filter_query["sub_district_code"] = sub_district_code
         
         # Get raw documents without serialization
-        cursor = collection.find(filter_query).skip(skip).limit(limit)
+        cursor = collection.find(filter_query).sort("_id", 1).skip(skip).limit(limit)
         raw_documents = await cursor.to_list(length=limit)
         
         # Get total count
