@@ -773,7 +773,7 @@ async def custom_404_handler(request: Request, exc: StarletteHTTPException):
     import uuid
     request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     error_response = create_error_response(
-        error_code="ENDPOINT_NOT_FOUND",
+        error_code="RESOURCE_NOT_FOUND",
         custom_message="The requested endpoint does not exist",
         request_id=request_id
     )
