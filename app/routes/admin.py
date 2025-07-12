@@ -121,7 +121,7 @@ class MedicalHistoryUpdate(BaseModel):
 # Master Data Models
 class MasterDataCreate(BaseModel):
     data_type: str  # hospitals, provinces, districts, etc.
-    name: Optional[Dict[str, Any]] = None
+    name: Optional[List[Dict[str, str]]] = None
     code: Optional[int] = None
     is_active: Optional[bool] = True
     province_code: Optional[int] = None
@@ -130,7 +130,7 @@ class MasterDataCreate(BaseModel):
     additional_fields: Optional[Dict[str, Any]] = None
 
 class MasterDataUpdate(BaseModel):
-    name: Optional[Dict[str, Any]] = None
+    name: Optional[List[Dict[str, str]]] = None
     code: Optional[int] = None
     is_active: Optional[bool] = None
     province_code: Optional[int] = None
