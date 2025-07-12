@@ -56,6 +56,7 @@ class AlertManager:
         self.channels: Dict[AlertChannel, Any] = {}
         self.alert_history: List[Alert] = []
         self.rate_limits: Dict[str, datetime] = {}
+        self.alert_counts: Dict[str, List[datetime]] = {}  # Track alert counts for smart rate limiting
         self._setup_default_rules()
     
     def _setup_default_rules(self):
@@ -98,7 +99,7 @@ class AlertManager:
                            event.get("status_code", 0) >= 500,
                 "level": AlertLevel.HIGH,
                 "channels": [AlertChannel.EMAIL, AlertChannel.TELEGRAM, AlertChannel.LOG],
-                "rate_limit_minutes": 15
+                "rate_limit_minutes": 15  # Rate limit after first 5 alerts in 5 minutes
             },
             {
                 "name": "invalid_data_type_error",
@@ -107,7 +108,7 @@ class AlertManager:
                            ("INVALID_DATA_TYPE" in event.get("error_message", "") or "Invalid data type" in event.get("error_message", "")),
                 "level": AlertLevel.MEDIUM,
                 "channels": [AlertChannel.TELEGRAM, AlertChannel.LOG],
-                "rate_limit_minutes": 3
+                "rate_limit_minutes": 10  # Rate limit after first 5 alerts in 5 minutes
             },
             {
                 "name": "disk_space_low",
@@ -161,17 +162,40 @@ class AlertManager:
             await self._send_alert(alert, channel)
     
     def _is_rate_limited(self, alert_key: str, rate_limit_minutes: int) -> bool:
-        """Check if alert is rate limited"""
+        """Check if alert is rate limited using smart rate limiting"""
         if rate_limit_minutes <= 0:
             return False
         
-        if alert_key in self.rate_limits:
-            time_diff = datetime.utcnow() - self.rate_limits[alert_key]
-            if time_diff.total_seconds() < (rate_limit_minutes * 60):
-                return True
+        now = datetime.utcnow()
         
-        self.rate_limits[alert_key] = datetime.utcnow()
-        return False
+        # Initialize alert count tracking for this key
+        if alert_key not in self.alert_counts:
+            self.alert_counts[alert_key] = []
+        
+        # Clean old timestamps (older than 5 minutes)
+        self.alert_counts[alert_key] = [
+            ts for ts in self.alert_counts[alert_key] 
+            if (now - ts).total_seconds() < 300  # 5 minutes = 300 seconds
+        ]
+        
+        # Smart rate limiting logic
+        recent_alerts = len(self.alert_counts[alert_key])
+        
+        if recent_alerts < 5:
+            # Allow first 5 alerts in 5 minutes
+            self.alert_counts[alert_key].append(now)
+            return False
+        else:
+            # After 5 alerts, apply normal rate limiting
+            if alert_key in self.rate_limits:
+                time_diff = now - self.rate_limits[alert_key]
+                if time_diff.total_seconds() < (rate_limit_minutes * 60):
+                    return True
+            
+            # Reset rate limit and allow one more alert
+            self.rate_limits[alert_key] = now
+            self.alert_counts[alert_key].append(now)
+            return False
     
     def _format_alert_message(self, rule: Dict[str, Any], event: Dict[str, Any]) -> str:
         """Format alert message"""
