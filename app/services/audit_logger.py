@@ -168,6 +168,17 @@ class AuditLogger:
             logger.error(f"Failed to log admin action: {e}")
             raise
     
+    async def log_action(self, user_id: str, action: str, resource_type: str, resource_id: str, 
+                        details: str, request_id: Optional[str] = None):
+        """Log general actions as FHIR R5 Provenance (alias for log_admin_action)"""
+        return await self.log_admin_action(
+            action=action,
+            resource_type=resource_type,
+            resource_id=resource_id,
+            user_id=user_id,
+            details={"details": details, "request_id": request_id}
+        )
+    
     async def get_audit_logs(self, limit: int = 100, skip: int = 0, 
                             resource_type: Optional[str] = None,
                             user_id: Optional[str] = None,
