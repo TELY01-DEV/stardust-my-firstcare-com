@@ -107,7 +107,7 @@ class AlertManager:
                            ("INVALID_DATA_TYPE" in event.get("error_message", "") or "Invalid data type" in event.get("error_message", "")),
                 "level": AlertLevel.MEDIUM,
                 "channels": [AlertChannel.TELEGRAM, AlertChannel.LOG],
-                "rate_limit_minutes": 30
+                "rate_limit_minutes": 3
             },
             {
                 "name": "disk_space_low",
