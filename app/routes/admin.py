@@ -2221,6 +2221,177 @@ async def get_master_data_record(
             ).dict()
         )
 
+@router.get("/master-data/{data_type}/{record_id}/edit", 
+            response_model=SuccessResponse,
+            summary="Get Master Data Record for Editing",
+            description="""
+## Get Master Data Record for Editing
+
+Retrieve a specific master data record by its ID for editing purposes. This endpoint is designed for frontend edit forms.
+
+### Supported Data Types:
+- `hospitals`, `provinces`, `districts`, `sub_districts`
+- `blood_groups`, `nations`, `human_skin_colors`, `ward_lists`, `staff_types`, `underlying_diseases`, `hospital_types`
+
+### Features:
+- **Edit Form Ready**: Returns data formatted for edit forms
+- **Record Validation**: Validates ObjectId format
+- **Error Handling**: Comprehensive error responses
+- **Data Serialization**: Proper MongoDB ObjectId handling
+- **Audit Trail**: Request tracking with request_id
+
+### Use Cases:
+- Frontend edit forms for master data records
+- Pre-populating edit interfaces
+- Data validation before editing
+- Form field initialization
+
+### Authentication:
+Requires valid JWT Bearer token with admin privileges.
+            """,
+            responses={
+                200: {
+                    "description": "Master data record retrieved successfully for editing",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": True,
+                                "message": "Master data record retrieved successfully for editing",
+                                "data": {
+                                    "record": {
+                                        "_id": "507f1f77bcf86cd799439011",
+                                        "name": [
+                                            {"code": "en", "name": "Bangkok General Hospital"},
+                                            {"code": "th", "name": "โรงพยาบาลกรุงเทพ"}
+                                        ],
+                                        "en_name": "Bangkok General Hospital",
+                                        "province_code": 10,
+                                        "is_active": True
+                                    },
+                                    "data_type": "hospitals",
+                                    "edit_mode": True
+                                },
+                                "request_id": "master-data-edit-001",
+                                "timestamp": "2025-07-10T12:00:00.000Z"
+                            }
+                        }
+                    }
+                },
+                400: {"description": "Invalid record ID format or data type"},
+                401: {"description": "Authentication required"},
+                404: {"description": "Master data record not found"},
+                500: {"description": "Internal server error"}
+            })
+async def get_master_data_record_for_edit(
+    request: Request,
+    data_type: str,
+    record_id: str,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Get a specific master data record by ID for editing purposes"""
+    try:
+        request_id = str(uuid.uuid4())
+        
+        # Normalize data type
+        normalized_data_type = data_type.lower().replace("-", "_")
+        
+        # Validate data type
+        valid_data_types = [
+            "hospitals", "provinces", "districts", "sub_districts",
+            "blood_groups", "nations", "human_skin_colors", "ward_lists", 
+            "staff_types", "underlying_diseases", "hospital_types"
+        ]
+        
+        if normalized_data_type not in valid_data_types:
+            # Trigger alert for invalid data type error
+            try:
+                from app.utils.alert_system import alert_manager
+                await alert_manager.process_event({
+                    "event_type": "http_error",
+                    "status_code": 400,
+                    "error_type": "INVALID_DATA_TYPE",
+                    "error_message": f"Invalid data type: {data_type}. Please use one of the supported data types: {', '.join(valid_data_types)}",
+                    "request_id": request_id,
+                    "client_ip": request.client.host if request.client else "unknown",
+                    "method": request.method,
+                    "path": request.url.path,
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "source": "master_data_edit_endpoint"
+                })
+            except Exception as alert_error:
+                logger.error(f"Failed to trigger alert: {alert_error}")
+            
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_DATA_TYPE",
+                    custom_message=f"Invalid data type: {data_type}. Please use one of the supported data types: {', '.join(valid_data_types)}",
+                    field="data_type",
+                    value=data_type,
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Validate ObjectId format
+        try:
+            ObjectId(record_id)
+        except Exception:
+            raise HTTPException(
+                status_code=400,
+                detail=create_error_response(
+                    "INVALID_RECORD_ID",
+                    custom_message=f"Invalid record ID format: {record_id}. Please provide a valid MongoDB ObjectId (24-character hex string)",
+                    field="record_id",
+                    value=record_id,
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Get collection
+        collection = mongodb_service.get_collection(normalized_data_type)
+        
+        # Find the specific record
+        record = await collection.find_one({"_id": ObjectId(record_id)})
+        
+        if not record:
+            raise HTTPException(
+                status_code=404,
+                detail=create_error_response(
+                    "RECORD_NOT_FOUND",
+                    custom_message=f"Record not found: {record_id}. Please check the record ID and try again",
+                    field="record_id",
+                    value=record_id,
+                    request_id=request_id
+                ).dict()
+            )
+        
+        # Serialize ObjectIds to strings
+        record = serialize_mongodb_response(record)
+        
+        success_response = create_success_response(
+            message="Master data record retrieved successfully for editing",
+            data={
+                "record": record,
+                "data_type": normalized_data_type,
+                "edit_mode": True
+            },
+            request_id=request_id
+        )
+        
+        return success_response
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Failed to retrieve master data record for editing: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
+
 def get_master_data_fields_info(data_type: str) -> Dict[str, Any]:
     """Get field information for master data types"""
     fields_info = {
