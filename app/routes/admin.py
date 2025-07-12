@@ -2130,10 +2130,9 @@ async def get_master_data_record(
                 status_code=400,
                 detail=create_error_response(
                     "INVALID_DATA_TYPE",
-                    custom_message=f"Invalid data type: {data_type}",
+                    custom_message=f"Invalid data type: {data_type}. Please use one of the supported data types: {', '.join(valid_data_types)}",
                     field="data_type",
                     value=data_type,
-                    suggestion=f"Please use one of the supported data types: {', '.join(valid_data_types)}",
                     request_id=request_id
                 ).dict()
             )
@@ -2146,10 +2145,9 @@ async def get_master_data_record(
                 status_code=400,
                 detail=create_error_response(
                     "INVALID_RECORD_ID",
-                    custom_message=f"Invalid record ID format: {record_id}",
+                    custom_message=f"Invalid record ID format: {record_id}. Please provide a valid MongoDB ObjectId (24-character hex string)",
                     field="record_id",
                     value=record_id,
-                    suggestion="Please provide a valid MongoDB ObjectId (24-character hex string)",
                     request_id=request_id
                 ).dict()
             )
@@ -2165,10 +2163,9 @@ async def get_master_data_record(
                 status_code=404,
                 detail=create_error_response(
                     "RECORD_NOT_FOUND",
-                    custom_message=f"Record not found: {record_id}",
+                    custom_message=f"Record not found: {record_id}. Please check the record ID and try again",
                     field="record_id",
                     value=record_id,
-                    suggestion="Please check the record ID and try again",
                     request_id=request_id
                 ).dict()
             )
