@@ -772,7 +772,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 async def custom_404_handler(request: Request, exc: StarletteHTTPException):
     import uuid
     request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
-    logger.warning(f"🔍 Custom 404 handler called for: {request.url}")
     error_response = create_error_response(
         error_code="RESOURCE_NOT_FOUND",
         custom_message="The requested endpoint does not exist",
