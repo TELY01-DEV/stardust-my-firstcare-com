@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>MQTT Monitor Dashboard</title>
+    
+    <!-- CSS files -->
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/iconfont/tabler-icons.min.css" rel="stylesheet"/>
+    
+    <style>
+        .connection-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .connection-connected { background-color: #28a745; }
+        .connection-connecting { background-color: #ffc107; }
+        .connection-disconnected { background-color: #dc3545; }
+        
+        .message-card {
+            transition: all 0.3s ease;
+        }
+        .message-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, var(--mfc-blue) 0%, var(--mfc-light-blue) 100%);
+            color: white;
+        }
+        .stats-card-ava4 {
+            background: linear-gradient(135deg, var(--mfc-light-blue) 0%, var(--mfc-accent-blue) 100%);
+        }
+        .stats-card-kati {
+            background: linear-gradient(135deg, var(--mfc-red) 0%, var(--mfc-blue) 100%);
+        }
+        .stats-card-qube {
+            background: linear-gradient(135deg, var(--mfc-gray) 0%, var(--mfc-dark-red) 100%);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .message-timestamp {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        
+        .device-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        .transaction-table {
+            font-size: 0.875rem;
+        }
+        
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Navbar -->
+        <header class="navbar navbar-expand-md navbar-light d-print-none" style="background: var(--mfc-blue);">
+            <div class="container-xl">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                    <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:40px;vertical-align:middle;margin-right:10px;">
+                    MQTT Monitor
+                </h1>
+                
+                <div class="navbar-nav flex-row order-md-last">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
+                            <span class="avatar avatar-sm">
+                                <i class="ti ti-user"></i>
+                            </span>
+                            <div class="d-none d-xl-block ps-2">
+                                <div id="user-name">User</div>
+                                <div class="mt-n1">
+                                    <span class="connection-indicator connection-connecting" id="connection-status"></span>
+                                    <small id="connection-text">Connecting...</small>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <a href="#" class="dropdown-item" id="profile-link">
+                                <i class="ti ti-user me-2"></i>
+                                Profile
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/logout" class="dropdown-item">
+                                <i class="ti ti-logout me-2"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="navbar-expand-md">
+            <div class="collapse navbar-collapse" id="navbar-menu">
+                <div class="navbar navbar-light">
+                    <div class="container-xl">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#dashboard" data-tab="dashboard">
+                                    <i class="ti ti-dashboard me-2"></i>
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#messages" data-tab="messages">
+                                    <i class="ti ti-message-circle me-2"></i>
+                                    Messages
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#devices" data-tab="devices">
+                                    <i class="ti ti-devices me-2"></i>
+                                    Devices
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#patients" data-tab="patients">
+                                    <i class="ti ti-users me-2"></i>
+                                    Patients
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-wrapper">
+            <!-- Page header -->
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <h2 class="page-title" id="page-title">
+                                Real-time MQTT Monitoring Dashboard
+                            </h2>
+                            <div class="text-muted mt-1" id="page-description">
+                                Monitor device messages, patient mapping, and system statistics
+                            </div>
+                        </div>
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                <button class="btn btn-primary" onclick="refreshData()">
+                                    <i class="ti ti-refresh me-2"></i>
+                                    Refresh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page body -->
+            <div class="page-body">
+                <div class="container-xl">
+                    <!-- Dashboard Tab -->
+                    <div id="dashboard-tab" class="tab-content active">
+                        <!-- Statistics Cards -->
+                        <div class="row row-deck row-cards mb-4">
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card stats-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="subheader">Total Messages</div>
+                                        </div>
+                                        <div class="h1 mb-3" id="total-messages">0</div>
+                                        <div class="d-flex mb-2">
+                                            <div>Processing rate</div>
+                                            <div class="ms-auto">
+                                                <span id="processing-rate">0</span> msg/min
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card stats-card stats-card-ava4">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="subheader">AVA4 Devices</div>
+                                        </div>
+                                        <div class="h1 mb-3" id="ava4-count">0</div>
+                                        <div class="d-flex mb-2">
+                                            <div>Active</div>
+                                            <div class="ms-auto">
+                                                <span id="ava4-active">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card stats-card stats-card-kati">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="subheader">Kati Watches</div>
+                                        </div>
+                                        <div class="h1 mb-3" id="kati-count">0</div>
+                                        <div class="d-flex mb-2">
+                                            <div>Active</div>
+                                            <div class="ms-auto">
+                                                <span id="kati-active">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card stats-card stats-card-qube">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="subheader">Qube-Vital</div>
+                                        </div>
+                                        <div class="h1 mb-3" id="qube-count">0</div>
+                                        <div class="d-flex mb-2">
+                                            <div>Active</div>
+                                            <div class="ms-auto">
+                                                <span id="qube-active">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Real-time Messages -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="ti ti-message-circle me-2"></i>
+                                            Real-time MQTT Messages
+                                        </h3>
+                                        <div class="card-actions">
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="clearMessages()">
+                                                <i class="ti ti-trash me-1"></i>
+                                                Clear
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="messages-container" style="max-height: 400px; overflow-y: auto;">
+                                            <div class="text-center text-muted py-4">
+                                                <i class="ti ti-message-circle-off" style="font-size: 3rem;"></i>
+                                                <p class="mt-2">Waiting for MQTT messages...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Device and Patient Mapping -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="ti ti-devices me-2"></i>
+                                            Device Mapping
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="devices-container">
+                                            <div class="text-center text-muted py-4">
+                                                <i class="ti ti-loader ti-spin" style="font-size: 2rem;"></i>
+                                                <p class="mt-2">Loading devices...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="ti ti-users me-2"></i>
+                                            Patient Mapping
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="patients-container">
+                                            <div class="text-center text-muted py-4">
+                                                <i class="ti ti-loader ti-spin" style="font-size: 2rem;"></i>
+                                                <p class="mt-2">Loading patients...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Messages Tab -->
+                    <div id="messages-tab" class="tab-content">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="ti ti-message-circle me-2"></i>
+                                            MQTT Message Transactions
+                                        </h3>
+                                        <div class="card-actions">
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="clearMessages()">
+                                                <i class="ti ti-trash me-1"></i>
+                                                Clear All
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="messages-table-container">
+                                            <div class="text-center text-muted py-4">
+                                                <i class="ti ti-message-circle-off" style="font-size: 3rem;"></i>
+                                                <p class="mt-2">Waiting for MQTT messages...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Devices Tab -->
+                    <div id="devices-tab" class="tab-content">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="ti ti-devices me-2"></i>
+                                            Device Management
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="nav nav-tabs" data-bs-toggle="tabs">
+                                            <li class="nav-item">
+                                                <a href="#ava4-devices" class="nav-link active" data-bs-toggle="tab">
+                                                    <i class="ti ti-devices me-2"></i>
+                                                    AVA4 Devices
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#kati-devices" class="nav-link" data-bs-toggle="tab">
+                                                    <i class="ti ti-watch me-2"></i>
+                                                    Kati Watches
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#qube-devices" class="nav-link" data-bs-toggle="tab">
+                                                    <i class="ti ti-hospital me-2"></i>
+                                                    Qube-Vital
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane active show" id="ava4-devices">
+                                                <div class="mt-3">
+                                                    <div id="ava4-devices-table">
+                                                        <div class="text-center text-muted py-4">
+                                                            <i class="ti ti-loader ti-spin" style="font-size: 2rem;"></i>
+                                                            <p class="mt-2">Loading AVA4 devices...</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="kati-devices">
+                                                <div class="mt-3">
+                                                    <div id="kati-devices-table">
+                                                        <div class="text-center text-muted py-4">
+                                                            <i class="ti ti-loader ti-spin" style="font-size: 2rem;"></i>
+                                                            <p class="mt-2">Loading Kati watches...</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="qube-devices">
+                                                <div class="mt-3">
+                                                    <div id="qube-devices-table">
+                                                        <div class="text-center text-muted py-4">
+                                                            <i class="ti ti-loader ti-spin" style="font-size: 2rem;"></i>
+                                                            <p class="mt-2">Loading Qube-Vital devices...</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Patients Tab -->
+                    <div id="patients-tab" class="tab-content">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            <i class="ti ti-users me-2"></i>
+                                            Patient Management
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="patients-table-container">
+                                            <div class="text-center text-muted py-4">
+                                                <i class="ti ti-loader ti-spin" style="font-size: 2rem;"></i>
+                                                <p class="mt-2">Loading patients...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="footer footer-transparent d-print-none">
+                <div class="container-xl">
+                    <div class="row text-center align-items-center flex-row-reverse">
+                        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                            <ul class="list-inline list-inline-dots mb-0">
+                                <li class="list-inline-item">
+                                    <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:24px;vertical-align:middle;margin-right:8px;">
+                                    Copyright © 2023-2025 A Medical For You Co., Ltd. Bangkok Thailand
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 

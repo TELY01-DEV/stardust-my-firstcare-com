@@ -23,15 +23,7 @@
     "msg": "Online"
   }
 }
-```
 
-**📘 Explanation:**
-- Sent by AVA4 every 1 minute
-- Indicates the device is still online
-- Tracked using `IMEI` + `mac`
-- Used to update `ava4_status_latest` and reset offline timer
-
----
 
 ## 🔹 2. Online Trigger Message
 
