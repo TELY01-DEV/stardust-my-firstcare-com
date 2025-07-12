@@ -2126,6 +2126,24 @@ async def get_master_data_record(
         ]
         
         if normalized_data_type not in valid_data_types:
+            # Trigger alert for invalid data type error
+            try:
+                from app.utils.alert_system import alert_manager
+                await alert_manager.process_event({
+                    "event_type": "http_error",
+                    "status_code": 400,
+                    "error_type": "INVALID_DATA_TYPE",
+                    "error_message": f"Invalid data type: {data_type}. Please use one of the supported data types: {', '.join(valid_data_types)}",
+                    "request_id": request_id,
+                    "client_ip": request.client.host if request.client else "unknown",
+                    "method": request.method,
+                    "path": request.url.path,
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "source": "master_data_endpoint"
+                })
+            except Exception as alert_error:
+                logger.error(f"Failed to trigger alert: {alert_error}")
+            
             raise HTTPException(
                 status_code=400,
                 detail=create_error_response(
