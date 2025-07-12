@@ -50,6 +50,7 @@ from app.routes.hash_audit import router as hash_audit_router
 from app.services.rate_limiter import rate_limiter
 from app.services.scheduler import report_scheduler
 from app.routes import router as auth_router
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -768,30 +769,15 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 @app.exception_handler(404)
-async def not_found_handler(request: Request, exc: HTTPException):
-    """Handle 404 errors"""
+async def custom_404_handler(request: Request, exc: StarletteHTTPException):
+    import uuid
     request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
-    logger.warning(f"404 Not Found: {request.url}")
-    
-    # If the exception already has a structured error response, preserve it
-    if hasattr(exc, 'detail') and isinstance(exc.detail, dict):
-        # Check if it's already a structured error response
-        if 'success' in exc.detail and 'errors' in exc.detail:
-            return JSONResponse(
-                status_code=404,
-                content=exc.detail
-            )
-    
-    # Otherwise, create a generic error response
     error_response = create_error_response(
-        "RESOURCE_NOT_FOUND",
-        custom_message="The requested resource was not found",
+        error_code="ENDPOINT_NOT_FOUND",
+        custom_message="The requested endpoint does not exist",
         request_id=request_id
     )
-    return JSONResponse(
-        status_code=404,
-        content=error_response.dict()
-    )
+    return JSONResponse(status_code=404, content=error_response.dict())
 
 @app.exception_handler(500)
 async def internal_error_handler(request: Request, exc: Exception):
