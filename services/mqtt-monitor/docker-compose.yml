@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # MQTT Monitor Web Panel
+  mqtt-monitor-panel:
+    build: 
+      context: .
+      dockerfile: web-panel/Dockerfile
+    container_name: Opera-GodEye-monitor-panel
+    ports:
+      - "8098:8098"
+    environment:
+      # MQTT Configuration
+      - MQTT_ENABLED=true
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      - MQTT_QOS=1
+      - MQTT_RETAIN=false
+      - MQTT_KEEPALIVE=60
+      - MQTT_CONNECTION_TIMEOUT=10
+      - MQTT_TOPICS=ESP32_BLE_GW_TX,dusun_sub,iMEDE_watch/#,CM4_BLE_GW_TX
+      
+      # MongoDB Configuration
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin
+      - MONGODB_DATABASE=AMY
+      
+      # Redis Configuration
+      - REDIS_URL=redis://redis:6374/1
+      
+      # Web Panel Configuration
+      - WEB_PORT=8098
+      - WEB_HOST=0.0.0.0
+      - LOG_LEVEL=INFO
+      - MAX_HISTORY=1000
+      - STARDUST_API_URL=http://stardust-my-firstcare-com
+    volumes:
+      - ../../deployment/ssl:/app/ssl:ro
+    restart: unless-stopped
+    networks:
+      - stardust-network
+
+  # WebSocket Server for Real-time Updates
+  mqtt-monitor-websocket:
+    build: 
+      context: .
+      dockerfile: websocket-server/Dockerfile
+    container_name: Opera-GodEye-monitor-websocket
+    ports:
+      - "8098:8081"
+    environment:
+      # MQTT Configuration
+      - MQTT_ENABLED=true
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      - MQTT_QOS=1
+      - MQTT_RETAIN=false
+      - MQTT_KEEPALIVE=60
+      - MQTT_CONNECTION_TIMEOUT=10
+      - MQTT_TOPICS=ESP32_BLE_GW_TX,dusun_sub,iMEDE_watch/#,CM4_BLE_GW_TX
+      
+      # MongoDB Configuration
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin
+      - MONGODB_DATABASE=AMY
+      
+      # WebSocket Configuration
+      - WS_PORT=8081
+      - WS_HOST=0.0.0.0
+      - LOG_LEVEL=INFO
+    restart: unless-stopped
+    networks:
+      - stardust-network
+
+networks:
+  stardust-network:
+    external: true
+    name: stardust-my-firstcare-com_stardust-network 

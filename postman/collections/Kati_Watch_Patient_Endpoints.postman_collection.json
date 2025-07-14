@@ -1,0 +1,236 @@
+{
+	"info": {
+		"_postman_id": "kati-watch-patients-collection",
+		"name": "Kati Watch Patient Endpoints",
+		"description": "Collection for Kati Watch patient filtering endpoints to get patients with/without watch assignments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "kati-watch-endpoints"
+	},
+	"item": [
+		{
+			"name": "Patients With Kati Watch",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/kati/patients/with-watch?limit={{limit}}&skip={{skip}}&search={{search}}&hospital_id={{hospital_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"kati",
+						"patients",
+						"with-watch"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "{{limit}}",
+							"description": "Number of records to return (1-1000, default: 100)"
+						},
+						{
+							"key": "skip",
+							"value": "{{skip}}",
+							"description": "Number of records to skip for pagination (default: 0)"
+						},
+						{
+							"key": "search",
+							"value": "{{search}}",
+							"description": "Search by patient name",
+							"disabled": true
+						},
+						{
+							"key": "hospital_id",
+							"value": "{{hospital_id}}",
+							"description": "Filter by specific hospital ID",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Get a list of patients who have Kati watches assigned.\n\n**Returns:**\n- Patient ID\n- Patient first name and last name\n- Hospital name\n- Watch assignment details\n\n**Query Parameters:**\n- `limit`: Number of records (1-1000, default: 100)\n- `skip`: Pagination offset (default: 0)\n- `search`: Search by patient name (optional)\n- `hospital_id`: Filter by hospital (optional)"
+			},
+			"response": []
+		},
+		{
+			"name": "Patients Without Kati Watch",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/kati/patients/without-watch?limit={{limit}}&skip={{skip}}&search={{search}}&hospital_id={{hospital_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"kati",
+						"patients",
+						"without-watch"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "{{limit}}",
+							"description": "Number of records to return (1-1000, default: 100)"
+						},
+						{
+							"key": "skip",
+							"value": "{{skip}}",
+							"description": "Number of records to skip for pagination (default: 0)"
+						},
+						{
+							"key": "search",
+							"value": "{{search}}",
+							"description": "Search by patient name",
+							"disabled": true
+						},
+						{
+							"key": "hospital_id",
+							"value": "{{hospital_id}}",
+							"description": "Filter by specific hospital ID",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Get a list of patients who do NOT have Kati watches assigned.\n\n**Returns:**\n- Patient ID\n- Patient first name and last name\n- Hospital name\n- Available for watch assignment\n\n**Query Parameters:**\n- `limit`: Number of records (1-1000, default: 100)\n- `skip`: Pagination offset (default: 0)\n- `search`: Search by patient name (optional)\n- `hospital_id`: Filter by hospital (optional)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Patients (Mixed)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/kati/patients/with-watch?limit=50",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"kati",
+						"patients",
+						"with-watch"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "50"
+						}
+					]
+				},
+				"description": "Example request to get patients with watches, then use without-watch endpoint to get complete picture."
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-set default values if not defined",
+					"if (!pm.variables.get('limit')) {",
+					"    pm.variables.set('limit', '10');",
+					"}",
+					"",
+					"if (!pm.variables.get('skip')) {",
+					"    pm.variables.set('skip', '0');",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Basic response validation",
+					"pm.test('Status code is 200 or 401 (auth required)', function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 401]);",
+					"});",
+					"",
+					"// Check if authenticated request",
+					"if (pm.response.code === 200) {",
+					"    pm.test('Response has success field', function () {",
+					"        const jsonData = pm.response.json();",
+					"        pm.expect(jsonData).to.have.property('success');",
+					"    });",
+					"    ",
+					"    pm.test('Response has data field', function () {",
+					"        const jsonData = pm.response.json();",
+					"        pm.expect(jsonData).to.have.property('data');",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5054",
+			"type": "string"
+		},
+		{
+			"key": "limit",
+			"value": "10",
+			"type": "string"
+		},
+		{
+			"key": "skip",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 

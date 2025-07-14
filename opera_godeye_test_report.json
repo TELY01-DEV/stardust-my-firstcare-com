@@ -1,0 +1,2033 @@
+{
+  "test_summary": {
+    "total_tests": 18,
+    "passed": 15,
+    "failed": 2,
+    "warnings": 1,
+    "success_rate": 83.33333333333334,
+    "duration_seconds": 6.478783,
+    "start_time": "2025-07-14T09:08:39.884623",
+    "end_time": "2025-07-14T09:08:46.363406"
+  },
+  "test_results": [
+    {
+      "test": "Web Panel Accessibility",
+      "status": "PASS",
+      "message": "Panel accessible (Status: 200)",
+      "timestamp": "2025-07-14T09:08:39.943199",
+      "data": null
+    },
+    {
+      "test": "Stardust API Accessibility",
+      "status": "PASS",
+      "message": "API accessible (Status: 200)",
+      "timestamp": "2025-07-14T09:08:39.973210",
+      "data": null
+    },
+    {
+      "test": "Static Asset: /static/css/style.css",
+      "status": "PASS",
+      "message": "Asset accessible (Size: 5938 bytes)",
+      "timestamp": "2025-07-14T09:08:40.003308",
+      "data": null
+    },
+    {
+      "test": "Static Asset: /static/js/app.js",
+      "status": "PASS",
+      "message": "Asset accessible (Size: 69793 bytes)",
+      "timestamp": "2025-07-14T09:08:40.058263",
+      "data": null
+    },
+    {
+      "test": "Static Asset: /static/MFC Theme Palette.svg",
+      "status": "PASS",
+      "message": "Asset accessible (Size: 23836 bytes)",
+      "timestamp": "2025-07-14T09:08:40.130101",
+      "data": null
+    },
+    {
+      "test": "Device Status Endpoint: /test/device-status/summary",
+      "status": "PASS",
+      "message": "Endpoint working (Data: object)",
+      "timestamp": "2025-07-14T09:08:40.252276",
+      "data": {
+        "data": {
+          "by_type": {
+            "Kati": {
+              "offline": 0,
+              "online": 0,
+              "total": 10
+            }
+          },
+          "devices_with_alerts": 0,
+          "low_battery_devices": 0,
+          "offline_devices": 0,
+          "online_devices": 0,
+          "online_percentage": 0.0,
+          "total_devices": 10
+        },
+        "message": "Device status summary retrieved successfully",
+        "request_id": "cbe3bbff-26d9-4172-af3c-b7f228f465ca",
+        "success": true,
+        "timestamp": "2025-07-14T02:08:40.349761Z"
+      }
+    },
+    {
+      "test": "Device Status Endpoint: /test/device-status/recent",
+      "status": "PASS",
+      "message": "Endpoint working (Data: object)",
+      "timestamp": "2025-07-14T09:08:40.414095",
+      "data": {
+        "data": {
+          "count": 10,
+          "devices": [
+            {
+              "alerts": [],
+              "battery_level": null,
+              "device_id": "861265061482607",
+              "device_type": "Kati",
+              "health_metrics": {
+                "last_step_count": 70
+              },
+              "last_reading": null,
+              "last_updated": null,
+              "online_status": "unknown",
+              "patient_id": "6679433c92df55f28174fdb2",
+              "signal_strength": null
+            },
+            {
+              "alerts": [],
+              "battery_level": null,
+              "device_id": "861265061482888",
+              "device_type": "Kati",
+              "health_metrics": {
+                "last_step_count": 656
+              },
+              "last_reading": null,
+              "last_updated": null,
+              "online_status": "unknown",
+              "patient_id": "624ac947576e198cc6240b08",
+              "signal_strength": null
+            },
+            {
+              "alerts": [],
+              "battery_level": null,
+              "device_id": "861265061481799",
+              "device_type": "Kati",
+              "health_metrics": {
+                "last_step_count": 0
+              },
+              "last_reading": null,
+              "last_updated": null,
+              "online_status": "unknown",
+              "patient_id": "666aa6ee9ceff7395fbff6fe",
+              "signal_strength": null
+            },
+            {
+              "alerts": [],
+              "battery_level": null,
+              "device_id": "861265061486129",
+              "device_type": "Kati",
+              "health_metrics": {
+                "last_step_count": 3920
+              },
+              "last_reading": null,
+              "last_updated": null,
+              "online_status": "unknown",
+              "patient_id": "660508fc00df0d8b0c5a3484",
+              "signal_strength": null
+            },
+            {
+              "alerts": [],
+              "battery_level": null,
+              "device_id": "861265061482334",
+              "device_type": "Kati",
+              "health_metrics": {
+                "last_step_count": 1539
+              },
+              "last_reading": null,
+              "last_updated": null,
+              "online_status": "unknown",
+              "patient_id": "67a4756909af987621e9a8ff",
+              "signal_strength": null
+            },
+            {
+              "alerts": [],
+              "battery_level": null,
+              "device_id": "861265061482599",
+              "device_type": "Kati",
+              "health_metrics": {
+                "last_step_count": 0
+              },
+              "last_reading": null,
+              "last_updated": null,
+              "online_status": "unknown",
+              "patient_id": "627de0ea4b8ec2f57f079243",
+              "signal_strength": null
+            },
+            {
+              "alerts": [],
+              "battery_level": null,
+              "device_id": "861265061477987",
+              "device_type": "Kati",
+              "health_metrics": {
+                "last_step_count": 42
+              },
+              "last_reading": null,
+              "last_updated": null,
+              "online_status": "unknown",
+              "patient_id": "622035a5fd26d7b6d9b7730c",
+              "signal_strength": null
+            },
+            {
+              "alerts": [],
+              "battery_level": null,
+              "device_id": "861265061480353",
+              "device_type": "Kati",
+              "health_metrics": {
+                "last_step_count": 1729
+              },
+              "last_reading": null,
+              "last_updated": null,
+              "online_status": "unknown",
+              "patient_id": "6605084300df0d8b0c5a33ad",
+              "signal_strength": null
+            },
+            {
+              "alerts": [],
+              "battery_level": null,
+              "device_id": "861265061486269",
+              "device_type": "Kati",
+              "health_metrics": {
+                "last_step_count": 116
+              },
+              "last_reading": null,
+              "last_updated": null,
+              "online_status": "unknown",
+              "patient_id": "67cad5aa0ffd3d0774f33c37",
+              "signal_strength": null
+            },
+            {
+              "alerts": [],
+              "battery_level": null,
+              "device_id": "861265061366537",
+              "device_type": "Kati",
+              "health_metrics": {
+                "last_step_count": 144
+              },
+              "last_reading": null,
+              "last_updated": null,
+              "online_status": "unknown",
+              "patient_id": "623c133cf9e69c3b67a9af64",
+              "signal_strength": null
+            }
+          ],
+          "filter": {}
+        },
+        "message": "Recent device status retrieved successfully",
+        "request_id": "9e3b83c7-c58b-4f1c-864a-190cf8abbd60",
+        "success": true,
+        "timestamp": "2025-07-14T02:08:40.505720Z"
+      }
+    },
+    {
+      "test": "Device Status Endpoint: /test/device-status/alerts",
+      "status": "PASS",
+      "message": "Endpoint working (Data: object)",
+      "timestamp": "2025-07-14T09:08:40.539582",
+      "data": {
+        "data": {
+          "alerts": [],
+          "count": 0,
+          "filter": {}
+        },
+        "message": "Device alerts retrieved successfully",
+        "request_id": "02876056-17b0-4826-bdef-2f723ee02e39",
+        "success": true,
+        "timestamp": "2025-07-14T02:08:40.634324Z"
+      }
+    },
+    {
+      "test": "Device Status Endpoint: /test/device-status/health/overview",
+      "status": "PASS",
+      "message": "Endpoint working (Data: object)",
+      "timestamp": "2025-07-14T09:08:40.656898",
+      "data": {
+        "data": {
+          "alerts_summary": {
+            "critical": 0,
+            "info": 0,
+            "warning": 0
+          },
+          "avg_response_time": 150,
+          "data_integrity": 98,
+          "recent_activity": {
+            "alerts_generated": 0,
+            "devices_active": 0,
+            "messages_last_hour": 0
+          },
+          "system_health_score": 85,
+          "uptime_percentage": 99.5
+        },
+        "message": "Stardust API error: 404",
+        "success": true,
+        "timestamp": "2025-07-14T02:08:40.759689"
+      }
+    },
+    {
+      "test": "MQTT Monitor Endpoint: /api/statistics",
+      "status": "FAIL",
+      "message": "Error: Expecting value: line 1 column 1 (char 0)",
+      "timestamp": "2025-07-14T09:08:40.717789",
+      "data": null
+    },
+    {
+      "test": "MQTT Monitor Endpoint: /api/collection-stats",
+      "status": "FAIL",
+      "message": "Error: Expecting value: line 1 column 1 (char 0)",
+      "timestamp": "2025-07-14T09:08:40.782061",
+      "data": null
+    },
+    {
+      "test": "MQTT Monitor Endpoint: /test/transactions",
+      "status": "PASS",
+      "message": "Endpoint working (Data: object)",
+      "timestamp": "2025-07-14T09:08:40.970852",
+      "data": {
+        "data": [
+          {
+            "_id": "687466a7baa71d8ff114608f",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:08:39.916000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "80:65:99:A2:80:08",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6679433c92df55f28174fdb2",
+            "request_id": "639705f0-2143-4b2c-8bf4-8f854277e9d1",
+            "status": "success",
+            "timestamp": "2025-07-14T02:08:39.916000"
+          },
+          {
+            "_id": "687466a2baa71d8ff114608e",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:08:34.356000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "3C:61:05:0C:3A:F0",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6641bdf02c0a79188f6f29b5",
+            "request_id": "a8841d23-c636-4d81-8c54-89a61e69ebde",
+            "status": "success",
+            "timestamp": "2025-07-14T02:08:34.356000"
+          },
+          {
+            "_id": "68746698baa71d8ff114608d",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:08:24.061000",
+            "data_type": "vital_signs",
+            "details": "No patient found for Kati IMEI: 861265061478050",
+            "device_id": "861265061478050",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": null,
+            "request_id": "de5584d5-3a37-4bf4-946d-c515c980f4b0",
+            "status": "failed",
+            "timestamp": "2025-07-14T02:08:24.061000"
+          },
+          {
+            "_id": "68746693baa71d8ff114608c",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:08:19.139000",
+            "data_type": "vital_signs",
+            "details": "No patient found for Kati IMEI: 861265061478050",
+            "device_id": "861265061478050",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": null,
+            "request_id": "839f852e-e844-4599-b745-5ada85b7d439",
+            "status": "failed",
+            "timestamp": "2025-07-14T02:08:19.139000"
+          },
+          {
+            "_id": "6874667ebaa71d8ff114608b",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:07:58.221000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/hb data",
+            "device_id": "861265061482334",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "67a4756909af987621e9a8ff",
+            "request_id": "a10c4aa1-a452-41ce-9c4f-24e6734619da",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:58.221000"
+          },
+          {
+            "_id": "6874667ebaa71d8ff114608a",
+            "collection": "step_histories",
+            "created_at": "2025-07-14T02:07:58.090000",
+            "data_type": "step_count",
+            "details": "Stored step_count history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "67a4756909af987621e9a8ff",
+            "request_id": "5f20807a-3e07-4c8c-af6b-afe92009a1f1",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:58.090000"
+          },
+          {
+            "_id": "6874667dbaa71d8ff1146089",
+            "collection": "step_count_histories",
+            "created_at": "2025-07-14T02:07:57.974000",
+            "data_type": "step_count",
+            "details": "Updated last step_count data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "67a4756909af987621e9a8ff",
+            "request_id": "47bcaa22-32a9-438c-956b-9e05b5ef9699",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:57.974000"
+          },
+          {
+            "_id": "6874667bbaa71d8ff1146088",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:07:55.846000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "74:4D:BD:83:42:58",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6680fc1b15aff0f64841958a",
+            "request_id": "e67e9ac9-5739-461f-9bee-6e164dbda8f0",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:55.846000"
+          },
+          {
+            "_id": "6874667abaa71d8ff1146087",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:07:54.492000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "DC:DA:0C:5A:80:64",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "2e46c7c1-d81a-411f-8692-078f0d53dc68",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:54.492000"
+          },
+          {
+            "_id": "6874666bbaa71d8ff1146086",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:07:39.944000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "80:65:99:A2:80:08",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6679433c92df55f28174fdb2",
+            "request_id": "f74e0c2d-c7ac-4726-802d-f4e6c6d4ac22",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:39.944000"
+          },
+          {
+            "_id": "6874666bbaa71d8ff1146085",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:07:39.828000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "08:F9:E0:D1:F7:B4",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "50a0ea16-ccb8-47ab-b725-fb36bce4f71b",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:39.828000"
+          },
+          {
+            "_id": "68746666baa71d8ff1146084",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:07:34.062000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "3C:61:05:0C:3A:F0",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6641bdf02c0a79188f6f29b5",
+            "request_id": "8ba61a55-421b-432d-93d1-ec78ae7c6572",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:34.062000"
+          },
+          {
+            "_id": "68746657baa71d8ff1146083",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:07:19.213000",
+            "data_type": "vital_signs",
+            "details": "No patient found for Kati IMEI: 861265061478050",
+            "device_id": "861265061478050",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": null,
+            "request_id": "8f2623cf-9fdc-46a3-90e1-9e04c790f32f",
+            "status": "failed",
+            "timestamp": "2025-07-14T02:07:19.213000"
+          },
+          {
+            "_id": "68746644baa71d8ff1146082",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:07:00.720000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/hb data",
+            "device_id": "861265061366537",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "8f00b78b-ba32-47b9-afb8-0bb54e7b8a58",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:00.720000"
+          },
+          {
+            "_id": "68746644baa71d8ff1146081",
+            "collection": "step_histories",
+            "created_at": "2025-07-14T02:07:00.594000",
+            "data_type": "step_count",
+            "details": "Stored step_count history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "d79e1227-1b79-4721-b97d-d21cdd6fbca2",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:00.594000"
+          },
+          {
+            "_id": "68746644baa71d8ff1146080",
+            "collection": "step_count_histories",
+            "created_at": "2025-07-14T02:07:00.418000",
+            "data_type": "step_count",
+            "details": "Updated last step_count data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "c4710dbd-d2ff-4f3c-b67a-30da3b6017ac",
+            "status": "success",
+            "timestamp": "2025-07-14T02:07:00.418000"
+          },
+          {
+            "_id": "6874663fbaa71d8ff114607f",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:06:55.643000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "74:4D:BD:83:42:58",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6680fc1b15aff0f64841958a",
+            "request_id": "eda1dacc-60e7-455d-b7fa-ffdcec31060f",
+            "status": "success",
+            "timestamp": "2025-07-14T02:06:55.643000"
+          },
+          {
+            "_id": "6874663ebaa71d8ff114607e",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:06:54.952000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "DC:DA:0C:5A:80:64",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "be0bfe05-303b-4d5e-9e56-6ded6306ae4f",
+            "status": "success",
+            "timestamp": "2025-07-14T02:06:54.952000"
+          },
+          {
+            "_id": "6874662fbaa71d8ff114607d",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:06:39.633000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "80:65:99:A2:80:08",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6679433c92df55f28174fdb2",
+            "request_id": "ea856f8e-5370-4404-9200-23af91722f39",
+            "status": "success",
+            "timestamp": "2025-07-14T02:06:39.633000"
+          },
+          {
+            "_id": "6874662abaa71d8ff114607c",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:06:34.479000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "08:F9:E0:D1:F7:B4",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "fbab91cf-5068-4d46-b414-2effc41a43fe",
+            "status": "success",
+            "timestamp": "2025-07-14T02:06:34.479000"
+          },
+          {
+            "_id": "68746629baa71d8ff114607b",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:06:33.885000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "3C:61:05:0C:3A:F0",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6641bdf02c0a79188f6f29b5",
+            "request_id": "96c9dad4-c7e4-478d-b7fe-c20eed394dd4",
+            "status": "success",
+            "timestamp": "2025-07-14T02:06:33.885000"
+          },
+          {
+            "_id": "6874661bbaa71d8ff114607a",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:06:19.211000",
+            "data_type": "vital_signs",
+            "details": "No patient found for Kati IMEI: 861265061478050",
+            "device_id": "861265061478050",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": null,
+            "request_id": "d9facde2-3b9f-4962-8b78-37406415d533",
+            "status": "failed",
+            "timestamp": "2025-07-14T02:06:19.211000"
+          },
+          {
+            "_id": "68746604baa71d8ff1146079",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:56.148000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "74:4D:BD:83:42:58",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6680fc1b15aff0f64841958a",
+            "request_id": "dd99de89-b09c-40ef-93d0-1a769770592a",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:56.148000"
+          },
+          {
+            "_id": "68746603baa71d8ff1146078",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:55.005000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "DC:DA:0C:5A:80:64",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "1a955a7d-22a1-436d-8040-39b7d7fa3f09",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:55.005000"
+          },
+          {
+            "_id": "687465f3baa71d8ff1146077",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:39.774000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/location data",
+            "device_id": "861265061480353",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "6605084300df0d8b0c5a33ad",
+            "request_id": "36db8f0a-5e9d-40fb-a0cc-ec6c8a5b926a",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:39.774000"
+          },
+          {
+            "_id": "687465f3baa71d8ff1146076",
+            "collection": "location_histories",
+            "created_at": "2025-07-14T02:05:39.640000",
+            "data_type": "location",
+            "details": "Updated location data: None, None",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "6605084300df0d8b0c5a33ad",
+            "request_id": "0d3fc369-b31f-40c5-a521-50f1b15e985c",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:39.640000"
+          },
+          {
+            "_id": "687465f3baa71d8ff1146075",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:39.520000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "80:65:99:A2:80:08",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6679433c92df55f28174fdb2",
+            "request_id": "9a1f37e2-e00d-4f76-9dd2-986ae22be32b",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:39.520000"
+          },
+          {
+            "_id": "687465edbaa71d8ff1146074",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:33.666000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "3C:61:05:0C:3A:F0",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6641bdf02c0a79188f6f29b5",
+            "request_id": "f14efa42-f5f1-41d3-8035-17d2f766225a",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:33.666000"
+          },
+          {
+            "_id": "687465eabaa71d8ff1146073",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:30.597000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "08:F9:E0:D1:F7:B4",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "7994bebf-20f9-4a89-a84d-2f60d8ff6d52",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:30.597000"
+          },
+          {
+            "_id": "687465e7baa71d8ff1146072",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:27.558000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/location data",
+            "device_id": "861265061482888",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "624ac947576e198cc6240b08",
+            "request_id": "29d6a72f-91d0-4864-ad38-96af3ccfbd1c",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:27.558000"
+          },
+          {
+            "_id": "687465e7baa71d8ff1146071",
+            "collection": "location_histories",
+            "created_at": "2025-07-14T02:05:27.417000",
+            "data_type": "location",
+            "details": "Updated location data: None, None",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "624ac947576e198cc6240b08",
+            "request_id": "fdc95ac6-2cb2-4322-85eb-2e2f2b79ae5b",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:27.417000"
+          },
+          {
+            "_id": "687465e4baa71d8ff1146070",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:24.306000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/location data",
+            "device_id": "861265061486269",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "67cad5aa0ffd3d0774f33c37",
+            "request_id": "8fbb9e67-92b9-4e9f-b419-8e944141e330",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:24.306000"
+          },
+          {
+            "_id": "687465e4baa71d8ff114606f",
+            "collection": "location_histories",
+            "created_at": "2025-07-14T02:05:24.138000",
+            "data_type": "location",
+            "details": "Updated location data: None, None",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "67cad5aa0ffd3d0774f33c37",
+            "request_id": "4d2fb6d8-670a-46fd-978d-65ca831060a6",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:24.138000"
+          },
+          {
+            "_id": "687465dfbaa71d8ff114606e",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:19.158000",
+            "data_type": "vital_signs",
+            "details": "No patient found for Kati IMEI: 861265061478050",
+            "device_id": "861265061478050",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": null,
+            "request_id": "8147cb15-8e15-4b62-80d4-03e0d8ddf155",
+            "status": "failed",
+            "timestamp": "2025-07-14T02:05:19.158000"
+          },
+          {
+            "_id": "687465d6baa71d8ff114606d",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:10.204000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/hb data",
+            "device_id": "861265061482599",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "627de0ea4b8ec2f57f079243",
+            "request_id": "91a4ffd2-bc42-4d4c-aabf-53d0e185f5fa",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:10.204000"
+          },
+          {
+            "_id": "687465d6baa71d8ff114606c",
+            "collection": "step_histories",
+            "created_at": "2025-07-14T02:05:10.029000",
+            "data_type": "step_count",
+            "details": "Stored step_count history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "627de0ea4b8ec2f57f079243",
+            "request_id": "37091a89-4c96-4f41-b6cb-14d7b946762d",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:10.029000"
+          },
+          {
+            "_id": "687465d5baa71d8ff114606b",
+            "collection": "step_count_histories",
+            "created_at": "2025-07-14T02:05:09.850000",
+            "data_type": "step_count",
+            "details": "Updated last step_count data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "627de0ea4b8ec2f57f079243",
+            "request_id": "774ce9ab-e65b-4ee3-830c-78164190a8b9",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:09.850000"
+          },
+          {
+            "_id": "687465cdbaa71d8ff114606a",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:05:01.376000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/hb data",
+            "device_id": "861265061486129",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "cb3c4a31-d674-4fc2-a5af-2f0431eb4f41",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:01.376000"
+          },
+          {
+            "_id": "687465cdbaa71d8ff1146069",
+            "collection": "step_histories",
+            "created_at": "2025-07-14T02:05:01.249000",
+            "data_type": "step_count",
+            "details": "Stored step_count history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "aca02b8f-bae4-4d94-bd41-3435c1352ab7",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:01.249000"
+          },
+          {
+            "_id": "687465cdbaa71d8ff1146068",
+            "collection": "step_count_histories",
+            "created_at": "2025-07-14T02:05:01.113000",
+            "data_type": "step_count",
+            "details": "Updated last step_count data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "213ff4fa-939c-416f-84e1-1dc1683907e7",
+            "status": "success",
+            "timestamp": "2025-07-14T02:05:01.113000"
+          },
+          {
+            "_id": "687465c7baa71d8ff1146067",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:04:55.911000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "74:4D:BD:83:42:58",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6680fc1b15aff0f64841958a",
+            "request_id": "1d4c4611-e643-4812-9878-81f48ed72c3f",
+            "status": "success",
+            "timestamp": "2025-07-14T02:04:55.911000"
+          },
+          {
+            "_id": "687465c6baa71d8ff1146066",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:04:54.664000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "DC:DA:0C:5A:80:64",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "890eb1fa-9cf8-4f90-911f-ece2282d38a7",
+            "status": "success",
+            "timestamp": "2025-07-14T02:04:54.664000"
+          },
+          {
+            "_id": "687465b8baa71d8ff1146065",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:04:40.018000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "80:65:99:A2:80:08",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6679433c92df55f28174fdb2",
+            "request_id": "7a0dfb89-db0e-4826-9306-cacf1ed377a7",
+            "status": "success",
+            "timestamp": "2025-07-14T02:04:40.018000"
+          },
+          {
+            "_id": "687465b2baa71d8ff1146064",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:04:34.884000",
+            "data_type": "device_status",
+            "details": "Kati online status: offline",
+            "device_id": "861265061481799",
+            "logged_by": "system",
+            "operation": "kati_online_status_processing",
+            "patient_id": "666aa6ee9ceff7395fbff6fe",
+            "request_id": "98b03b39-3322-489c-a79b-e32b2eeb42b2",
+            "status": "success",
+            "timestamp": "2025-07-14T02:04:34.884000"
+          },
+          {
+            "_id": "687465b1baa71d8ff1146063",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:04:33.558000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "3C:61:05:0C:3A:F0",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6641bdf02c0a79188f6f29b5",
+            "request_id": "cc2df373-2ad5-46dc-ac1c-b22a2672f873",
+            "status": "success",
+            "timestamp": "2025-07-14T02:04:33.558000"
+          },
+          {
+            "_id": "687465a8baa71d8ff1146062",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:04:24.539000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "08:F9:E0:D1:F7:B4",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "54d90943-3d5a-4baa-8f33-30579c465b50",
+            "status": "success",
+            "timestamp": "2025-07-14T02:04:24.539000"
+          },
+          {
+            "_id": "687465a3baa71d8ff1146061",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:04:19.167000",
+            "data_type": "vital_signs",
+            "details": "No patient found for Kati IMEI: 861265061478050",
+            "device_id": "861265061478050",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": null,
+            "request_id": "5d3f16c2-8040-417b-8cdb-9e7888caaff0",
+            "status": "failed",
+            "timestamp": "2025-07-14T02:04:19.167000"
+          },
+          {
+            "_id": "68746591baa71d8ff114605f",
+            "collection": "step_histories",
+            "created_at": "2025-07-14T02:04:01.098000",
+            "data_type": "step_count",
+            "details": "Stored step_count history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "624ac947576e198cc6240b08",
+            "request_id": "8438e89a-7cf5-4f15-ac16-c16b39648b11",
+            "status": "success",
+            "timestamp": "2025-07-14T02:04:01.098000"
+          },
+          {
+            "_id": "68746590baa71d8ff114605e",
+            "collection": "step_count_histories",
+            "created_at": "2025-07-14T02:04:00.982000",
+            "data_type": "step_count",
+            "details": "Updated last step_count data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "624ac947576e198cc6240b08",
+            "request_id": "13b87113-974e-4101-bc4c-9482583c55e8",
+            "status": "success",
+            "timestamp": "2025-07-14T02:04:00.982000"
+          },
+          {
+            "_id": "68746590baa71d8ff114605d",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:04:00.858000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/hb data",
+            "device_id": "861265061480353",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "6605084300df0d8b0c5a33ad",
+            "request_id": "a3ac575f-9a44-4567-9bbb-525e758a0a5d",
+            "status": "success",
+            "timestamp": "2025-07-14T02:04:00.858000"
+          },
+          {
+            "_id": "6874658bbaa71d8ff1146057",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:03:55.755000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "74:4D:BD:83:42:58",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6680fc1b15aff0f64841958a",
+            "request_id": "847ef69e-53f9-47ef-a269-f2daf737ae62",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:55.755000"
+          },
+          {
+            "_id": "6874658abaa71d8ff1146056",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:03:54.483000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "DC:DA:0C:5A:80:64",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "f59e0c2f-86b7-4c9d-a2f1-58f5b3352422",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:54.483000"
+          },
+          {
+            "_id": "6874657bbaa71d8ff1146055",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:03:39.786000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "80:65:99:A2:80:08",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6679433c92df55f28174fdb2",
+            "request_id": "7a73a3ba-0d40-48ac-a19a-45388a090062",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:39.786000"
+          },
+          {
+            "_id": "68746575baa71d8ff1146054",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:03:33.990000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "3C:61:05:0C:3A:F0",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6641bdf02c0a79188f6f29b5",
+            "request_id": "c4e14157-6e2e-4aec-8d88-53a538545593",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:33.990000"
+          },
+          {
+            "_id": "68746567baa71d8ff114602b",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:03:19.875000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "08:F9:E0:D1:F7:B4",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "9658d0ff-3682-4714-b203-2ca495c40b0c",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:19.875000"
+          },
+          {
+            "_id": "68746567baa71d8ff1146025",
+            "collection": "body_temp_histories",
+            "created_at": "2025-07-14T02:03:19.164000",
+            "data_type": "body_temp",
+            "details": "Updated last body_temp data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "19d61a9d-f28a-4295-964e-c7555c2dcc50",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:19.164000"
+          },
+          {
+            "_id": "68746565baa71d8ff1146018",
+            "collection": "blood_pressure_histories",
+            "created_at": "2025-07-14T02:03:17.529000",
+            "data_type": "blood_pressure",
+            "details": "Stored blood_pressure history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "57f6353a-adf8-435d-86b8-249998f20266",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:17.529000"
+          },
+          {
+            "_id": "68746565baa71d8ff1146017",
+            "collection": "blood_pressure_histories",
+            "created_at": "2025-07-14T02:03:17.409000",
+            "data_type": "blood_pressure",
+            "details": "Updated last blood_pressure data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "cf74cfbe-1645-410b-bfc8-cb240e5c065a",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:17.409000"
+          },
+          {
+            "_id": "68746565baa71d8ff1146016",
+            "collection": "heart_rate_histories",
+            "created_at": "2025-07-14T02:03:17.277000",
+            "data_type": "heart_rate",
+            "details": "Stored heart_rate history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "1f18d737-461a-4c83-9b9b-5ed19f649a44",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:17.277000"
+          },
+          {
+            "_id": "68746565baa71d8ff1146015",
+            "collection": "heart_rate_histories",
+            "created_at": "2025-07-14T02:03:17.166000",
+            "data_type": "heart_rate",
+            "details": "Updated last heart_rate data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "8fe457e6-ebaf-4c9e-944b-bfa7a5315e04",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:17.166000"
+          },
+          {
+            "_id": "68746565baa71d8ff1146014",
+            "collection": "temprature_data_histories",
+            "created_at": "2025-07-14T02:03:17.048000",
+            "data_type": "body_temp",
+            "details": "Stored body_temp history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "943fe539-adec-40a8-a7f8-abd6bb677054",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:17.048000"
+          },
+          {
+            "_id": "68746564baa71d8ff1146013",
+            "collection": "body_temp_histories",
+            "created_at": "2025-07-14T02:03:16.924000",
+            "data_type": "body_temp",
+            "details": "Updated last body_temp data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "9add444b-8a76-46c3-94f7-bdd274444c0a",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:16.924000"
+          },
+          {
+            "_id": "68746564baa71d8ff1146012",
+            "collection": "blood_pressure_histories",
+            "created_at": "2025-07-14T02:03:16.808000",
+            "data_type": "blood_pressure",
+            "details": "Stored blood_pressure history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "d5ac4df6-3c50-487a-815d-10b88fd04100",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:16.808000"
+          },
+          {
+            "_id": "68746564baa71d8ff1146011",
+            "collection": "blood_pressure_histories",
+            "created_at": "2025-07-14T02:03:16.686000",
+            "data_type": "blood_pressure",
+            "details": "Updated last blood_pressure data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "7da123f6-507a-4517-aea4-298b5727dcb5",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:16.686000"
+          },
+          {
+            "_id": "68746564baa71d8ff1146010",
+            "collection": "heart_rate_histories",
+            "created_at": "2025-07-14T02:03:16.566000",
+            "data_type": "heart_rate",
+            "details": "Stored heart_rate history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "760a5d1e-28e8-458e-b355-a5690254bf6b",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:16.566000"
+          },
+          {
+            "_id": "68746564baa71d8ff114600f",
+            "collection": "heart_rate_histories",
+            "created_at": "2025-07-14T02:03:16.438000",
+            "data_type": "heart_rate",
+            "details": "Updated last heart_rate data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "379bf3cb-7d00-42e5-a1ae-c129ea01f110",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:16.438000"
+          },
+          {
+            "_id": "68746564baa71d8ff114600e",
+            "collection": "temprature_data_histories",
+            "created_at": "2025-07-14T02:03:16.318000",
+            "data_type": "body_temp",
+            "details": "Stored body_temp history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "df36736e-726d-49c6-87d7-b11f3d64195d",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:16.318000"
+          },
+          {
+            "_id": "68746564baa71d8ff114600d",
+            "collection": "body_temp_histories",
+            "created_at": "2025-07-14T02:03:16.188000",
+            "data_type": "body_temp",
+            "details": "Updated last body_temp data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "e9adc06e-cdb7-4586-a358-495e99d0fe6b",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:16.188000"
+          },
+          {
+            "_id": "68746564baa71d8ff114600c",
+            "collection": "blood_pressure_histories",
+            "created_at": "2025-07-14T02:03:16.073000",
+            "data_type": "blood_pressure",
+            "details": "Stored blood_pressure history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "9254c44e-4326-4d3b-bc42-57cf8ccb26bd",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:16.073000"
+          },
+          {
+            "_id": "68746563baa71d8ff114600b",
+            "collection": "blood_pressure_histories",
+            "created_at": "2025-07-14T02:03:15.960000",
+            "data_type": "blood_pressure",
+            "details": "Updated last blood_pressure data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "61f7f360-cfa2-4bc2-b0d1-9d49cf784d5f",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:15.960000"
+          },
+          {
+            "_id": "68746563baa71d8ff114600a",
+            "collection": "heart_rate_histories",
+            "created_at": "2025-07-14T02:03:15.855000",
+            "data_type": "heart_rate",
+            "details": "Stored heart_rate history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "64c3aa44-045b-417e-bab7-b1c54326413e",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:15.855000"
+          },
+          {
+            "_id": "68746563baa71d8ff1146009",
+            "collection": "heart_rate_histories",
+            "created_at": "2025-07-14T02:03:15.740000",
+            "data_type": "heart_rate",
+            "details": "Updated last heart_rate data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "530b7f04-4b2e-42fa-82b2-f7a23e5ded94",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:15.740000"
+          },
+          {
+            "_id": "68746555baa71d8ff1146008",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:03:01.040000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/hb data",
+            "device_id": "861265061481799",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "666aa6ee9ceff7395fbff6fe",
+            "request_id": "55f1610e-4dd1-4a4f-ac12-39bdec596c7e",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:01.040000"
+          },
+          {
+            "_id": "68746554baa71d8ff1146007",
+            "collection": "step_histories",
+            "created_at": "2025-07-14T02:03:00.914000",
+            "data_type": "step_count",
+            "details": "Stored step_count history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "666aa6ee9ceff7395fbff6fe",
+            "request_id": "17a08572-1853-413e-b7f0-8c9088eb3f45",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:00.914000"
+          },
+          {
+            "_id": "68746554baa71d8ff1146006",
+            "collection": "step_count_histories",
+            "created_at": "2025-07-14T02:03:00.791000",
+            "data_type": "step_count",
+            "details": "Updated last step_count data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "666aa6ee9ceff7395fbff6fe",
+            "request_id": "7d6fc34d-37fa-4bc2-89ac-e980452e26f3",
+            "status": "success",
+            "timestamp": "2025-07-14T02:03:00.791000"
+          },
+          {
+            "_id": "6874654fbaa71d8ff1146005",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:02:55.639000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "74:4D:BD:83:42:58",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6680fc1b15aff0f64841958a",
+            "request_id": "e7e8e54d-b693-4387-8ef7-e26bb1d989ab",
+            "status": "success",
+            "timestamp": "2025-07-14T02:02:55.639000"
+          },
+          {
+            "_id": "6874654ebaa71d8ff1146004",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:02:54.954000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "DC:DA:0C:5A:80:64",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "4af6a5a2-ce17-4a32-ab8f-765d1ddfffe5",
+            "status": "success",
+            "timestamp": "2025-07-14T02:02:54.954000"
+          },
+          {
+            "_id": "6874653fbaa71d8ff1146003",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:02:39.640000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "80:65:99:A2:80:08",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6679433c92df55f28174fdb2",
+            "request_id": "6cf3d9a9-f49d-4fee-8694-758e82566b39",
+            "status": "success",
+            "timestamp": "2025-07-14T02:02:39.640000"
+          },
+          {
+            "_id": "68746539baa71d8ff1146002",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:02:33.848000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "3C:61:05:0C:3A:F0",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6641bdf02c0a79188f6f29b5",
+            "request_id": "1bed92c1-99c6-4e04-b694-b679d3a111fc",
+            "status": "success",
+            "timestamp": "2025-07-14T02:02:33.848000"
+          },
+          {
+            "_id": "6874652bbaa71d8ff1146001",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:02:19.075000",
+            "data_type": "vital_signs",
+            "details": "No patient found for Kati IMEI: 861265061478050",
+            "device_id": "861265061478050",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": null,
+            "request_id": "eff4d05e-3b1b-47ce-a027-6a4b4c9eb953",
+            "status": "failed",
+            "timestamp": "2025-07-14T02:02:19.075000"
+          },
+          {
+            "_id": "68746526baa71d8ff1146000",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:02:14.685000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "08:F9:E0:D1:F7:B4",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "95804bee-5e86-4634-9e29-44d0a1956558",
+            "status": "success",
+            "timestamp": "2025-07-14T02:02:14.685000"
+          },
+          {
+            "_id": "68746522baa71d8ff1145fff",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:02:10.832000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/hb data",
+            "device_id": "861265061486269",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "67cad5aa0ffd3d0774f33c37",
+            "request_id": "da913875-f740-4c02-83e5-1ee6a72e12c3",
+            "status": "success",
+            "timestamp": "2025-07-14T02:02:10.832000"
+          },
+          {
+            "_id": "68746522baa71d8ff1145ffe",
+            "collection": "step_histories",
+            "created_at": "2025-07-14T02:02:10.714000",
+            "data_type": "step_count",
+            "details": "Stored step_count history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "67cad5aa0ffd3d0774f33c37",
+            "request_id": "634baf0d-e7a0-4ff1-b8e6-80b999c55379",
+            "status": "success",
+            "timestamp": "2025-07-14T02:02:10.714000"
+          },
+          {
+            "_id": "68746522baa71d8ff1145ffd",
+            "collection": "step_count_histories",
+            "created_at": "2025-07-14T02:02:10.575000",
+            "data_type": "step_count",
+            "details": "Updated last step_count data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "67cad5aa0ffd3d0774f33c37",
+            "request_id": "e95f9dcb-655f-404a-bb57-770d538f5bd2",
+            "status": "success",
+            "timestamp": "2025-07-14T02:02:10.575000"
+          },
+          {
+            "_id": "68746517baa71d8ff1145ffc",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:01:59.740000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/hb data",
+            "device_id": "861265061477987",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "886a1b3f-ee8b-458c-a58b-408438fad276",
+            "status": "success",
+            "timestamp": "2025-07-14T02:01:59.740000"
+          },
+          {
+            "_id": "68746517baa71d8ff1145ffb",
+            "collection": "step_histories",
+            "created_at": "2025-07-14T02:01:59.627000",
+            "data_type": "step_count",
+            "details": "Stored step_count history",
+            "device_id": null,
+            "logged_by": "system",
+            "operation": "data_storage",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "55b94892-dccc-495a-9e44-afe403e091cb",
+            "status": "success",
+            "timestamp": "2025-07-14T02:01:59.627000"
+          },
+          {
+            "_id": "68746517baa71d8ff1145ffa",
+            "collection": "step_count_histories",
+            "created_at": "2025-07-14T02:01:59.491000",
+            "data_type": "step_count",
+            "details": "Updated last step_count data",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "622035a5fd26d7b6d9b7730c",
+            "request_id": "56045b8b-54a1-4eaf-84e2-dd32601a6c5c",
+            "status": "success",
+            "timestamp": "2025-07-14T02:01:59.491000"
+          },
+          {
+            "_id": "68746514baa71d8ff1145ff9",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:01:56.071000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "74:4D:BD:83:42:58",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6680fc1b15aff0f64841958a",
+            "request_id": "27cca5b2-6693-418f-a5e6-bd57f5ec5e7c",
+            "status": "success",
+            "timestamp": "2025-07-14T02:01:56.071000"
+          },
+          {
+            "_id": "68746512baa71d8ff1145ff8",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:01:54.926000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "DC:DA:0C:5A:80:64",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "bc24cd4b-ab24-4b67-8f3a-4414dca8cc7a",
+            "status": "success",
+            "timestamp": "2025-07-14T02:01:54.926000"
+          },
+          {
+            "_id": "68746506baa71d8ff1145ff7",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:01:42.352000",
+            "data_type": "vital_signs",
+            "details": "Successfully processed iMEDE_watch/location data",
+            "device_id": "861265061486129",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "1536acea-8d01-46a6-a3b6-e7d3b2f211a3",
+            "status": "success",
+            "timestamp": "2025-07-14T02:01:42.352000"
+          },
+          {
+            "_id": "68746506baa71d8ff1145ff6",
+            "collection": "location_histories",
+            "created_at": "2025-07-14T02:01:42.243000",
+            "data_type": "location",
+            "details": "Updated location data: None, None",
+            "device_id": "Kati",
+            "logged_by": "system",
+            "operation": "data_update",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "652e9eca-162a-4104-9adb-446e9966ba16",
+            "status": "success",
+            "timestamp": "2025-07-14T02:01:42.243000"
+          },
+          {
+            "_id": "68746503baa71d8ff1145ff5",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:01:39.488000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "80:65:99:A2:80:08",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6679433c92df55f28174fdb2",
+            "request_id": "25304a93-9692-4e6a-a54d-c4d77f468a83",
+            "status": "success",
+            "timestamp": "2025-07-14T02:01:39.488000"
+          },
+          {
+            "_id": "687464fdbaa71d8ff1145ff4",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:01:33.817000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "3C:61:05:0C:3A:F0",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6641bdf02c0a79188f6f29b5",
+            "request_id": "6f77fd81-9cc0-42d6-b7aa-c4eb12ab3967",
+            "status": "success",
+            "timestamp": "2025-07-14T02:01:33.817000"
+          },
+          {
+            "_id": "687464efbaa71d8ff1145ff3",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:01:19.125000",
+            "data_type": "vital_signs",
+            "details": "No patient found for Kati IMEI: 861265061478050",
+            "device_id": "861265061478050",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": null,
+            "request_id": "3548d383-1ae2-490e-adaf-13dbb8a422de",
+            "status": "failed",
+            "timestamp": "2025-07-14T02:01:19.125000"
+          },
+          {
+            "_id": "687464e5baa71d8ff1145ff2",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:01:09.349000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "08:F9:E0:D1:F7:B4",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "660508fc00df0d8b0c5a3484",
+            "request_id": "277c3268-c918-4bb8-b398-2a920e47e5fb",
+            "status": "success",
+            "timestamp": "2025-07-14T02:01:09.349000"
+          },
+          {
+            "_id": "687464d7baa71d8ff1145ff1",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:00:55.908000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "74:4D:BD:83:42:58",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6680fc1b15aff0f64841958a",
+            "request_id": "b755f89f-c27a-4af1-8845-6dd755487725",
+            "status": "success",
+            "timestamp": "2025-07-14T02:00:55.908000"
+          },
+          {
+            "_id": "687464d6baa71d8ff1145ff0",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:00:54.627000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "DC:DA:0C:5A:80:64",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "623c133cf9e69c3b67a9af64",
+            "request_id": "6a5bf9e3-dba5-4f1e-a716-c2a25dc7d411",
+            "status": "success",
+            "timestamp": "2025-07-14T02:00:54.627000"
+          },
+          {
+            "_id": "687464c7baa71d8ff1145fef",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:00:39.938000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "80:65:99:A2:80:08",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6679433c92df55f28174fdb2",
+            "request_id": "121d740b-73b7-4a1b-b3d2-245154b3d49a",
+            "status": "success",
+            "timestamp": "2025-07-14T02:00:39.938000"
+          },
+          {
+            "_id": "687464c1baa71d8ff1145fee",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:00:33.491000",
+            "data_type": "device_status",
+            "details": "AVA4 status: HB_Msg",
+            "device_id": "3C:61:05:0C:3A:F0",
+            "logged_by": "system",
+            "operation": "ava4_status_processing",
+            "patient_id": "6641bdf02c0a79188f6f29b5",
+            "request_id": "67f7b8fc-9b37-4390-8a34-b3b0b80cdbae",
+            "status": "success",
+            "timestamp": "2025-07-14T02:00:33.491000"
+          },
+          {
+            "_id": "687464b7baa71d8ff1145fed",
+            "collection": "patients",
+            "created_at": "2025-07-14T02:00:23.889000",
+            "data_type": "vital_signs",
+            "details": "No patient found for Kati IMEI: 861265061478050",
+            "device_id": "861265061478050",
+            "logged_by": "system",
+            "operation": "kati_message_processing",
+            "patient_id": null,
+            "request_id": "0af41402-12aa-47dc-ab56-ce3e7bb4a9d8",
+            "status": "failed",
+            "timestamp": "2025-07-14T02:00:23.889000"
+          }
+        ],
+        "success": true,
+        "timestamp": "2025-07-14T02:08:41.052295",
+        "total_count": 10346
+      }
+    },
+    {
+      "test": "MQTT Monitor Endpoint: /test/schema",
+      "status": "PASS",
+      "message": "Endpoint working (Data: object)",
+      "timestamp": "2025-07-14T09:08:40.999496",
+      "data": {
+        "data": {
+          "blood_pressure_histories": [
+            {
+              "description": "Unique record identifier",
+              "name": "_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Reference to patient",
+              "name": "patient_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Systolic blood pressure",
+              "name": "systolic",
+              "type": "Number"
+            },
+            {
+              "description": "Diastolic blood pressure",
+              "name": "diastolic",
+              "type": "Number"
+            },
+            {
+              "description": "Measurement timestamp",
+              "name": "timestamp",
+              "type": "Date"
+            },
+            {
+              "description": "Source device type",
+              "name": "device_type",
+              "type": "String"
+            }
+          ],
+          "body_temp_histories": [
+            {
+              "description": "Unique record identifier",
+              "name": "_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Reference to patient",
+              "name": "patient_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Body temperature value",
+              "name": "body_temp",
+              "type": "Number"
+            },
+            {
+              "description": "Measurement timestamp",
+              "name": "timestamp",
+              "type": "Date"
+            },
+            {
+              "description": "Source device type",
+              "name": "device_type",
+              "type": "String"
+            }
+          ],
+          "heart_rate_histories": [
+            {
+              "description": "Unique record identifier",
+              "name": "_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Reference to patient",
+              "name": "patient_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Heart rate value (BPM)",
+              "name": "heart_rate",
+              "type": "Number"
+            },
+            {
+              "description": "Measurement timestamp",
+              "name": "timestamp",
+              "type": "Date"
+            },
+            {
+              "description": "Source device type",
+              "name": "device_type",
+              "type": "String"
+            }
+          ],
+          "patients": [
+            {
+              "description": "Unique patient identifier",
+              "name": "_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Patient's first name",
+              "name": "first_name",
+              "type": "String"
+            },
+            {
+              "description": "Patient's last name",
+              "name": "last_name",
+              "type": "String"
+            },
+            {
+              "description": "Patient's ID card number",
+              "name": "id_card",
+              "type": "String"
+            },
+            {
+              "description": "AVA4 device MAC address",
+              "name": "ava_mac_address",
+              "type": "String"
+            },
+            {
+              "description": "Kati watch MAC address",
+              "name": "watch_mac_address",
+              "type": "String"
+            },
+            {
+              "description": "Patient registration status",
+              "name": "registration_status",
+              "type": "String"
+            }
+          ],
+          "sleep_data_histories": [
+            {
+              "description": "Unique record identifier",
+              "name": "_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Reference to patient",
+              "name": "patient_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Sleep duration in minutes",
+              "name": "sleep_duration",
+              "type": "Number"
+            },
+            {
+              "description": "Sleep quality rating",
+              "name": "sleep_quality",
+              "type": "String"
+            },
+            {
+              "description": "Measurement timestamp",
+              "name": "timestamp",
+              "type": "Date"
+            },
+            {
+              "description": "Source device type",
+              "name": "device_type",
+              "type": "String"
+            }
+          ],
+          "spo2_histories": [
+            {
+              "description": "Unique record identifier",
+              "name": "_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Reference to patient",
+              "name": "patient_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "SpO2 percentage",
+              "name": "spo2",
+              "type": "Number"
+            },
+            {
+              "description": "Measurement timestamp",
+              "name": "timestamp",
+              "type": "Date"
+            },
+            {
+              "description": "Source device type",
+              "name": "device_type",
+              "type": "String"
+            }
+          ],
+          "step_histories": [
+            {
+              "description": "Unique record identifier",
+              "name": "_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Reference to patient",
+              "name": "patient_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Step count",
+              "name": "steps",
+              "type": "Number"
+            },
+            {
+              "description": "Measurement timestamp",
+              "name": "timestamp",
+              "type": "Date"
+            },
+            {
+              "description": "Source device type",
+              "name": "device_type",
+              "type": "String"
+            }
+          ],
+          "transaction_logs": [
+            {
+              "description": "Unique transaction identifier",
+              "name": "_id",
+              "type": "ObjectId"
+            },
+            {
+              "description": "Transaction operation type",
+              "name": "operation",
+              "type": "String"
+            },
+            {
+              "description": "Type of data processed",
+              "name": "data_type",
+              "type": "String"
+            },
+            {
+              "description": "Target database collection",
+              "name": "collection",
+              "type": "String"
+            },
+            {
+              "description": "Patient identifier",
+              "name": "patient_id",
+              "type": "String"
+            },
+            {
+              "description": "Transaction status",
+              "name": "status",
+              "type": "String"
+            },
+            {
+              "description": "Transaction details",
+              "name": "details",
+              "type": "String"
+            },
+            {
+              "description": "Device identifier",
+              "name": "device_id",
+              "type": "String"
+            },
+            {
+              "description": "Transaction timestamp",
+              "name": "timestamp",
+              "type": "Date"
+            },
+            {
+              "description": "Record creation timestamp",
+              "name": "created_at",
+              "type": "Date"
+            }
+          ]
+        },
+        "success": true,
+        "timestamp": "Mon, 14 Jul 2025 02:08:41 GMT"
+      }
+    },
+    {
+      "test": "Database Connectivity",
+      "status": "PASS",
+      "message": "Database accessible (Devices: 0)",
+      "timestamp": "2025-07-14T09:08:41.139194",
+      "data": {
+        "data": {
+          "by_type": {
+            "Kati": {
+              "offline": 0,
+              "online": 0,
+              "total": 10
+            }
+          },
+          "devices_with_alerts": 0,
+          "low_battery_devices": 0,
+          "offline_devices": 0,
+          "online_devices": 0,
+          "online_percentage": 0.0,
+          "total_devices": 10
+        },
+        "message": "Device status summary retrieved successfully",
+        "request_id": "18c3982d-d851-4656-aacb-e736b6828cbb",
+        "success": true,
+        "timestamp": "2025-07-14T02:08:41.227742Z"
+      }
+    },
+    {
+      "test": "Device Data Integrity",
+      "status": "WARNING",
+      "message": "No device data available",
+      "timestamp": "2025-07-14T09:08:41.249276",
+      "data": null
+    },
+    {
+      "test": "WebSocket Connection",
+      "status": "PASS",
+      "message": "WebSocket connected successfully",
+      "timestamp": "2025-07-14T09:08:41.277920",
+      "data": null
+    },
+    {
+      "test": "WebSocket Message",
+      "status": "PASS",
+      "message": "Received message: {\"type\": \"initial_data\", \"message_history\": [{\"timestamp\": \"2025-07-14 02:02:33.749937\", \"topic\": \"E...",
+      "timestamp": "2025-07-14T09:08:41.331072",
+      "data": null
+    },
+    {
+      "test": "API Performance",
+      "status": "PASS",
+      "message": "Response time: 110.83ms",
+      "timestamp": "2025-07-14T09:08:46.363360",
+      "data": null
+    }
+  ]
+}

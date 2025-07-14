@@ -1,0 +1,4 @@
+paho-mqtt==1.6.1
+pymongo==4.6.1
+asyncio-mqtt==0.16.1
+requests==2.31.0 

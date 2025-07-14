@@ -1,0 +1,746 @@
+{
+  "info": {
+    "name": "My FirstCare Opera Panel - Device Mapping API",
+    "description": "Comprehensive API collection for AVA4 and medical device mapping to patients",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Test response status",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test response structure",
+                  "pm.test(\"Response has required fields\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('access_token');",
+                  "    pm.expect(responseJson).to.have.property('token_type');",
+                  "});",
+                  "",
+                  "// Save token for subsequent requests",
+                  "pm.test(\"Save JWT token\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    if (responseJson.access_token) {",
+                  "        pm.environment.set('jwt_token', responseJson.access_token);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Device Mapping - Core Operations",
+      "item": [
+        {
+          "name": "Get All Device Mappings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/?limit=50&skip=0",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "skip",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response structure is valid\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('mappings');",
+                  "    pm.expect(responseJson).to.have.property('total');",
+                  "    pm.expect(responseJson).to.have.property('device_types');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Device Mapping by Patient ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/{{test_patient_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "{{test_patient_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains patient mapping\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('patient_id');",
+                  "    pm.expect(responseJson).to.have.property('ava4_boxes');",
+                  "    pm.expect(responseJson).to.have.property('kati_watches');",
+                  "    pm.expect(responseJson).to.have.property('medical_devices');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Device Types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/device-types",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "device-types"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Device types are returned\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('device_types');",
+                  "    pm.expect(responseJson.device_types).to.have.property('mac_gw');",
+                  "    pm.expect(responseJson.device_types).to.have.property('mac_dusun_bps');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "AVA4 Box Assignment",
+      "item": [
+        {
+          "name": "Get Available AVA4 Boxes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/available/ava4-boxes?limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "available", "ava4-boxes"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Available boxes returned\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('available_boxes');",
+                  "    pm.expect(responseJson).to.have.property('total');",
+                  "    ",
+                  "    // Save first available box ID for testing",
+                  "    if (responseJson.available_boxes && responseJson.available_boxes.length > 0) {",
+                  "        pm.environment.set('test_box_id', responseJson.available_boxes[0].id);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Assign AVA4 Box to Patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_id\": \"{{test_patient_id}}\",\n  \"box_id\": \"{{test_box_id}}\",\n  \"location\": \"Patient Home - Living Room\",\n  \"notes\": \"Initial assignment for monitoring\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/ava4-box",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "ava4-box"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Assignment successful\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('message');",
+                  "    pm.expect(responseJson).to.have.property('patient_id');",
+                  "    pm.expect(responseJson).to.have.property('box_id');",
+                  "    pm.expect(responseJson).to.have.property('mac_address');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unassign AVA4 Box",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/ava4-box/{{test_box_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "ava4-box", "{{test_box_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Unassignment successful\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('message');",
+                  "    pm.expect(responseJson).to.have.property('box_id');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Kati Watch Assignment",
+      "item": [
+        {
+          "name": "Get Available Kati Watches",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/available/kati-watches?limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "available", "kati-watches"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Available watches returned\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('available_watches');",
+                  "    pm.expect(responseJson).to.have.property('total');",
+                  "    ",
+                  "    // Save first available watch ID for testing",
+                  "    if (responseJson.available_watches && responseJson.available_watches.length > 0) {",
+                  "        pm.environment.set('test_watch_id', responseJson.available_watches[0].id);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Assign Kati Watch to Patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_id\": \"{{test_patient_id}}\",\n  \"watch_id\": \"{{test_watch_id}}\",\n  \"notes\": \"Assigned for continuous monitoring\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/kati-watch",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "kati-watch"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Assignment successful\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('message');",
+                  "    pm.expect(responseJson).to.have.property('patient_id');",
+                  "    pm.expect(responseJson).to.have.property('watch_id');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unassign Kati Watch",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/kati-watch/{{test_watch_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "kati-watch", "{{test_watch_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Unassignment successful\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('message');",
+                  "    pm.expect(responseJson).to.have.property('watch_id');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Medical Device Assignment",
+      "item": [
+        {
+          "name": "Assign Blood Pressure Monitor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_id\": \"{{test_patient_id}}\",\n  \"device_type\": \"mac_dusun_bps\",\n  \"mac_address\": \"AA:BB:CC:DD:EE:FF\",\n  \"device_name\": \"Dusun Blood Pressure Monitor\",\n  \"notes\": \"Primary BP monitoring device\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/medical-device",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "medical-device"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Device assignment successful\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('message');",
+                  "    pm.expect(responseJson).to.have.property('device_id');",
+                  "    pm.expect(responseJson).to.have.property('device_type');",
+                  "    pm.expect(responseJson.device_type).to.equal('mac_dusun_bps');",
+                  "    ",
+                  "    // Save device ID for further testing",
+                  "    pm.environment.set('test_medical_device_id', responseJson.device_id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Assign Glucose Meter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_id\": \"{{test_patient_id}}\",\n  \"device_type\": \"mac_gluc\",\n  \"mac_address\": \"11:22:33:44:55:66\",\n  \"device_name\": \"Glucose Meter Pro\",\n  \"notes\": \"For diabetes monitoring\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/medical-device",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "medical-device"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Glucose meter assignment successful\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('device_type');",
+                  "    pm.expect(responseJson.device_type).to.equal('mac_gluc');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Assign Oximeter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_id\": \"{{test_patient_id}}\",\n  \"device_type\": \"mac_oxymeter\",\n  \"mac_address\": \"77:88:99:AA:BB:CC\",\n  \"device_name\": \"Pulse Oximeter\",\n  \"notes\": \"For SpO2 monitoring\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/medical-device",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "medical-device"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Oximeter assignment successful\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('device_type');",
+                  "    pm.expect(responseJson.device_type).to.equal('mac_oxymeter');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Medical Device",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_type\": \"mac_dusun_bps\",\n  \"mac_address\": \"FF:EE:DD:CC:BB:AA\",\n  \"device_name\": \"Updated BP Monitor\",\n  \"notes\": \"Updated device configuration\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/medical-device/{{test_medical_device_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "medical-device", "{{test_medical_device_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Device update successful\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('message');",
+                  "    pm.expect(responseJson).to.have.property('device_id');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Remove Medical Device",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/medical-device/{{test_medical_device_id}}?device_type=mac_dusun_bps",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "medical-device", "{{test_medical_device_id}}"],
+              "query": [
+                {
+                  "key": "device_type",
+                  "value": "mac_dusun_bps"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Device removal successful\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('message');",
+                  "    pm.expect(responseJson).to.have.property('device_type');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Integration Tests",
+      "item": [
+        {
+          "name": "Complete Device Setup for Patient",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/device-mapping/{{test_patient_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "device-mapping", "{{test_patient_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Patient has complete device setup\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('patient_id');",
+                  "    pm.expect(responseJson).to.have.property('ava4_boxes');",
+                  "    pm.expect(responseJson).to.have.property('kati_watches');",
+                  "    pm.expect(responseJson).to.have.property('medical_devices');",
+                  "    ",
+                  "    // Check if patient has devices assigned",
+                  "    console.log('AVA4 Boxes:', responseJson.ava4_boxes.length);",
+                  "    console.log('Kati Watches:', responseJson.kati_watches.length);",
+                  "    console.log('Medical Devices:', responseJson.medical_devices.length);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify Device Assignment Audit",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/audit-log?resource_type=device_mapping&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "audit-log"],
+              "query": [
+                {
+                  "key": "resource_type",
+                  "value": "device_mapping"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Audit logs contain device mapping actions\", function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('audit_logs');",
+                  "    ",
+                  "    if (responseJson.audit_logs.length > 0) {",
+                  "        const log = responseJson.audit_logs[0];",
+                  "        pm.expect(log).to.have.property('action');",
+                  "        pm.expect(log).to.have.property('resource_type');",
+                  "        pm.expect(log.resource_type).to.equal('device_mapping');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5055",
+      "type": "string"
+    },
+    {
+      "key": "username",
+      "value": "admin",
+      "type": "string"
+    },
+    {
+      "key": "password",
+      "value": "Sim!443355",
+      "type": "string"
+    },
+    {
+      "key": "test_patient_id",
+      "value": "661f2b5d818cc24bd96a8722",
+      "type": "string",
+      "description": "Sample patient ID for testing"
+    }
+  ]
+} 

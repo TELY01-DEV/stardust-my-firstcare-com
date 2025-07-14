@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <title>JavaScript Test Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>JavaScript Test Page</h1>
+    
+    <div class="test-section">
+        <h3>Basic JavaScript Test</h3>
+        <button onclick="testBasicJS()">Test Basic JavaScript</button>
+        <div id="basic-test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>App.js Loading Test</h3>
+        <button onclick="testAppJS()">Test App.js Loading</button>
+        <div id="app-test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Navigation Test</h3>
+        <button onclick="testNavigation()">Test Navigation</button>
+        <div id="nav-test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Console Output</h3>
+        <div id="console-output" style="background: #f8f9fa; padding: 10px; height: 200px; overflow-y: scroll; font-family: monospace; font-size: 12px;"></div>
+    </div>
+
+    <script>
+        // Override console.log to capture output
+        const originalLog = console.log;
+        const consoleOutput = document.getElementById('console-output');
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const message = args.join(' ') + '\n';
+            consoleOutput.textContent += message;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+        
+        function testBasicJS() {
+            const result = document.getElementById('basic-test-result');
+            try {
+                console.log('🧪 Testing basic JavaScript...');
+                const testVar = 'Hello World';
+                console.log('✅ Basic JavaScript works:', testVar);
+                result.innerHTML = '<div class="success">✅ Basic JavaScript is working!</div>';
+            } catch (error) {
+                console.log('❌ Basic JavaScript failed:', error);
+                result.innerHTML = '<div class="error">❌ Basic JavaScript failed: ' + error.message + '</div>';
+            }
+        }
+        
+        function testAppJS() {
+            const result = document.getElementById('app-test-result');
+            try {
+                console.log('🧪 Testing app.js loading...');
+                
+                // Check if app.js script tag exists
+                const appScript = document.querySelector('script[src*="app.js"]');
+                if (appScript) {
+                    console.log('✅ app.js script tag found');
+                } else {
+                    console.log('❌ app.js script tag not found');
+                }
+                
+                // Check if MQTTMonitorApp class exists
+                if (typeof MQTTMonitorApp !== 'undefined') {
+                    console.log('✅ MQTTMonitorApp class found');
+                    result.innerHTML = '<div class="success">✅ app.js loaded successfully!</div>';
+                } else {
+                    console.log('❌ MQTTMonitorApp class not found');
+                    result.innerHTML = '<div class="error">❌ app.js not loaded or MQTTMonitorApp class not found</div>';
+                }
+            } catch (error) {
+                console.log('❌ app.js test failed:', error);
+                result.innerHTML = '<div class="error">❌ app.js test failed: ' + error.message + '</div>';
+            }
+        }
+        
+        function testNavigation() {
+            const result = document.getElementById('nav-test-result');
+            try {
+                console.log('🧪 Testing navigation...');
+                
+                // Check if window.mqttApp exists
+                if (window.mqttApp) {
+                    console.log('✅ window.mqttApp found');
+                    
+                    // Test navigation methods
+                    if (typeof window.mqttApp.switchTab === 'function') {
+                        console.log('✅ switchTab method found');
+                        result.innerHTML = '<div class="success">✅ Navigation is working!</div>';
+                    } else {
+                        console.log('❌ switchTab method not found');
+                        result.innerHTML = '<div class="error">❌ switchTab method not found</div>';
+                    }
+                } else {
+                    console.log('❌ window.mqttApp not found');
+                    result.innerHTML = '<div class="error">❌ window.mqttApp not found</div>';
+                }
+            } catch (error) {
+                console.log('❌ Navigation test failed:', error);
+                result.innerHTML = '<div class="error">❌ Navigation test failed: ' + error.message + '</div>';
+            }
+        }
+        
+        // Auto-run basic tests when page loads
+        window.addEventListener('load', function() {
+            console.log('🚀 Test page loaded');
+            setTimeout(() => {
+                testBasicJS();
+                testAppJS();
+                testNavigation();
+            }, 1000);
+        });
+    </script>
+    
+    <!-- Include the actual app.js -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 

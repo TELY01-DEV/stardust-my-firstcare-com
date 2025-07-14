@@ -1,0 +1,1416 @@
+{
+  "monitoring_session": {
+    "start_time": "2025-07-13T08:49:51.978103",
+    "end_time": "2025-07-13T08:54:53.257085",
+    "total_messages": 49,
+    "topics_monitored": [
+      "iMEDE_watch/onlineTrigger",
+      "dusun_sub",
+      "ESP32_BLE_GW_TX",
+      "iMEDE_watch/location",
+      "iMEDE_watch/hb",
+      "iMEDE_watch/AP55"
+    ],
+    "unique_devices": [
+      "861265061477987",
+      "xx:xx:xx:xx:xx:xx",
+      "08:F9:E0:D1:F7:B4",
+      "861265061478050",
+      "80:65:99:A2:80:08",
+      "08:B6:1F:88:12:98",
+      "74:4D:BD:83:42:58",
+      "DC:DA:0C:5A:80:64",
+      "861265061482607",
+      "861265061486269",
+      "861265061482334",
+      "861265061366537",
+      "861265061482888",
+      "861265061482599",
+      "861265061481799"
+    ]
+  },
+  "messages_by_topic": {
+    "iMEDE_watch/onlineTrigger": [
+      {
+        "timestamp": "2025-07-13T08:49:52.015934",
+        "message_count": 1,
+        "data": {
+          "IMEI": "861265061477987",
+          "status": "online"
+        }
+      }
+    ],
+    "dusun_sub": [
+      {
+        "timestamp": "2025-07-13T08:49:59.926867",
+        "message_count": 2,
+        "data": {
+          "data": {
+            "arguments": {
+              "attribute": "gateway.status",
+              "value": {},
+              "mac": "xx:xx:xx:xx:xx:xx"
+            },
+            "id": "66587698d1c3ec487e4995a1",
+            "command": "getAttribute"
+          },
+          "deviceCode": "DAD&MOM-AVA-2B19",
+          "time": 1752396600,
+          "mac": "xx:xx:xx:xx:xx:xx",
+          "to": "GATEWAY",
+          "from": "CLOUD",
+          "type": "cmd"
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:50:02.007195",
+        "message_count": 3,
+        "data": {
+          "data": {
+            "arguments": {
+              "attribute": "gateway.status",
+              "value": {},
+              "mac": "xx:xx:xx:xx:xx:xx"
+            },
+            "id": "66587698d1c3ec487e4995a1",
+            "command": "getAttribute"
+          },
+          "deviceCode": "DAD&MOM-AVA-2B19",
+          "time": 1752396600,
+          "mac": "xx:xx:xx:xx:xx:xx",
+          "to": "GATEWAY",
+          "from": "CLOUD",
+          "type": "cmd"
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:51:01.245257",
+        "message_count": 11,
+        "data": {
+          "data": {
+            "arguments": {
+              "attribute": "gateway.status",
+              "value": {},
+              "mac": "xx:xx:xx:xx:xx:xx"
+            },
+            "id": "66587698d1c3ec487e4995a1",
+            "command": "getAttribute"
+          },
+          "deviceCode": "DAD&MOM-AVA-2B19",
+          "time": 1752396660,
+          "mac": "xx:xx:xx:xx:xx:xx",
+          "to": "GATEWAY",
+          "from": "CLOUD",
+          "type": "cmd"
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:51:03.325013",
+        "message_count": 12,
+        "data": {
+          "data": {
+            "arguments": {
+              "attribute": "gateway.status",
+              "value": {},
+              "mac": "xx:xx:xx:xx:xx:xx"
+            },
+            "id": "66587698d1c3ec487e4995a1",
+            "command": "getAttribute"
+          },
+          "deviceCode": "DAD&MOM-AVA-2B19",
+          "time": 1752396660,
+          "mac": "xx:xx:xx:xx:xx:xx",
+          "to": "GATEWAY",
+          "from": "CLOUD",
+          "type": "cmd"
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:00.466230",
+        "message_count": 21,
+        "data": {
+          "data": {
+            "arguments": {
+              "attribute": "gateway.status",
+              "value": {},
+              "mac": "xx:xx:xx:xx:xx:xx"
+            },
+            "id": "66587698d1c3ec487e4995a1",
+            "command": "getAttribute"
+          },
+          "deviceCode": "DAD&MOM-AVA-2B19",
+          "time": 1752396720,
+          "mac": "xx:xx:xx:xx:xx:xx",
+          "to": "GATEWAY",
+          "from": "CLOUD",
+          "type": "cmd"
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:02.542170",
+        "message_count": 22,
+        "data": {
+          "data": {
+            "arguments": {
+              "attribute": "gateway.status",
+              "value": {},
+              "mac": "xx:xx:xx:xx:xx:xx"
+            },
+            "id": "66587698d1c3ec487e4995a1",
+            "command": "getAttribute"
+          },
+          "deviceCode": "DAD&MOM-AVA-2B19",
+          "time": 1752396720,
+          "mac": "xx:xx:xx:xx:xx:xx",
+          "to": "GATEWAY",
+          "from": "CLOUD",
+          "type": "cmd"
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:59.928860",
+        "message_count": 31,
+        "data": {
+          "data": {
+            "arguments": {
+              "attribute": "gateway.status",
+              "value": {},
+              "mac": "xx:xx:xx:xx:xx:xx"
+            },
+            "id": "66587698d1c3ec487e4995a1",
+            "command": "getAttribute"
+          },
+          "deviceCode": "DAD&MOM-AVA-2B19",
+          "time": 1752396780,
+          "mac": "xx:xx:xx:xx:xx:xx",
+          "to": "GATEWAY",
+          "from": "CLOUD",
+          "type": "cmd"
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:53:01.998750",
+        "message_count": 32,
+        "data": {
+          "data": {
+            "arguments": {
+              "attribute": "gateway.status",
+              "value": {},
+              "mac": "xx:xx:xx:xx:xx:xx"
+            },
+            "id": "66587698d1c3ec487e4995a1",
+            "command": "getAttribute"
+          },
+          "deviceCode": "DAD&MOM-AVA-2B19",
+          "time": 1752396780,
+          "mac": "xx:xx:xx:xx:xx:xx",
+          "to": "GATEWAY",
+          "from": "CLOUD",
+          "type": "cmd"
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:53:59.932874",
+        "message_count": 40,
+        "data": {
+          "data": {
+            "arguments": {
+              "attribute": "gateway.status",
+              "value": {},
+              "mac": "xx:xx:xx:xx:xx:xx"
+            },
+            "id": "66587698d1c3ec487e4995a1",
+            "command": "getAttribute"
+          },
+          "deviceCode": "DAD&MOM-AVA-2B19",
+          "time": 1752396840,
+          "mac": "xx:xx:xx:xx:xx:xx",
+          "to": "GATEWAY",
+          "from": "CLOUD",
+          "type": "cmd"
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:54:02.050012",
+        "message_count": 41,
+        "data": {
+          "data": {
+            "arguments": {
+              "attribute": "gateway.status",
+              "value": {},
+              "mac": "xx:xx:xx:xx:xx:xx"
+            },
+            "id": "66587698d1c3ec487e4995a1",
+            "command": "getAttribute"
+          },
+          "deviceCode": "DAD&MOM-AVA-2B19",
+          "time": 1752396840,
+          "mac": "xx:xx:xx:xx:xx:xx",
+          "to": "GATEWAY",
+          "from": "CLOUD",
+          "type": "cmd"
+        }
+      }
+    ],
+    "ESP32_BLE_GW_TX": [
+      {
+        "timestamp": "2025-07-13T08:50:04.063455",
+        "message_count": 4,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "TKH-08-Instant",
+          "time": 1767800998,
+          "mac": "08:F9:E0:D1:F7:B4",
+          "IMEI": "861518041658567",
+          "ICCID": "8966032240112702889",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:50:20.314255",
+        "message_count": 6,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4 No.8 Kitisak",
+          "time": 1767801004,
+          "mac": "80:65:99:A2:80:08",
+          "IMEI": "868334037509019",
+          "ICCID": "8966032240112705254",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:50:25.382151",
+        "message_count": 7,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "KM Contour Jumper",
+          "time": 1767801013,
+          "mac": "08:B6:1F:88:12:98",
+          "IMEI": "861518041657700",
+          "ICCID": "8966032240112716137",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:50:35.598105",
+        "message_count": 8,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4 No.5 BanNaSan #",
+          "time": 1767801040,
+          "mac": "74:4D:BD:83:42:58",
+          "IMEI": "868334037609462",
+          "ICCID": "8966032240112716277",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:50:51.257189",
+        "message_count": 9,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4-KM-Bed-Room",
+          "time": 1767801048,
+          "mac": "DC:DA:0C:5A:80:64",
+          "IMEI": "868334037510868",
+          "ICCID": "8966032240112716129",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:51:07.457091",
+        "message_count": 14,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "TKH-08-Instant",
+          "time": 1767801063,
+          "mac": "08:F9:E0:D1:F7:B4",
+          "IMEI": "861518041658567",
+          "ICCID": "8966032240112702889",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:51:20.341775",
+        "message_count": 16,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4 No.8 Kitisak",
+          "time": 1767801064,
+          "mac": "80:65:99:A2:80:08",
+          "IMEI": "868334037509019",
+          "ICCID": "8966032240112705254",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:51:25.632243",
+        "message_count": 17,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "KM Contour Jumper",
+          "time": 1767801073,
+          "mac": "08:B6:1F:88:12:98",
+          "IMEI": "861518041657700",
+          "ICCID": "8966032240112716137",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:51:35.841524",
+        "message_count": 18,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4 No.5 BanNaSan #",
+          "time": 1767801100,
+          "mac": "74:4D:BD:83:42:58",
+          "IMEI": "868334037609462",
+          "ICCID": "8966032240112716277",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:51:50.046175",
+        "message_count": 19,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4-KM-Bed-Room",
+          "time": 1767801108,
+          "mac": "DC:DA:0C:5A:80:64",
+          "IMEI": "868334037510868",
+          "ICCID": "8966032240112716129",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:10.320315",
+        "message_count": 25,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "TKH-08-Instant",
+          "time": 1767801128,
+          "mac": "08:F9:E0:D1:F7:B4",
+          "IMEI": "861518041658567",
+          "ICCID": "8966032240112702889",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:20.323427",
+        "message_count": 27,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4 No.8 Kitisak",
+          "time": 1767801124,
+          "mac": "80:65:99:A2:80:08",
+          "IMEI": "868334037509019",
+          "ICCID": "8966032240112705254",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:25.027219",
+        "message_count": 28,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "KM Contour Jumper",
+          "time": 1767801133,
+          "mac": "08:B6:1F:88:12:98",
+          "IMEI": "861518041657700",
+          "ICCID": "8966032240112716137",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:35.920312",
+        "message_count": 29,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4 No.5 BanNaSan #",
+          "time": 1767801160,
+          "mac": "74:4D:BD:83:42:58",
+          "IMEI": "868334037609462",
+          "ICCID": "8966032240112716277",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:50.982937",
+        "message_count": 30,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4-KM-Bed-Room",
+          "time": 1767801168,
+          "mac": "DC:DA:0C:5A:80:64",
+          "IMEI": "868334037510868",
+          "ICCID": "8966032240112716129",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:53:14.944520",
+        "message_count": 34,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "TKH-08-Instant",
+          "time": 1767801193,
+          "mac": "08:F9:E0:D1:F7:B4",
+          "IMEI": "861518041658567",
+          "ICCID": "8966032240112702889",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:53:20.319923",
+        "message_count": 36,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4 No.8 Kitisak",
+          "time": 1767801184,
+          "mac": "80:65:99:A2:80:08",
+          "IMEI": "868334037509019",
+          "ICCID": "8966032240112705254",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:53:25.214533",
+        "message_count": 37,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "KM Contour Jumper",
+          "time": 1767801194,
+          "mac": "08:B6:1F:88:12:98",
+          "IMEI": "861518041657700",
+          "ICCID": "8966032240112716137",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:53:36.079991",
+        "message_count": 38,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4 No.5 BanNaSan #",
+          "time": 1767801220,
+          "mac": "74:4D:BD:83:42:58",
+          "IMEI": "868334037609462",
+          "ICCID": "8966032240112716277",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:53:50.652991",
+        "message_count": 39,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4-KM-Bed-Room",
+          "time": 1767801228,
+          "mac": "DC:DA:0C:5A:80:64",
+          "IMEI": "868334037510868",
+          "ICCID": "8966032240112716129",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:54:20.306706",
+        "message_count": 45,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4 No.8 Kitisak",
+          "time": 1767801244,
+          "mac": "80:65:99:A2:80:08",
+          "IMEI": "868334037509019",
+          "ICCID": "8966032240112705254",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:54:22.427012",
+        "message_count": 46,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "TKH-08-Instant",
+          "time": 1767801258,
+          "mac": "08:F9:E0:D1:F7:B4",
+          "IMEI": "861518041658567",
+          "ICCID": "8966032240112702889",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:54:25.341650",
+        "message_count": 47,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "KM Contour Jumper",
+          "time": 1767801254,
+          "mac": "08:B6:1F:88:12:98",
+          "IMEI": "861518041657700",
+          "ICCID": "8966032240112716137",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:54:35.600253",
+        "message_count": 48,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4 No.5 BanNaSan #",
+          "time": 1767801280,
+          "mac": "74:4D:BD:83:42:58",
+          "IMEI": "868334037609462",
+          "ICCID": "8966032240112716277",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:54:51.138234",
+        "message_count": 49,
+        "data": {
+          "from": "ESP32_GW",
+          "to": "CLOUD",
+          "name": "AVA4-KM-Bed-Room",
+          "time": 1767801288,
+          "mac": "DC:DA:0C:5A:80:64",
+          "IMEI": "868334037510868",
+          "ICCID": "8966032240112716129",
+          "type": "HB_Msg",
+          "data": {
+            "msg": "Online"
+          }
+        }
+      }
+    ],
+    "iMEDE_watch/location": [
+      {
+        "timestamp": "2025-07-13T08:50:18.240680",
+        "message_count": 5,
+        "data": {
+          "time": "13/07/2025 08:50:18",
+          "IMEI": "861265061478050",
+          "location": {
+            "GPS": {
+              "latitude": 13.691645,
+              "longitude": 4.039888333333334,
+              "speed": 0.1,
+              "header": 350.01
+            },
+            "WiFi": "[{'SSID':'a','MAC':'e2-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'de-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'ea-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'e6-b3-70-18-1b-b6','RSSI':'113'}]",
+            "LBS": {
+              "MCC": "520",
+              "MNC": "3",
+              "LAC": "13015",
+              "CID": "166155371",
+              "SetBase": "[{'LAC':'13015','CID':'166155376','dbm':'43'}]"
+            }
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:51:18.240399",
+        "message_count": 15,
+        "data": {
+          "time": "13/07/2025 08:51:18",
+          "IMEI": "861265061478050",
+          "location": {
+            "GPS": {
+              "latitude": 13.691645,
+              "longitude": 4.039888333333334,
+              "speed": 0.1,
+              "header": 350.01
+            },
+            "WiFi": "[{'SSID':'a','MAC':'e2-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'de-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'ea-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'e6-b3-70-18-1b-b6','RSSI':'113'}]",
+            "LBS": {
+              "MCC": "520",
+              "MNC": "3",
+              "LAC": "13015",
+              "CID": "166155371",
+              "SetBase": "[{'LAC':'13015','CID':'166155376','dbm':'43'}]"
+            }
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:18.229499",
+        "message_count": 26,
+        "data": {
+          "time": "13/07/2025 08:52:18",
+          "IMEI": "861265061478050",
+          "location": {
+            "GPS": {
+              "latitude": 13.691645,
+              "longitude": 4.039888333333334,
+              "speed": 0.1,
+              "header": 350.01
+            },
+            "WiFi": "[{'SSID':'a','MAC':'e2-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'de-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'ea-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'e6-b3-70-18-1b-b6','RSSI':'113'}]",
+            "LBS": {
+              "MCC": "520",
+              "MNC": "3",
+              "LAC": "13015",
+              "CID": "166155371",
+              "SetBase": "[{'LAC':'13015','CID':'166155376','dbm':'43'}]"
+            }
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:53:18.217869",
+        "message_count": 35,
+        "data": {
+          "time": "13/07/2025 08:53:18",
+          "IMEI": "861265061478050",
+          "location": {
+            "GPS": {
+              "latitude": 13.691645,
+              "longitude": 4.039888333333334,
+              "speed": 0.1,
+              "header": 350.01
+            },
+            "WiFi": "[{'SSID':'a','MAC':'e2-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'de-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'ea-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'e6-b3-70-18-1b-b6','RSSI':'113'}]",
+            "LBS": {
+              "MCC": "520",
+              "MNC": "3",
+              "LAC": "13015",
+              "CID": "166155371",
+              "SetBase": "[{'LAC':'13015','CID':'166155376','dbm':'43'}]"
+            }
+          }
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:54:18.213517",
+        "message_count": 44,
+        "data": {
+          "time": "13/07/2025 08:54:18",
+          "IMEI": "861265061478050",
+          "location": {
+            "GPS": {
+              "latitude": 13.691645,
+              "longitude": 4.039888333333334,
+              "speed": 0.1,
+              "header": 350.01
+            },
+            "WiFi": "[{'SSID':'a','MAC':'e2-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'de-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'ea-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'e6-b3-70-18-1b-b6','RSSI':'113'}]",
+            "LBS": {
+              "MCC": "520",
+              "MNC": "3",
+              "LAC": "13015",
+              "CID": "166155371",
+              "SetBase": "[{'LAC':'13015','CID':'166155376','dbm':'43'}]"
+            }
+          }
+        }
+      }
+    ],
+    "iMEDE_watch/hb": [
+      {
+        "timestamp": "2025-07-13T08:50:59.161255",
+        "message_count": 10,
+        "data": {
+          "IMEI": "861265061482607",
+          "signalGSM": 100,
+          "battery": 89,
+          "satellites": 0,
+          "workingMode": 1,
+          "timeStamps": "13/07/2025 08:50:59",
+          "step": 783
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:51:05.392766",
+        "message_count": 13,
+        "data": {
+          "IMEI": "861265061486269",
+          "signalGSM": 100,
+          "battery": 90,
+          "satellites": 0,
+          "workingMode": 1,
+          "timeStamps": "13/07/2025 08:51:00",
+          "step": 0
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:51:58.390109",
+        "message_count": 20,
+        "data": {
+          "IMEI": "861265061482334",
+          "signalGSM": 80,
+          "battery": 35,
+          "satellites": 0,
+          "workingMode": 1,
+          "timeStamps": "13/07/2025 08:51:58",
+          "step": 0
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:04.616967",
+        "message_count": 23,
+        "data": {
+          "IMEI": "861265061366537",
+          "signalGSM": 100,
+          "battery": 9,
+          "satellites": 0,
+          "workingMode": 1,
+          "timeStamps": "13/07/2025 08:52:00",
+          "step": 317
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:52:06.706825",
+        "message_count": 24,
+        "data": {
+          "IMEI": "861265061482888",
+          "signalGSM": 60,
+          "battery": 85,
+          "satellites": 0,
+          "workingMode": 1,
+          "timeStamps": "13/07/2025 08:52:00",
+          "step": 30
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:53:04.074400",
+        "message_count": 33,
+        "data": {
+          "IMEI": "861265061482599",
+          "signalGSM": 100,
+          "battery": 95,
+          "satellites": 0,
+          "workingMode": 1,
+          "timeStamps": "13/07/2025 08:53:04",
+          "step": 0
+        }
+      },
+      {
+        "timestamp": "2025-07-13T08:54:04.157309",
+        "message_count": 42,
+        "data": {
+          "IMEI": "861265061481799",
+          "signalGSM": 80,
+          "battery": 100,
+          "satellites": 0,
+          "workingMode": 1,
+          "timeStamps": "13/07/2025 08:54:00",
+          "step": 849
+        }
+      }
+    ],
+    "iMEDE_watch/AP55": [
+      {
+        "timestamp": "2025-07-13T08:54:07.603173",
+        "message_count": 43,
+        "data": {
+          "IMEI": "861265061477987",
+          "location": {
+            "GPS": {
+              "latitude": "",
+              "longitude": "",
+              "speed": "",
+              "header": ""
+            },
+            "WiFi": "[{'SSID':'a','MAC':'e2-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'de-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'ea-b3-70-18-1b-b6','RSSI':'115'},{'SSID':'a','MAC':'e6-b3-70-18-1b-b6','RSSI':'113'}]",
+            "LBS": {
+              "MCC": "520",
+              "MNC": "3",
+              "LAC": "",
+              "CID": "",
+              "SetBase": "[{'LAC':'13015','CID':'166155376','dbm':'43'}]"
+            }
+          },
+          "timeStamps": "13/07/2025 08:54:07",
+          "num_datas": 12,
+          "data": [
+            {
+              "timestamp": 1752418414,
+              "heartRate": 70,
+              "bloodPressure": {
+                "bp_sys": 122,
+                "bp_dia": 74
+              },
+              "bodyTemperature": 36.5
+            },
+            {
+              "timestamp": 1752418717,
+              "heartRate": 76,
+              "bloodPressure": {
+                "bp_sys": 119,
+                "bp_dia": 76
+              },
+              "bodyTemperature": 36.5
+            },
+            {
+              "timestamp": 1752419019,
+              "heartRate": 90,
+              "bloodPressure": {
+                "bp_sys": 120,
+                "bp_dia": 74
+              },
+              "bodyTemperature": 36.6
+            },
+            {
+              "timestamp": 1752419322,
+              "heartRate": 86,
+              "bloodPressure": {
+                "bp_sys": 119,
+                "bp_dia": 79
+              },
+              "bodyTemperature": 36.5
+            },
+            {
+              "timestamp": 1752419625,
+              "heartRate": 68,
+              "bloodPressure": {
+                "bp_sys": 116,
+                "bp_dia": 79
+              },
+              "bodyTemperature": 36.4
+            },
+            {
+              "timestamp": 1752419928,
+              "heartRate": 67,
+              "bloodPressure": {
+                "bp_sys": 119,
+                "bp_dia": 75
+              },
+              "bodyTemperature": 36.4
+            },
+            {
+              "timestamp": 1752420231,
+              "heartRate": 78,
+              "bloodPressure": {
+                "bp_sys": 113,
+                "bp_dia": 74
+              },
+              "bodyTemperature": 36.8
+            },
+            {
+              "timestamp": 1752420533,
+              "heartRate": 86,
+              "bloodPressure": {
+                "bp_sys": 117,
+                "bp_dia": 72
+              },
+              "bodyTemperature": 36.8
+            },
+            {
+              "timestamp": 1752420836,
+              "heartRate": 79,
+              "bloodPressure": {
+                "bp_sys": 128,
+                "bp_dia": 77
+              },
+              "bodyTemperature": 36.9
+            },
+            {
+              "timestamp": 1752421138,
+              "heartRate": 82,
+              "bloodPressure": {
+                "bp_sys": 125,
+                "bp_dia": 73
+              },
+              "bodyTemperature": 36.9
+            },
+            {
+              "timestamp": 1752421441,
+              "heartRate": 83,
+              "bloodPressure": {
+                "bp_sys": 114,
+                "bp_dia": 71
+              },
+              "bodyTemperature": 36.8
+            },
+            {
+              "timestamp": 1752421743,
+              "heartRate": 77,
+              "bloodPressure": {
+                "bp_sys": 114,
+                "bp_dia": 76
+              },
+              "bodyTemperature": 36.8
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "processing_results": [
+    {
+      "message_count": 1,
+      "topic": "iMEDE_watch/onlineTrigger",
+      "device_id": "861265061477987",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:49:52.015934"
+    },
+    {
+      "message_count": 2,
+      "topic": "dusun_sub",
+      "device_id": "xx:xx:xx:xx:xx:xx",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:49:59.926867"
+    },
+    {
+      "message_count": 3,
+      "topic": "dusun_sub",
+      "device_id": "xx:xx:xx:xx:xx:xx",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:50:02.007195"
+    },
+    {
+      "message_count": 4,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "08:F9:E0:D1:F7:B4",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:50:04.063455"
+    },
+    {
+      "message_count": 5,
+      "topic": "iMEDE_watch/location",
+      "device_id": "861265061478050",
+      "transaction_found": true,
+      "transaction_status": "failed",
+      "timestamp": "2025-07-13 08:50:18.240680"
+    },
+    {
+      "message_count": 6,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "80:65:99:A2:80:08",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:50:20.314255"
+    },
+    {
+      "message_count": 7,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "08:B6:1F:88:12:98",
+      "transaction_found": true,
+      "transaction_status": "failed",
+      "timestamp": "2025-07-13 08:50:25.382151"
+    },
+    {
+      "message_count": 8,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "74:4D:BD:83:42:58",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:50:35.598105"
+    },
+    {
+      "message_count": 9,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "DC:DA:0C:5A:80:64",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:50:51.257189"
+    },
+    {
+      "message_count": 10,
+      "topic": "iMEDE_watch/hb",
+      "device_id": "861265061482607",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:50:59.161255"
+    },
+    {
+      "message_count": 11,
+      "topic": "dusun_sub",
+      "device_id": "xx:xx:xx:xx:xx:xx",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:51:01.245257"
+    },
+    {
+      "message_count": 12,
+      "topic": "dusun_sub",
+      "device_id": "xx:xx:xx:xx:xx:xx",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:51:03.325013"
+    },
+    {
+      "message_count": 13,
+      "topic": "iMEDE_watch/hb",
+      "device_id": "861265061486269",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:51:05.392766"
+    },
+    {
+      "message_count": 14,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "08:F9:E0:D1:F7:B4",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:51:07.457091"
+    },
+    {
+      "message_count": 15,
+      "topic": "iMEDE_watch/location",
+      "device_id": "861265061478050",
+      "transaction_found": true,
+      "transaction_status": "failed",
+      "timestamp": "2025-07-13 08:51:18.240399"
+    },
+    {
+      "message_count": 16,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "80:65:99:A2:80:08",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:51:20.341775"
+    },
+    {
+      "message_count": 17,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "08:B6:1F:88:12:98",
+      "transaction_found": true,
+      "transaction_status": "failed",
+      "timestamp": "2025-07-13 08:51:25.632243"
+    },
+    {
+      "message_count": 18,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "74:4D:BD:83:42:58",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:51:35.841524"
+    },
+    {
+      "message_count": 19,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "DC:DA:0C:5A:80:64",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:51:50.046175"
+    },
+    {
+      "message_count": 20,
+      "topic": "iMEDE_watch/hb",
+      "device_id": "861265061482334",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:51:58.390109"
+    },
+    {
+      "message_count": 21,
+      "topic": "dusun_sub",
+      "device_id": "xx:xx:xx:xx:xx:xx",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:52:00.466230"
+    },
+    {
+      "message_count": 22,
+      "topic": "dusun_sub",
+      "device_id": "xx:xx:xx:xx:xx:xx",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:52:02.542170"
+    },
+    {
+      "message_count": 23,
+      "topic": "iMEDE_watch/hb",
+      "device_id": "861265061366537",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:52:04.616967"
+    },
+    {
+      "message_count": 24,
+      "topic": "iMEDE_watch/hb",
+      "device_id": "861265061482888",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:52:06.706825"
+    },
+    {
+      "message_count": 25,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "08:F9:E0:D1:F7:B4",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:52:10.320315"
+    },
+    {
+      "message_count": 26,
+      "topic": "iMEDE_watch/location",
+      "device_id": "861265061478050",
+      "transaction_found": true,
+      "transaction_status": "failed",
+      "timestamp": "2025-07-13 08:52:18.229499"
+    },
+    {
+      "message_count": 27,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "80:65:99:A2:80:08",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:52:20.323427"
+    },
+    {
+      "message_count": 28,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "08:B6:1F:88:12:98",
+      "transaction_found": true,
+      "transaction_status": "failed",
+      "timestamp": "2025-07-13 08:52:25.027219"
+    },
+    {
+      "message_count": 29,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "74:4D:BD:83:42:58",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:52:35.920312"
+    },
+    {
+      "message_count": 30,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "DC:DA:0C:5A:80:64",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:52:50.982937"
+    },
+    {
+      "message_count": 31,
+      "topic": "dusun_sub",
+      "device_id": "xx:xx:xx:xx:xx:xx",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:52:59.928860"
+    },
+    {
+      "message_count": 32,
+      "topic": "dusun_sub",
+      "device_id": "xx:xx:xx:xx:xx:xx",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:53:01.998750"
+    },
+    {
+      "message_count": 33,
+      "topic": "iMEDE_watch/hb",
+      "device_id": "861265061482599",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:53:04.074400"
+    },
+    {
+      "message_count": 34,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "08:F9:E0:D1:F7:B4",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:53:14.944520"
+    },
+    {
+      "message_count": 35,
+      "topic": "iMEDE_watch/location",
+      "device_id": "861265061478050",
+      "transaction_found": true,
+      "transaction_status": "failed",
+      "timestamp": "2025-07-13 08:53:18.217869"
+    },
+    {
+      "message_count": 36,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "80:65:99:A2:80:08",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:53:20.319923"
+    },
+    {
+      "message_count": 37,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "08:B6:1F:88:12:98",
+      "transaction_found": true,
+      "transaction_status": "failed",
+      "timestamp": "2025-07-13 08:53:25.214533"
+    },
+    {
+      "message_count": 38,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "74:4D:BD:83:42:58",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:53:36.079991"
+    },
+    {
+      "message_count": 39,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "DC:DA:0C:5A:80:64",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:53:50.652991"
+    },
+    {
+      "message_count": 40,
+      "topic": "dusun_sub",
+      "device_id": "xx:xx:xx:xx:xx:xx",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:53:59.932874"
+    },
+    {
+      "message_count": 41,
+      "topic": "dusun_sub",
+      "device_id": "xx:xx:xx:xx:xx:xx",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:54:02.050012"
+    },
+    {
+      "message_count": 42,
+      "topic": "iMEDE_watch/hb",
+      "device_id": "861265061481799",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:54:04.157309"
+    },
+    {
+      "message_count": 43,
+      "topic": "iMEDE_watch/AP55",
+      "device_id": "861265061477987",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:54:07.603173"
+    },
+    {
+      "message_count": 44,
+      "topic": "iMEDE_watch/location",
+      "device_id": "861265061478050",
+      "transaction_found": false,
+      "timestamp": "2025-07-13 08:54:18.213517"
+    },
+    {
+      "message_count": 45,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "80:65:99:A2:80:08",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:54:20.306706"
+    },
+    {
+      "message_count": 46,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "08:F9:E0:D1:F7:B4",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:54:22.427012"
+    },
+    {
+      "message_count": 47,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "08:B6:1F:88:12:98",
+      "transaction_found": true,
+      "transaction_status": "failed",
+      "timestamp": "2025-07-13 08:54:25.341650"
+    },
+    {
+      "message_count": 48,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "74:4D:BD:83:42:58",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:54:35.600253"
+    },
+    {
+      "message_count": 49,
+      "topic": "ESP32_BLE_GW_TX",
+      "device_id": "DC:DA:0C:5A:80:64",
+      "transaction_found": true,
+      "transaction_status": "success",
+      "timestamp": "2025-07-13 08:54:51.138234"
+    }
+  ]
+}

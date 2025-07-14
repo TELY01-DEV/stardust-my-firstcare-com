@@ -1,0 +1,518 @@
+{
+	"info": {
+		"_postman_id": "hash-audit-endpoints-2025",
+		"name": "Hash Audit Logging - My FirstCare API",
+		"description": "Hash Audit Logging endpoints for blockchain hash transaction tracking and compliance reporting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-login if no token exists",
+					"if (!pm.environment.get('jwt_token') || pm.environment.get('jwt_token') === '') {",
+					"    console.log('No JWT token found, attempting auto-login...');",
+					"    pm.sendRequest({",
+					"        url: pm.environment.get('base_url') + '/auth/login',",
+					"        method: 'POST',",
+					"        header: {'Content-Type': 'application/json'},",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                username: pm.environment.get('username'),",
+					"                password: pm.environment.get('password')",
+					"            })",
+					"        }",
+					"    }, function (err, response) {",
+					"        if (!err && response.code === 200) {",
+					"            const jsonData = response.json();",
+					"            pm.environment.set('jwt_token', jsonData.access_token);",
+					"            console.log('Auto-login successful');",
+					"        } else {",
+					"            console.log('Auto-login failed:', err || response.code);",
+					"        }",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Login successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('access_token');",
+									"    pm.environment.set('jwt_token', jsonData.access_token);",
+									"    if (jsonData.user_id) {",
+									"        pm.environment.set('user_id', jsonData.user_id);",
+									"    }",
+									"    console.log('JWT Token saved:', jsonData.access_token.substring(0, 20) + '...');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Health Check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Health check successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.status).to.eql('healthy');",
+									"    pm.expect(jsonData.data.mongodb).to.eql('connected');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": ["{{base_url}}"],
+							"path": ["health"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Hash Audit Logging",
+			"item": [
+				{
+					"name": "Query Audit Logs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Audit logs retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('total_count');",
+									"    pm.expect(jsonData).to.have.property('logs');",
+									"    pm.expect(jsonData).to.have.property('request_metadata');",
+									"    console.log('Total audit logs found:', jsonData.total_count);",
+									"});",
+									"",
+									"pm.test('Response contains valid request_id', function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.request_metadata).to.have.property('request_id');",
+									"    pm.expect(jsonData.request_metadata.request_id).to.be.a('string');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/audit/hash/logs?limit=50&offset=0&operation_types=hash_generate,hash_verify&has_errors_only=false",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "audit", "hash", "logs"],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "operation_types",
+									"value": "hash_generate,hash_verify",
+									"description": "Comma-separated operation types"
+								},
+								{
+									"key": "status_filter",
+									"value": "success,failure",
+									"disabled": true
+								},
+								{
+									"key": "severity_filter",
+									"value": "low,medium,high",
+									"disabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "{{user_id}}",
+									"disabled": true
+								},
+								{
+									"key": "patient_id",
+									"value": "{{patient_id}}",
+									"disabled": true
+								},
+								{
+									"key": "has_errors_only",
+									"value": "false"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Audit Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Audit statistics generated successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('grouped_statistics');",
+									"    pm.expect(jsonData).to.have.property('overall_statistics');",
+									"    pm.expect(jsonData).to.have.property('request_metadata');",
+									"    console.log('Overall operations:', jsonData.overall_statistics.total_operations);",
+									"    console.log('Success rate:', jsonData.overall_statistics.success_rate_percent + '%');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/audit/hash/statistics?group_by=operation_type",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "audit", "hash", "statistics"],
+							"query": [
+								{
+									"key": "group_by",
+									"value": "operation_type",
+									"description": "Group by: operation_type, status, severity, user_id, fhir_resource_type"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get User Audit Trail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('User audit trail retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('logs');",
+									"    pm.expect(jsonData).to.have.property('user_summary');",
+									"    pm.expect(jsonData).to.have.property('request_metadata');",
+									"    console.log('User total operations:', jsonData.user_summary.total_operations);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/audit/hash/users/{{user_id}}/trail?limit=100",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "audit", "hash", "users", "{{user_id}}", "trail"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "100"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Resource Audit Trail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Resource audit trail retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('logs');",
+									"    pm.expect(jsonData).to.have.property('resource_lifecycle');",
+									"    pm.expect(jsonData).to.have.property('request_metadata');",
+									"    console.log('Resource lifecycle events:', Object.keys(jsonData.resource_lifecycle.lifecycle_events));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/audit/hash/resources/Patient/{{patient_id}}/trail?include_verification_history=true",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "audit", "hash", "resources", "Patient", "{{patient_id}}", "trail"],
+							"query": [
+								{
+									"key": "include_verification_history",
+									"value": "true"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Cleanup Old Audit Logs (Dry Run)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Audit logs cleanup dry run completed successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('retention_days');",
+									"    pm.expect(jsonData).to.have.property('logs_to_delete');",
+									"    pm.expect(jsonData).to.have.property('dry_run');",
+									"    pm.expect(jsonData.dry_run).to.be.true;",
+									"    console.log('Logs to delete (dry run):', jsonData.logs_to_delete);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"retention_days\": 2555,\n    \"dry_run\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/audit/hash/cleanup",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "audit", "hash", "cleanup"]
+						}
+					}
+				},
+				{
+					"name": "Get Recent Audit Activity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Recent audit activity retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('logs');",
+									"    pm.expect(jsonData).to.have.property('monitoring_metadata');",
+									"    pm.expect(jsonData).to.have.property('alert_indicators');",
+									"    console.log('Recent events:', jsonData.alert_indicators.total_events);",
+									"    console.log('Error count:', jsonData.alert_indicators.error_count);",
+									"    console.log('Requires attention:', jsonData.alert_indicators.requires_attention);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/audit/hash/recent?minutes=60&limit=50",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "audit", "hash", "recent"],
+							"query": [
+								{
+									"key": "minutes",
+									"value": "60",
+									"description": "Look back time in minutes (1-1440)"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Audit System Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Audit system health retrieved successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('status');",
+									"    pm.expect(jsonData).to.have.property('metrics');",
+									"    pm.expect(jsonData).to.have.property('issues');",
+									"    pm.expect(jsonData).to.have.property('request_metadata');",
+									"    console.log('System status:', jsonData.status);",
+									"    console.log('24h operations:', jsonData.metrics.total_operations_24h);",
+									"    console.log('Success rate:', jsonData.metrics.success_rate_percent + '%');",
+									"    console.log('Health issues:', jsonData.issues.length);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/audit/hash/health",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "audit", "hash", "health"]
+						}
+					}
+				},
+				{
+					"name": "Export Audit Logs (JSON)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Audit logs exported successfully', function () {",
+									"    pm.response.to.have.status(200);",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('metadata');",
+									"    pm.expect(jsonData).to.have.property('audit_logs');",
+									"    pm.expect(jsonData.metadata).to.have.property('export_id');",
+									"    pm.expect(jsonData.metadata).to.have.property('record_count');",
+									"    console.log('Export ID:', jsonData.metadata.export_id);",
+									"    console.log('Records exported:', jsonData.metadata.record_count);",
+									"    console.log('Export format:', jsonData.metadata.parameters.format);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/audit/hash/export?format=json&max_records=1000",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "audit", "hash", "export"],
+							"query": [
+								{
+									"key": "format",
+									"value": "json",
+									"description": "Export format: json, csv"
+								},
+								{
+									"key": "max_records",
+									"value": "1000",
+									"description": "Maximum records to export (1-100000)"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5054",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "dev_user",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "dev_password",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "dev_user",
+			"type": "string"
+		},
+		{
+			"key": "patient_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 

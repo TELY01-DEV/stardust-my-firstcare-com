@@ -1,0 +1,4 @@
+paho-mqtt==1.6.1
+pymongo==4.6.1
+websockets==12.0
+asyncio-mqtt==0.16.1 

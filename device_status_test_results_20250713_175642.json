@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-07-13T17:56:42.049806",
+  "results": {
+    "api_health": false,
+    "endpoints_working": false,
+    "mock_data": true,
+    "summary_calculation": true,
+    "device_filtering": true,
+    "alert_filtering": true,
+    "websocket_simulation": true,
+    "performance": true
+  },
+  "success_rate": 75.0
+}

@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  # AVA4 MQTT Listener Service
+  ava4-mqtt-listener:
+    build: 
+      context: ./services/mqtt-listeners/ava4-listener
+      dockerfile: Dockerfile
+    container_name: AVA4-Opera-GodEye
+    environment:
+      # MQTT Configuration
+      - MQTT_ENABLED=true
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      - MQTT_QOS=1
+      - MQTT_RETAIN=false
+      - MQTT_KEEPALIVE=60
+      - MQTT_CONNECTION_TIMEOUT=10
+      - MQTT_TOPICS=ESP32_BLE_GW_TX,dusun_sub
+      
+      # MongoDB Configuration
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin
+      - MONGODB_DATABASE=AMY
+      
+      # Redis Configuration
+      - REDIS_URL=redis://stardust-redis:6379/0
+      
+      # Service Configuration
+      - SERVICE_NAME=AVA4-Opera-GodEye
+      - LOG_LEVEL=INFO
+    depends_on:
+      - stardust-redis
+    restart: unless-stopped
+    networks:
+      - stardust-network
+
+  # Kati Watch MQTT Listener Service
+  kati-mqtt-listener:
+    build: 
+      context: ./services/mqtt-listeners/kati-listener
+      dockerfile: Dockerfile
+    container_name: KATI-Opera-GodEye
+    environment:
+      # MQTT Configuration
+      - MQTT_ENABLED=true
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      - MQTT_QOS=1
+      - MQTT_RETAIN=false
+      - MQTT_KEEPALIVE=60
+      - MQTT_CONNECTION_TIMEOUT=10
+      - MQTT_TOPICS=iMEDE_watch/#
+      
+      # MongoDB Configuration
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin
+      - MONGODB_DATABASE=AMY
+      
+      # Redis Configuration
+      - REDIS_URL=redis://stardust-redis:6379/0
+      
+      # Service Configuration
+      - SERVICE_NAME=KATI-Opera-GodEye
+      - LOG_LEVEL=INFO
+    depends_on:
+      - stardust-redis
+    restart: unless-stopped
+    networks:
+      - stardust-network
+
+  # Qube-Vital MQTT Listener Service
+  qube-mqtt-listener:
+    build: 
+      context: ./services/mqtt-listeners/qube-listener
+      dockerfile: Dockerfile
+    container_name: Qube-Vital-Opera-GodEye
+    environment:
+      # MQTT Configuration
+      - MQTT_ENABLED=true
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      - MQTT_QOS=1
+      - MQTT_RETAIN=false
+      - MQTT_KEEPALIVE=60
+      - MQTT_CONNECTION_TIMEOUT=10
+      - MQTT_TOPICS=CM4_BLE_GW_TX
+      
+      # MongoDB Configuration
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin
+      - MONGODB_DATABASE=AMY
+      
+      # Redis Configuration
+      - REDIS_URL=redis://stardust-redis:6379/0
+      
+      # Service Configuration
+      - SERVICE_NAME=Qube-Vital-Opera-GodEye
+      - LOG_LEVEL=INFO
+    depends_on:
+      - stardust-redis
+    restart: unless-stopped
+    networks:
+      - stardust-network
+
+networks:
+  stardust-network:
+    external: true 

@@ -1,0 +1,247 @@
+services:
+  # ========================================
+  # MQTT LISTENER SERVICES
+  # ========================================
+  
+  # AVA4 MQTT Listener
+  opera-godeye-ava4-listener:
+    build: 
+      context: ./services/mqtt-listeners
+      dockerfile: ava4-listener/Dockerfile
+    container_name: opera-godeye-ava4-listener
+    environment:
+      # MQTT Configuration
+      - MQTT_ENABLED=true
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      - MQTT_QOS=1
+      - MQTT_RETAIN=false
+      - MQTT_KEEPALIVE=60
+      - MQTT_CONNECTION_TIMEOUT=10
+      - MQTT_TOPICS=ESP32_BLE_GW_TX,dusun_sub
+      
+      # MongoDB Configuration with SSL
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin&tlsAllowInvalidCertificates=true&tlsAllowInvalidHostnames=true&tlsCAFile=/app/ssl/ca-latest.pem&tlsCertificateKeyFile=/app/ssl/client-combined-latest.pem
+      - MONGODB_DATABASE=AMY
+      - MONGODB_HOST=coruscant.my-firstcare.com
+      - MONGODB_PORT=27023
+      - MONGODB_USERNAME=opera_admin
+      - MONGODB_PASSWORD=Sim!443355
+      - MONGODB_AUTH_DB=admin
+      - MONGODB_SSL=true
+      - MONGODB_SSL_CA_FILE=/app/ssl/ca-latest.pem
+      - MONGODB_SSL_CLIENT_FILE=/app/ssl/client-combined-latest.pem
+      
+      # Redis Configuration
+      - REDIS_URL=redis://stardust-redis:6379/2
+      
+      # Service Configuration
+      - SERVICE_NAME=ava4-listener
+      - LOG_LEVEL=INFO
+      - MAX_RETRIES=3
+      - RETRY_DELAY=5
+    volumes:
+      - ./ssl:/app/ssl:ro
+    restart: unless-stopped
+    networks:
+      - stardust-network
+
+  # Kati Watch MQTT Listener
+  opera-godeye-kati-listener:
+    build: 
+      context: ./services/mqtt-listeners
+      dockerfile: kati-listener/Dockerfile
+    container_name: opera-godeye-kati-listener
+    environment:
+      # MQTT Configuration
+      - MQTT_ENABLED=true
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      - MQTT_QOS=1
+      - MQTT_RETAIN=false
+      - MQTT_KEEPALIVE=60
+      - MQTT_CONNECTION_TIMEOUT=10
+      - MQTT_TOPICS=iMEDE_watch/VitalSign,iMEDE_watch/AP55,iMEDE_watch/hb,iMEDE_watch/location,iMEDE_watch/sleepdata,iMEDE_watch/sos,iMEDE_watch/fallDown,iMEDE_watch/onlineTrigger
+      
+      # MongoDB Configuration with SSL
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin&tlsAllowInvalidCertificates=true&tlsAllowInvalidHostnames=true&tlsCAFile=/app/ssl/ca-latest.pem&tlsCertificateKeyFile=/app/ssl/client-combined-latest.pem
+      - MONGODB_DATABASE=AMY
+      - MONGODB_HOST=coruscant.my-firstcare.com
+      - MONGODB_PORT=27023
+      - MONGODB_USERNAME=opera_admin
+      - MONGODB_PASSWORD=Sim!443355
+      - MONGODB_AUTH_DB=admin
+      - MONGODB_SSL=true
+      - MONGODB_SSL_CA_FILE=/app/ssl/ca-latest.pem
+      - MONGODB_SSL_CLIENT_FILE=/app/ssl/client-combined-latest.pem
+      
+      # Redis Configuration
+      - REDIS_URL=redis://stardust-redis:6379/3
+      
+      # Service Configuration
+      - SERVICE_NAME=kati-listener
+      - LOG_LEVEL=INFO
+      - MAX_RETRIES=3
+      - RETRY_DELAY=5
+    volumes:
+      - ./ssl:/app/ssl:ro
+    restart: unless-stopped
+    networks:
+      - stardust-network
+
+  # Qube-Vital MQTT Listener
+  opera-godeye-qube-listener:
+    build: 
+      context: ./services/mqtt-listeners
+      dockerfile: qube-listener/Dockerfile
+    container_name: opera-godeye-qube-listener
+    environment:
+      # MQTT Configuration
+      - MQTT_ENABLED=true
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      - MQTT_QOS=1
+      - MQTT_RETAIN=false
+      - MQTT_KEEPALIVE=60
+      - MQTT_CONNECTION_TIMEOUT=10
+      - MQTT_TOPICS=CM4_BLE_GW_TX
+      
+      # MongoDB Configuration with SSL
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin&tlsAllowInvalidCertificates=true&tlsAllowInvalidHostnames=true&tlsCAFile=/app/ssl/ca-latest.pem&tlsCertificateKeyFile=/app/ssl/client-combined-latest.pem
+      - MONGODB_DATABASE=AMY
+      - MONGODB_HOST=coruscant.my-firstcare.com
+      - MONGODB_PORT=27023
+      - MONGODB_USERNAME=opera_admin
+      - MONGODB_PASSWORD=Sim!443355
+      - MONGODB_AUTH_DB=admin
+      - MONGODB_SSL=true
+      - MONGODB_SSL_CA_FILE=/app/ssl/ca-latest.pem
+      - MONGODB_SSL_CLIENT_FILE=/app/ssl/client-combined-latest.pem
+      
+      # Redis Configuration
+      - REDIS_URL=redis://stardust-redis:6379/4
+      
+      # Service Configuration
+      - SERVICE_NAME=qube-listener
+      - LOG_LEVEL=INFO
+      - MAX_RETRIES=3
+      - RETRY_DELAY=5
+    volumes:
+      - ./ssl:/app/ssl:ro
+    restart: unless-stopped
+    networks:
+      - stardust-network
+
+  # ========================================
+  # MQTT MONITORING SERVICES
+  # ========================================
+  
+  # MQTT Monitor WebSocket Server
+  opera-godeye-websocket:
+    build: 
+      context: ./services/mqtt-monitor
+      dockerfile: websocket-server/Dockerfile
+    container_name: opera-godeye-websocket
+    ports:
+      - "8097:8097"
+    environment:
+      # MQTT Configuration
+      - MQTT_ENABLED=true
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      - MQTT_QOS=1
+      - MQTT_RETAIN=false
+      - MQTT_KEEPALIVE=60
+      - MQTT_CONNECTION_TIMEOUT=10
+      - MQTT_TOPICS=ESP32_BLE_GW_TX,dusun_sub,iMEDE_watch/#,CM4_BLE_GW_TX
+      
+      # MongoDB Configuration with SSL
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin&tlsAllowInvalidCertificates=true&tlsAllowInvalidHostnames=true&tlsCAFile=/app/ssl/ca-latest.pem&tlsCertificateKeyFile=/app/ssl/client-combined-latest.pem
+      - MONGODB_DATABASE=AMY
+      - MONGODB_HOST=coruscant.my-firstcare.com
+      - MONGODB_PORT=27023
+      - MONGODB_USERNAME=opera_admin
+      - MONGODB_PASSWORD=Sim!443355
+      - MONGODB_AUTH_DB=admin
+      - MONGODB_SSL=true
+      - MONGODB_SSL_CA_FILE=/app/ssl/ca-latest.pem
+      - MONGODB_SSL_CLIENT_FILE=/app/ssl/client-combined-latest.pem
+      
+      # WebSocket Configuration
+      - WS_PORT=8097
+      - WS_HOST=0.0.0.0
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./ssl:/app/ssl:ro
+    restart: unless-stopped
+    networks:
+      - stardust-network
+
+  # MQTT Monitor Web Panel
+  opera-godeye-panel:
+    build: 
+      context: ./services/mqtt-monitor
+      dockerfile: web-panel/Dockerfile
+    container_name: opera-godeye-panel
+    ports:
+      - "8098:8098"
+    environment:
+      # MQTT Configuration
+      - MQTT_ENABLED=true
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      - MQTT_QOS=1
+      - MQTT_RETAIN=false
+      - MQTT_KEEPALIVE=60
+      - MQTT_CONNECTION_TIMEOUT=10
+      - MQTT_TOPICS=ESP32_BLE_GW_TX,dusun_sub,iMEDE_watch/#,CM4_BLE_GW_TX
+      
+      # MongoDB Configuration with SSL
+      - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin&tlsAllowInvalidCertificates=true&tlsAllowInvalidHostnames=true&tlsCAFile=/app/ssl/ca-latest.pem&tlsCertificateKeyFile=/app/ssl/client-combined-latest.pem
+      - MONGODB_DATABASE=AMY
+      - MONGODB_HOST=coruscant.my-firstcare.com
+      - MONGODB_PORT=27023
+      - MONGODB_USERNAME=opera_admin
+      - MONGODB_PASSWORD=Sim!443355
+      - MONGODB_AUTH_DB=admin
+      - MONGODB_SSL=true
+      - MONGODB_SSL_CA_FILE=/app/ssl/ca-latest.pem
+      - MONGODB_SSL_CLIENT_FILE=/app/ssl/client-combined-latest.pem
+      
+      # Redis Configuration
+      - REDIS_URL=redis://stardust-redis:6379/1
+      
+      # Web Panel Configuration
+      - WEB_PORT=8098
+      - WEB_HOST=0.0.0.0
+      - LOG_LEVEL=INFO
+      - MAX_HISTORY=1000
+      - FLASK_ENV=production
+      - ENVIRONMENT=production
+      
+      # JWT Authentication Configuration
+      - JWT_AUTH_BASE_URL=https://stardust-v1.my-firstcare.com
+      - JWT_LOGIN_ENDPOINT=/auth/login
+      - JWT_ME_ENDPOINT=/auth/me
+    volumes:
+      - ./ssl:/app/ssl:ro
+    depends_on:
+      - opera-godeye-websocket
+    restart: unless-stopped
+    networks:
+      - stardust-network
+
+networks:
+  stardust-network:
+    external: true
+    name: stardust-my-firstcare-com_stardust-network 

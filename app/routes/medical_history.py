@@ -1,0 +1,1 @@
+router = APIRouter(prefix="/medical-history", tags=["medical-history"]) 

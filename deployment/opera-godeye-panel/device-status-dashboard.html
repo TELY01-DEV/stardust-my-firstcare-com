@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Status Dashboard - My FirstCare Opera Panel</title>
+    <link rel="stylesheet" href="static/css/device-status-dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="static/AMY_LOGO.svg" alt="AMY Logo" class="logo">
+                    <h1>Device Status Dashboard</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="connection-status">
+                        <span class="status-indicator" id="connectionStatus"></span>
+                        <span class="status-text" id="connectionText">Connecting...</span>
+                    </div>
+                    <button class="refresh-btn" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Summary Cards -->
+            <section class="summary-section">
+                <div class="summary-grid">
+                    <div class="summary-card total-devices">
+                        <div class="card-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Devices</h3>
+                            <p class="card-value" id="totalDevices">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card online-devices">
+                        <div class="card-icon">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Online</h3>
+                            <p class="card-value" id="onlineDevices">0</p>
+                            <p class="card-percentage" id="onlinePercentage">0%</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card offline-devices">
+                        <div class="card-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Offline</h3>
+                            <p class="card-value" id="offlineDevices">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card low-battery">
+                        <div class="card-icon">
+                            <i class="fas fa-battery-quarter"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Low Battery</h3>
+                            <p class="card-value" id="lowBatteryDevices">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card alerts">
+                        <div class="card-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Active Alerts</h3>
+                            <p class="card-value" id="activeAlerts">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Device Type Breakdown -->
+            <section class="device-breakdown">
+                <h2>Device Type Breakdown</h2>
+                <div class="breakdown-grid" id="deviceBreakdown">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Controls and Filters -->
+            <section class="controls-section">
+                <div class="controls-grid">
+                    <div class="filter-group">
+                        <label for="deviceTypeFilter">Device Type:</label>
+                        <select id="deviceTypeFilter">
+                            <option value="">All Types</option>
+                            <option value="kati">Kati Watch</option>
+                            <option value="ava4">AVA4</option>
+                            <option value="qube-vital">Qube-Vital</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="statusFilter">Status:</label>
+                        <select id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="online">Online</option>
+                            <option value="offline">Offline</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="searchInput">Search:</label>
+                        <input type="text" id="searchInput" placeholder="Search devices...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <button class="clear-filters-btn" id="clearFiltersBtn">
+                            <i class="fas fa-times"></i>
+                            Clear Filters
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Device List -->
+            <section class="device-list-section">
+                <div class="section-header">
+                    <h2>Device Status</h2>
+                    <div class="list-controls">
+                        <span class="device-count" id="deviceCount">0 devices</span>
+                        <button class="export-btn" id="exportBtn">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="device-table-container">
+                    <table class="device-table" id="deviceTable">
+                        <thead>
+                            <tr>
+                                <th>Device ID</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Battery</th>
+                                <th>Signal</th>
+                                <th>Last Updated</th>
+                                <th>Patient ID</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deviceTableBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Alerts Section -->
+            <section class="alerts-section">
+                <div class="section-header">
+                    <h2>Active Alerts</h2>
+                    <div class="alert-controls">
+                        <select id="alertSeverityFilter">
+                            <option value="">All Severities</option>
+                            <option value="critical">Critical</option>
+                            <option value="warning">Warning</option>
+                            <option value="info">Info</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="alerts-container" id="alertsContainer">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Notifications -->
+        <div class="notifications" id="notifications"></div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/device-status-dashboard.js"></script>
+</body>
+</html> 

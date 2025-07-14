@@ -1,0 +1,31 @@
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY app/ ./app/
+COPY config.py ./
+COPY .env* ./
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Set Python path
+ENV PYTHONPATH="/app"
+
+# Health check
+HEALTHCHECK --interval=60s --timeout=30s --start-period=60s --retries=3 \
+    CMD python -c "from app.services.mongo import mongodb_service; print('Migration service healthy')"
+
+# Run FHIR migration script
+CMD ["python", "app/scripts/migrate_to_fhir_r5.py"] 

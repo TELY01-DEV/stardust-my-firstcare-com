@@ -1,0 +1,57 @@
+{
+  "id": "my-firstcare-api-env",
+  "name": "My FirstCare API Environment",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5054",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "admin_username",
+      "value": "admin",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "admin_password",
+      "value": "Sim!443355",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "test_hospital_id",
+      "value": "6241716c2420fcbc3cab2c77",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "test_province_id",
+      "value": "61a9f12fa47a09ab11267306",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "test_district_id",
+      "value": "61aeea669ba0391a4fa154fe",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "test_sub_district_id",
+      "value": "61aeea839ba0391a4fa158a5",
+      "type": "default",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2025-07-10T20:02:51.754183",
+  "_postman_exported_using": "My FirstCare API Update Script"
+}
