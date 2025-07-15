@@ -11,6 +11,7 @@ import asyncio
 from datetime import datetime
 from typing import Dict, Any, Set
 import sys
+import aiohttp
 
 # Add shared utilities to path
 sys.path.append('/app/shared')
@@ -49,6 +50,9 @@ class MQTTWebSocketServer:
         self.ws_port = int(os.getenv('WS_PORT', 8081))
         self.ws_host = os.getenv('WS_HOST', '0.0.0.0')
         
+        # Web Panel Configuration (for data flow events)
+        self.web_panel_url = os.getenv('WEB_PANEL_URL', 'http://mqtt-panel:8098')
+        
         # Initialize services
         self.mqtt_monitor = MQTTMonitor(self.mongodb_uri, self.mongodb_database)
         
@@ -65,6 +69,10 @@ class MQTTWebSocketServer:
         
         # Pending messages for async broadcast
         self.pending_messages: list = []
+        
+        # Data flow events history
+        self.data_flow_history: list = []
+        self.max_data_flow_history = 100
         
     def connect_mqtt(self) -> mqtt_client.Client:
         """Connect to MQTT broker"""
@@ -160,6 +168,27 @@ class MQTTWebSocketServer:
         if disconnected_clients:
             logger.info(f"Removed {len(disconnected_clients)} disconnected WebSocket clients")
     
+    async def handle_data_flow_event(self, flow_event: Dict[str, Any]):
+        """Handle data flow event from web panel"""
+        try:
+            logger.info(f"Received data flow event: {flow_event.get('step')} - {flow_event.get('status')}")
+            
+            # Add to data flow history
+            self.data_flow_history.append(flow_event)
+            if len(self.data_flow_history) > self.max_data_flow_history:
+                self.data_flow_history.pop(0)
+            
+            # Broadcast to WebSocket clients
+            broadcast_message = {
+                "type": "data_flow_update",
+                "data": flow_event,
+                "timestamp": datetime.utcnow()
+            }
+            await self.broadcast_message(broadcast_message)
+            
+        except Exception as e:
+            logger.error(f"Error handling data flow event: {e}")
+    
     async def handle_websocket(self, websocket, path):
         """Handle WebSocket connection"""
         logger.info(f"New WebSocket connection from {websocket.remote_address}")
@@ -170,6 +199,7 @@ class MQTTWebSocketServer:
             initial_data = {
                 "type": "initial_data",
                 "message_history": self.message_history[-50:],  # Last 50 messages
+                "data_flow_history": self.data_flow_history[-20:],  # Last 20 data flow events
                 "statistics": self.mqtt_monitor.get_statistics(),
                 "timestamp": datetime.utcnow()
             }
@@ -196,6 +226,9 @@ class MQTTWebSocketServer:
                             "data": history,
                             "timestamp": datetime.utcnow()
                         }, default=str))
+                    elif data.get('type') == 'data_flow_event':
+                        # Handle data flow event from client
+                        await self.handle_data_flow_event(data.get('data', {}))
                         
                 except json.JSONDecodeError:
                     logger.warning(f"Invalid JSON from WebSocket client: {message}")

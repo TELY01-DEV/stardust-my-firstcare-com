@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Patients - MyFirstCare</title>
+    
+    <!-- CSS files -->
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/iconfont/tabler-icons.min.css" rel="stylesheet"/>
+    
+    <!-- Socket.IO client -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    
+    <style>
+        /* MFC Theme Palette */
+        :root {
+            --mfc-blue: #024F96;
+            --mfc-light-blue: #00A1E8;
+            --mfc-accent-blue: #92E3FF;
+            --mfc-red: #EC1C24;
+            --mfc-dark-red: #981F15;
+            --mfc-gray: #D0D2D3;
+            --mfc-white: #fff;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .connection-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .connection-connected { background-color: #28a745; }
+        .connection-connecting { background-color: #ffc107; }
+        .connection-disconnected { background-color: #dc3545; }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .form-select {
+            border-radius: 8px;
+        }
+        
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        
+        .message-item {
+            border-left: 4px solid var(--mfc-blue);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .message-item.ava4 {
+            border-left-color: #28a745;
+        }
+        
+        .message-item.kati {
+            border-left-color: #17a2b8;
+        }
+        
+        .message-item.qube {
+            border-left-color: #ffc107;
+        }
+        
+        .message-item.emergency {
+            border-left-color: var(--mfc-red);
+            background: #fff5f5;
+        }
+        
+        .message-timestamp {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        
+        .message-topic {
+            font-weight: 600;
+            color: var(--mfc-blue);
+        }
+        
+        .message-payload {
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        
+        .message-patient {
+            color: var(--mfc-blue);
+            font-weight: 600;
+        }
+        
+        .message-device {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        
+        .filters-bar {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-cards {
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--mfc-blue);
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        
+        /* Patient Specific Styles */
+        .patient-card {
+            border-left: 4px solid var(--mfc-blue);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .patient-card.active {
+            border-left-color: #28a745;
+        }
+        
+        .patient-card.inactive {
+            border-left-color: #6c757d;
+        }
+        
+        .patient-card.emergency {
+            border-left-color: var(--mfc-red);
+            background: #fff5f5;
+        }
+        
+        .patient-status {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .patient-status.active {
+            background: #28a745;
+            color: white;
+        }
+        
+        .patient-status.inactive {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .patient-status.emergency {
+            background: var(--mfc-red);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Tabler Navbar -->
+        <header class="navbar navbar-expand-md navbar-dark d-print-none" style="background: var(--mfc-blue);">
+            <div class="container-xl">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" href="/">
+                    <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:40px;vertical-align:middle;margin-right:10px;">
+                    My FirstCare Panel
+                </a>
+                <div class="navbar-nav flex-row order-md-last">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
+                            <span class="avatar avatar-sm">
+                                <i class="ti ti-user"></i>
+                            </span>
+                            <div class="d-none d-xl-block ps-2">
+                                <div>Patient Monitor</div>
+                                <div class="mt-n1">
+                                    <span class="connection-indicator connection-connecting" id="connection-status"></span>
+                                    <small id="connection-text">Connecting...</small>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <a href="/" class="dropdown-item">
+                                <i class="ti ti-home me-2"></i>
+                                Main Dashboard
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/logout" class="dropdown-item">
+                                <i class="ti ti-logout me-2"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="navbar-expand-md">
+            <div class="collapse navbar-collapse" id="navbar-menu">
+                <div class="navbar navbar-light">
+                    <div class="container-xl">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">
+                                    <i class="ti ti-dashboard me-2"></i>
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/messages">
+                                    <i class="ti ti-message-circle me-2"></i>
+                                    Messages
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/emergency">
+                                    <i class="ti ti-alert-triangle me-2"></i>
+                                    Emergency Alerts
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/devices">
+                                    <i class="ti ti-devices me-2"></i>
+                                    Devices
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/patients">
+                                    <i class="ti ti-users me-2"></i>
+                                    Patients
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/data-flow">
+                                    <i class="ti ti-activity me-2"></i>
+                                    Data Flow Monitor
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-wrapper">
+            <!-- Page header -->
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <h2 class="page-title">
+                                Patients
+                            </h2>
+                            <div class="text-muted mt-1">
+                                Patient management and monitoring
+                            </div>
+                        </div>
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                <button class="btn btn-primary" onclick="refreshPatients()">
+                                    <i class="ti ti-refresh me-2"></i>
+                                    Refresh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page body -->
+            <div class="page-body">
+                <div class="container-xl">
+                    <!-- Statistics Cards -->
+                    <div class="row stats-cards">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card stat-card">
+                                <div class="stat-number" id="total-patients">0</div>
+                                <div class="stat-label">Total Patients</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card stat-card">
+                                <div class="stat-number" id="active-patients">0</div>
+                                <div class="stat-label">Active Patients</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card stat-card">
+                                <div class="stat-number" id="monitored-patients">0</div>
+                                <div class="stat-label">Monitored</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card stat-card">
+                                <div class="stat-number" id="emergency-patients">0</div>
+                                <div class="stat-label">Emergency</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="filters-bar">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="status-filter" class="form-label">Status</label>
+                                <select class="form-select" id="status-filter">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="emergency">Emergency</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="device-filter" class="form-label">Device Type</label>
+                                <select class="form-select" id="device-filter">
+                                    <option value="">All Devices</option>
+                                    <option value="ava4">AVA4</option>
+                                    <option value="kati">Kati Watch</option>
+                                    <option value="qube">Qube-Vital</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="search-filter" class="form-label">Search</label>
+                                <input type="text" class="form-control" id="search-filter" placeholder="Search patients...">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-primary w-100" onclick="applyFilters()">
+                                    <i class="ti ti-search me-2"></i>
+                                    Apply Filters
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Patients List -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="ti ti-list me-2"></i>
+                                        Patient List
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <div id="patients-container">
+                                        <div class="text-center text-muted py-4">
+                                            <i class="ti ti-users fa-3x mb-3"></i>
+                                            <p class="mb-0">No patients found</p>
+                                            <small class="text-muted">Patients will appear here when registered</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="/static/js/app.js"></script>
+    
+    <script>
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Initializing Patients Page...');
+            window.app = new MQTTMonitorApp();
+            window.app.init();
+        });
+    </script>
+</body>
+</html> 

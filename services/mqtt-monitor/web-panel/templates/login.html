@@ -4,34 +4,49 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Login - MQTT Monitor</title>
+    <title>Login - MQTT Monitor - MyFirstCare</title>
     
     <!-- CSS files -->
     <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/iconfont/tabler-icons.min.css" rel="stylesheet"/>
     
     <style>
+        /* MFC Theme Palette */
+        :root {
+            --mfc-blue: #024F96;
+            --mfc-light-blue: #00A1E8;
+            --mfc-accent-blue: #92E3FF;
+            --mfc-red: #EC1C24;
+            --mfc-dark-red: #981F15;
+            --mfc-gray: #D0D2D3;
+            --mfc-white: #fff;
+        }
+        
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--mfc-blue) 0%, var(--mfc-light-blue) 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        
         .login-card {
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: none;
         }
+        
         .login-header {
             text-align: center;
             margin-bottom: 2rem;
         }
+        
         .login-logo {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--mfc-blue) 0%, var(--mfc-light-blue) 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -40,110 +55,117 @@
             color: white;
             font-size: 2rem;
         }
+        
         .alert {
             border-radius: 10px;
             border: none;
         }
+        
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--mfc-blue) 0%, var(--mfc-light-blue) 100%);
             border: none;
             border-radius: 10px;
             padding: 12px 24px;
             font-weight: 600;
             transition: all 0.3s ease;
         }
+        
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 25px rgba(2, 79, 150, 0.3);
         }
+        
         .form-control {
             border-radius: 10px;
             border: 2px solid #e9ecef;
             padding: 12px 16px;
             transition: all 0.3s ease;
         }
+        
         .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            border-color: var(--mfc-blue);
+            box-shadow: 0 0 0 0.2rem rgba(2, 79, 150, 0.25);
         }
-        .input-group-text {
-            border-radius: 10px 0 0 10px;
-            border: 2px solid #e9ecef;
-            background: #f8f9fa;
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
         }
-        .input-group .form-control {
-            border-left: none;
-            border-radius: 0 10px 10px 0;
+        
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-body {
+            padding: 2rem;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--mfc-blue) !important;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <div class="card login-card">
-                    <div class="card-body p-4 p-lg-5">
-                        <div class="login-header">
-                            <div class="login-logo" style="background: var(--mfc-blue);">
-                                <img src="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}" alt="MFC Login Logo" style="height:60px;width:60px;object-fit:contain;">
-                            </div>
-                            <h2 class="h3 mb-3">MQTT Monitor</h2>
-                            <p class="text-muted">Sign in to access the monitoring dashboard</p>
+    <div class="page page-center">
+        <div class="container container-tight py-4">
+            <div class="text-center mb-4">
+                <a href="/" class="navbar-brand navbar-brand-autodark">
+                    <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:60px;vertical-align:middle;margin-right:15px;">
+                    MQTT Monitor Dashboard
+                </a>
+            </div>
+            
+            <div class="card card-md login-card">
+                <div class="card-body">
+                    <h2 class="h2 text-center mb-4 login-header">
+                        <div class="login-logo">
+                            <i class="ti ti-login"></i>
                         </div>
-
-                        {% if error %}
-                        <div class="alert alert-danger" role="alert">
-                            <i class="ti ti-alert-circle me-2"></i>
-                            {{ error }}
+                        Sign in to your account
+                    </h2>
+                    
+                    {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        <i class="ti ti-alert-triangle me-2"></i>
+                        {{ error }}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="POST" action="/login">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required autocomplete="username">
                         </div>
-                        {% endif %}
-
-                        <form method="POST" action="{{ url_for('login') }}">
-                            <div class="mb-3">
-                                <label class="form-label" for="username">Username</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="ti ti-user"></i>
-                                    </span>
-                                    <input type="text" 
-                                           class="form-control" 
-                                           id="username" 
-                                           name="username" 
-                                           placeholder="Enter your username"
-                                           required 
-                                           autofocus>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label" for="password">Password</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="ti ti-lock"></i>
-                                    </span>
-                                    <input type="password" 
-                                           class="form-control" 
-                                           id="password" 
-                                           name="password" 
-                                           placeholder="Enter your password"
-                                           required>
-                                </div>
-                            </div>
-
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="ti ti-login me-2"></i>
-                                    Sign In
-                                </button>
-                            </div>
-                        </form>
-
-                        <div class="text-center mt-4">
-                            <small class="text-muted">
-                                <i class="ti ti-shield-check me-1"></i>
-                                Secure authentication via Stardust-V1
-                            </small>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
                         </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-check">
+                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                <span class="form-check-label">Remember me</span>
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="ti ti-login me-2"></i>
+                                Sign In
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <small class="text-muted">
+                            <i class="ti ti-shield-check me-1"></i>
+                            Secure authentication via Stardust-V1
+                        </small>
                     </div>
                 </div>
             </div>

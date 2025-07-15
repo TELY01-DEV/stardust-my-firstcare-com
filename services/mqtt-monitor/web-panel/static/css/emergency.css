@@ -1,0 +1,521 @@
+/* Emergency Dashboard Styles - Tabler + My FirstCare Theme */
+
+:root {
+    --emergency-red: #dc3545;
+    --emergency-orange: #fd7e14;
+    --emergency-yellow: #ffc107;
+    --emergency-green: #28a745;
+    --emergency-blue: #17a2b8;
+    --emergency-purple: #6f42c1;
+    --mfc-blue: #024F96;
+    --mfc-light-blue: #00A1E8;
+    --mfc-accent-blue: #92E3FF;
+    --mfc-red: #EC1C24;
+    --mfc-dark-red: #981F15;
+    --mfc-gray: #D0D2D3;
+    --mfc-white: #fff;
+}
+
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Statistics Cards */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.bg-orange {
+    background-color: var(--emergency-orange) !important;
+}
+
+/* Google Map Styles */
+#emergency-map {
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.map-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.map-legend {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 1000;
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 0.8rem;
+}
+
+/* Custom Map Markers */
+.custom-marker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.custom-marker:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.marker-sos {
+    background-color: var(--emergency-red);
+    animation: pulse 2s infinite;
+}
+
+.marker-fall {
+    background-color: var(--emergency-orange);
+}
+
+.marker-battery {
+    background-color: var(--emergency-yellow);
+    color: #333;
+}
+
+.marker-critical {
+    background-color: var(--emergency-red);
+    border-color: #fff;
+}
+
+.marker-high {
+    background-color: var(--emergency-orange);
+    border-color: #fff;
+}
+
+.marker-medium {
+    background-color: var(--emergency-yellow);
+    border-color: #fff;
+    color: #333;
+}
+
+.marker-low {
+    background-color: var(--emergency-green);
+    border-color: #fff;
+}
+
+/* Info Window Styles */
+.info-window {
+    max-width: 300px;
+    padding: 10px;
+}
+
+.info-window h6 {
+    color: var(--emergency-red);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.info-window .patient-name {
+    font-weight: 600;
+    color: var(--emergency-purple);
+    margin-bottom: 5px;
+}
+
+.info-window .alert-type {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+}
+
+.info-window .timestamp {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-bottom: 8px;
+}
+
+.info-window .location {
+    font-size: 0.8rem;
+    color: var(--emergency-blue);
+    margin-bottom: 8px;
+}
+
+.info-window .actions {
+    margin-top: 10px;
+}
+
+.info-window .btn {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    margin-right: 5px;
+}
+
+/* Emergency Banner */
+#emergency-banner {
+    animation: pulse 1s infinite;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+/* Connection Status */
+#connection-status {
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* Table Styles */
+.table th {
+    border-top: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 12px 8px;
+}
+
+.alert-type {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.alert-type.sos {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.alert-type.fall_down {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.alert-type.low_battery {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.priority-badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.priority-critical {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.priority-high {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.priority-medium {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.priority-low {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.status-active {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-processed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.btn-action {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    margin-right: 4px;
+}
+
+.new-alert {
+    animation: slideInRight 0.5s ease-out;
+    background-color: #fff3cd;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Modal Styles */
+.modal-header {
+    background-color: var(--mfc-blue);
+    color: white;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.location-info {
+    font-size: 0.875rem;
+}
+
+.location-gps {
+    color: var(--emergency-blue);
+    font-weight: 600;
+}
+
+.patient-info {
+    font-weight: 600;
+    color: var(--emergency-purple);
+}
+
+.time-display {
+    font-family: monospace;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 10px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .btn-action {
+        font-size: 0.7rem;
+        padding: 3px 6px;
+    }
+    
+    #emergency-map {
+        height: 300px !important;
+    }
+}
+
+/* Loading States */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #6c757d;
+}
+
+.loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--mfc-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Form Controls */
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.form-select:focus {
+    border-color: var(--mfc-blue);
+    box-shadow: 0 0 0 0.2rem rgba(2, 79, 150, 0.25);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Sound Indicator */
+.sound-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--emergency-red);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    max-width: 300px;
+    animation: slideInDown 0.5s ease-out;
+}
+
+.notification.success {
+    border-left: 4px solid var(--emergency-green);
+}
+
+.notification.warning {
+    border-left: 4px solid var(--emergency-yellow);
+}
+
+/* Alert Details */
+.alert-details {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid var(--mfc-blue);
+}
+
+.alert-details h6 {
+    color: var(--mfc-blue);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.timestamp {
+    font-family: monospace;
+    background-color: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+.priority-icon {
+    margin-right: 8px;
+}
+
+/* Map Controls */
+.map-controls .btn-group .btn {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+}
+
+.heatmap-active {
+    background-color: var(--emergency-orange) !important;
+    color: white !important;
+}
+
+/* Export Button */
+.btn-export {
+    background: linear-gradient(135deg, var(--mfc-blue) 0%, var(--mfc-light-blue) 100%);
+    border: none;
+    color: white;
+}
+
+.btn-export:hover {
+    background: linear-gradient(135deg, var(--mfc-light-blue) 0%, var(--mfc-blue) 100%);
+    color: white;
+}
+
+/* Table Collapsed State */
+.table-collapsed {
+    display: none;
+}
+
+/* Alerts Count Badge */
+#alerts-count {
+    font-size: 0.875rem;
+    padding: 6px 12px;
+}
+
+/* Map Loading State */
+.map-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+.map-loading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+} 

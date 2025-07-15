@@ -355,8 +355,8 @@ class FHIRR5Service:
             query = {"is_deleted": False}
             
             # Add search filters
-            if search_params._id:
-                query["resource_id"] = search_params._id
+            if search_params.id:
+                query["resource_id"] = search_params.id
             
             if search_params.patient:
                 query["patient_id"] = search_params.patient
@@ -379,16 +379,16 @@ class FHIRR5Service:
             # Apply pagination and sorting
             cursor = collection.find(query)
             
-            if search_params._sort:
-                sort_spec = self._parse_sort_spec(search_params._sort)
+            if search_params.sort:
+                sort_spec = self._parse_sort_spec(search_params.sort)
                 cursor = cursor.sort(sort_spec)
             else:
                 cursor = cursor.sort("recorded_datetime", DESCENDING)
             
-            cursor = cursor.skip(search_params._offset).limit(search_params._count)
+            cursor = cursor.skip(search_params.offset).limit(search_params.count)
             
             # Get results
-            docs = await cursor.to_list(length=search_params._count)
+            docs = await cursor.to_list(length=search_params.count)
             
             # Format as FHIR Bundle entries
             entries = []
@@ -1235,23 +1235,23 @@ class FHIRR5Service:
         # Self link
         links.append({
             "relation": "self",
-            "url": f"/{resource_type}?_count={search_params._count}&_offset={search_params._offset}"
+            "url": f"/{resource_type}?_count={search_params.count}&_offset={search_params.offset}"
         })
         
         # Next link
-        next_offset = search_params._offset + search_params._count
+        next_offset = search_params.offset + search_params.count
         if next_offset < total:
             links.append({
                 "relation": "next",
-                "url": f"/{resource_type}?_count={search_params._count}&_offset={next_offset}"
+                "url": f"/{resource_type}?_count={search_params.count}&_offset={next_offset}"
             })
         
         # Previous link
-        if search_params._offset > 0:
-            prev_offset = max(0, search_params._offset - search_params._count)
+        if search_params.offset > 0:
+            prev_offset = max(0, search_params.offset - search_params.count)
             links.append({
                 "relation": "previous",
-                "url": f"/{resource_type}?_count={search_params._count}&_offset={prev_offset}"
+                "url": f"/{resource_type}?_count={search_params.count}&_offset={prev_offset}"
             })
         
         return links
@@ -2792,6 +2792,1472 @@ class FHIRR5Service:
         except Exception as e:
             logger.error(f"Failed to verify hash chain integrity: {e}")
             raise
+
+    # =============== Device-Specific Data Format Validation ===============
+
+    def validate_ava4_data_format(self, mqtt_payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate and transform AVA4 MQTT payload format before FHIR storage"""
+        try:
+            validation_result = {
+                "valid": False,
+                "errors": [],
+                "warnings": [],
+                "transformed_data": None,
+                "device_type": "AVA4"
+            }
+            
+            # Required fields validation
+            required_fields = ["type", "mac", "data"]
+            for field in required_fields:
+                if field not in mqtt_payload:
+                    validation_result["errors"].append(f"Missing required field: {field}")
+            
+            if validation_result["errors"]:
+                return validation_result
+            
+            # Validate message type
+            msg_type = mqtt_payload.get("type")
+            if msg_type != "reportAttribute":
+                validation_result["errors"].append(f"Invalid message type: {msg_type}, expected 'reportAttribute'")
+            
+            # Validate data structure
+            data = mqtt_payload.get("data", {})
+            if not isinstance(data, dict):
+                validation_result["errors"].append("Data field must be a dictionary")
+                return validation_result
+            
+            # Validate attribute and value
+            attribute = data.get("attribute")
+            value = data.get("value", {})
+            
+            if not attribute:
+                validation_result["errors"].append("Missing attribute in data")
+            
+            if not isinstance(value, dict):
+                validation_result["errors"].append("Value field must be a dictionary")
+                return validation_result
+            
+            # Validate device_list
+            device_list = value.get("device_list", [])
+            if not isinstance(device_list, list):
+                validation_result["errors"].append("device_list must be an array")
+                return validation_result
+            
+            if not device_list:
+                validation_result["warnings"].append("Empty device_list - no readings to process")
+            
+            # Validate each device reading
+            valid_readings = []
+            for i, reading in enumerate(device_list):
+                reading_validation = self._validate_ava4_reading(reading, attribute, i)
+                if reading_validation["valid"]:
+                    valid_readings.append(reading_validation["transformed_reading"])
+                else:
+                    validation_result["errors"].extend(reading_validation["errors"])
+                    validation_result["warnings"].extend(reading_validation["warnings"])
+            
+            # Transform data if valid
+            if not validation_result["errors"] and valid_readings:
+                validation_result["transformed_data"] = {
+                    "type": msg_type,
+                    "mac": mqtt_payload.get("mac"),
+                    "deviceCode": mqtt_payload.get("deviceCode"),
+                    "data": {
+                        "attribute": attribute,
+                        "value": {
+                            "device_list": valid_readings
+                        }
+                    },
+                    "timestamp": datetime.utcnow().isoformat(),
+                    "source": "AVA4_MQTT"
+                }
+                validation_result["valid"] = True
+            
+            return validation_result
+            
+        except Exception as e:
+            logger.error(f"Error validating AVA4 data format: {e}")
+            return {
+                "valid": False,
+                "errors": [f"Validation error: {str(e)}"],
+                "warnings": [],
+                "transformed_data": None,
+                "device_type": "AVA4"
+            }
+    
+    def _validate_ava4_reading(self, reading: Dict[str, Any], attribute: str, index: int) -> Dict[str, Any]:
+        """Validate individual AVA4 device reading"""
+        validation_result = {
+            "valid": False,
+            "errors": [],
+            "warnings": [],
+            "transformed_reading": None
+        }
+        
+        try:
+            if not isinstance(reading, dict):
+                validation_result["errors"].append(f"Reading {index}: Must be a dictionary")
+                return validation_result
+            
+            # Extract BLE address
+            ble_addr = reading.get("ble_addr")
+            if not ble_addr:
+                validation_result["warnings"].append(f"Reading {index}: Missing BLE address")
+            
+            # Validate based on device type
+            if attribute == "BP_BIOLIGTH":
+                validation_result = self._validate_blood_pressure_reading(reading, index)
+            elif attribute in ["Contour_Elite", "AccuChek_Instant"]:
+                validation_result = self._validate_blood_glucose_reading(reading, index)
+            elif attribute == "Oximeter JUMPER":
+                validation_result = self._validate_spo2_reading(reading, index)
+            elif attribute == "IR_TEMO_JUMPER":
+                validation_result = self._validate_temperature_reading(reading, index)
+            elif attribute == "BodyScale_JUMPER":
+                validation_result = self._validate_weight_reading(reading, index)
+            elif attribute == "MGSS_REF_UA":
+                validation_result = self._validate_uric_acid_reading(reading, index)
+            elif attribute == "MGSS_REF_CHOL":
+                validation_result = self._validate_cholesterol_reading(reading, index)
+            else:
+                validation_result["errors"].append(f"Reading {index}: Unknown device attribute: {attribute}")
+            
+            # Transform reading if valid
+            if validation_result["valid"]:
+                validation_result["transformed_reading"] = {
+                    **reading,
+                    "device_type": attribute,
+                    "validation_timestamp": datetime.utcnow().isoformat()
+                }
+            
+            return validation_result
+            
+        except Exception as e:
+            validation_result["errors"].append(f"Reading {index}: Validation error: {str(e)}")
+            return validation_result
+    
+    def validate_kati_data_format(self, mqtt_payload: Dict[str, Any], topic: str) -> Dict[str, Any]:
+        """Validate and transform Kati Watch MQTT payload format before FHIR storage"""
+        try:
+            validation_result = {
+                "valid": False,
+                "errors": [],
+                "warnings": [],
+                "transformed_data": None,
+                "device_type": "Kati_Watch"
+            }
+            
+            # Required fields validation
+            required_fields = ["IMEI"]
+            for field in required_fields:
+                if field not in mqtt_payload:
+                    validation_result["errors"].append(f"Missing required field: {field}")
+            
+            if validation_result["errors"]:
+                return validation_result
+            
+            # Validate IMEI format
+            imei = mqtt_payload.get("IMEI")
+            if not imei or len(str(imei)) != 15:
+                validation_result["warnings"].append(f"IMEI format may be invalid: {imei}")
+            
+            # Validate based on topic
+            if topic == "iMEDE_watch/VitalSign":
+                validation_result = self._validate_kati_vital_signs(mqtt_payload)
+            elif topic == "iMEDE_watch/AP55":
+                validation_result = self._validate_kati_batch_vital_signs(mqtt_payload)
+            elif topic == "iMEDE_watch/location":
+                validation_result = self._validate_kati_location(mqtt_payload)
+            elif topic == "iMEDE_watch/sleepdata":
+                validation_result = self._validate_kati_sleep_data(mqtt_payload)
+            elif topic == "iMEDE_watch/sos":
+                validation_result = self._validate_kati_emergency(mqtt_payload)
+            elif topic == "iMEDE_watch/fallDown":
+                validation_result = self._validate_kati_fall_detection(mqtt_payload)
+            elif topic == "iMEDE_watch/hb":
+                validation_result = self._validate_kati_heartbeat(mqtt_payload)
+            else:
+                validation_result["errors"].append(f"Unknown topic: {topic}")
+            
+            # Transform data if valid
+            if not validation_result["errors"]:
+                validation_result["transformed_data"] = {
+                    **mqtt_payload,
+                    "topic": topic,
+                    "validation_timestamp": datetime.utcnow().isoformat(),
+                    "source": "Kati_Watch_MQTT"
+                }
+                validation_result["valid"] = True
+            
+            return validation_result
+            
+        except Exception as e:
+            logger.error(f"Error validating Kati data format: {e}")
+            return {
+                "valid": False,
+                "errors": [f"Validation error: {str(e)}"],
+                "warnings": [],
+                "transformed_data": None,
+                "device_type": "Kati_Watch"
+            }
+    
+    def validate_qube_data_format(self, mqtt_payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate and transform Qube-Vital MQTT payload format before FHIR storage"""
+        try:
+            validation_result = {
+                "valid": False,
+                "errors": [],
+                "warnings": [],
+                "transformed_data": None,
+                "device_type": "Qube_Vital"
+            }
+            
+            # Required fields validation
+            required_fields = ["type", "citiz", "data"]
+            for field in required_fields:
+                if field not in mqtt_payload:
+                    validation_result["errors"].append(f"Missing required field: {field}")
+            
+            if validation_result["errors"]:
+                return validation_result
+            
+            # Validate message type
+            msg_type = mqtt_payload.get("type")
+            if msg_type != "reportAttribute":
+                validation_result["errors"].append(f"Invalid message type: {msg_type}, expected 'reportAttribute'")
+            
+            # Validate citizen ID
+            citiz = mqtt_payload.get("citiz")
+            if not citiz:
+                validation_result["errors"].append("Missing citizen ID")
+            elif len(str(citiz)) != 13:
+                validation_result["warnings"].append(f"Citizen ID format may be invalid: {citiz}")
+            
+            # Validate data structure
+            data = mqtt_payload.get("data", {})
+            if not isinstance(data, dict):
+                validation_result["errors"].append("Data field must be a dictionary")
+                return validation_result
+            
+            # Validate attribute and value
+            attribute = data.get("attribute")
+            value = data.get("value", {})
+            
+            if not attribute:
+                validation_result["errors"].append("Missing attribute in data")
+            
+            if not isinstance(value, dict):
+                validation_result["errors"].append("Value field must be a dictionary")
+                return validation_result
+            
+            # Validate Qube-Vital specific data
+            if attribute == "BP_BIOLIGTH":
+                validation_result = self._validate_qube_blood_pressure(value)
+            elif attribute in ["Contour_Elite", "AccuChek_Instant"]:
+                validation_result = self._validate_qube_blood_glucose(value)
+            elif attribute == "Oximeter JUMPER":
+                validation_result = self._validate_qube_spo2(value)
+            elif attribute == "IR_TEMO_JUMPER":
+                validation_result = self._validate_qube_temperature(value)
+            elif attribute == "BodyScale_JUMPER":
+                validation_result = self._validate_qube_weight(value)
+            else:
+                validation_result["errors"].append(f"Unknown device attribute: {attribute}")
+            
+            # Transform data if valid
+            if not validation_result["errors"]:
+                validation_result["transformed_data"] = {
+                    "type": msg_type,
+                    "citiz": citiz,
+                    "nameTH": mqtt_payload.get("nameTH", ""),
+                    "nameEN": mqtt_payload.get("nameEN", ""),
+                    "brith": mqtt_payload.get("brith", ""),
+                    "gender": mqtt_payload.get("gender", ""),
+                    "data": {
+                        "attribute": attribute,
+                        "value": value
+                    },
+                    "validation_timestamp": datetime.utcnow().isoformat(),
+                    "source": "Qube_Vital_MQTT"
+                }
+                validation_result["valid"] = True
+            
+            return validation_result
+            
+        except Exception as e:
+            logger.error(f"Error validating Qube-Vital data format: {e}")
+            return {
+                "valid": False,
+                "errors": [f"Validation error: {str(e)}"],
+                "warnings": [],
+                "transformed_data": None,
+                "device_type": "Qube_Vital"
+            }
+
+    # =============== Device-Specific Reading Validation ===============
+
+    def _validate_blood_pressure_reading(self, reading: Dict[str, Any], index: int) -> Dict[str, Any]:
+        """Validate blood pressure reading"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        required_fields = ["bp_high", "bp_low"]
+        for field in required_fields:
+            if field not in reading:
+                validation_result["errors"].append(f"Reading {index}: Missing {field}")
+            elif not isinstance(reading[field], (int, float)):
+                validation_result["errors"].append(f"Reading {index}: {field} must be numeric")
+        
+        # Validate ranges
+        if "bp_high" in reading and isinstance(reading["bp_high"], (int, float)):
+            if reading["bp_high"] < 70 or reading["bp_high"] > 200:
+                validation_result["warnings"].append(f"Reading {index}: Systolic BP may be out of normal range: {reading['bp_high']}")
+        
+        if "bp_low" in reading and isinstance(reading["bp_low"], (int, float)):
+            if reading["bp_low"] < 40 or reading["bp_low"] > 130:
+                validation_result["warnings"].append(f"Reading {index}: Diastolic BP may be out of normal range: {reading['bp_low']}")
+        
+        # Validate pulse rate if present
+        if "PR" in reading:
+            if not isinstance(reading["PR"], (int, float)):
+                validation_result["errors"].append(f"Reading {index}: PR must be numeric")
+            elif reading["PR"] < 30 or reading["PR"] > 200:
+                validation_result["warnings"].append(f"Reading {index}: Pulse rate may be out of normal range: {reading['PR']}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_blood_glucose_reading(self, reading: Dict[str, Any], index: int) -> Dict[str, Any]:
+        """Validate blood glucose reading"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        if "blood_glucose" not in reading:
+            validation_result["errors"].append(f"Reading {index}: Missing blood_glucose")
+        elif not isinstance(reading["blood_glucose"], (int, float)):
+            validation_result["errors"].append(f"Reading {index}: blood_glucose must be numeric")
+        elif reading["blood_glucose"] < 20 or reading["blood_glucose"] > 600:
+            validation_result["warnings"].append(f"Reading {index}: Blood glucose may be out of normal range: {reading['blood_glucose']}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_spo2_reading(self, reading: Dict[str, Any], index: int) -> Dict[str, Any]:
+        """Validate SpO2 reading"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        if "spo2" not in reading:
+            validation_result["errors"].append(f"Reading {index}: Missing spo2")
+        elif not isinstance(reading["spo2"], (int, float)):
+            validation_result["errors"].append(f"Reading {index}: spo2 must be numeric")
+        elif reading["spo2"] < 70 or reading["spo2"] > 100:
+            validation_result["warnings"].append(f"Reading {index}: SpO2 may be out of normal range: {reading['spo2']}")
+        
+        if "pulse" in reading:
+            if not isinstance(reading["pulse"], (int, float)):
+                validation_result["errors"].append(f"Reading {index}: pulse must be numeric")
+            elif reading["pulse"] < 30 or reading["pulse"] > 200:
+                validation_result["warnings"].append(f"Reading {index}: Pulse rate may be out of normal range: {reading['pulse']}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_temperature_reading(self, reading: Dict[str, Any], index: int) -> Dict[str, Any]:
+        """Validate temperature reading"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        if "temp" not in reading:
+            validation_result["errors"].append(f"Reading {index}: Missing temp")
+        elif not isinstance(reading["temp"], (int, float)):
+            validation_result["errors"].append(f"Reading {index}: temp must be numeric")
+        elif reading["temp"] < 30 or reading["temp"] > 45:
+            validation_result["warnings"].append(f"Reading {index}: Temperature may be out of normal range: {reading['temp']}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_weight_reading(self, reading: Dict[str, Any], index: int) -> Dict[str, Any]:
+        """Validate weight reading"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        if "weight" not in reading:
+            validation_result["errors"].append(f"Reading {index}: Missing weight")
+        elif not isinstance(reading["weight"], (int, float)):
+            validation_result["errors"].append(f"Reading {index}: weight must be numeric")
+        elif reading["weight"] < 10 or reading["weight"] > 300:
+            validation_result["warnings"].append(f"Reading {index}: Weight may be out of normal range: {reading['weight']}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_uric_acid_reading(self, reading: Dict[str, Any], index: int) -> Dict[str, Any]:
+        """Validate uric acid reading"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        if "uric_acid" not in reading:
+            validation_result["errors"].append(f"Reading {index}: Missing uric_acid")
+        elif not isinstance(reading["uric_acid"], (int, float)):
+            validation_result["errors"].append(f"Reading {index}: uric_acid must be numeric")
+        elif reading["uric_acid"] < 50 or reading["uric_acid"] > 1000:
+            validation_result["warnings"].append(f"Reading {index}: Uric acid may be out of normal range: {reading['uric_acid']}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_cholesterol_reading(self, reading: Dict[str, Any], index: int) -> Dict[str, Any]:
+        """Validate cholesterol reading"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        if "cholesterol" not in reading:
+            validation_result["errors"].append(f"Reading {index}: Missing cholesterol")
+        elif not isinstance(reading["cholesterol"], (int, float)):
+            validation_result["errors"].append(f"Reading {index}: cholesterol must be numeric")
+        elif reading["cholesterol"] < 50 or reading["cholesterol"] > 500:
+            validation_result["warnings"].append(f"Reading {index}: Cholesterol may be out of normal range: {reading['cholesterol']}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+
+    # =============== Kati Watch Topic-Specific Validation ===============
+
+    def _validate_kati_vital_signs(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Kati Watch vital signs data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        # Check for required vital signs fields
+        vital_fields = ["HR", "SYS", "DIA", "SPO2", "TEMP"]
+        found_fields = [field for field in vital_fields if field in payload]
+        
+        if not found_fields:
+            validation_result["errors"].append("No vital signs data found")
+        else:
+            # Validate each found field
+            for field in found_fields:
+                value = payload[field]
+                if not isinstance(value, (int, float)):
+                    validation_result["errors"].append(f"{field} must be numeric")
+                else:
+                    # Range validation
+                    if field == "HR" and (value < 30 or value > 200):
+                        validation_result["warnings"].append(f"Heart rate may be out of normal range: {value}")
+                    elif field == "SYS" and (value < 70 or value > 200):
+                        validation_result["warnings"].append(f"Systolic BP may be out of normal range: {value}")
+                    elif field == "DIA" and (value < 40 or value > 130):
+                        validation_result["warnings"].append(f"Diastolic BP may be out of normal range: {value}")
+                    elif field == "SPO2" and (value < 70 or value > 100):
+                        validation_result["warnings"].append(f"SpO2 may be out of normal range: {value}")
+                    elif field == "TEMP" and (value < 30 or value > 45):
+                        validation_result["warnings"].append(f"Temperature may be out of normal range: {value}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_kati_batch_vital_signs(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Kati Watch batch vital signs data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        # Check for batch data structure
+        if "data" not in payload or not isinstance(payload["data"], list):
+            validation_result["errors"].append("Batch data must be an array")
+        else:
+            batch_data = payload["data"]
+            if not batch_data:
+                validation_result["warnings"].append("Empty batch data")
+            else:
+                # Validate each batch entry
+                for i, entry in enumerate(batch_data):
+                    if not isinstance(entry, dict):
+                        validation_result["errors"].append(f"Batch entry {i} must be an object")
+                    else:
+                        # Validate individual vital signs
+                        entry_validation = self._validate_kati_vital_signs(entry)
+                        validation_result["errors"].extend(entry_validation["errors"])
+                        validation_result["warnings"].extend(entry_validation["warnings"])
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_kati_location(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Kati Watch location data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        # Check for location fields
+        location_fields = ["lat", "lng", "alt", "accuracy"]
+        found_fields = [field for field in location_fields if field in payload]
+        
+        if not found_fields:
+            validation_result["errors"].append("No location data found")
+        else:
+            # Validate coordinates
+            if "lat" in payload:
+                lat = payload["lat"]
+                if not isinstance(lat, (int, float)) or lat < -90 or lat > 90:
+                    validation_result["errors"].append("Invalid latitude value")
+            
+            if "lng" in payload:
+                lng = payload["lng"]
+                if not isinstance(lng, (int, float)) or lng < -180 or lng > 180:
+                    validation_result["errors"].append("Invalid longitude value")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_kati_sleep_data(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Kati Watch sleep data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        # Check for sleep data fields
+        sleep_fields = ["sleep_start", "sleep_end", "sleep_duration", "sleep_quality"]
+        found_fields = [field for field in sleep_fields if field in payload]
+        
+        if not found_fields:
+            validation_result["warnings"].append("No sleep data fields found")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_kati_emergency(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Kati Watch emergency data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        # Emergency data should have timestamp and type
+        if "timestamp" not in payload:
+            validation_result["warnings"].append("Emergency event missing timestamp")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_kati_fall_detection(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Kati Watch fall detection data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        # Fall detection should have timestamp and severity
+        if "timestamp" not in payload:
+            validation_result["warnings"].append("Fall detection missing timestamp")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_kati_heartbeat(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Kati Watch heartbeat data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        # Heartbeat should have step count and timestamp
+        if "step_count" in payload:
+            step_count = payload["step_count"]
+            if not isinstance(step_count, (int, float)) or step_count < 0:
+                validation_result["errors"].append("Invalid step count")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+
+    # =============== Qube-Vital Device-Specific Validation ===============
+
+    def _validate_qube_blood_pressure(self, value: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Qube-Vital blood pressure data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        # Qube-Vital BP structure validation
+        if "bp_high" not in value or "bp_low" not in value:
+            validation_result["errors"].append("Missing blood pressure values")
+        else:
+            if not isinstance(value["bp_high"], (int, float)):
+                validation_result["errors"].append("Systolic BP must be numeric")
+            elif value["bp_high"] < 70 or value["bp_high"] > 200:
+                validation_result["warnings"].append(f"Systolic BP may be out of normal range: {value['bp_high']}")
+            
+            if not isinstance(value["bp_low"], (int, float)):
+                validation_result["errors"].append("Diastolic BP must be numeric")
+            elif value["bp_low"] < 40 or value["bp_low"] > 130:
+                validation_result["warnings"].append(f"Diastolic BP may be out of normal range: {value['bp_low']}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_qube_blood_glucose(self, value: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Qube-Vital blood glucose data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        if "blood_glucose" not in value:
+            validation_result["errors"].append("Missing blood glucose value")
+        else:
+            bg_value = value["blood_glucose"]
+            if not isinstance(bg_value, (int, float)):
+                validation_result["errors"].append("Blood glucose must be numeric")
+            elif bg_value < 20 or bg_value > 600:
+                validation_result["warnings"].append(f"Blood glucose may be out of normal range: {bg_value}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_qube_spo2(self, value: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Qube-Vital SpO2 data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        if "spo2" not in value:
+            validation_result["errors"].append("Missing SpO2 value")
+        else:
+            spo2_value = value["spo2"]
+            if not isinstance(spo2_value, (int, float)):
+                validation_result["errors"].append("SpO2 must be numeric")
+            elif spo2_value < 70 or spo2_value > 100:
+                validation_result["warnings"].append(f"SpO2 may be out of normal range: {spo2_value}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_qube_temperature(self, value: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Qube-Vital temperature data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        if "temp" not in value:
+            validation_result["errors"].append("Missing temperature value")
+        else:
+            temp_value = value["temp"]
+            if not isinstance(temp_value, (int, float)):
+                validation_result["errors"].append("Temperature must be numeric")
+            elif temp_value < 30 or temp_value > 45:
+                validation_result["warnings"].append(f"Temperature may be out of normal range: {temp_value}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+    
+    def _validate_qube_weight(self, value: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate Qube-Vital weight data"""
+        validation_result = {"valid": False, "errors": [], "warnings": []}
+        
+        if "weight" not in value:
+            validation_result["errors"].append("Missing weight value")
+        else:
+            weight_value = value["weight"]
+            if not isinstance(weight_value, (int, float)):
+                validation_result["errors"].append("Weight must be numeric")
+            elif weight_value < 10 or weight_value > 300:
+                validation_result["warnings"].append(f"Weight may be out of normal range: {weight_value}")
+        
+        validation_result["valid"] = len(validation_result["errors"]) == 0
+        return validation_result
+
+    # =============== Kati Watch MQTT Data Transformation ===============
+
+    async def transform_kati_vital_signs_to_fhir(
+        self, 
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> List[Dict[str, Any]]:
+        """Transform Kati Watch vital signs to FHIR R5 Observations"""
+        try:
+            observations = []
+            
+            # Create individual observations for each vital sign
+            if "HR" in mqtt_payload:
+                obs = await self._create_heart_rate_observation(
+                    mqtt_payload, patient_id, device_id
+                )
+                observations.append(obs)
+            
+            if "SYS" in mqtt_payload and "DIA" in mqtt_payload:
+                obs = await self._create_kati_blood_pressure_observation(
+                    mqtt_payload, patient_id, device_id
+                )
+                observations.append(obs)
+            
+            if "SPO2" in mqtt_payload:
+                obs = await self._create_kati_spo2_observation(
+                    mqtt_payload, patient_id, device_id
+                )
+                observations.append(obs)
+            
+            if "TEMP" in mqtt_payload:
+                obs = await self._create_kati_temperature_observation(
+                    mqtt_payload, patient_id, device_id
+                )
+                observations.append(obs)
+            
+            return observations
+            
+        except Exception as e:
+            logger.error(f"Failed to transform Kati vital signs to FHIR: {e}")
+            raise
+
+    async def transform_kati_batch_vital_signs_to_fhir(
+        self, 
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> List[Dict[str, Any]]:
+        """Transform Kati Watch batch vital signs to FHIR R5 Observations"""
+        try:
+            observations = []
+            batch_data = mqtt_payload.get("data", [])
+            
+            for i, entry in enumerate(batch_data):
+                entry_observations = await self.transform_kati_vital_signs_to_fhir(
+                    entry, patient_id, f"{device_id}_batch_{i}"
+                )
+                observations.extend(entry_observations)
+            
+            return observations
+            
+        except Exception as e:
+            logger.error(f"Failed to transform Kati batch vital signs to FHIR: {e}")
+            raise
+
+    async def transform_kati_location_to_fhir(
+        self, 
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> List[Dict[str, Any]]:
+        """Transform Kati Watch location data to FHIR R5 Observation"""
+        try:
+            observation_id = str(uuid.uuid4())
+            effective_time = datetime.utcnow()
+            
+            observation = {
+                "resourceType": "Observation",
+                "id": observation_id,
+                "status": "final",
+                "category": [{
+                    "coding": [{
+                        "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                        "code": "survey",
+                        "display": "Survey"
+                    }]
+                }],
+                "code": {
+                    "coding": [{
+                        "system": "http://loinc.org",
+                        "code": "33747-0",
+                        "display": "Location"
+                    }]
+                },
+                "subject": {
+                    "reference": f"Patient/{patient_id}"
+                },
+                "effectiveDateTime": effective_time.isoformat() + "Z",
+                "issued": datetime.utcnow().isoformat() + "Z",
+                "device": {
+                    "reference": f"Device/{device_id}",
+                    "display": "Kati Watch"
+                }
+            }
+            
+            # Add location components
+            components = []
+            if "lat" in mqtt_payload:
+                components.append({
+                    "code": {
+                        "coding": [{
+                            "system": "http://loinc.org",
+                            "code": "34754-0",
+                            "display": "Latitude"
+                        }]
+                    },
+                    "valueQuantity": {
+                        "value": mqtt_payload["lat"],
+                        "unit": "degrees",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "deg"
+                    }
+                })
+            
+            if "lng" in mqtt_payload:
+                components.append({
+                    "code": {
+                        "coding": [{
+                            "system": "http://loinc.org",
+                            "code": "34755-7",
+                            "display": "Longitude"
+                        }]
+                    },
+                    "valueQuantity": {
+                        "value": mqtt_payload["lng"],
+                        "unit": "degrees",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "deg"
+                    }
+                })
+            
+            if components:
+                observation["component"] = components
+            
+            return [observation]
+            
+        except Exception as e:
+            logger.error(f"Failed to transform Kati location to FHIR: {e}")
+            raise
+
+    async def transform_kati_sleep_data_to_fhir(
+        self, 
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> List[Dict[str, Any]]:
+        """Transform Kati Watch sleep data to FHIR R5 Observation"""
+        try:
+            observation_id = str(uuid.uuid4())
+            effective_time = datetime.utcnow()
+            
+            observation = {
+                "resourceType": "Observation",
+                "id": observation_id,
+                "status": "final",
+                "category": [{
+                    "coding": [{
+                        "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                        "code": "activity",
+                        "display": "Activity"
+                    }]
+                }],
+                "code": {
+                    "coding": [{
+                        "system": "http://loinc.org",
+                        "code": "93832-4",
+                        "display": "Sleep study"
+                    }]
+                },
+                "subject": {
+                    "reference": f"Patient/{patient_id}"
+                },
+                "effectiveDateTime": effective_time.isoformat() + "Z",
+                "issued": datetime.utcnow().isoformat() + "Z",
+                "device": {
+                    "reference": f"Device/{device_id}",
+                    "display": "Kati Watch"
+                }
+            }
+            
+            # Add sleep data components
+            components = []
+            if "sleep_duration" in mqtt_payload:
+                components.append({
+                    "code": {
+                        "coding": [{
+                            "system": "http://loinc.org",
+                            "code": "93832-4",
+                            "display": "Sleep duration"
+                        }]
+                    },
+                    "valueQuantity": {
+                        "value": mqtt_payload["sleep_duration"],
+                        "unit": "hours",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "h"
+                    }
+                })
+            
+            if components:
+                observation["component"] = components
+            
+            return [observation]
+            
+        except Exception as e:
+            logger.error(f"Failed to transform Kati sleep data to FHIR: {e}")
+            raise
+
+    async def transform_kati_heartbeat_to_fhir(
+        self, 
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> List[Dict[str, Any]]:
+        """Transform Kati Watch heartbeat data to FHIR R5 Observation"""
+        try:
+            observations = []
+            
+            # Create step count observation if present
+            if "step_count" in mqtt_payload:
+                observation_id = str(uuid.uuid4())
+                effective_time = datetime.utcnow()
+                
+                observation = {
+                    "resourceType": "Observation",
+                    "id": observation_id,
+                    "status": "final",
+                    "category": [{
+                        "coding": [{
+                            "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                            "code": "survey",
+                            "display": "Survey"
+                        }]
+                    }],
+                    "code": {
+                        "coding": [{
+                            "system": "http://loinc.org",
+                            "code": "55423-8",
+                            "display": "Steps count"
+                        }]
+                    },
+                    "subject": {
+                        "reference": f"Patient/{patient_id}"
+                    },
+                    "effectiveDateTime": effective_time.isoformat() + "Z",
+                    "issued": datetime.utcnow().isoformat() + "Z",
+                    "valueQuantity": {
+                        "value": mqtt_payload["step_count"],
+                        "unit": "steps",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "{steps}"
+                    },
+                    "device": {
+                        "reference": f"Device/{device_id}",
+                        "display": "Kati Watch"
+                    }
+                }
+                
+                observations.append(observation)
+            
+            return observations
+            
+        except Exception as e:
+            logger.error(f"Failed to transform Kati heartbeat to FHIR: {e}")
+            raise
+
+    # =============== Qube-Vital MQTT Data Transformation ===============
+
+    async def transform_qube_mqtt_to_fhir(
+        self, 
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> List[Dict[str, Any]]:
+        """Transform Qube-Vital MQTT payload to FHIR R5 Observations"""
+        try:
+            observations = []
+            
+            # Extract data from MQTT payload
+            data = mqtt_payload.get("data", {})
+            attribute = data.get("attribute", "")
+            value = data.get("value", {})
+            
+            # Create observation based on device type
+            if attribute == "BP_BIOLIGTH":
+                obs = await self._create_qube_blood_pressure_observation(
+                    value, mqtt_payload, patient_id, device_id
+                )
+                observations.append(obs)
+            elif attribute in ["Contour_Elite", "AccuChek_Instant"]:
+                obs = await self._create_qube_glucose_observation(
+                    value, mqtt_payload, patient_id, device_id
+                )
+                observations.append(obs)
+            elif attribute == "Oximeter JUMPER":
+                obs = await self._create_qube_spo2_observation(
+                    value, mqtt_payload, patient_id, device_id
+                )
+                observations.append(obs)
+            elif attribute == "IR_TEMO_JUMPER":
+                obs = await self._create_qube_temperature_observation(
+                    value, mqtt_payload, patient_id, device_id
+                )
+                observations.append(obs)
+            elif attribute == "BodyScale_JUMPER":
+                obs = await self._create_qube_weight_observation(
+                    value, mqtt_payload, patient_id, device_id
+                )
+                observations.append(obs)
+            
+            return observations
+            
+        except Exception as e:
+            logger.error(f"Failed to transform Qube-Vital MQTT to FHIR: {e}")
+            raise
+
+    # =============== Helper Methods for Kati Watch ===============
+
+    async def _create_heart_rate_observation(
+        self,
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> Dict[str, Any]:
+        """Create FHIR Observation for heart rate"""
+        observation_id = str(uuid.uuid4())
+        effective_time = datetime.utcnow()
+        
+        observation = {
+            "resourceType": "Observation",
+            "id": observation_id,
+            "status": "final",
+            "category": [{
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "vital-signs",
+                    "display": "Vital Signs"
+                }]
+            }],
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "8867-4",
+                    "display": "Heart rate"
+                }]
+            },
+            "subject": {
+                "reference": f"Patient/{patient_id}"
+            },
+            "effectiveDateTime": effective_time.isoformat() + "Z",
+            "issued": datetime.utcnow().isoformat() + "Z",
+            "valueQuantity": {
+                "value": mqtt_payload["HR"],
+                "unit": "beats/min",
+                "system": "http://unitsofmeasure.org",
+                "code": "/min"
+            },
+            "device": {
+                "reference": f"Device/{device_id}",
+                "display": "Kati Watch"
+            }
+        }
+        
+        return observation
+
+    async def _create_kati_blood_pressure_observation(
+        self,
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> Dict[str, Any]:
+        """Create FHIR Observation for Kati blood pressure"""
+        observation_id = str(uuid.uuid4())
+        effective_time = datetime.utcnow()
+        
+        # Create components for systolic and diastolic
+        components = []
+        
+        if "SYS" in mqtt_payload:
+            components.append({
+                "code": {
+                    "coding": [{
+                        "system": "http://loinc.org",
+                        "code": "8480-6",
+                        "display": "Systolic blood pressure"
+                    }]
+                },
+                "valueQuantity": {
+                    "value": mqtt_payload["SYS"],
+                    "unit": "mmHg",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "mm[Hg]"
+                }
+            })
+            
+        if "DIA" in mqtt_payload:
+            components.append({
+                "code": {
+                    "coding": [{
+                        "system": "http://loinc.org",
+                        "code": "8462-4",
+                        "display": "Diastolic blood pressure"
+                    }]
+                },
+                "valueQuantity": {
+                    "value": mqtt_payload["DIA"],
+                    "unit": "mmHg",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "mm[Hg]"
+                }
+            })
+        
+        observation = {
+            "resourceType": "Observation",
+            "id": observation_id,
+            "status": "final",
+            "category": [{
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "vital-signs",
+                    "display": "Vital Signs"
+                }]
+            }],
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "85354-9",
+                    "display": "Blood pressure panel with all children optional"
+                }]
+            },
+            "subject": {
+                "reference": f"Patient/{patient_id}"
+            },
+            "effectiveDateTime": effective_time.isoformat() + "Z",
+            "issued": datetime.utcnow().isoformat() + "Z",
+            "device": {
+                "reference": f"Device/{device_id}",
+                "display": "Kati Watch"
+            },
+            "component": components
+        }
+        
+        return observation
+
+    async def _create_kati_spo2_observation(
+        self,
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> Dict[str, Any]:
+        """Create FHIR Observation for Kati SpO2"""
+        observation_id = str(uuid.uuid4())
+        effective_time = datetime.utcnow()
+        
+        observation = {
+            "resourceType": "Observation",
+            "id": observation_id,
+            "status": "final",
+            "category": [{
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "vital-signs",
+                    "display": "Vital Signs"
+                }]
+            }],
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "2708-6",
+                    "display": "Oxygen saturation"
+                }]
+            },
+            "subject": {
+                "reference": f"Patient/{patient_id}"
+            },
+            "effectiveDateTime": effective_time.isoformat() + "Z",
+            "issued": datetime.utcnow().isoformat() + "Z",
+            "valueQuantity": {
+                "value": mqtt_payload["SPO2"],
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+            },
+            "device": {
+                "reference": f"Device/{device_id}",
+                "display": "Kati Watch"
+            }
+        }
+        
+        return observation
+
+    async def _create_kati_temperature_observation(
+        self,
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> Dict[str, Any]:
+        """Create FHIR Observation for Kati temperature"""
+        observation_id = str(uuid.uuid4())
+        effective_time = datetime.utcnow()
+        
+        observation = {
+            "resourceType": "Observation",
+            "id": observation_id,
+            "status": "final",
+            "category": [{
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "vital-signs",
+                    "display": "Vital Signs"
+                }]
+            }],
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "8310-5",
+                    "display": "Body temperature"
+                }]
+            },
+            "subject": {
+                "reference": f"Patient/{patient_id}"
+            },
+            "effectiveDateTime": effective_time.isoformat() + "Z",
+            "issued": datetime.utcnow().isoformat() + "Z",
+            "valueQuantity": {
+                "value": mqtt_payload["TEMP"],
+                "unit": "°C",
+                "system": "http://unitsofmeasure.org",
+                "code": "Cel"
+            },
+            "device": {
+                "reference": f"Device/{device_id}",
+                "display": "Kati Watch"
+            }
+        }
+        
+        return observation
+
+    # =============== Helper Methods for Qube-Vital ===============
+
+    async def _create_qube_blood_pressure_observation(
+        self,
+        value: Dict[str, Any],
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> Dict[str, Any]:
+        """Create FHIR Observation for Qube-Vital blood pressure"""
+        observation_id = str(uuid.uuid4())
+        effective_time = datetime.utcnow()
+        
+        # Create components for systolic and diastolic
+        components = []
+        
+        if "bp_high" in value:
+            components.append({
+                "code": {
+                    "coding": [{
+                        "system": "http://loinc.org",
+                        "code": "8480-6",
+                        "display": "Systolic blood pressure"
+                    }]
+                },
+                "valueQuantity": {
+                    "value": value["bp_high"],
+                    "unit": "mmHg",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "mm[Hg]"
+                }
+            })
+            
+        if "bp_low" in value:
+            components.append({
+                "code": {
+                    "coding": [{
+                        "system": "http://loinc.org",
+                        "code": "8462-4",
+                        "display": "Diastolic blood pressure"
+                    }]
+                },
+                "valueQuantity": {
+                    "value": value["bp_low"],
+                    "unit": "mmHg",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "mm[Hg]"
+                }
+            })
+        
+        observation = {
+            "resourceType": "Observation",
+            "id": observation_id,
+            "status": "final",
+            "category": [{
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "vital-signs",
+                    "display": "Vital Signs"
+                }]
+            }],
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "85354-9",
+                    "display": "Blood pressure panel with all children optional"
+                }]
+            },
+            "subject": {
+                "reference": f"Patient/{patient_id}"
+            },
+            "effectiveDateTime": effective_time.isoformat() + "Z",
+            "issued": datetime.utcnow().isoformat() + "Z",
+            "device": {
+                "reference": f"Device/{device_id}",
+                "display": "Qube-Vital"
+            },
+            "component": components
+        }
+        
+        return observation
+
+    async def _create_qube_glucose_observation(
+        self,
+        value: Dict[str, Any],
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> Dict[str, Any]:
+        """Create FHIR Observation for Qube-Vital blood glucose"""
+        observation_id = str(uuid.uuid4())
+        effective_time = datetime.utcnow()
+        
+        observation = {
+            "resourceType": "Observation",
+            "id": observation_id,
+            "status": "final",
+            "category": [{
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "laboratory",
+                    "display": "Laboratory"
+                }]
+            }],
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "33747-0",
+                    "display": "Glucose measurement"
+                }]
+            },
+            "subject": {
+                "reference": f"Patient/{patient_id}"
+            },
+            "effectiveDateTime": effective_time.isoformat() + "Z",
+            "issued": datetime.utcnow().isoformat() + "Z",
+            "valueQuantity": {
+                "value": value["blood_glucose"],
+                "unit": "mg/dL",
+                "system": "http://unitsofmeasure.org",
+                "code": "mg/dL"
+            },
+            "device": {
+                "reference": f"Device/{device_id}",
+                "display": "Qube-Vital"
+            }
+        }
+        
+        return observation
+
+    async def _create_qube_spo2_observation(
+        self,
+        value: Dict[str, Any],
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> Dict[str, Any]:
+        """Create FHIR Observation for Qube-Vital SpO2"""
+        observation_id = str(uuid.uuid4())
+        effective_time = datetime.utcnow()
+        
+        observation = {
+            "resourceType": "Observation",
+            "id": observation_id,
+            "status": "final",
+            "category": [{
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "vital-signs",
+                    "display": "Vital Signs"
+                }]
+            }],
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "2708-6",
+                    "display": "Oxygen saturation"
+                }]
+            },
+            "subject": {
+                "reference": f"Patient/{patient_id}"
+            },
+            "effectiveDateTime": effective_time.isoformat() + "Z",
+            "issued": datetime.utcnow().isoformat() + "Z",
+            "valueQuantity": {
+                "value": value["spo2"],
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+            },
+            "device": {
+                "reference": f"Device/{device_id}",
+                "display": "Qube-Vital"
+            }
+        }
+        
+        return observation
+
+    async def _create_qube_temperature_observation(
+        self,
+        value: Dict[str, Any],
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> Dict[str, Any]:
+        """Create FHIR Observation for Qube-Vital temperature"""
+        observation_id = str(uuid.uuid4())
+        effective_time = datetime.utcnow()
+        
+        observation = {
+            "resourceType": "Observation",
+            "id": observation_id,
+            "status": "final",
+            "category": [{
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "vital-signs",
+                    "display": "Vital Signs"
+                }]
+            }],
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "8310-5",
+                    "display": "Body temperature"
+                }]
+            },
+            "subject": {
+                "reference": f"Patient/{patient_id}"
+            },
+            "effectiveDateTime": effective_time.isoformat() + "Z",
+            "issued": datetime.utcnow().isoformat() + "Z",
+            "valueQuantity": {
+                "value": value["temp"],
+                "unit": "°C",
+                "system": "http://unitsofmeasure.org",
+                "code": "Cel"
+            },
+            "device": {
+                "reference": f"Device/{device_id}",
+                "display": "Qube-Vital"
+            }
+        }
+        
+        return observation
+
+    async def _create_qube_weight_observation(
+        self,
+        value: Dict[str, Any],
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str
+    ) -> Dict[str, Any]:
+        """Create FHIR Observation for Qube-Vital weight"""
+        observation_id = str(uuid.uuid4())
+        effective_time = datetime.utcnow()
+        
+        observation = {
+            "resourceType": "Observation",
+            "id": observation_id,
+            "status": "final",
+            "category": [{
+                "coding": [{
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "vital-signs",
+                    "display": "Vital Signs"
+                }]
+            }],
+            "code": {
+                "coding": [{
+                    "system": "http://loinc.org",
+                    "code": "29463-7",
+                    "display": "Body weight"
+                }]
+            },
+            "subject": {
+                "reference": f"Patient/{patient_id}"
+            },
+            "effectiveDateTime": effective_time.isoformat() + "Z",
+            "issued": datetime.utcnow().isoformat() + "Z",
+            "valueQuantity": {
+                "value": value["weight"],
+                "unit": "kg",
+                "system": "http://unitsofmeasure.org",
+                "code": "kg"
+            },
+            "device": {
+                "reference": f"Device/{device_id}",
+                "display": "Qube-Vital"
+            }
+        }
+        
+        return observation
 
 # Global service instance
 fhir_service = FHIRR5Service() 

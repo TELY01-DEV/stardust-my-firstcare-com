@@ -274,42 +274,50 @@ class MQTTMonitor:
                 patient_id = watch['patient_id']
                 logger.info(f"Found watch with patient_id: {patient_id} (type: {type(patient_id)})")
                 
+                # Convert to proper ObjectId
                 try:
                     from bson import ObjectId
                     
                     if isinstance(patient_id, dict) and '$oid' in patient_id:
                         # MongoDB extended JSON format as dict: {'$oid': '507f1f77bcf86cd799439011'}
-                        patient_id = ObjectId(patient_id['$oid'])
+                        converted_patient_id = ObjectId(patient_id['$oid'])
+                        logger.info(f"✅ Converted patient_id from dict format: {patient_id} -> {converted_patient_id}")
                     elif isinstance(patient_id, str):
                         # Handle various string ObjectId formats
                         if patient_id.startswith('{"$oid":') and patient_id.endswith('}'):
                             # MongoDB extended JSON format: {"$oid": "507f1f77bcf86cd799439011"}
                             import json
                             oid_data = json.loads(patient_id)
-                            patient_id = ObjectId(oid_data['$oid'])
+                            converted_patient_id = ObjectId(oid_data['$oid'])
+                            logger.info(f"✅ Converted patient_id from JSON string: {patient_id} -> {converted_patient_id}")
                         elif patient_id.startswith('ObjectId(') and patient_id.endswith(')'):
                             # Python ObjectId string format: ObjectId("507f1f77bcf86cd799439011")
                             oid_str = patient_id[9:-1].strip('"\'')
-                            patient_id = ObjectId(oid_str)
+                            converted_patient_id = ObjectId(oid_str)
+                            logger.info(f"✅ Converted patient_id from ObjectId string: {patient_id} -> {converted_patient_id}")
                         elif len(patient_id) == 24 and all(c in '0123456789abcdef' for c in patient_id.lower()):
                             # Direct 24-character hex string: 507f1f77bcf86cd799439011
-                            patient_id = ObjectId(patient_id)
+                            converted_patient_id = ObjectId(patient_id)
+                            logger.info(f"✅ Converted patient_id from hex string: {patient_id} -> {converted_patient_id}")
                         else:
                             # Try direct conversion (might fail)
-                            patient_id = ObjectId(patient_id)
+                            converted_patient_id = ObjectId(patient_id)
+                            logger.info(f"✅ Converted patient_id from direct string: {patient_id} -> {converted_patient_id}")
                     elif isinstance(patient_id, ObjectId):
                         # Already an ObjectId
-                        pass
+                        converted_patient_id = patient_id
+                        logger.info(f"✅ Patient_id already ObjectId: {converted_patient_id}")
                     else:
-                        logger.warning(f"Unknown patient_id format: {patient_id} (type: {type(patient_id)})")
-                        patient_id = None
+                        logger.warning(f"❌ Unknown patient_id format: {patient_id} (type: {type(patient_id)})")
+                        converted_patient_id = None
                         
                 except Exception as e:
-                    logger.warning(f"Invalid ObjectId format: {patient_id}, error: {e}")
-                    patient_id = None
+                    logger.warning(f"❌ Invalid ObjectId format: {patient_id}, error: {e}")
+                    converted_patient_id = None
                 
-                if patient_id:
-                    patient = self.db.patients.find_one({"_id": patient_id})
+                # Use the converted patient_id
+                if converted_patient_id:
+                    patient = self.db.patients.find_one({"_id": converted_patient_id})
             
             # Fallback: check patients collection directly
             if not patient:
@@ -355,13 +363,46 @@ class MQTTMonitor:
                     "working_mode": payload.get('workingMode'),
                     "step": payload.get('step')
                 }
-            elif topic in ["iMEDE_watch/sos", "iMEDE_watch/fallDown"]:
+            elif topic in ["iMEDE_watch/SOS", "iMEDE_watch/fallDown"]:
+                alert_type = "sos" if topic == "iMEDE_watch/SOS" else "fall_down"
                 result["medical_data"] = {
                     "data_type": "emergency_alert",
-                    "alert_type": "SOS" if topic == "iMEDE_watch/sos" else "FALL_DETECTION",
+                    "alert_type": alert_type.upper(),
                     "status": payload.get('status'),
                     "location": payload.get('location')
                 }
+                # Save emergency alert to database if patient is found
+                if patient:
+                    try:
+                        alert_data = {
+                            "type": alert_type,
+                            "status": payload.get('status', 'ACTIVE'),
+                            "location": payload.get('location'),
+                            "imei": imei,
+                            "timestamp": datetime.utcnow(),
+                            "source": "Kati",
+                            "priority": "CRITICAL" if alert_type == "sos" else "HIGH"
+                        }
+                        emergency_doc = {
+                            "patient_id": patient['_id'],
+                            "patient_name": f"{patient.get('first_name', '')} {patient.get('last_name', '')}".strip(),
+                            "alert_type": alert_type,
+                            "alert_data": alert_data,
+                            "timestamp": datetime.utcnow(),
+                            "source": "Kati",
+                            "status": "ACTIVE",
+                            "created_at": datetime.utcnow(),
+                            "processed": False
+                        }
+                        emergency_result = self.db.emergency_alarm.insert_one(emergency_doc)
+                        if emergency_result.inserted_id:
+                            logger.warning(f"🚨 EMERGENCY ALERT SAVED BY WEBSOCKET - ID: {emergency_result.inserted_id}")
+                            logger.warning(f"🚨 {alert_type.upper()} ALERT for patient {patient['_id']} ({emergency_doc['patient_name']})")
+                            logger.warning(f"🚨 Collection: emergency_alarm, Priority: {alert_data['priority']}")
+                        else:
+                            logger.error(f"❌ FAILED TO SAVE EMERGENCY ALERT - Type: {alert_type}")
+                    except Exception as e:
+                        logger.error(f"❌ Error saving emergency alert: {e}")
             else:
                 result["medical_data"] = {
                     "data_type": "unknown",

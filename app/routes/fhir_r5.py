@@ -426,8 +426,32 @@ async def search_fhir_resources_endpoint(
 ):
     """Generic search FHIR resources endpoint"""
     try:
+        # Map underscore-prefixed parameters to their correct field names
+        mapped_params = {}
+        for key, value in search_params.items():
+            if key == "_count":
+                mapped_params["count"] = value
+            elif key == "_offset":
+                mapped_params["offset"] = value
+            elif key == "_sort":
+                mapped_params["sort"] = value
+            elif key == "_id":
+                mapped_params["id"] = value
+            elif key == "_lastUpdated":
+                mapped_params["lastUpdated"] = value
+            elif key == "_profile":
+                mapped_params["profile"] = value
+            elif key == "_security":
+                mapped_params["security"] = value
+            elif key == "_source":
+                mapped_params["source"] = value
+            elif key == "_tag":
+                mapped_params["tag"] = value
+            else:
+                mapped_params[key] = value
+        
         # Convert query parameters to FHIRSearchParams
-        fhir_search_params = FHIRSearchParams(**search_params)
+        fhir_search_params = FHIRSearchParams(**mapped_params)
         
         result = await fhir_service.search_fhir_resources(resource_type, fhir_search_params)
         
@@ -501,13 +525,15 @@ async def search_patients(
     organization: Optional[str] = Query(None, description="Managing organization"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 Patient resources"""
     search_params = {
         "identifier": identifier,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("Patient", request, current_user, **search_params)
 
@@ -566,6 +592,7 @@ async def search_observations(
     status: Optional[str] = Query(None, description="Observation status"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 Observation resources"""
@@ -574,7 +601,8 @@ async def search_observations(
         "status": status,
         "date": date,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("Observation", request, current_user, **search_params)
 
@@ -632,6 +660,7 @@ async def search_devices(
     status: Optional[str] = Query(None, description="Device status"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 Device resources"""
@@ -639,7 +668,8 @@ async def search_devices(
         "identifier": identifier,
         "status": status,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("Device", request, current_user, **search_params)
 
@@ -685,13 +715,15 @@ async def search_organizations(
     type: Optional[str] = Query(None, description="Organization type"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 Organization resources"""
     search_params = {
         "identifier": identifier,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("Organization", request, current_user, **search_params)
 
@@ -811,13 +843,15 @@ async def search_medication_statements(
     source: Optional[str] = Query(None, description="Information source"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 MedicationStatement resources"""
     search_params = {
         "patient": patient, "status": status, "medication": medication,
         "effective": effective, "source": source, 
-        "_count": _count, "_offset": _offset
+        "_count": _count, "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("MedicationStatement", request, current_user, **search_params)
 
@@ -875,13 +909,15 @@ async def search_diagnostic_reports(
     status: Optional[str] = Query(None, description="Report status"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 DiagnosticReport resources"""
     search_params = {
         "patient": patient, "category": category, "code": code,
         "date": date, "status": status,
-        "_count": _count, "_offset": _offset
+        "_count": _count, "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("DiagnosticReport", request, current_user, **search_params)
 
@@ -939,13 +975,15 @@ async def search_document_references(
     status: Optional[str] = Query(None, description="Document status"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 DocumentReference resources"""
     search_params = {
         "patient": patient, "type": type, "category": category,
         "date": date, "status": status,
-        "_count": _count, "_offset": _offset
+        "_count": _count, "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("DocumentReference", request, current_user, **search_params)
 
@@ -1205,6 +1243,7 @@ async def search_goals(
     start_date: Optional[str] = Query(None, alias="start-date", description="Goal start date"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 Goal resources"""
@@ -1213,7 +1252,8 @@ async def search_goals(
         "status": lifecycle_status,
         "date": start_date,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("Goal", request, current_user, **search_params)
 
@@ -1271,13 +1311,15 @@ async def search_related_persons(
     active: Optional[str] = Query(None, description="Active status"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 RelatedPerson resources"""
     search_params = {
         "patient": patient,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("RelatedPerson", request, current_user, **search_params)
 
@@ -1335,6 +1377,7 @@ async def search_flags(
     date: Optional[str] = Query(None, description="Date range"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 Flag resources"""
@@ -1343,7 +1386,8 @@ async def search_flags(
         "status": status,
         "date": date,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("Flag", request, current_user, **search_params)
 
@@ -1401,6 +1445,7 @@ async def search_risk_assessments(
     date: Optional[str] = Query(None, description="Date range"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 RiskAssessment resources"""
@@ -1409,7 +1454,8 @@ async def search_risk_assessments(
         "status": status,
         "date": date,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("RiskAssessment", request, current_user, **search_params)
 
@@ -1468,6 +1514,7 @@ async def search_service_requests(
     authored: Optional[str] = Query(None, description="Date authored"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 ServiceRequest resources"""
@@ -1476,7 +1523,8 @@ async def search_service_requests(
         "status": status,
         "date": authored,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("ServiceRequest", request, current_user, **search_params)
 
@@ -1534,6 +1582,7 @@ async def search_care_plans(
     date: Optional[str] = Query(None, description="Date range"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 CarePlan resources"""
@@ -1542,7 +1591,8 @@ async def search_care_plans(
         "status": status,
         "date": date,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("CarePlan", request, current_user, **search_params)
 
@@ -1600,6 +1650,7 @@ async def search_specimens(
     accession: Optional[str] = Query(None, description="Accession identifier"),
     _count: Optional[int] = Query(10, description="Number of results"),
     _offset: Optional[int] = Query(0, description="Search offset"),
+    _sort: Optional[str] = Query(None, description="Sort parameters"),
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
     """Search FHIR R5 Specimen resources"""
@@ -1608,7 +1659,8 @@ async def search_specimens(
         "status": status,
         "date": collected,
         "_count": _count,
-        "_offset": _offset
+        "_offset": _offset,
+        "_sort": _sort
     }
     return await search_fhir_resources_endpoint("Specimen", request, current_user, **search_params)
 

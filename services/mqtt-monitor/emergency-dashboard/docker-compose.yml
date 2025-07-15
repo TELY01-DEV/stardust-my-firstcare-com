@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  emergency-dashboard:
+    build: .
+    container_name: opera-godeye-emergency-dashboard
+    ports:
+      - "5056:5056"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/
+      - SECRET_KEY=emergency-dashboard-secret-key-2024
+      # Email configuration (optional)
+      - SMTP_SERVER=smtp.gmail.com
+      - SMTP_PORT=587
+      - EMAIL_USER=${EMAIL_USER:-}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD:-}
+      - FROM_EMAIL=emergency@myfirstcare.com
+      - TO_EMAILS=${TO_EMAILS:-}
+      # Telegram configuration (optional)
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+      - TELEGRAM_ENABLED=${TELEGRAM_ENABLED:-false}
+      # SMS configuration (optional)
+      - SMS_API_KEY=${SMS_API_KEY:-}
+      - SMS_API_SECRET=${SMS_API_SECRET:-}
+      - SMS_FROM_NUMBER=${SMS_FROM_NUMBER:-}
+      - SMS_TO_NUMBERS=${SMS_TO_NUMBERS:-}
+      - SMS_ENABLED=${SMS_ENABLED:-false}
+      # Webhook configuration (optional)
+      - WEBHOOK_URL=${WEBHOOK_URL:-}
+      - WEBHOOK_ENABLED=${WEBHOOK_ENABLED:-false}
+    volumes:
+      - ./static:/app/static
+    networks:
+      - mqtt-network
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+networks:
+  mqtt-network:
+    external: true 

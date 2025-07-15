@@ -1,0 +1,369 @@
+/* Emergency Dashboard Styles */
+
+:root {
+    --emergency-red: #dc3545;
+    --emergency-orange: #fd7e14;
+    --emergency-yellow: #ffc107;
+    --emergency-green: #28a745;
+    --emergency-blue: #17a2b8;
+    --emergency-purple: #6f42c1;
+}
+
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navigation */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Statistics Cards */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.bg-orange {
+    background-color: var(--emergency-orange) !important;
+}
+
+/* Emergency Banner */
+#emergency-banner {
+    animation: pulse 1s infinite;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+/* Connection Status */
+#connection-status {
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* Table Styles */
+.table th {
+    border-top: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+/* Alert Type Badges */
+.alert-type {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.alert-type.sos {
+    background-color: var(--emergency-red);
+    color: white;
+}
+
+.alert-type.fall_down {
+    background-color: var(--emergency-orange);
+    color: white;
+}
+
+.alert-type.low_battery {
+    background-color: var(--emergency-yellow);
+    color: black;
+}
+
+/* Priority Badges */
+.priority-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.priority-critical {
+    background-color: var(--emergency-red);
+    color: white;
+}
+
+.priority-high {
+    background-color: var(--emergency-orange);
+    color: white;
+}
+
+.priority-medium {
+    background-color: var(--emergency-yellow);
+    color: black;
+}
+
+.priority-low {
+    background-color: var(--emergency-green);
+    color: white;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-active {
+    background-color: var(--emergency-red);
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+.status-processed {
+    background-color: var(--emergency-green);
+    color: white;
+}
+
+/* Action Buttons */
+.btn-action {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    margin: 2px;
+}
+
+/* New Alert Animation */
+.new-alert {
+    animation: slideInRight 0.5s ease-out;
+    background-color: #fff3cd;
+    border-left: 4px solid var(--emergency-red);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Modal Styles */
+.modal-header {
+    background-color: var(--emergency-red);
+    color: white;
+    border-bottom: none;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+/* Location Display */
+.location-info {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.location-gps {
+    color: var(--emergency-blue);
+    font-weight: 600;
+}
+
+/* Patient Info */
+.patient-info {
+    font-weight: 600;
+    color: var(--emergency-purple);
+}
+
+/* Time Display */
+.time-display {
+    font-size: 0.8rem;
+    color: #6c757d;
+    font-family: 'Courier New', monospace;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 10px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    .table-responsive {
+        font-size: 0.8rem;
+    }
+    
+    .btn-action {
+        padding: 2px 4px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Loading Animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--emergency-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Filter Styles */
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.form-select:focus {
+    border-color: var(--emergency-red);
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Button Hover Effects */
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Emergency Sound Indicator */
+.sound-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--emergency-red);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 9999;
+    animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--emergency-red);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    max-width: 400px;
+    animation: slideInRight 0.5s ease-out;
+}
+
+.notification.success {
+    background-color: var(--emergency-green);
+}
+
+.notification.warning {
+    background-color: var(--emergency-orange);
+}
+
+/* Map Container */
+.map-container {
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+/* Device Info */
+.device-info {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px 0;
+    border-left: 4px solid var(--emergency-blue);
+}
+
+/* Alert Details */
+.alert-details {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #dee2e6;
+}
+
+.alert-details h6 {
+    color: var(--emergency-red);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* Timestamp Styling */
+.timestamp {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Priority Icons */
+.priority-icon {
+    font-size: 1.2rem;
+    margin-right: 5px;
+}
+
+/* Emergency Countdown */
+.emergency-countdown {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--emergency-red);
+    text-align: center;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+} 

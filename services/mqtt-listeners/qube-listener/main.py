@@ -18,6 +18,8 @@ sys.path.append('/app/shared')
 from paho.mqtt import client as mqtt_client
 from device_mapper import DeviceMapper
 from data_processor import DataProcessor
+from data_flow_emitter import data_flow_emitter
+from fhir_validator import fhir_validator
 
 # Configure logging
 logging.basicConfig(
@@ -98,9 +100,15 @@ class QubeMQTTListener:
     def process_message(self, topic: str, payload: str):
         """Process incoming MQTT message"""
         try:
+            # Step 1: MQTT Message Received
+            data_flow_emitter.emit_mqtt_received("Qube", topic, {"raw_payload": payload})
+            
             # Parse JSON payload
             data = json.loads(payload)
             logger.info(f"Processing {topic} message: {data.get('type', 'unknown')}")
+            
+            # Step 2: Payload Parsed
+            data_flow_emitter.emit_payload_parsed("Qube", topic, data, {"parsed": True})
             
             msg_type = data.get('type')
             
@@ -110,11 +118,14 @@ class QubeMQTTListener:
                 self.process_qube_medical_data(data)
             else:
                 logger.info(f"Unhandled message type: {msg_type}")
+                data_flow_emitter.emit_error("2_payload_parsed", "Qube", topic, data, f"Unhandled message type: {msg_type}")
                 
         except json.JSONDecodeError as e:
             logger.error(f"Invalid JSON payload: {e}")
+            data_flow_emitter.emit_error("2_payload_parsed", "Qube", topic, {"raw_payload": payload}, f"Invalid JSON: {e}")
         except Exception as e:
             logger.error(f"Error processing message: {e}")
+            data_flow_emitter.emit_error("1_mqtt_received", "Qube", topic, {"raw_payload": payload}, str(e))
     
     def process_qube_status(self, data: Dict[str, Any]):
         """Process Qube-Vital status messages (heartbeat)"""
@@ -158,6 +169,30 @@ class QubeMQTTListener:
                 logger.warning("No attribute in Qube-Vital medical data")
                 return
             
+            # Step 2.5: FHIR Data Format Validation (NEW)
+            try:
+                validation_result = fhir_validator.validate_qube_data_format(data)
+                
+                if not validation_result["valid"]:
+                    logger.error(f"❌ Qube-Vital Data validation failed: {validation_result['errors']}")
+                    if validation_result["warnings"]:
+                        logger.warning(f"⚠️ Qube-Vital Data validation warnings: {validation_result['warnings']}")
+                    data_flow_emitter.emit_error("2.5_fhir_validation", "Qube", "CM4_BLE_GW_TX", data, f"Validation failed: {validation_result['errors']}")
+                    return
+                
+                if validation_result["warnings"]:
+                    logger.warning(f"⚠️ Qube-Vital Data validation warnings: {validation_result['warnings']}")
+                
+                # Use validated and transformed data
+                validated_data = validation_result["transformed_data"]
+                logger.info(f"✅ Qube-Vital Data validation passed - Device: {attribute}")
+                data_flow_emitter.emit_fhir_validation("Qube", "CM4_BLE_GW_TX", data, {"validated": True, "device_type": "Qube_Vital"})
+                
+            except Exception as e:
+                logger.error(f"❌ Error in Qube-Vital FHIR validation: {e}")
+                data_flow_emitter.emit_error("2.5_fhir_validation", "Qube", "CM4_BLE_GW_TX", data, f"Validation error: {str(e)}")
+                return
+            
             # Find patient by citizen ID
             patient = self.device_mapper.find_patient_by_citiz(citiz)
             
@@ -176,22 +211,115 @@ class QubeMQTTListener:
                     logger.error(f"Failed to create unregistered patient for citizen ID: {citiz}")
                     return
             
+            # Step 3: Patient Lookup
+            patient_info = {
+                "patient_id": str(patient['_id']),
+                "patient_name": f"{patient.get('first_name', '')} {patient.get('last_name', '')}".strip(),
+                "first_name": patient.get('first_name', ''),
+                "last_name": patient.get('last_name', ''),
+                "citiz": citiz
+            }
+            data_flow_emitter.emit_patient_lookup("Qube", "CM4_BLE_GW_TX", data, patient_info)
+            
             logger.info(f"Processing {attribute} data for patient {patient['_id']}")
             
-            # Process the medical data
+            # Process the medical data using validated data
             success = self.data_processor.process_qube_data(
                 patient['_id'], 
                 attribute, 
-                value
+                validated_data.get('data', {}).get('value', value)
             )
             
+            # Step 4: Patient Updated
+            medical_data = {
+                "attribute": attribute,
+                "citiz": citiz,
+                "processed": success,
+                "validation_passed": True
+            }
+            data_flow_emitter.emit_patient_updated("Qube", "CM4_BLE_GW_TX", data, patient_info, medical_data)
+            
+            # Step 5: Medical Data Stored
             if success:
                 logger.info(f"Successfully processed {attribute} data for patient {patient['_id']}")
+                data_flow_emitter.emit_medical_stored("Qube", "CM4_BLE_GW_TX", data, patient_info, medical_data)
+                
+                # Step 6: FHIR R5 Resource Data Store (only for Patient resource data)
+                try:
+                    # Check if this is patient-related data that should be stored in FHIR R5
+                    if self._should_store_in_fhir(attribute, validated_data):
+                        fhir_success = self._process_fhir_r5_data(attribute, validated_data, patient_info)
+                        if fhir_success:
+                            # Determine the correct FHIR resource type
+                            fhir_resource_type = self._determine_fhir_resource_type(attribute, validated_data)
+                            fhir_data = {
+                                "attribute": attribute,
+                                "citiz": citiz,
+                                "fhir_processed": True,
+                                "resource_type": fhir_resource_type
+                            }
+                            data_flow_emitter.emit_fhir_r5_stored("Qube", "CM4_BLE_GW_TX", data, patient_info, fhir_data)
+                            logger.info(f"✅ FHIR R5 data stored for patient {patient['_id']} - Resource: {fhir_resource_type}")
+                        else:
+                            logger.warning(f"⚠️ FHIR R5 processing failed for patient {patient['_id']}")
+                            data_flow_emitter.emit_error("6_fhir_r5_stored", "Qube", "CM4_BLE_GW_TX", data, "FHIR R5 processing failed")
+                    else:
+                        logger.info(f"ℹ️ Skipping FHIR R5 storage for non-patient data: {attribute}")
+                except Exception as e:
+                    logger.error(f"❌ Error in FHIR R5 processing: {e}")
+                    data_flow_emitter.emit_error("6_fhir_r5_stored", "Qube", "CM4_BLE_GW_TX", data, f"FHIR R5 error: {str(e)}")
             else:
                 logger.error(f"Failed to process {attribute} data for patient {patient['_id']}")
+                data_flow_emitter.emit_error("5_medical_stored", "Qube", "CM4_BLE_GW_TX", data, f"Failed to process {attribute} data")
                 
         except Exception as e:
             logger.error(f"Error processing Qube-Vital medical data: {e}")
+            data_flow_emitter.emit_error("3_patient_lookup", "Qube", "CM4_BLE_GW_TX", data, str(e))
+    
+    def _should_store_in_fhir(self, attribute: str, data: Dict[str, Any]) -> bool:
+        """Check if the data should be stored in FHIR R5 (only for Patient resource data)"""
+        # Only store patient-related data in FHIR R5
+        patient_related_attributes = [
+            "BP_BIOLIGTH",      # Blood pressure
+            "Contour_Elite",    # Blood glucose
+            "AccuChek_Instant", # Blood glucose
+            "Oximeter JUMPER",  # SpO2
+            "IR_TEMO_JUMPER",   # Temperature
+            "BodyScale_JUMPER"  # Weight
+        ]
+        return attribute in patient_related_attributes
+    
+    def _process_fhir_r5_data(self, attribute: str, data: Dict[str, Any], patient_info: Dict[str, Any]) -> bool:
+        """Process data for FHIR R5 storage"""
+        try:
+            # Import FHIR service
+            from app.services.fhir_r5_service import fhir_service
+            
+            # Transform Qube-Vital data to FHIR R5
+            observations = asyncio.run(fhir_service.transform_qube_mqtt_to_fhir(
+                data, 
+                patient_info["patient_id"], 
+                f"Qube_{patient_info.get('citiz', 'unknown')}"
+            ))
+            
+            # Store observations
+            for observation in observations:
+                asyncio.run(fhir_service.create_fhir_resource(
+                    "Observation",
+                    observation,
+                    source_system="Qube_Vital_MQTT"
+                ))
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error processing FHIR R5 data: {e}")
+            return False
+    
+    def _determine_fhir_resource_type(self, attribute: str, data: Dict[str, Any]) -> str:
+        """Determine the correct FHIR resource type for the data"""
+        # All Qube-Vital medical data is stored as Observation resources
+        return "Observation"
     
     async def run(self):
         """Run the MQTT listener"""

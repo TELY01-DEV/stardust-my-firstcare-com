@@ -1061,7 +1061,7 @@ async def get_medical_history(
             "sleep_data": "sleep_data_histories",
             "spo2": "spo2_histories",
             "step": "step_histories",
-            "temperature": "temprature_data_histories",
+            "temperature": "temperature_data_histories",
             "medication": "medication_histories",
             "allergy": "allergy_histories",
             "underlying_disease": "underlying_disease_histories",
@@ -1097,11 +1097,19 @@ async def get_medical_history(
                 filter_query["created_at"]["$lte"] = end_date
         
         # Get total count
-        total = await collection.count_documents(filter_query)
+        try:
+            total = await collection.count_documents(filter_query)
+        except Exception as e:
+            logger.warning(f"Failed to count documents: {e}")
+            total = 0
         
         # Get history
-        cursor = collection.find(filter_query).sort("created_at", -1).skip(skip).limit(limit)
-        history = await cursor.to_list(length=limit)
+        try:
+            cursor = collection.find(filter_query).sort("created_at", -1).skip(skip).limit(limit)
+            history = await cursor.to_list(length=limit)
+        except Exception as e:
+            logger.warning(f"Failed to fetch records: {e}")
+            history = []
         
         # Serialize ObjectIds
         history = serialize_mongodb_response(history)
@@ -1220,7 +1228,7 @@ async def get_medical_history_record(
             "sleep_data": "sleep_data_histories",
             "spo2": "spo2_histories",
             "step": "step_histories",
-            "temperature": "temprature_data_histories",
+            "temperature": "temperature_data_histories",
             "medication": "medication_histories",
             "allergy": "allergy_histories",
             "underlying_disease": "underlying_disease_histories",
@@ -1281,610 +1289,15 @@ async def get_medical_history_record(
 @router.get("/master-data/{data_type}", 
             response_model=SuccessResponse,
             summary="Get Master Data by Type",
-            description="""
-## Master Data Management
-
-Get master data by type with comprehensive examples and multilingual support.
-
-### Query Parameters:
-- `limit`: Number of records (1-1000, default: 100)
-- `skip`: Pagination offset (default: 0)
-- `search`: Search across data fields
-- `is_active`: **Filter by active status** (true/false, optional) - **Works for ALL data types**
-- `province_code`: Filter by province code (for geographic data)
-- `district_code`: Filter by district code (for geographic data)
-- `sub_district_code`: Filter by sub-district code (for geographic data)
-
-### 🔹 **Active Status Filtering (is_active)**
-**Available for ALL master data types:**
-- `GET /admin/master-data/provinces?is_active=true` - Active provinces only
-- `GET /admin/master-data/districts?is_active=false` - Inactive districts only
-- `GET /admin/master-data/hospitals?is_active=true` - Active hospitals only
-- `GET /admin/master-data/blood_groups?is_active=true` - Active blood groups only
-- And so on for all data types...
-
-### Supported Data Types:
-
-#### 🩸 **Blood Groups** (`blood_groups`)
-- **12 Blood Types**: Complete blood group system with Rh factors
-- **Multilingual**: English and Thai names
-- **Examples**: AB:Rh-, O:Rh+, A:Rh-, B:Rh+, etc.
-- **Usage**: Patient blood type classification
-- **Active Filter**: `?is_active=true/false`
-
-#### 🌍 **Nations** (`nations`) 
-- **229 Countries**: Complete country list
-- **Multilingual**: English and Thai names
-- **Examples**: Thailand, Argentina, United States, etc.
-- **Usage**: Patient nationality classification
-- **Active Filter**: `?is_active=true/false`
-
-#### 🎨 **Human Skin Colors** (`human_skin_colors`)
-- **6 Skin Types**: Complete skin color classification
-- **Multilingual**: English and Thai names  
-- **Examples**: BLACK, Dark Brown, Light Brown, etc.
-- **Usage**: Patient skin color classification
-- **Active Filter**: `?is_active=true/false`
-
-#### 🏥 **Hospital Wards** (`ward_lists`)
-- **9 Ward Types**: Complete hospital ward classification
-- **Multilingual**: English and Thai names
-- **Examples**: ER, OPD, IPD, Home Ward, SLEEP LAB, KATI, R&D, etc.
-- **Usage**: Patient ward classification and hospital department management
-- **Active Filter**: `?is_active=true/false`
-
-#### 👥 **Staff Types** (`staff_types`)
-- **6 Staff Types**: Complete hospital personnel classification
-- **Multilingual**: English and Thai names
-- **Examples**: Doctor, Nurse, Hospital Staff, Medical Staff, Village Health Volunteer, Ambulance Operation Staff
-- **Usage**: Hospital personnel classification and access control
-- **Active Filter**: `?is_active=true/false`
-
-#### 🏥 **Underlying Diseases** (`underlying_diseases`)
-- **8 Disease Types**: Complete underlying disease classification
-- **Multilingual**: English and Thai names
-- **Examples**: Hypertension, Diabetes Mellitus, Dyslipidemia, Cardiovascular Disease, Stroke, Chronic Kidney Disease
-- **Usage**: Patient medical history and disease tracking
-- **Active Filter**: `?is_active=true/false`
-
-#### 🏥 **Hospital Types** (`hospital_types`)
-- **21 Hospital Types**: Complete hospital type classification
-- **Multilingual**: English and Thai names
-- **Examples**: Advance-level Hospital, General hospital, Community Hospital, Private Hospital
-- **Usage**: Hospital classification and categorization
-- **Active Filter**: `?is_active=true/false`
-
-#### 🏥 **Hospitals** (`hospitals`)
-- **12,350+ Hospitals**: Complete hospital database
-- **Enhanced Address**: Detailed location information
-- **Contact Info**: Phone, email, website
-- **Services**: Bed capacity, emergency services
-- **Active Filter**: `?is_active=true/false`
-
-#### 🗺️ **Geographic Data**
-- **Provinces** (`provinces`): 79 provinces - **Active Filter**: `?is_active=true/false`
-- **Districts** (`districts`): Administrative districts - **Active Filter**: `?is_active=true/false`
-- **Sub-districts** (`sub_districts`): Administrative sub-districts - **Active Filter**: `?is_active=true/false`
-
-### Response Features:
-- **Multilingual Support**: All data includes English and Thai names
-- **Pagination**: Efficient data loading with limit/skip
-- **Search**: Full-text search across all fields
-- **Filtering**: Geographic and status-based filtering
-- **CRUD Operations**: Complete Create, Read, Update, Delete support
-
-### Authentication:
-Requires valid JWT Bearer token with admin privileges.
-            """,
+            description="Get master data by type with comprehensive examples and multilingual support.",
             responses={
-                200: {
-                    "description": "Master data retrieved successfully",
-                    "content": {
-                        "application/json": {
-                            "examples": {
-                                "hospitals_response": {
-                                    "summary": "Hospital data with enhanced address information",
-                                    "value": {
-                                        "success": True,
-                                        "message": "Master data retrieved successfully",
-                                        "data": {
-                                            "data": [
-                                                {
-                                                    "_id": "507f1f77bcf86cd799439011",
-                                                    "name": [
-                                                        {"code": "en", "name": "Bangkok General Hospital"},
-                                                        {"code": "th", "name": "โรงพยาบาลกรุงเทพ"}
-                                                    ],
-                                                    "en_name": "Bangkok General Hospital",
-                                                    "province_code": 10,
-                                                    "district_code": 1003,
-                                                    "sub_district_code": 100301,
-                                                    "organizecode": 1001,
-                                                    "hospital_area_code": "10330",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    
-                                                    # Enhanced address information
-                                                    "address": "123 Rama IV Road, Pathum Wan, Bangkok 10330",
-                                                    "address_details": {
-                                                        "street_address": "123 Rama IV Road",
-                                                        "building_name": "Medical Center Tower",
-                                                        "floor": "Ground Floor - 15th Floor",
-                                                        "room": "Reception: Room 101",
-                                                        "postal_code": "10330",
-                                                        "postal_box": "P.O. Box 1234"
-                                                    },
-                                                    
-                                                    # Geographic coordinates
-                                                    "location": {
-                                                        "latitude": 13.7563,
-                                                        "longitude": 100.5018,
-                                                        "elevation": 2.5,
-                                                        "precision": "GPS"
-                                                    },
-                                                    
-                                                    # Comprehensive contact information
-                                                    "contact": {
-                                                        "phone": "+66-2-123-4567",
-                                                        "phone_2": "+66-2-123-4568", 
-                                                        "fax": "+66-2-123-4569",
-                                                        "mobile": "+66-81-123-4567",
-                                                        "emergency_phone": "+66-2-123-1911",
-                                                        "email": "info@bgh.co.th",
-                                                        "email_admin": "admin@bgh.co.th",
-                                                        "website": "https://www.bgh.co.th"
-                                                    },
-                                                    
-                                                    # Service and capacity information
-                                                    "services": {
-                                                        "bed_capacity": 500,
-                                                        "emergency_services": True,
-                                                        "trauma_center": True,
-                                                        "icu_beds": 50,
-                                                        "operating_rooms": 15,
-                                                        "service_plan_type": "A",
-                                                        "accreditation": "JCI"
-                                                    },
-                                                    
-                                                    # Legacy fields (for backward compatibility)
-                                                    "phone": "+66-2-123-4567",
-                                                    "email": "info@bgh.co.th", 
-                                                    "website": "https://www.bgh.co.th",
-                                                    "bed_capacity": 500,
-                                                    "service_plan_type": "A",
-                                                    
-                                                    # Digital integration fields
-                                                    "image_url": "https://cdn.bgh.co.th/logo.png",
-                                                    "auto_login_liff_id": "1234567890-abcdefgh",
-                                                    "disconnect_liff_id": "1234567890-ijklmnop",
-                                                    "login_liff_id": "1234567890-qrstuvwx",
-                                                    "mac_hv01_box": "AA:BB:CC:DD:EE:FF",
-                                                    "notifyToken": "LINE_NOTIFY_TOKEN_123",
-                                                    
-                                                    # Notification settings
-                                                    "is_acknowledge": True,
-                                                    "is_admit_discard": True,
-                                                    "is_body_data": True,
-                                                    "is_lab_data": True,
-                                                    "is_status_change": True,
-                                                    
-                                                    # Timestamps
-                                                    "created_at": "2024-01-15T08:00:00.000Z",
-                                                    "updated_at": "2024-01-15T10:30:00.000Z",
-                                                    "__v": 2
-                                                }
-                                            ],
-                                            "total": 12350,
-                                            "data_type": "hospitals",
-                                            "limit": 100,
-                                            "skip": 0,
-                                            "filters": {
-                                                "search": None,
-                                                "province_code": None,
-                                                "district_code": None
-                                            }
-                                        },
-                                        "request_id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
-                                        "timestamp": "2025-01-15T10:30:00.000Z"
-                                    }
-                                },
-                                "provinces_response": {
-                                    "summary": "Province data example",
-                                    "value": {
-                                        "success": True,
-                                        "message": "Master data retrieved successfully",
-                                        "data": {
-                                            "data": [
-                                                {
-                                                    "_id": "507f1f77bcf86cd799439011",
-                                                    "code": 10,
-                                                    "name": [
-                                                        {"code": "en", "name": "Bangkok"},
-                                                        {"code": "th", "name": "กรุงเทพมหานคร"}
-                                                    ],
-                                                    "en_name": "Bangkok",
-                                                    "is_active": True,
-                                                    "is_deleted": False
-                                                }
-                                            ],
-                                            "total": 79,
-                                            "data_type": "provinces"
-                                        },
-                                        "request_id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
-                                        "timestamp": "2025-01-15T10:30:00.000Z"
-                                    }
-                                },
-                                "blood_groups_response": {
-                                    "summary": "Blood groups master data example",
-                                    "value": {
-                                        "success": True,
-                                        "message": "Master data retrieved successfully",
-                                        "data": {
-                                            "data": [
-                                                {
-                                                    "_id": "61f7e7ca3036bd2d8f4bb958",
-                                                    "name": [
-                                                        {"code": "en", "name": "AB : Rh-"},
-                                                        {"code": "th", "name": "เอบี : อาร์เอช ลบ"}
-                                                    ],
-                                                    "en_name": "AB : Rh-",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2022-01-31T13:44:42.283Z",
-                                                    "updated_at": "2022-01-31T13:44:42.283Z",
-                                                    "unique_id": 1,
-                                                    "__v": 0
-                                                },
-                                                {
-                                                    "_id": "61f7e7ca3036bd2d8f4bb959",
-                                                    "name": [
-                                                        {"code": "en", "name": "O : Rh+"},
-                                                        {"code": "th", "name": "โอ : อาร์เอช บวก"}
-                                                    ],
-                                                    "en_name": "O : Rh+",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2022-01-31T13:44:42.283Z",
-                                                    "updated_at": "2022-01-31T13:44:42.283Z",
-                                                    "unique_id": 2,
-                                                    "__v": 0
-                                                }
-                                            ],
-                                            "total": 12,
-                                            "data_type": "blood_groups",
-                                            "limit": 100,
-                                            "skip": 0,
-                                            "filters": {
-                                                "search": None,
-                                                "province_code": None,
-                                                "district_code": None
-                                            }
-                                        },
-                                        "request_id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
-                                        "timestamp": "2025-07-07T18:51:48.000Z"
-                                    }
-                                },
-                                "human_skin_colors_response": {
-                                    "summary": "Human skin colors master data example",
-                                    "value": {
-                                        "success": True,
-                                        "message": "Master data retrieved successfully",
-                                        "data": {
-                                            "data": [
-                                                {
-                                                    "_id": "61f7e6f73036bd2d8f4bb952",
-                                                    "name": [
-                                                        {"code": "en", "name": "BLACK"},
-                                                        {"code": "th", "name": "ดำ"}
-                                                    ],
-                                                    "en_name": "BLACK",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2022-01-31T13:41:11.223Z",
-                                                    "updated_at": "2022-01-31T13:41:11.223Z",
-                                                    "unique_id": 1,
-                                                    "__v": 0
-                                                },
-                                                {
-                                                    "_id": "61f7e6f73036bd2d8f4bb953",
-                                                    "name": [
-                                                        {"code": "en", "name": "Dark Brown"},
-                                                        {"code": "th", "name": "สีน้ำตาลเข้ม"}
-                                                    ],
-                                                    "en_name": "Dark Brown",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2022-01-31T13:41:11.223Z",
-                                                    "updated_at": "2022-01-31T13:41:11.223Z",
-                                                    "unique_id": 2,
-                                                    "__v": 0
-                                                }
-                                            ],
-                                            "total": 6,
-                                            "data_type": "human_skin_colors",
-                                            "limit": 100,
-                                            "skip": 0,
-                                            "filters": {
-                                                "search": None,
-                                                "province_code": None,
-                                                "district_code": None
-                                            }
-                                        },
-                                        "request_id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
-                                        "timestamp": "2025-07-07T18:51:48.000Z"
-                                    }
-                                },
-                                "nations_response": {
-                                    "summary": "Nations/countries master data example",
-                                    "value": {
-                                        "success": True,
-                                        "message": "Master data retrieved successfully",
-                                        "data": {
-                                            "data": [
-                                                {
-                                                    "_id": "61f8b5f33036bd2d8f4bb970",
-                                                    "name": [
-                                                        {"code": "en", "name": "Argentina"},
-                                                        {"code": "th", "name": "อาร์เจนตินา"}
-                                                    ],
-                                                    "en_name": "Argentina",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2022-02-01T04:24:19.685Z",
-                                                    "updated_at": "2024-05-07T10:22:17.982Z",
-                                                    "unique_id": 2,
-                                                    "__v": 1
-                                                },
-                                                {
-                                                    "_id": "61f8b5f33036bd2d8f4bb971",
-                                                    "name": [
-                                                        {"code": "en", "name": "Thailand"},
-                                                        {"code": "th", "name": "ประเทศไทย"}
-                                                    ],
-                                                    "en_name": "Thailand",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2022-02-01T04:24:19.685Z",
-                                                    "updated_at": "2024-05-07T10:22:17.982Z",
-                                                    "unique_id": 3,
-                                                    "__v": 1
-                                                }
-                                            ],
-                                            "total": 229,
-                                            "data_type": "nations",
-                                            "limit": 100,
-                                            "skip": 0,
-                                            "filters": {
-                                                "search": None,
-                                                "province_code": None,
-                                                "district_code": None
-                                            }
-                                        },
-                                        "request_id": "g7h8i9j0-k1l2-3456-ghij-789012345678",
-                                        "timestamp": "2025-07-07T18:51:48.000Z"
-                                    }
-                                },
-                                "staff_types_response": {
-                                    "summary": "Staff types master data example",
-                                    "value": {
-                                        "success": True,
-                                        "message": "Master data retrieved successfully",
-                                        "data": {
-                                            "data": [
-                                                {
-                                                    "_id": "663220b2a9e900f9ded0a62f",
-                                                    "name": [
-                                                        {"code": "en", "name": "Doctor"},
-                                                        {"code": "th", "name": "แพทย์"}
-                                                    ],
-                                                    "en_name": "Doctor",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "is_this_userform_user": False,
-                                                    "created_at": "2024-05-01T11:00:02.415Z",
-                                                    "updated_at": "2024-05-06T10:21:53.354Z",
-                                                    "unique_id": 1,
-                                                    "__v": 0
-                                                },
-                                                {
-                                                    "_id": "663220baa9e900f9ded0a632",
-                                                    "name": [
-                                                        {"code": "en", "name": "Nurse"},
-                                                        {"code": "th", "name": "พยาบาล"}
-                                                    ],
-                                                    "en_name": "Nurse",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "is_this_userform_user": False,
-                                                    "created_at": "2024-05-01T11:00:10.523Z",
-                                                    "updated_at": "2024-05-06T10:22:01.705Z",
-                                                    "unique_id": 2,
-                                                    "__v": 0
-                                                },
-                                                {
-                                                    "_id": "66b9b9f9a144233da399c75e",
-                                                    "name": [
-                                                        {"code": "en", "name": "Ambulance Operation Staff"},
-                                                        {"code": "th", "name": "เจ้าหน้าที่ปฎิบัติการการแพทย์ฉุกเฉิน"}
-                                                    ],
-                                                    "en_name": "Ambulance Operation Staff",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "is_this_userform_user": True,
-                                                    "created_at": "2024-08-12T07:30:01.617Z",
-                                                    "updated_at": "2024-08-12T08:22:02.897Z",
-                                                    "unique_id": 6,
-                                                    "__v": 0
-                                                }
-                                            ],
-                                            "total": 6,
-                                            "data_type": "staff_types",
-                                            "limit": 100,
-                                            "skip": 0,
-                                            "filters": {
-                                                "search": None,
-                                                "province_code": None,
-                                                "district_code": None
-                                            }
-                                        },
-                                        "request_id": "h8i9j0k1-l2m3-4567-hijk-890123456789",
-                                        "timestamp": "2025-07-07T19:00:00.000Z"
-                                    }
-                                },
-                                "underlying_diseases_response": {
-                                    "summary": "Underlying diseases master data example",
-                                    "value": {
-                                        "success": True,
-                                        "message": "Master data retrieved successfully",
-                                        "data": {
-                                            "data": [
-                                                {
-                                                    "_id": "6638b07a09ecee510e15924d",
-                                                    "name": [
-                                                        {"code": "en", "name": "Hypertension"},
-                                                        {"code": "th", "name": "Hypertension"}
-                                                    ],
-                                                    "en_name": "Hypertension",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2024-05-06T10:27:06.626Z",
-                                                    "updated_at": "2024-05-06T10:27:11.098Z",
-                                                    "unique_id": 1,
-                                                    "__v": 0
-                                                },
-                                                {
-                                                    "_id": "6638b09409ecee510e159281",
-                                                    "name": [
-                                                        {"code": "en", "name": "Diabetes Mellitus"},
-                                                        {"code": "th", "name": "Diabetes mellitus"}
-                                                    ],
-                                                    "en_name": "Diabetes Mellitus",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2024-05-06T10:27:32.331Z",
-                                                    "updated_at": "2024-05-08T14:42:54.113Z",
-                                                    "unique_id": 2,
-                                                    "__v": 0
-                                                },
-                                                {
-                                                    "_id": "663b8f25db28c22e32c70c4c",
-                                                    "name": [
-                                                        {"code": "en", "name": "Chronic Kidney Disease"},
-                                                        {"code": "th", "name": "ไตวายเรื้อรัง"}
-                                                    ],
-                                                    "en_name": "Chronic Kidney Disease",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2024-05-08T14:41:41.487Z",
-                                                    "updated_at": "2024-05-08T14:43:14.498Z",
-                                                    "unique_id": 6,
-                                                    "__v": 0
-                                                }
-                                            ],
-                                            "total": 8,
-                                            "data_type": "underlying_diseases",
-                                            "limit": 100,
-                                            "skip": 0,
-                                            "filters": {
-                                                "search": None,
-                                                "province_code": None,
-                                                "district_code": None
-                                            }
-                                        },
-                                        "request_id": "i9j0k1l2-m3n4-5678-ijkl-901234567890",
-                                        "timestamp": "2025-07-07T19:00:00.000Z"
-                                    }
-                                },
-                                "ward_lists_response": {
-                                    "summary": "Hospital ward lists master data example",
-                                    "value": {
-                                        "success": True,
-                                        "message": "Master data retrieved successfully",
-                                        "data": {
-                                            "data": [
-                                                {
-                                                    "_id": "667c12928cbee167c0a48b6f",
-                                                    "name": [
-                                                        {"code": "en", "name": "ER"},
-                                                        {"code": "th", "name": "ฉุกเฉิน"}
-                                                    ],
-                                                    "en_name": "ER",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2024-06-26T13:07:30.355Z",
-                                                    "updated_at": "2025-01-15T13:47:45.279Z",
-                                                    "unique_id": 1,
-                                                    "__v": 0
-                                                },
-                                                {
-                                                    "_id": "667c12a38cbee167c0a48ba2",
-                                                    "name": [
-                                                        {"code": "en", "name": "OPD"},
-                                                        {"code": "th", "name": "ผู้ป่วยนอก"}
-                                                    ],
-                                                    "en_name": "OPD",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2024-06-26T13:07:47.248Z",
-                                                    "updated_at": "2024-06-26T13:07:47.248Z",
-                                                    "unique_id": 2,
-                                                    "__v": 0
-                                                },
-                                                {
-                                                    "_id": "668dfd03793e2577beebbf5d",
-                                                    "name": [
-                                                        {"code": "en", "name": "Home Ward"},
-                                                        {"code": "th", "name": "ดูแลตัวเองที่บ้าน"}
-                                                    ],
-                                                    "en_name": "Home Ward",
-                                                    "is_active": True,
-                                                    "is_deleted": False,
-                                                    "created_at": "2024-07-10T03:16:19.542Z",
-                                                    "updated_at": "2024-07-10T03:16:19.542Z",
-                                                    "unique_id": 4,
-                                                    "__v": 0
-                                                }
-                                            ],
-                                            "total": 9,
-                                            "data_type": "ward_lists",
-                                            "limit": 100,
-                                            "skip": 0,
-                                            "filters": {
-                                                "search": None,
-                                                "province_code": None,
-                                                "district_code": None
-                                            }
-                                        },
-                                        "request_id": "j0k1l2m3-n4o5-6789-jklm-012345678901",
-                                        "timestamp": "2025-07-07T19:00:00.000Z"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                400: {
-                    "description": "Invalid data type",
-                    "content": {
-                        "application/json": {
-                            "example": {
-                                "success": False,
-                                "error_count": 1,
-                                "errors": [{
-                                    "error_code": "INVALID_DATA_TYPE",
-                                    "error_type": "validation_error",
-                                    "message": "Invalid data type. Supported types: provinces, districts, sub_districts, hospitals, hospital_types, blood_groups, human_skin_colors, nations, ward_lists, staff_types, underlying_diseases",
-                                    "field": "data_type",
-                                    "value": "invalid_type",
-                                    "suggestion": "Please use one of the supported data types"
-                                }],
-                                "request_id": "h8i9j0k1-l2m3-4567-hijk-890123456789",
-                                "timestamp": "2025-01-15T10:30:00.000Z"
-                            }
-                        }
-                    }
-                }
-            })
+                200: {"description": "Master data retrieved successfully"},
+                400: {"description": "Invalid data type"},
+                401: {"description": "Authentication required"},
+                403: {"description": "Admin privileges required"},
+                500: {"description": "Internal server error"}
+            }
+        )
 async def get_master_data(
     request: Request,
     data_type: str,
@@ -2452,7 +1865,8 @@ Requires valid JWT Bearer token with admin privileges.
                 401: {"description": "Authentication required"},
                 404: {"description": "Master data record not found"},
                 500: {"description": "Internal server error"}
-            })
+            }
+        # Removed unmatched parenthesis here
 
 def get_master_data_fields_info(data_type: str) -> Dict[str, Any]:
     """Get field information for master data types"""
@@ -2530,11 +1944,7 @@ def get_master_data_fields_info(data_type: str) -> Dict[str, Any]:
                 "created_at": "Creation timestamp",
                 "updated_at": "Last update timestamp",
                 "__v": "Version key",
-                
-                # Basic address (legacy)
                 "address": "Basic address string (legacy field)",
-                
-                # Enhanced address details
                 "address_details": {
                     "street_address": "Street address including house/building number",
                     "building_name": "Building or complex name",
@@ -2543,16 +1953,12 @@ def get_master_data_fields_info(data_type: str) -> Dict[str, Any]:
                     "postal_code": "Postal/ZIP code",
                     "postal_box": "P.O. Box if applicable"
                 },
-                
-                # Geographic location
                 "location": {
                     "latitude": "Latitude coordinate (float)",
                     "longitude": "Longitude coordinate (float)",
                     "elevation": "Elevation in meters (float)",
                     "precision": "GPS precision/accuracy"
                 },
-                
-                # Contact information
                 "contact": {
                     "phone": "Primary phone number",
                     "phone_2": "Secondary phone number",
@@ -2563,8 +1969,6 @@ def get_master_data_fields_info(data_type: str) -> Dict[str, Any]:
                     "email_admin": "Administrative email",
                     "website": "Hospital website URL"
                 },
-                
-                # Service information
                 "services": {
                     "bed_capacity": "Total number of beds (integer)",
                     "emergency_services": "24/7 emergency services available (boolean)",
@@ -2574,17 +1978,11 @@ def get_master_data_fields_info(data_type: str) -> Dict[str, Any]:
                     "service_plan_type": "Service plan classification",
                     "accreditation": "Hospital accreditation status"
                 },
-                
-                # Legacy contact fields (for backward compatibility)
                 "phone": "Primary phone (legacy field)",
                 "email": "Primary email (legacy field)",
                 "website": "Website (legacy field)",
-                
-                # Legacy service fields (for backward compatibility)
                 "bed_capacity": "Number of beds (legacy field)",
                 "service_plan_type": "Service plan type (A, F3, etc.)",
-                
-                # Digital integration
                 "image_url": "Hospital image URL (string)",
                 "auto_login_liff_id": "LINE auto login LIFF ID",
                 "disconnect_liff_id": "LINE disconnect LIFF ID", 
@@ -3713,7 +3111,11 @@ async def get_medical_history_management(
     """Get medical history records with comprehensive table view and filtering"""
     import uuid
     try:
+        logger.warning("Starting medical history management function")
         request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        logger.warning(f"Request ID: {request_id}")
+        
+
         
         # Map history type to collection
         collection_mapping = {
@@ -3725,7 +3127,7 @@ async def get_medical_history_management(
             "sleep_data": "sleep_data_histories",
             "spo2": "spo2_histories",
             "step": "step_histories",
-            "temperature": "temprature_data_histories",
+            "temperature": "temperature_data_histories",
             "medication": "medication_histories",
             "allergy": "allergy_histories",
             "underlying_disease": "underlying_disease_histories",
@@ -3825,64 +3227,61 @@ async def get_medical_history_management(
             filter_query.update(search_query)
         
         # Get total count
-        total = await collection.count_documents(filter_query)
+        try:
+            total = await collection.count_documents(filter_query)
+            logger.warning(f"Count query successful: {total} documents found")
+        except Exception as e:
+            logger.warning(f"Failed to count documents: {e}")
+            total = 0
         
         # Get records with pagination
-        cursor = collection.find(filter_query).sort("created_at", -1).skip(skip).limit(limit)
-        records = await cursor.to_list(length=limit)
+        try:
+            cursor = collection.find(filter_query).sort("created_at", -1).skip(skip).limit(limit)
+            records = await cursor.to_list(length=limit)
+            logger.warning(f"Fetch query successful: {len(records)} records retrieved")
+        except Exception as e:
+            logger.warning(f"Failed to fetch records: {e}")
+            records = []
         
         # Enrich records with patient information
         enriched_records = []
         for record in records:
-            # Get patient info with proper ObjectId handling
-            patient_name = "Unknown Patient"
+            logger.warning(f"Processing record type: {type(record)}, value: {repr(record)[:200]}")
             try:
-                patient_id = record.get("patient_id")
-                if patient_id:
-                    # Handle both string and ObjectId formats
-                    if isinstance(patient_id, str):
-                        try:
-                            patient_obj_id = ObjectId(patient_id)
-                        except Exception:
-                            # If conversion fails, try to find by string
-                            patient_info = await patients_collection.find_one({"_id": patient_id})
-                        else:
-                            patient_info = await patients_collection.find_one({"_id": patient_obj_id})
-                    else:
-                        patient_info = await patients_collection.find_one({"_id": patient_id})
+                # Check if record is a dictionary
+                if isinstance(record, dict):
+                    # Special handling for blood pressure records that might have corrupted data
+                    if history_type == "blood_pressure":
+                        # Validate blood pressure record structure
+                        if "data" in record and isinstance(record["data"], list):
+                            # Filter out invalid data entries
+                            valid_data = []
+                            for data_entry in record["data"]:
+                                if isinstance(data_entry, dict):
+                                    valid_data.append(data_entry)
+                                else:
+                                    logger.warning(f"Invalid blood pressure data entry: {type(data_entry)} - {repr(data_entry)[:100]}")
+                            record["data"] = valid_data
                     
-                    if patient_info:
-                        patient_name = f"{patient_info.get('first_name', '')} {patient_info.get('last_name', '')}".strip()
+                    serialized_record = serialize_mongodb_response(record)
+                    serialized_record["patient_name"] = "Unknown Patient"
+                    enriched_records.append(serialized_record)
+                else:
+                    # Handle non-dictionary records
+                    logger.warning(f"Record is not a dictionary: {type(record)} - {record}")
+                    enriched_records.append({
+                        "_id": "unknown",
+                        "patient_name": "Unknown Patient",
+                        "error": f"Invalid record type: {type(record)}"
+                    })
             except Exception as e:
-                logger.warning(f"Failed to get patient info for record {record.get('_id')}: {e}")
-                patient_name = "Unknown Patient"
-            
-            # Serialize and enrich
-            serialized_record = serialize_mongodb_response(record)
-            serialized_record["patient_name"] = patient_name
-            
-            # Calculate summary stats for the record
-            data_entries = record.get("data", [])
-            if data_entries and history_type == "blood_pressure":
-                systolic_values = [d.get("systolic", 0) for d in data_entries if d.get("systolic") is not None and d.get("systolic") != 0]
-                diastolic_values = [d.get("diastolic", 0) for d in data_entries if d.get("diastolic") is not None and d.get("diastolic") != 0]
-                
-                serialized_record["summary_stats"] = {
-                    "avg_systolic": round(sum(systolic_values) / len(systolic_values), 1) if systolic_values else None,
-                    "avg_diastolic": round(sum(diastolic_values) / len(diastolic_values), 1) if diastolic_values else None,
-                    "readings_count": len(data_entries)
-                }
-            elif data_entries and history_type in ["blood_sugar", "creatinine", "spo2", "temperature"]:
-                values = [d.get("value", 0) for d in data_entries if d.get("value") is not None and d.get("value") != 0]
-                if values:
-                    serialized_record["summary_stats"] = {
-                        "avg_value": round(sum(values) / len(values), 1),
-                        "min_value": round(min(values), 1),
-                        "max_value": round(max(values), 1),
-                        "readings_count": len(values)
-                    }
-            
-            enriched_records.append(serialized_record)
+                logger.warning(f"Failed to process record: {e}")
+                # Add a basic record to avoid breaking the response
+                enriched_records.append({
+                    "_id": "unknown",
+                    "patient_name": "Unknown Patient",
+                    "error": f"Failed to process record: {str(e)}"
+                })
         
         # Calculate pagination info
         has_next = (skip + limit) < total
@@ -3980,7 +3379,7 @@ async def create_medical_history_record(
             "sleep_data": "sleep_data_histories",
             "spo2": "spo2_histories",
             "step": "step_histories",
-            "temperature": "temprature_data_histories",
+            "temperature": "temperature_data_histories",
             "medication": "medication_histories",
             "allergy": "allergy_histories",
             "underlying_disease": "underlying_disease_histories",
@@ -4094,7 +3493,7 @@ async def update_medical_history_record(
             "sleep_data": "sleep_data_histories",
             "spo2": "spo2_histories",
             "step": "step_histories",
-            "temperature": "temprature_data_histories",
+            "temperature": "temperature_data_histories",
             "medication": "medication_histories",
             "allergy": "allergy_histories",
             "underlying_disease": "underlying_disease_histories",
@@ -4211,7 +3610,7 @@ async def delete_medical_history_record(
             "sleep_data": "sleep_data_histories",
             "spo2": "spo2_histories",
             "step": "step_histories",
-            "temperature": "temprature_data_histories",
+            "temperature": "temperature_data_histories",
             "medication": "medication_histories",
             "allergy": "allergy_histories",
             "underlying_disease": "underlying_disease_histories",
@@ -4311,7 +3710,7 @@ async def search_medical_history_records(
             "sleep_data": "sleep_data_histories",
             "spo2": "spo2_histories",
             "step": "step_histories",
-            "temperature": "temprature_data_histories",
+            "temperature": "temperature_data_histories",
             "medication": "medication_histories",
             "allergy": "allergy_histories",
             "underlying_disease": "underlying_disease_histories",
@@ -4483,7 +3882,7 @@ async def get_medical_history_stats(
             "sleep_data_histories": "Sleep Data",
             "spo2_histories": "SPO2",
             "step_histories": "Step",
-            "temprature_data_histories": "Temperature",
+            "temperature_data_histories": "Temperature",
             "medication_histories": "Medication",
             "allergy_histories": "Allergy",
             "underlying_disease_histories": "Underlying Disease",
@@ -6797,6 +6196,33 @@ async def bulk_export_master_data(
             detail=create_error_response(
                 "INTERNAL_SERVER_ERROR",
                 custom_message=f"Failed to perform bulk export: {str(e)}",
+                request_id=request_id
+            ).dict()
+        )
+
+# ===================== BLOOD PRESSURE TEST ENDPOINT =====================
+
+@router.get("/test-blood-pressure")
+async def test_blood_pressure(
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Simple test endpoint for blood pressure"""
+    import uuid
+    try:
+        request_id = str(uuid.uuid4())
+        logger.warning("Test blood pressure endpoint called")
+        return create_success_response(
+            message="Blood pressure test successful",
+            data={"test": True, "endpoint": "blood_pressure_test"},
+            request_id=request_id
+        )
+    except Exception as e:
+        logger.error(f"Test blood pressure failed: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=create_error_response(
+                "INTERNAL_SERVER_ERROR",
+                custom_message=f"Test failed: {str(e)}",
                 request_id=request_id
             ).dict()
         )

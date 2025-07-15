@@ -35,87 +35,8 @@ class MQTTMonitorApp {
     }
     
     setupNavigation() {
-        // Handle navigation tabs
-        const navLinks = document.querySelectorAll('[data-tab]');
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const tabName = link.getAttribute('data-tab');
-                this.switchTab(tabName);
-            });
-        });
-        
-        // Handle URL hash changes
-        window.addEventListener('hashchange', () => {
-            const hash = window.location.hash.substring(1);
-            if (hash) {
-                this.switchTab(hash);
-            }
-        });
-        
-        // Handle initial hash
-        const hash = window.location.hash.substring(1);
-        if (hash) {
-            this.switchTab(hash);
-        }
-    }
-    
-    switchTab(tabName) {
-        // Update navigation
-        document.querySelectorAll('[data-tab]').forEach(link => {
-            link.classList.remove('active');
-        });
-        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-        
-        // Update tab content
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        document.getElementById(`${tabName}-tab`).classList.add('active');
-        
-        // Update page title and description
-        this.updatePageHeader(tabName);
-        
-        // Load tab-specific data
-        this.loadTabData(tabName);
-        
-        this.currentTab = tabName;
-    }
-    
-    updatePageHeader(tabName) {
-        const titles = {
-            'dashboard': 'Real-time MQTT Monitoring Dashboard',
-            'messages': 'MQTT Message Transactions',
-            'devices': 'Device Management',
-            'patients': 'Patient Management'
-        };
-        
-        const descriptions = {
-            'dashboard': 'Monitor device messages, patient mapping, and system statistics',
-            'messages': 'View all MQTT message transactions and device communications',
-            'devices': 'Manage and monitor AVA4, Kati Watch, and Qube-Vital devices',
-            'patients': 'View patient information and device mapping status'
-        };
-        
-        const titleElement = document.getElementById('page-title');
-        const descElement = document.getElementById('page-description');
-        
-        if (titleElement) titleElement.textContent = titles[tabName] || titles['dashboard'];
-        if (descElement) descElement.textContent = descriptions[tabName] || descriptions['dashboard'];
-    }
-    
-    loadTabData(tabName) {
-        switch (tabName) {
-            case 'messages':
-                this.updateMessagesTable();
-                break;
-            case 'devices':
-                this.updateDevicesTables();
-                break;
-            case 'patients':
-                this.updatePatientsTable();
-                break;
-        }
+        // Navigation is now handled by separate pages
+        // This method is kept for compatibility but simplified
     }
     
     async loadUserProfile() {
@@ -139,48 +60,62 @@ class MQTTMonitorApp {
     }
     
     connectWebSocket() {
-        // Connect to WebSocket server
-        this.socket = new WebSocket('ws://localhost:8097');
+        // Connect to web panel using Socket.IO
+        this.socket = io('http://localhost:8098');
         
-        this.socket.onopen = () => {
-            console.log('Connected to WebSocket server');
+        this.socket.on('connect', () => {
+            console.log('Connected to web panel via Socket.IO');
             this.updateConnectionStatus('connected');
-        };
+        });
         
-        this.socket.onclose = () => {
-            console.log('Disconnected from WebSocket server');
+        this.socket.on('disconnect', () => {
+            console.log('Disconnected from web panel');
             this.updateConnectionStatus('disconnected');
-            // Attempt to reconnect after 5 seconds
-            setTimeout(() => this.connectWebSocket(), 5000);
-        };
+        });
         
-        this.socket.onerror = (error) => {
-            console.error('WebSocket error:', error);
+        this.socket.on('connect_error', (error) => {
+            console.error('Socket.IO connection error:', error);
             this.updateConnectionStatus('disconnected');
-        };
+        });
         
-        this.socket.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                this.handleWebSocketMessage(data);
-            } catch (error) {
-                console.error('Error parsing WebSocket message:', error);
-            }
-        };
+        this.socket.on('mqtt_message', (data) => {
+            console.log('📡 MQTT message received via Socket.IO:', data);
+            this.handleMQTTMessage(data);
+        });
+        
+        this.socket.on('data_flow_update', (data) => {
+            console.log('🎯 DATA FLOW UPDATE RECEIVED via Socket.IO:', data);
+            this.handleDataFlowUpdate(data);
+        });
+        
+        this.socket.on('statistics', (data) => {
+            console.log('📊 Statistics received via Socket.IO:', data);
+            this.updateStatistics(data);
+        });
+        
+        this.socket.on('initial_data', (data) => {
+            console.log('📊 Initial data received via Socket.IO:', data);
+            this.handleInitialData(data);
+        });
     }
     
-    handleWebSocketMessage(data) {
-        if (data.type === 'mqtt_message') {
-            this.handleMQTTMessage(data.data);
-        } else if (data.type === 'statistics') {
-            this.updateStatistics(data.data);
-        } else if (data.type === 'initial_data') {
-            this.handleInitialData(data);
+    handleInitialData(data) {
+        console.log('📊 Initial data received:', data);
+        if (data.statistics) {
+            this.updateStatistics(data.statistics);
+        }
+        if (data.devices) {
+            this.devices = data.devices;
+            this.updateDevicesDisplay();
+        }
+        if (data.patients) {
+            this.patients = data.patients;
+            this.updatePatientsDisplay();
         }
     }
     
     handleMQTTMessage(message) {
-        // Add message to list
+        // Add message to list for statistics
         this.messages.unshift(message);
         if (this.messages.length > this.maxMessages) {
             this.messages.pop();
@@ -190,13 +125,287 @@ class MQTTMonitorApp {
         this.stats.totalMessages++;
         this.updateStatisticsDisplay();
         
-        // Update message display
+        // Update message display on dashboard
         this.addMessageToDisplay(message);
+    }
+    
+    handleDataFlowUpdate(flowEvent) {
+        console.log('🔄 handleDataFlowUpdate called with:', flowEvent);
         
-        // Update messages table if on messages tab
-        if (this.currentTab === 'messages') {
-            this.updateMessagesTable();
+        try {
+            // Extract the actual event data from the wrapper
+            const eventData = flowEvent.event || flowEvent;
+            console.log('📊 Extracted event data:', eventData);
+            
+            // Update real-time data flow display
+            console.log('🔄 About to call updateDataFlowDisplay...');
+            this.updateDataFlowDisplay(eventData);
+            console.log('✅ updateDataFlowDisplay completed');
+            
+            // Update step-by-step processing display
+            console.log('🔄 About to call updateStepByStepProcessing...');
+            this.updateStepByStepProcessing(eventData);
+            console.log('✅ updateStepByStepProcessing completed');
+            
+            // Update statistics
+            console.log('🔄 About to call updateDataFlowStatistics...');
+            this.updateDataFlowStatistics(eventData);
+            console.log('✅ updateDataFlowStatistics completed');
+            
+        } catch (error) {
+            console.error('❌ Error in handleDataFlowUpdate:', error);
         }
+    }
+    
+    updateDataFlowDisplay(flowEvent) {
+        console.log('🔄 updateDataFlowDisplay called with:', flowEvent);
+        
+        const container = document.getElementById('data-flow-container');
+        console.log('🔍 Container found:', container);
+        
+        if (!container) {
+            console.error('❌ data-flow-container not found!');
+            return;
+        }
+        
+        // Remove loading message if present
+        const loadingMessage = container.querySelector('.text-center.text-muted');
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
+        
+        // Create flow event element
+        console.log('🛠️ Creating data flow element...');
+        const eventElement = this.createDataFlowElement(flowEvent);
+        console.log('✅ Event element created:', eventElement);
+        
+        container.insertBefore(eventElement, container.firstChild);
+        console.log('✅ Event element added to container');
+        
+        // Limit displayed events
+        const eventElements = container.querySelectorAll('.flow-step');
+        if (eventElements.length > 20) {
+            eventElements[eventElements.length - 1].remove();
+        }
+    }
+    
+    updateStepByStepProcessing(flowEvent) {
+        const container = document.getElementById('step-processing-container');
+        if (!container) return;
+        
+        // Remove loading message if present
+        const loadingMessage = container.querySelector('.text-center.text-muted');
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
+        
+        // Update or create step element
+        this.updateStepElement(flowEvent);
+    }
+    
+    createDataFlowElement(flowEvent) {
+        console.log('🛠️ [DEBUG] createDataFlowElement input:', flowEvent);
+        const div = document.createElement('div');
+        div.className = `flow-step ${flowEvent.status || ''}`;
+        
+        const timestamp = flowEvent.timestamp ? new Date(flowEvent.timestamp).toLocaleTimeString() : '-';
+        const deviceType = flowEvent.device_type || 'Unknown';
+        const deviceBadgeClass = this.getDeviceBadgeClass(deviceType);
+        const statusClass = this.getStatusClass(flowEvent.status || '');
+        const step = flowEvent.step || '?';
+        const topic = flowEvent.topic || '-';
+        const payload = flowEvent.payload ? JSON.stringify(flowEvent.payload, null, 2) : '-';
+        const patientName = flowEvent.patient_info && flowEvent.patient_info.patient_name ? flowEvent.patient_info.patient_name : '-';
+        const error = flowEvent.error || '';
+        
+        // Check if this is a FHIR R5 step
+        const isFhirStep = step === '6_fhir_r5_stored' || step === 'fhir_r5_store';
+        const fhirCondition = isFhirStep ? `
+            <div class="mb-2">
+                <span class="badge bg-info text-white me-2">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Condition: Only for Patient Resource Data
+                </span>
+            </div>
+        ` : '';
+        
+        div.innerHTML = `
+            <div class="d-flex align-items-start">
+                <span class="step-indicator ${statusClass}">${this.getStepNumber(step)}</span>
+                <div class="flex-grow-1">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="badge ${deviceBadgeClass} device-badge me-2">${deviceType}</span>
+                        <strong class="me-2">${this.getStepTitle(step)}</strong>
+                        <span class="badge ${statusClass} status-badge me-2">${flowEvent.status || '-'}</span>
+                        <small class="text-muted">${timestamp}</small>
+                    </div>
+                    ${fhirCondition}
+                    <div class="mb-2">
+                        <strong>Topic:</strong> ${topic}
+                    </div>
+                    ${flowEvent.patient_info ? `
+                        <div class="mb-2">
+                            <strong>Patient:</strong> ${patientName}
+                        </div>
+                    ` : ''}
+                    ${error ? `
+                        <div class="mb-2 text-danger">
+                            <strong>Error:</strong> ${error}
+                        </div>
+                    ` : ''}
+                    <div class="payload-display">
+                        <strong>Payload:</strong>
+                        <pre>${payload}</pre>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        return div;
+    }
+    
+    updateStepElement(flowEvent) {
+        const stepId = `step-${flowEvent.step}`;
+        let stepElement = document.getElementById(stepId);
+        
+        if (!stepElement) {
+            stepElement = this.createStepElement(flowEvent);
+            const container = document.getElementById('step-processing-container');
+            if (container) {
+                container.appendChild(stepElement);
+            }
+        } else {
+            this.updateStepContent(stepElement, flowEvent);
+        }
+    }
+    
+    createStepElement(flowEvent) {
+        const div = document.createElement('div');
+        div.id = `step-${flowEvent.step}`;
+        div.className = `timeline-item ${flowEvent.status}`;
+        
+        const deviceBadgeClass = this.getDeviceBadgeClass(flowEvent.device_type);
+        const statusClass = this.getStatusClass(flowEvent.status);
+        
+        // Check if this is a FHIR R5 step
+        const isFhirStep = flowEvent.step === '6_fhir_r5_stored' || flowEvent.step === 'fhir_r5_store';
+        const fhirCondition = isFhirStep ? `
+            <div class="mb-2">
+                <span class="badge bg-info text-white">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Condition: Only for Patient Resource Data
+                </span>
+            </div>
+        ` : '';
+        
+        div.innerHTML = `
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <span class="badge ${deviceBadgeClass} device-badge me-2">${flowEvent.device_type}</span>
+                        <h4 class="card-title mb-0">${this.getStepTitle(flowEvent.step)}</h4>
+                        <span class="badge ${statusClass} status-badge ms-auto">${flowEvent.status}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    ${fhirCondition}
+                    <div class="mb-2">
+                        <strong>Topic:</strong> ${flowEvent.topic}
+                    </div>
+                    ${flowEvent.patient_info ? `
+                        <div class="mb-2">
+                            <strong>Patient:</strong> ${flowEvent.patient_info.patient_name || 'Unknown'}
+                        </div>
+                    ` : ''}
+                    ${flowEvent.error ? `
+                        <div class="mb-2 text-danger">
+                            <strong>Error:</strong> ${flowEvent.error}
+                        </div>
+                    ` : ''}
+                    <div class="payload-display">
+                        <strong>Payload:</strong>
+                        <pre>${JSON.stringify(flowEvent.payload, null, 2)}</pre>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        return div;
+    }
+    
+    updateStepContent(stepElement, flowEvent) {
+        const statusClass = this.getStatusClass(flowEvent.status);
+        const statusBadge = stepElement.querySelector('.status-badge');
+        if (statusBadge) {
+            statusBadge.className = `badge ${statusClass} status-badge ms-auto`;
+            statusBadge.textContent = flowEvent.status;
+        }
+        
+        stepElement.className = `timeline-item ${flowEvent.status}`;
+    }
+    
+    getStepNumber(step) {
+        const stepMap = {
+            '1_mqtt_received': '1',
+            '2_payload_parsed': '2', 
+            '3_patient_lookup': '2',
+            '4_patient_updated': '3',
+            '5_medical_stored': '3',
+            '6_fhir_r5_stored': '4',
+            'mqtt_payload': '1',
+            'parser': '2',
+            'database_store': '3',
+            'fhir_r5_store': '4'
+        };
+        return stepMap[step] || '?';
+    }
+    
+    getStepTitle(step) {
+        const stepMap = {
+            '1_mqtt_received': 'MQTT Payload',
+            '2_payload_parsed': 'Parser',
+            '3_patient_lookup': 'Parser',
+            '4_patient_updated': 'Database Store',
+            '5_medical_stored': 'Database Store',
+            '6_fhir_r5_stored': 'FHIR R5 Resource Data Store',
+            'mqtt_payload': 'MQTT Payload',
+            'parser': 'Parser',
+            'database_store': 'Database Store',
+            'fhir_r5_store': 'FHIR R5 Resource Data Store'
+        };
+        return stepMap[step] || step;
+    }
+    
+    getStatusClass(status) {
+        switch (status) {
+            case 'success': return 'step-success';
+            case 'error': return 'step-error';
+            case 'processing': return 'step-processing';
+            default: return 'step-pending';
+        }
+    }
+    
+    updateDataFlowStatistics(flowEvent) {
+        // Update device-specific statistics
+        if (flowEvent.device_type === 'AVA4') {
+            this.stats.ava4Count = (this.stats.ava4Count || 0) + 1;
+        } else if (flowEvent.device_type === 'Kati') {
+            this.stats.katiCount = (this.stats.katiCount || 0) + 1;
+        } else if (flowEvent.device_type === 'Qube') {
+            this.stats.qubeCount = (this.stats.qubeCount || 0) + 1;
+        }
+        
+        // Update total messages
+        this.stats.totalMessages = (this.stats.totalMessages || 0) + 1;
+        
+        // Update successful/failed flows
+        if (flowEvent.status === 'success') {
+            this.stats.successfulFlows = (this.stats.successfulFlows || 0) + 1;
+        } else if (flowEvent.status === 'error') {
+            this.stats.failedFlows = (this.stats.failedFlows || 0) + 1;
+        }
+        
+        this.updateStatisticsDisplay();
     }
     
     addMessageToDisplay(message) {
@@ -342,15 +551,64 @@ class MQTTMonitorApp {
     }
     
     updateStatisticsDisplay() {
-        // Update statistics cards
-        document.getElementById('total-messages').textContent = this.stats.totalMessages || 0;
-        document.getElementById('processing-rate').textContent = this.stats.processingRate || 0;
-        document.getElementById('ava4-count').textContent = this.stats.ava4Count || 0;
-        document.getElementById('ava4-active').textContent = this.stats.ava4Active || 0;
-        document.getElementById('kati-count').textContent = this.stats.katiCount || 0;
-        document.getElementById('kati-active').textContent = this.stats.katiActive || 0;
-        document.getElementById('qube-count').textContent = this.stats.qubeCount || 0;
-        document.getElementById('qube-active').textContent = this.stats.qubeActive || 0;
+        // Update statistics cards with null checks
+        const elements = {
+            'total-messages': this.stats.totalMessages || 0,
+            'processing-rate': this.stats.processingRate || 0,
+            'ava4-count': this.stats.ava4Count || 0,
+            'ava4-active': this.stats.ava4Active || 0,
+            'kati-count': this.stats.katiCount || 0,
+            'kati-active': this.stats.katiActive || 0,
+            'qube-count': this.stats.qubeCount || 0,
+            'qube-active': this.stats.qubeActive || 0,
+            // Data Flow page specific statistics
+            'ava4-messages': this.stats.ava4Count || 0,
+            'kati-messages': this.stats.katiCount || 0,
+            'qube-messages': this.stats.qubeCount || 0,
+            'successful-flows': this.stats.successfulFlows || 0,
+            'failed-flows': this.stats.failedFlows || 0,
+            // Data Flow Monitor page elements
+            'total-events': this.stats.totalMessages || 0,
+            'processing-rate': this.stats.processingRate || 0,
+            'success-rate': this.calculateSuccessRate(),
+            'error-rate': this.calculateErrorRate(),
+            'active-devices': this.calculateActiveDevices(),
+            'last-activity': this.getLastActivity(),
+            'avg-processing-time': this.stats.avgProcessingTime || '0ms',
+            'peak-time': this.stats.peakProcessingTime || '0ms'
+        };
+        
+        Object.entries(elements).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value;
+            }
+        });
+    }
+    
+    calculateSuccessRate() {
+        const total = this.stats.totalMessages || 0;
+        const successful = this.stats.successfulFlows || 0;
+        return total > 0 ? Math.round((successful / total) * 100) + '%' : '0%';
+    }
+    
+    calculateErrorRate() {
+        const total = this.stats.totalMessages || 0;
+        const failed = this.stats.failedFlows || 0;
+        return total > 0 ? Math.round((failed / total) * 100) + '%' : '0%';
+    }
+    
+    calculateActiveDevices() {
+        let active = 0;
+        if (this.stats.ava4Active) active++;
+        if (this.stats.katiActive) active++;
+        if (this.stats.qubeActive) active++;
+        return active;
+    }
+    
+    getLastActivity() {
+        // For now, return a simple timestamp
+        return this.stats.lastActivity || 'Never';
     }
     
     updateDevicesDisplay() {
@@ -490,12 +748,12 @@ class MQTTMonitorApp {
         const container = document.getElementById('qube-devices-table');
         if (!container) return;
         
-        const devices = this.devices.qube || [];
+        const qubeDevices = this.devices.qube;
         
-        if (devices.length === 0) {
+        if (qubeDevices.length === 0) {
             container.innerHTML = `
                 <div class="text-center text-muted py-4">
-                    <i class="ti ti-hospital-off" style="font-size: 2rem;"></i>
+                    <i class="ti ti-devices-off" style="font-size: 2rem;"></i>
                     <p class="mt-2">No Qube-Vital devices found</p>
                 </div>
             `;
@@ -504,88 +762,28 @@ class MQTTMonitorApp {
         
         const tableHtml = `
             <div class="table-responsive">
-                <table class="table table-vcenter transaction-table">
+                <table class="table table-vcenter">
                     <thead>
                         <tr>
-                            <th>Hospital Name</th>
-                            <th>MAC Address</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${devices.map(device => `
-                            <tr>
-                                <td>${device.name || 'Unknown'}</td>
-                                <td><code>${device.mac_hv01_box || 'N/A'}</code></td>
-                                <td><span class="badge bg-warning">Active</span></td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-        `;
-        
-        container.innerHTML = tableHtml;
-    }
-    
-    updateMessagesTable() {
-        const container = document.getElementById('messages-table-container');
-        if (!container) return;
-        
-        if (this.messages.length === 0) {
-            container.innerHTML = `
-                <div class="text-center text-muted py-4">
-                    <i class="ti ti-message-circle-off" style="font-size: 3rem;"></i>
-                    <p class="mt-2">No messages received yet</p>
-                </div>
-            `;
-            return;
-        }
-        
-        const tableHtml = `
-            <div class="table-responsive">
-                <table class="table table-vcenter transaction-table">
-                    <thead>
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>Device Type</th>
+                            <th>Device ID</th>
                             <th>Topic</th>
-                            <th>Medical Data</th>
-                            <th>Health Data</th>
-                            <th>Device Data</th>
+                            <th>Last Seen</th>
                             <th>Status</th>
-                            <th>Patient Mapping</th>
+                            <th>Patient</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${this.messages.map(message => {
-                            const timestamp = new Date(message.timestamp).toLocaleString();
-                            const deviceType = this.getDeviceType(message.topic);
-                            const statusClass = message.status === 'processed' ? 'bg-success' : 
-                                              message.status === 'patient_not_found' ? 'bg-warning' : 'bg-danger';
-                            const patientMapping = message.patient_mapping ? 
-                                `${message.patient_mapping.patient_name || 'Unknown'} (${message.patient_mapping.patient_id})` : 
-                                'Not Mapped';
-                            
-                            // Parse medical data
-                            const medicalData = this.parseMedicalData(message);
-                            
-                            // Parse health data
-                            const healthData = this.parseHealthData(message);
-                            
-                            // Parse device data
-                            const deviceData = this.parseDeviceData(message);
+                        ${qubeDevices.map(device => {
+                            const lastSeen = new Date(device.last_seen).toLocaleString();
+                            const statusClass = device.status === 'active' ? 'bg-success' : 'bg-secondary';
                             
                             return `
                                 <tr>
-                                    <td>${timestamp}</td>
-                                    <td><span class="badge ${this.getDeviceBadgeClass(deviceType)}">${deviceType}</span></td>
-                                    <td><code>${message.topic}</code></td>
-                                    <td>${medicalData}</td>
-                                    <td>${healthData}</td>
-                                    <td>${deviceData}</td>
-                                    <td><span class="badge ${statusClass}">${message.status}</span></td>
-                                    <td>${patientMapping}</td>
+                                    <td><code>${device.device_id}</code></td>
+                                    <td><code>${device.topic}</code></td>
+                                    <td>${lastSeen}</td>
+                                    <td><span class="badge ${statusClass}">${device.status}</span></td>
+                                    <td>${device.patient_name || 'Not Mapped'}</td>
                                 </tr>
                             `;
                         }).join('')}
@@ -1025,23 +1223,7 @@ function refreshData() {
     }
 }
 
-function clearMessages() {
-    const container = document.getElementById('messages-container');
-    if (container) {
-        container.innerHTML = `
-            <div class="text-center text-muted py-4">
-                <i class="ti ti-message-circle-off" style="font-size: 3rem;"></i>
-                <p class="mt-2">Messages cleared</p>
-            </div>
-        `;
-    }
-    if (window.mqttApp) {
-        window.mqttApp.messages = [];
-        window.mqttApp.updateMessagesTable();
-    }
-}
-
-// Initialize app when DOM is loaded
+// Initialize the app globally
 document.addEventListener('DOMContentLoaded', function() {
     window.mqttApp = new MQTTMonitorApp();
 }); 

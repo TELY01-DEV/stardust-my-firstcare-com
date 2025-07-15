@@ -250,8 +250,8 @@ class ComprehensiveEndpointTester:
         """Obtain authentication token for testing protected endpoints"""
         try:
             auth_data = {
-                "username": "test@example.com",
-                "password": "testpassword"
+                "username": "admin",
+                "password": "Sim!443355"
             }
             
             async with self.session.post(
@@ -260,8 +260,8 @@ class ComprehensiveEndpointTester:
             ) as response:
                 if response.status == 200:
                     data = await response.json()
-                    if 'data' in data and 'access_token' in data['data']:
-                        self.auth_token = data['data']['access_token']
+                    if 'access_token' in data:
+                        self.auth_token = data['access_token']
                         self.logger.info("✅ Authentication successful")
                         return True
                 

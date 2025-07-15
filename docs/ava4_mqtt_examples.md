@@ -1,7 +1,7 @@
 
 # 📡 AVA4 MQTT Topics & Payload Examples (with Explanation)
 
-> **⚠️ Important Note:** While the examples below show `dusun_pub` as the topic for BLE medical device data, the actual application is configured to use `dusun_sub` for subdevice payload. The payload structure remains the same, only the topic name differs.
+> **✅ Correct Configuration:** The AVA4 MQTT listener is configured to use `dusun_pub` as the topic for BLE medical device data. The payload structure shown below is the correct format that the system expects and processes.
 
 ---
 
@@ -132,7 +132,7 @@
 - All payloads are JSON via MQTT
 - Topics are **used to classify** message source:
   - `ESP32_BLE_GW_TX`: Status / IMEI updates (AVA4)
-  - `dusun_sub`: Medical data (subdevices) - *Note: Examples show `dusun_pub` but app uses `dusun_sub`*
+  - `dusun_pub`: Medical data (subdevices) - *Correct topic for AVA4 medical device data*
 
 ---
 
