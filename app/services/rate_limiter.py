@@ -5,7 +5,11 @@ from enum import Enum
 import redis.asyncio as redis
 from fastapi import HTTPException, Request
 from app.services.security_audit import security_audit, SecurityEventType, SecuritySeverity
-from config import settings, logger
+from app.services.rate_limit_monitor import rate_limit_monitor
+from config import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 class RateLimitType(Enum):
     """Rate limit types"""
@@ -73,6 +77,11 @@ class RateLimiter:
             "127.0.0.1",
             "localhost",
             "49.0.81.155",  # Your external IP
+            "172.18.0.0/16",  # Docker network range
+            "172.19.0.0/16",  # Additional Docker network range
+            "172.20.0.0/16",  # Additional Docker network range
+            "10.0.0.0/8",     # Private network range
+            "192.168.0.0/16", # Private network range
             # Add more trusted IPs here
         ])
         
@@ -182,6 +191,18 @@ class RateLimiter:
                 await self._log_rate_limit_exceeded(
                     client_ip, endpoint, check_type, user_id, api_key
                 )
+                
+                # Record rate limit event for monitoring
+                await rate_limit_monitor.record_rate_limit_event(
+                    ip_address=client_ip,
+                    endpoint=endpoint,
+                    limit_type=check_type,
+                    limit=info["limit"],
+                    window=info["window"],
+                    user_id=user_id,
+                    api_key=api_key
+                )
+                
                 return False, {
                     "error": "rate_limit_exceeded",
                     "type": check_type,

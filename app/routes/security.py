@@ -1,16 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, BackgroundTasks
 from fastapi.responses import JSONResponse
 from typing import Dict, Any, Optional, List
 from datetime import datetime, timedelta
 from bson import ObjectId
 
-from app.services.auth import require_auth
+from app.services.auth import require_auth, auth_service
 from app.services.security_audit import security_audit, SecurityEventType, SecuritySeverity
 from app.services.rate_limiter import rate_limiter, RateLimitType
+from app.services.rate_limit_monitor import rate_limit_monitor
 from app.services.encryption import encryption_service
 from app.utils.error_definitions import create_error_response, create_success_response
 from app.utils.json_encoder import serialize_mongodb_response
-from config import logger
+from config import settings, logger
 
 router = APIRouter(prefix="/admin/security", tags=["security"])
 
@@ -686,3 +687,161 @@ async def get_security_config(
             request_id=request_id
         )
         return JSONResponse(status_code=500, content=error_response.dict()) 
+
+@router.get("/rate-limits/summary")
+async def get_rate_limit_summary(
+    request: Request,
+    current_user: Dict[str, Any] = Depends(auth_service.get_current_user)
+):
+    """Get rate limit summary for the last 24 hours"""
+    try:
+        # Check if user has admin privileges
+        if not auth_service.has_role(current_user, ["admin", "superadmin"]):
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        summary = await rate_limit_monitor.get_rate_limit_summary()
+        
+        # Log security audit
+        await security_audit.log_event(
+            event_type=SecurityEventType.RATE_LIMIT_VIEW,
+            severity=SecuritySeverity.LOW,
+            user_id=current_user.get("username"),
+            ip_address=request.client.host,
+            details={"summary": summary}
+        )
+        
+        return {
+            "success": True,
+            "data": summary,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting rate limit summary: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get rate limit summary")
+
+@router.post("/rate-limits/send-telegram-alert")
+async def send_rate_limit_telegram_alert(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    current_user: Dict[str, Any] = Depends(auth_service.get_current_user)
+):
+    """Send current rate limit summary to Telegram"""
+    try:
+        # Check if user has admin privileges
+        if not auth_service.has_role(current_user, ["admin", "superadmin"]):
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        # Check if Telegram is configured
+        if not settings.telegram_bot_token or not settings.telegram_chat_id:
+            raise HTTPException(
+                status_code=400, 
+                detail="Telegram bot token or chat ID not configured"
+            )
+        
+        # Send alert in background
+        background_tasks.add_task(rate_limit_monitor.send_daily_summary)
+        
+        # Log security audit
+        await security_audit.log_event(
+            event_type=SecurityEventType.RATE_LIMIT_ALERT,
+            severity=SecuritySeverity.MEDIUM,
+            user_id=current_user.get("username"),
+            ip_address=request.client.host,
+            details={"action": "manual_telegram_alert"}
+        )
+        
+        return {
+            "success": True,
+            "message": "Rate limit summary sent to Telegram",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error sending rate limit Telegram alert: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send Telegram alert")
+
+@router.post("/rate-limits/test-telegram")
+async def test_rate_limit_telegram(
+    request: Request,
+    current_user: Dict[str, Any] = Depends(auth_service.get_current_user)
+):
+    """Send a test rate limit alert to Telegram"""
+    try:
+        # Check if user has admin privileges
+        if not auth_service.has_role(current_user, ["admin", "superadmin"]):
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        # Check if Telegram is configured
+        if not settings.telegram_bot_token or not settings.telegram_chat_id:
+            raise HTTPException(
+                status_code=400, 
+                detail="Telegram bot token or chat ID not configured"
+            )
+        
+        # Create a test event
+        test_event = {
+            "timestamp": datetime.utcnow(),
+            "ip_address": "192.168.1.100",
+            "endpoint": "/api/test",
+            "limit_type": "endpoint",
+            "limit": 20,
+            "window": 60,
+            "user_id": "test_user",
+            "api_key": None
+        }
+        
+        # Send test alert
+        await rate_limit_monitor._send_telegram_alert(
+            test_event, "🧪 TEST", "🧪", 1
+        )
+        
+        # Log security audit
+        await security_audit.log_event(
+            event_type=SecurityEventType.RATE_LIMIT_ALERT,
+            severity=SecuritySeverity.LOW,
+            user_id=current_user.get("username"),
+            ip_address=request.client.host,
+            details={"action": "test_telegram_alert"}
+        )
+        
+        return {
+            "success": True,
+            "message": "Test rate limit alert sent to Telegram",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error sending test rate limit alert: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send test alert")
+
+@router.get("/rate-limits/status/{identifier}")
+async def get_rate_limit_status(
+    identifier: str,
+    limit_type: RateLimitType = RateLimitType.GLOBAL,
+    request: Request = None,
+    current_user: Optional[Dict[str, Any]] = Depends(auth_service.get_current_user_optional)
+):
+    """Get rate limit status for a specific identifier"""
+    try:
+        status = await rate_limiter.get_rate_limit_status(identifier, limit_type)
+        
+        # Log security audit if user is authenticated
+        if current_user:
+            await security_audit.log_event(
+                event_type=SecurityEventType.RATE_LIMIT_VIEW,
+                severity=SecuritySeverity.LOW,
+                user_id=current_user.get("username"),
+                ip_address=request.client.host if request else None,
+                details={"identifier": identifier, "limit_type": limit_type.value}
+            )
+        
+        return {
+            "success": True,
+            "data": status,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting rate limit status: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get rate limit status") 
