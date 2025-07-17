@@ -9,22 +9,51 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
-COPY web-panel/requirements.txt .
+COPY services/mqtt-monitor/web-panel/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy shared utilities
-COPY shared /app/shared
+COPY services/mqtt-monitor/shared /app/shared
 
 # Copy application code
-COPY web-panel/app.py .
-COPY web-panel/templates/ templates/
-COPY web-panel/static/ static/
+COPY services/mqtt-monitor/web-panel/app.py .
+COPY services/mqtt-monitor/web-panel/templates/ templates/
+COPY services/mqtt-monitor/web-panel/static/ static/
+
+# Copy SSL certificates from project root
+COPY ssl /app/ssl
+COPY ca-latest.pem /app/ssl/ca-latest.pem
+COPY client-combined-latest.pem /app/ssl/client-combined-latest.pem
+
+# Set MongoDB environment variables
+ENV MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin
+ENV MONGODB_HOST=coruscant.my-firstcare.com
+ENV MONGODB_PORT=27023
+ENV MONGODB_USERNAME=opera_admin
+ENV MONGODB_PASSWORD=Sim!443355
+ENV MONGODB_AUTH_DB=admin
+ENV MONGODB_DATABASE=AMY
+ENV MONGODB_SSL_CA_FILE=/app/ssl/ca-latest.pem
+ENV MONGODB_SSL_CLIENT_FILE=/app/ssl/client-combined-latest.pem
+ENV MONGODB_SSL_CLIENT_CERT_FILE=/app/ssl/client-combined-latest.pem
+ENV MONGODB_SSL_CLIENT_KEY_FILE=/app/ssl/client-combined-latest.pem
+ENV MONGODB_SSL_CERT_REQS=CERT_REQUIRED
+ENV MONGODB_SSL_CIPHERS=HIGH:!aNULL:!MD5
+
+# Set Redis environment variables
+ENV REDIS_URL=redis://redis:6374/1
+
+# Set JWT environment variables
+ENV JWT_AUTH_BASE_URL=http://localhost:5054
+ENV JWT_SECRET_KEY=your-secret-key-here
+ENV JWT_LOGIN_ENDPOINT=/auth/login
+ENV JWT_ME_ENDPOINT=/auth/me
 
 # Make the script executable
 RUN chmod +x app.py
 
 # Expose port
-EXPOSE 8080
+EXPOSE 8098
 
 # Run the application
 CMD ["python", "app.py"] 
