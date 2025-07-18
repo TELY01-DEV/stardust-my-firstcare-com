@@ -16,9 +16,63 @@ class DataProcessor:
     """Processes and stores medical data"""
     
     def __init__(self, mongodb_uri: str, database_name: str = "AMY"):
-        self.client = MongoClient(mongodb_uri)
-        self.db = self.client[database_name]
+        # Parse MongoDB URI to extract components
+        if mongodb_uri.startswith("mongodb://"):
+            # Handle mongodb:// format
+            self._setup_mongodb_connection(mongodb_uri, database_name)
+        else:
+            # Handle mongodb+srv:// format or other formats
+            self.client = MongoClient(mongodb_uri)
+            self.db = self.client[database_name]
+        
         logger.info(f"DataProcessor initialized for database: {database_name}")
+    
+    def _setup_mongodb_connection(self, mongodb_uri: str, database_name: str):
+        """Setup MongoDB connection with SSL certificates"""
+        try:
+            # Check if SSL certificate files exist
+            ssl_ca_file = "/app/ssl/ca-latest.pem"
+            ssl_client_file = "/app/ssl/client-combined-latest.pem"
+            
+            ssl_ca_exists = os.path.exists(ssl_ca_file)
+            ssl_client_exists = os.path.exists(ssl_client_file)
+            
+            # MongoDB configuration
+            mongodb_config = {
+                "tls": True,
+                "tlsAllowInvalidCertificates": True,
+                "tlsAllowInvalidHostnames": True,
+                "serverSelectionTimeoutMS": 20000,
+                "connectTimeoutMS": 20000
+            }
+            
+            # Only add SSL certificate files if they exist
+            if ssl_ca_exists:
+                mongodb_config["tlsCAFile"] = ssl_ca_file
+                logger.info(f"✅ Using SSL CA file: {ssl_ca_file}")
+            else:
+                logger.warning(f"⚠️ SSL CA file not found: {ssl_ca_file}, proceeding without it")
+                
+            if ssl_client_exists:
+                mongodb_config["tlsCertificateKeyFile"] = ssl_client_file
+                logger.info(f"✅ Using SSL client file: {ssl_client_file}")
+            else:
+                logger.warning(f"⚠️ SSL client file not found: {ssl_client_file}, proceeding without it")
+            
+            # Create client with SSL configuration
+            self.client = MongoClient(mongodb_uri, **mongodb_config)
+            self.db = self.client[database_name]
+            
+            # Test connection
+            self.client.admin.command('ping')
+            logger.info("✅ Connected to MongoDB with SSL certificates")
+            
+        except Exception as e:
+            logger.error(f"❌ MongoDB connection with SSL failed: {e}")
+            # Fallback to simple connection
+            logger.warning("⚠️ Falling back to simple MongoDB connection")
+            self.client = MongoClient(mongodb_uri)
+            self.db = self.client[database_name]
         
     def update_patient_last_data(self, patient_id: ObjectId, data_type: str, 
                                 data: Dict[str, Any], source: str = "device", 
@@ -141,8 +195,22 @@ class DataProcessor:
             logger.error(f"❌ Error storing {data_type} history for patient {patient_id}: {e}")
             return False
     
+    def store_medical_data(self, data: dict) -> bool:
+        """Store generic medical data in the 'medical_data' collection."""
+        try:
+            result = self.db['medical_data'].insert_one(data)
+            if result.inserted_id:
+                logger.info(f"✅ Successfully stored generic medical data (ID: {result.inserted_id}) in 'medical_data' collection.")
+                return True
+            else:
+                logger.error("❌ Failed to store generic medical data in 'medical_data' collection.")
+                return False
+        except Exception as e:
+            logger.error(f"❌ Error storing generic medical data: {e}")
+            return False
+    
     def process_ava4_data(self, patient_id: ObjectId, device_mac: str, 
-                         attribute: str, value: Dict[str, Any], ble_addr: Optional[str] = None) -> bool:
+                         attribute: str, value: Dict[str, Any], ble_addr: Optional[str] = None, device_name: Optional[str] = None) -> bool:
         """Process AVA4 sub-device data"""
         try:
             logger.info(f"🔧 Processing AVA4 data - Patient: {patient_id}, AVA4 MAC: {device_mac}, BLE: {ble_addr}, Attribute: {attribute}")
@@ -155,6 +223,8 @@ class DataProcessor:
             # Map AVA4 attributes to data types
             attribute_mapping = {
                 "BP_BIOLIGTH": "blood_pressure",
+                "WBP BIOLIGHT": "blood_pressure",  # Added this variant
+                "BLE_BPG": "blood_pressure",
                 "Contour_Elite": "blood_sugar",
                 "AccuChek_Instant": "blood_sugar", 
                 "Oximeter JUMPER": "spo2",
@@ -217,6 +287,43 @@ class DataProcessor:
                     history_success = self.store_medical_history(patient_id, data_type, processed_data, "AVA4", device_identifier)
                     if history_success:
                         logger.info(f"✅ MEDICAL HISTORY STORED SUCCESSFULLY - Collection: {collection_name}")
+                        
+                        # Also store in medical_data collection for web panel display
+                        # Always get the real patient name from database
+                        patient_doc = self.db.patients.find_one({"_id": patient_id})
+                        patient_name = "Unknown"
+                        if patient_doc:
+                            patient_name = f"{patient_doc.get('first_name', '')} {patient_doc.get('last_name', '')}".strip()
+                            logger.info(f"✅ Found patient name: {patient_name}")
+                        else:
+                            logger.warning(f"⚠️ Patient not found in database: {patient_id}")
+                        
+                        medical_data_doc = {
+                            "device_id": ble_addr if ble_addr else device_mac,
+                            "device_type": "AVA4",
+                            "device_name": device_name,  # Store AVA4 name from status collection
+                            "source": "AVA4",
+                            "patient_id": str(patient_id),  # Convert ObjectId to string
+                            "patient_name": patient_name,
+                            "timestamp": datetime.utcnow(),
+                            "attribute": attribute,
+                            "value": value,
+                            "processed_data": processed_data,
+                            "raw_data": {
+                                "device_mac": device_mac,
+                                "ble_addr": ble_addr,
+                                "attribute": attribute,
+                                "device_data": device_data
+                            }
+                        }
+                        
+                        # Store in medical_data collection
+                        medical_data_success = self.store_medical_data(medical_data_doc)
+                        if medical_data_success:
+                            logger.info(f"✅ MEDICAL DATA STORED SUCCESSFULLY - Collection: medical_data")
+                        else:
+                            logger.warning(f"⚠️ FAILED TO STORE MEDICAL DATA - Collection: medical_data")
+                        
                         success_count += 1
                     else:
                         logger.warning(f"⚠️ FAILED TO STORE MEDICAL HISTORY - Collection: {collection_name}")
@@ -423,14 +530,43 @@ class DataProcessor:
                                        patient_name: Optional[str] = None) -> bool:
         """Process Kati batch vital signs data (AP55)"""
         try:
+            logger.info(f"📦 Processing Kati batch vital signs - Patient: {patient_id}")
+            logger.info(f"📊 Batch payload keys: {list(payload.keys())}")
+            
             data_list = payload.get("data", [])
-            for data_item in data_list:
-                # Process each vital sign in the batch
+            logger.info(f"📊 Processing {len(data_list)} batch readings")
+            
+            # Store the complete batch data in medical_data collection for web panel access
+            batch_doc = {
+                "patient_id": patient_id,
+                "patient_name": patient_name,
+                "device_type": "Kati_Watch",
+                "source": "Kati",
+                "data_type": "batch_vital_signs",
+                "batch_count": len(data_list),
+                "data": data_list,
+                "timestamp": datetime.utcnow(),
+                "created_at": datetime.utcnow()
+            }
+            
+            logger.info(f"💾 STORING BATCH DATA - Collection: medical_data, Count: {len(data_list)}")
+            batch_result = self.db.medical_data.insert_one(batch_doc)
+            if batch_result.inserted_id:
+                logger.info(f"✅ BATCH DATA STORED SUCCESSFULLY - ID: {batch_result.inserted_id}")
+            else:
+                logger.warning(f"⚠️ FAILED TO STORE BATCH DATA")
+            
+            # Process each vital sign in the batch for individual storage
+            for i, data_item in enumerate(data_list):
+                logger.debug(f"🔧 Processing batch item {i+1}/{len(data_list)}: {data_item}")
+                
+                # Process heart rate
                 if "heartRate" in data_item:
                     heart_data = {"value": data_item["heartRate"]}
                     self.update_patient_last_data(patient_id, "heart_rate", heart_data, "Kati", patient_name)
                     self.store_medical_history(patient_id, "heart_rate", heart_data, "Kati", None, patient_name)
                 
+                # Process blood pressure
                 if "bloodPressure" in data_item:
                     bp_data = data_item["bloodPressure"]
                     bp_processed = {
@@ -440,20 +576,23 @@ class DataProcessor:
                     self.update_patient_last_data(patient_id, "blood_pressure", bp_processed, "Kati", patient_name)
                     self.store_medical_history(patient_id, "blood_pressure", bp_processed, "Kati", None, patient_name)
                 
+                # Process SpO2
                 if "spO2" in data_item:
                     spo2_data = {"value": data_item["spO2"]}
                     self.update_patient_last_data(patient_id, "spo2", spo2_data, "Kati", patient_name)
                     self.store_medical_history(patient_id, "spo2", spo2_data, "Kati", None, patient_name)
                 
+                # Process body temperature
                 if "bodyTemperature" in data_item:
                     temp_data = {"value": data_item["bodyTemperature"]}
                     self.update_patient_last_data(patient_id, "body_temp", temp_data, "Kati", patient_name)
                     self.store_medical_history(patient_id, "body_temp", temp_data, "Kati", None, patient_name)
             
+            logger.info(f"✅ Successfully processed {len(data_list)} batch vital signs")
             return True
             
         except Exception as e:
-            logger.error(f"Error processing Kati batch vital signs: {e}")
+            logger.error(f"❌ Error processing Kati batch vital signs: {e}")
             return False
     
     def _process_kati_heartbeat(self, patient_id: ObjectId, payload: Dict[str, Any], 
@@ -463,6 +602,7 @@ class DataProcessor:
             logger.info(f"💓 Processing Kati heartbeat data - Patient: {patient_id}")
             logger.info(f"📊 Heartbeat payload keys: {list(payload.keys())}")
             
+            # Process step count
             if "step" in payload:
                 step_data = {"value": payload["step"]}
                 logger.info(f"👟 Processing step count: {step_data}")
@@ -480,6 +620,30 @@ class DataProcessor:
                     logger.info(f"✅ MEDICAL HISTORY STORED SUCCESSFULLY - Collection: step_histories")
                 else:
                     logger.warning(f"⚠️ FAILED TO STORE MEDICAL HISTORY - Collection: step_histories")
+            
+            # Process battery level
+            if "battery" in payload:
+                battery_data = {"value": payload["battery"]}
+                logger.info(f"🔋 Processing battery level: {battery_data}")
+                
+                logger.info(f"💾 UPDATING PATIENT COLLECTION - Field: battery_level, Data: {battery_data}")
+                last_update_success = self.update_patient_last_data(patient_id, "battery_level", battery_data, "Kati", patient_name)
+                if last_update_success:
+                    logger.info(f"✅ PATIENT COLLECTION UPDATED SUCCESSFULLY - Field: battery_level")
+                else:
+                    logger.warning(f"⚠️ FAILED TO UPDATE PATIENT COLLECTION - Field: battery_level")
+            
+            # Process signal strength
+            if "signalGSM" in payload:
+                signal_data = {"value": payload["signalGSM"]}
+                logger.info(f"📶 Processing signal strength: {signal_data}")
+                
+                logger.info(f"💾 UPDATING PATIENT COLLECTION - Field: signal_strength, Data: {signal_data}")
+                last_update_success = self.update_patient_last_data(patient_id, "signal_strength", signal_data, "Kati", patient_name)
+                if last_update_success:
+                    logger.info(f"✅ PATIENT COLLECTION UPDATED SUCCESSFULLY - Field: signal_strength")
+                else:
+                    logger.warning(f"⚠️ FAILED TO UPDATE PATIENT COLLECTION - Field: signal_strength")
             
             return True
             

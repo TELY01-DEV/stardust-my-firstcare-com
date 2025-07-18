@@ -304,7 +304,7 @@ def get_statistics():
         return jsonify({
             "success": True,
             "data": stats,
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
     except Exception as e:
         logger.error(f"Error getting statistics: {e}")
@@ -339,6 +339,8 @@ def get_patients():
                             convert_objectids(item)
                     elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
                         obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
             elif isinstance(obj, list):
                 for item in obj:
                     convert_objectids(item)
@@ -349,7 +351,7 @@ def get_patients():
         return jsonify({
             "success": True,
             "data": patients,
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
     except Exception as e:
         logger.error(f"Error getting patients: {e}")
@@ -396,6 +398,8 @@ def get_devices():
                             convert_objectids(item)
                     elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
                         obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
             elif isinstance(obj, list):
                 for item in obj:
                     convert_objectids(item)
@@ -413,7 +417,7 @@ def get_devices():
                 "kati": kati_devices,
                 "qube": qube_devices
             },
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
     except Exception as e:
         logger.error(f"Error getting devices: {e}")
@@ -440,7 +444,7 @@ def handle_get_statistics():
         stats = mqtt_monitor.get_statistics()
         emit('statistics', {
             "data": stats,
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
     except Exception as e:
         logger.error(f"Error getting statistics: {e}")
@@ -465,6 +469,8 @@ def handle_get_data_flow_events():
                             convert_objectids(item)
                     elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
                         obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
             elif isinstance(obj, list):
                 for item in obj:
                     convert_objectids(item)
@@ -503,6 +509,8 @@ def handle_get_streaming_events():
                             convert_objectids(item)
                     elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
                         obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
             elif isinstance(obj, list):
                 for item in obj:
                     convert_objectids(item)
@@ -581,7 +589,7 @@ def broadcast_mqtt_message(message):
     """Broadcast MQTT message to all connected clients"""
     socketio.emit('mqtt_message', {
         "data": message,
-        "timestamp": datetime.now(timezone.utc)
+        "timestamp": datetime.now(timezone.utc).isoformat()
     })
 
 # WebSocket clients for direct WebSocket connections
@@ -697,7 +705,7 @@ def get_data_flow_events():
         return jsonify({
             "success": True,
             "data": [],
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
     except Exception as e:
         logger.error(f"Error getting data flow events: {e}")
@@ -837,7 +845,7 @@ def get_user_profile():
                 "role": user_info.get('role', 'user'),
                 "permissions": user_info.get('permissions', [])
             },
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
         
     except Exception as e:
@@ -911,6 +919,8 @@ def get_emergency_alerts():
                             convert_objectids(item)
                     elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
                         obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
             elif isinstance(obj, list):
                 for item in obj:
                     convert_objectids(item)
@@ -921,7 +931,7 @@ def get_emergency_alerts():
         return jsonify({
             "success": True,
             "data": alerts,
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
         
     except Exception as e:
@@ -1143,6 +1153,8 @@ def get_events():
                             convert_objectids(item)
                     elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
                         obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
             elif isinstance(obj, list):
                 for item in obj:
                     convert_objectids(item)
@@ -1161,7 +1173,7 @@ def get_events():
                     "pages": (total_count + limit - 1) // limit
                 }
             },
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
         
     except Exception as e:
@@ -1340,6 +1352,8 @@ def get_streaming_events():
                             convert_objectids(item)
                     elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
                         obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
             elif isinstance(obj, list):
                 for item in obj:
                     convert_objectids(item)
@@ -1354,7 +1368,7 @@ def get_streaming_events():
                 "total": len(events),
                 "limit": limit
             },
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
         
     except Exception as e:
@@ -1476,6 +1490,8 @@ def get_streaming_stats():
                             convert_objectids(item)
                     elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
                         obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
             elif isinstance(obj, list):
                 for item in obj:
                     convert_objectids(item)
@@ -1583,7 +1599,7 @@ def get_event_correlation():
         return jsonify({
             "success": True,
             "data": correlations,
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
         
     except Exception as e:
@@ -1718,6 +1734,8 @@ def get_medical_data():
                             convert_objectids(item)
                     elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
                         obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
             elif isinstance(obj, list):
                 for item in obj:
                     convert_objectids(item)
@@ -1769,31 +1787,43 @@ def get_medical_data():
                 signal = payload.get('signalGSM')
                 
                 if battery is not None:
-                    analysis['devices'][device_id]['battery_level'] = battery
-                    if battery < 20:
-                        analysis['alerts'].append({
-                            'type': 'critical',
-                            'device_id': device_id,
-                            'message': f'Low battery: {battery}%',
-                            'timestamp': event.get('timestamp')
-                        })
-                    elif battery < 40:
-                        analysis['alerts'].append({
-                            'type': 'warning',
-                            'device_id': device_id,
-                            'message': f'Battery warning: {battery}%',
-                            'timestamp': event.get('timestamp')
-                        })
+                    # Convert battery to integer for comparison
+                    try:
+                        battery_int = int(battery)
+                        analysis['devices'][device_id]['battery_level'] = battery_int
+                        if battery_int < 20:
+                            analysis['alerts'].append({
+                                'type': 'critical',
+                                'device_id': device_id,
+                                'message': f'Low battery: {battery_int}%',
+                                'timestamp': event.get('timestamp')
+                            })
+                        elif battery_int < 40:
+                            analysis['alerts'].append({
+                                'type': 'warning',
+                                'device_id': device_id,
+                                'message': f'Battery warning: {battery_int}%',
+                                'timestamp': event.get('timestamp')
+                            })
+                    except (ValueError, TypeError):
+                        # If battery can't be converted to int, just store as is
+                        analysis['devices'][device_id]['battery_level'] = battery
                 
                 if signal is not None:
-                    analysis['devices'][device_id]['signal_strength'] = signal
-                    if signal < 30:
-                        analysis['alerts'].append({
-                            'type': 'warning',
-                            'device_id': device_id,
-                            'message': f'Poor signal: {signal}%',
-                            'timestamp': event.get('timestamp')
-                        })
+                    # Convert signal to integer for comparison
+                    try:
+                        signal_int = int(signal)
+                        analysis['devices'][device_id]['signal_strength'] = signal_int
+                        if signal_int < 30:
+                            analysis['alerts'].append({
+                                'type': 'warning',
+                                'device_id': device_id,
+                                'message': f'Poor signal: {signal_int}%',
+                                'timestamp': event.get('timestamp')
+                            })
+                    except (ValueError, TypeError):
+                        # If signal can't be converted to int, just store as is
+                        analysis['devices'][device_id]['signal_strength'] = signal
             
             # Track vital trends
             if source == 'Kati' and 'step' in payload:
@@ -1836,8 +1866,8 @@ def get_recent_medical_data():
                     "total_count": 0,
                     "last_updated": datetime.now(timezone.utc).isoformat()
                 }
-            }), 503
-        
+        }), 503
+
         # Get medical data from the last 24 hours
         one_day_ago = datetime.now(timezone.utc) - timedelta(days=1)
         
@@ -1864,6 +1894,8 @@ def get_recent_medical_data():
                             convert_objectids(item)
                     elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
                         obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
             elif isinstance(obj, list):
                 for item in obj:
                     convert_objectids(item)
@@ -1882,6 +1914,27 @@ def get_recent_medical_data():
             
             # Use device_type as source, fallback to source field
             source = record.get('device_type', record.get('source', 'Unknown'))
+            
+            # Fix source determination based on IMEI patterns and data structure
+            if device_id and isinstance(device_id, str):
+                # Kati Watch IMEI pattern: 861265061xxxxxx
+                if device_id.startswith('861265061'):
+                    source = 'Kati'
+                # AVA4 device MAC pattern: xx:xx:xx:xx:xx:xx
+                elif ':' in device_id and len(device_id.split(':')) == 6:
+                    source = 'AVA4'
+            
+            # Also check raw_data structure to determine source
+            if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                raw_data = record['raw_data']
+                # Check for Kati-specific fields
+                if any(key in raw_data for key in ['IMEI', 'signalGSM', 'battery', 'workingMode', 'timeStamps']):
+                    if source == 'Unknown':
+                        source = 'Kati'
+                # Check for AVA4-specific fields  
+                elif any(key in raw_data for key in ['attribute', 'device_list', 'ava_mac_address']):
+                    if source == 'Unknown':
+                        source = 'AVA4'
             
             # Format timestamp
             if isinstance(timestamp, str):
@@ -1937,28 +1990,138 @@ def get_recent_medical_data():
                 print(f"✅ [FINAL] Extracted steps from top level: {record['step_count']}")
             
             if source == 'AVA4' or source == 'AVA4_Gateway':
-                attribute = record.get('attribute', '')
-                value = record.get('value', {})
-                if attribute == 'Contour_Elite' and 'device_list' in value:
-                    device_data = value['device_list'][0] if value['device_list'] else {}
-                    medical_values = {
-                        'blood_glucose': device_data.get('blood_glucose', 'N/A'),
-                        'marker': device_data.get('marker', 'N/A')
-                    }
-                elif attribute == 'BP_BIOLIGTH' and 'device_list' in value:
-                    device_data = value['device_list'][0] if value['device_list'] else {}
-                    medical_values = {
-                        'systolic': device_data.get('bp_high', 'N/A'),
-                        'diastolic': device_data.get('bp_low', 'N/A'),
-                        'pulse_rate': device_data.get('PR', 'N/A')
-                    }
+                print(f"🔍 ENTERING AVA4 PROCESSING - Device: {device_id}, Source: {source}")
+                
+                # Check if we have processed_data from the new storage format
+                processed_data = None
+                if 'processed_data' in record and record['processed_data']:
+                    processed_data = record['processed_data']
+                    print(f"✅ Found processed_data at top level for AVA4: {processed_data}")
+                elif 'raw_data' in record and record['raw_data'] and 'processed_data' in record['raw_data']:
+                    processed_data = record['raw_data']['processed_data']
+                    print(f"✅ Found processed_data in raw_data for AVA4: {processed_data}")
+                
+                if processed_data:
+                    # Extract medical values from processed_data
+                    if 'systolic' in processed_data:
+                        medical_values['systolic'] = processed_data['systolic']
+                    if 'diastolic' in processed_data:
+                        medical_values['diastolic'] = processed_data['diastolic']
+                    if 'pulse' in processed_data:
+                        medical_values['pulse_rate'] = processed_data['pulse']
+                    if 'value' in processed_data:
+                        # This could be blood glucose, SpO2, temperature, etc.
+                        # Check both record attribute and raw_data attribute
+                        attribute = record.get('attribute') or record.get('raw_data', {}).get('attribute')
+                        if attribute in ['Contour_Elite', 'AccuChek_Instant']:
+                            medical_values['blood_glucose'] = processed_data['value']
+                        elif attribute == 'Oximeter JUMPER':
+                            medical_values['spO2'] = processed_data['value']
+                        elif attribute == 'IR_TEMO_JUMPER':
+                            medical_values['temperature'] = processed_data['value']
+                        elif attribute == 'BodyScale_JUMPER':
+                            medical_values['weight'] = processed_data['value']
+                        elif attribute == 'MGSS_REF_UA':
+                            medical_values['uric_acid'] = processed_data['value']
+                        elif attribute == 'MGSS_REF_CHOL':
+                            medical_values['cholesterol'] = processed_data['value']
+                        else:
+                            medical_values['value'] = processed_data['value']
+                    
+                    # Extract additional fields
+                    if 'marker' in processed_data:
+                        medical_values['marker'] = processed_data['marker']
+                    if 'pi' in processed_data:
+                        medical_values['pi'] = processed_data['pi']
+                    if 'scan_time' in processed_data:
+                        medical_values['scan_time'] = processed_data['scan_time']
+                    if 'mode' in processed_data:
+                        medical_values['mode'] = processed_data['mode']
+                    if 'pulse' in processed_data:
+                        medical_values['pulse_rate'] = processed_data['pulse']
+                    
+                    print(f"🔧 DEBUG: processed_data keys: {list(processed_data.keys())}")
+                    print(f"🔧 DEBUG: checking for resistance field...")
+                    if 'resistance' in processed_data:
+                        medical_values['resistance'] = processed_data['resistance']
+                        print(f"🔧 DEBUG: ✅ Extracted resistance: {processed_data['resistance']}")
+                    else:
+                        print(f"🔧 DEBUG: ❌ No resistance field found")
+                    
+                    print(f"✅ Extracted AVA4 medical values: {medical_values}")
+                
+                # Fallback to old format for backward compatibility
+                else:
+                    print(f"🔍 Using legacy AVA4 format")
+                    attribute = record.get('attribute', '')
+                    value = record.get('value', {})
+                    
+                    # Helper function to only add valid values (not None, empty string, or 'N/A')
+                    def add_if_valid(values_dict, key, value):
+                        if value is not None and value != '' and value != 'N/A' and value != 'null':
+                            values_dict[key] = value
+                    
+                    if attribute == 'Contour_Elite' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'blood_glucose', device_data.get('blood_glucose'))
+                        add_if_valid(medical_values, 'marker', device_data.get('marker'))
+                    elif attribute == 'BP_BIOLIGTH' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'systolic', device_data.get('bp_high'))
+                        add_if_valid(medical_values, 'diastolic', device_data.get('bp_low'))
+                        add_if_valid(medical_values, 'pulse_rate', device_data.get('PR'))
+                    elif attribute == 'WBP BIOLIGHT' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'systolic', device_data.get('bp_high'))
+                        add_if_valid(medical_values, 'diastolic', device_data.get('bp_low'))
+                        add_if_valid(medical_values, 'pulse_rate', device_data.get('PR'))
+                    elif attribute == 'Oximeter JUMPER' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'spO2', device_data.get('spo2'))
+                        add_if_valid(medical_values, 'pulse', device_data.get('pulse'))
+                        add_if_valid(medical_values, 'pi', device_data.get('pi'))
+                    elif attribute == 'IR_TEMO_JUMPER' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'temperature', device_data.get('temp'))
+                        add_if_valid(medical_values, 'mode', device_data.get('mode'))
+                    elif attribute == 'BodyScale_JUMPER' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'weight', device_data.get('weight'))
+                        add_if_valid(medical_values, 'resistance', device_data.get('resistance'))
+                    elif attribute == 'MGSS_REF_UA' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'uric_acid', device_data.get('uric_acid'))
+                    elif attribute == 'MGSS_REF_CHOL' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'cholesterol', device_data.get('cholesterol'))
+                    elif attribute == 'AccuChek_Instant' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'blood_glucose', device_data.get('blood_glucose'))
+                        add_if_valid(medical_values, 'marker', device_data.get('marker'))
             elif source == 'Kati' or source == 'Kati_Watch':
                 print(f"🔍 ENTERING KATI PROCESSING - Device: {device_id}, Source: {source}")
                 
-                # Extract Kati medical data from vital_signs_data
+                # ALWAYS extract battery, signal, and step data from raw_data first (heartbeat data)
+                if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                    raw_data = record['raw_data']
+                    print(f"✅ Processing Kati raw_data: {list(raw_data.keys())}")
+                    
+                    # Extract heartbeat data (most common for Kati)
+                    if 'battery' in raw_data:
+                        medical_values['battery'] = raw_data['battery']
+                        print(f"✅ Extracted Kati battery: {raw_data['battery']}")
+                    if 'signalGSM' in raw_data:
+                        medical_values['signal_gsm'] = raw_data['signalGSM']
+                        print(f"✅ Extracted Kati signal: {raw_data['signalGSM']}")
+                    if 'step' in raw_data:
+                        medical_values['steps'] = raw_data['step']
+                        print(f"✅ Extracted Kati steps: {raw_data['step']}")
+                
+                # Extract Kati medical data from vital_signs_data (less common, but comprehensive)
                 vital_signs = record.get('vital_signs_data', [])
                 if vital_signs and len(vital_signs) > 0:
                     latest_vital = vital_signs[0]  # Most recent reading
+                    print(f"✅ Processing Kati vital signs: {list(latest_vital.keys())}")
                     if 'heartRate' in latest_vital:
                         medical_values['heart_rate'] = latest_vital['heartRate']
                     if 'bloodPressure' in latest_vital:
@@ -1969,58 +2132,6 @@ def get_recent_medical_data():
                         medical_values['spO2'] = latest_vital['spO2']
                     if 'bodyTemperature' in latest_vital:
                         medical_values['temperature'] = latest_vital['bodyTemperature']
-                
-                # ALWAYS check for AP55 batch vital signs data
-                batch_data = None
-                print(f"🔍 Checking for batch data in record - Device: {device_id}, Source: {source}")
-                print(f"🔍 Record keys: {list(record.keys())}")
-                
-                # Check for batch data in raw_data.data.data (AP55 format)
-                if 'raw_data' in record:
-                    print(f"🔍 Checking raw_data for batch data")
-                    raw_data = record['raw_data']
-                    print(f"🔍 Raw data keys: {list(raw_data.keys()) if isinstance(raw_data, dict) else 'Not a dict'}")
-                    
-                    if isinstance(raw_data, dict) and 'data' in raw_data:
-                        print(f"🔍 Found data in raw_data")
-                        if isinstance(raw_data['data'], dict) and 'data' in raw_data['data']:
-                            batch_data = raw_data['data']['data']
-                            print(f"✅ Found nested batch data: {len(batch_data)} items (raw_data['data']['data'])")
-                        elif isinstance(raw_data['data'], list):
-                            batch_data = raw_data['data']
-                            print(f"✅ Found direct batch data: {len(batch_data)} items (raw_data['data'])")
-                
-                # Also check for batch data in vital_signs_data (alternative format)
-                if not batch_data and 'vital_signs_data' in record:
-                    vital_signs = record.get('vital_signs_data', [])
-                    if vital_signs and isinstance(vital_signs, list) and len(vital_signs) > 1:
-                        batch_data = vital_signs
-                        print(f"✅ Found vital_signs_data batch: {len(batch_data)} items")
-                
-                if batch_data and isinstance(batch_data, list):
-                    print(f"✅ Processing batch data with {len(batch_data)} items")
-                    # Store the complete batch data for display
-                    medical_values['batch_data'] = batch_data
-                    medical_values['batch_count'] = len(batch_data)
-                    medical_values['data_type'] = 'batch_vital_signs'
-                    # Also extract the latest reading for summary display
-                    if batch_data:
-                        latest_batch = batch_data[0]  # Most recent reading in batch
-                        if 'heartRate' in latest_batch:
-                            medical_values['heart_rate'] = latest_batch['heartRate']
-                        if 'bloodPressure' in latest_batch:
-                            bp = latest_batch['bloodPressure']
-                            medical_values['systolic'] = bp.get('bp_sys', 'N/A')
-                            medical_values['diastolic'] = bp.get('bp_dia', 'N/A')
-                        if 'spO2' in latest_batch:
-                            medical_values['spO2'] = latest_batch['spO2']
-                        if 'bodyTemperature' in latest_batch:
-                            medical_values['temperature'] = latest_batch['bodyTemperature']
-                        if 'timestamp' in latest_batch:
-                            medical_values['batch_timestamp'] = latest_batch['timestamp']
-                    print(f"✅ Final medical_values with batch data: {medical_values}")
-                else:
-                    print(f"❌ No batch data found or invalid format")
             
             formatted_data.append({
                 'id': str(record.get('_id', '')),
@@ -2182,6 +2293,149 @@ def get_ava4_device_status(ava4_mac):
             'error': str(e),
             'timestamp': datetime.now(timezone.utc).isoformat()
         }), 500
+
+@socketio.on('get_medical_data')
+def handle_get_medical_data():
+    """Handle Socket.IO request for medical data"""
+    try:
+        # Get recent medical data from Redis first, then fallback to MongoDB
+        redis_medical_data = get_redis_recent_events(100)
+        
+        # Filter for medical data events
+        medical_events = [event for event in redis_medical_data if event.get('event_type') == 'medical_stored']
+        
+        if medical_events:
+            emit('medical_data_update', {
+                'type': 'medical_data',
+                'data': medical_events,
+                'timestamp': datetime.now(timezone.utc).isoformat()
+            })
+        else:
+            # Fallback to MongoDB if no Redis data
+            try:
+                # Check if MQTT monitor and database are properly initialized
+                if mqtt_monitor is not None and hasattr(mqtt_monitor, 'db') and mqtt_monitor.db is not None:
+                    one_day_ago = datetime.now(timezone.utc) - timedelta(days=1)
+                    medical_data_collection = mqtt_monitor.db['medical_data']
+                    
+                    recent_medical_data = list(medical_data_collection.find({
+                        '$or': [
+                            {'timestamp': {'$gte': one_day_ago}},
+                            {'timestamp': {'$gte': one_day_ago.isoformat()}}
+                        ]
+                    }).sort('timestamp', -1).limit(50))
+                    
+                    # Convert ObjectIds and datetime objects to strings
+                    def convert_objectids(obj):
+                        if isinstance(obj, dict):
+                            for key, value in obj.items():
+                                if isinstance(value, dict):
+                                    convert_objectids(value)
+                                elif isinstance(value, list):
+                                    for item in value:
+                                        convert_objectids(item)
+                                elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
+                                    obj[key] = str(value)
+                                elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                                    obj[key] = value.isoformat()
+                        elif isinstance(obj, list):
+                            for item in obj:
+                                convert_objectids(item)
+                        return obj
+                    
+                    recent_medical_data = convert_objectids(recent_medical_data)
+                    
+                    emit('medical_data_update', {
+                        'type': 'medical_data',
+                        'data': recent_medical_data,
+                        'timestamp': datetime.now(timezone.utc).isoformat()
+                    })
+                    
+                    logger.debug(f"📡 Medical data sent via Socket.IO from MongoDB: {len(recent_medical_data)} records")
+                else:
+                    logger.warning("⚠️ MQTT monitor database not available, sending empty data")
+                    emit('medical_data_update', {
+                        'type': 'medical_data',
+                        'data': [],
+                        'timestamp': datetime.now(timezone.utc).isoformat()
+                    })
+                    
+            except Exception as db_error:
+                logger.error(f"❌ Database error in Socket.IO medical data handler: {db_error}")
+                emit('medical_data_error', {
+                    'type': 'error',
+                    'message': f"Database error: {str(db_error)}",
+                    'timestamp': datetime.now(timezone.utc).isoformat()
+                })
+        
+        logger.debug(f"📡 Medical data sent via Socket.IO: {len(medical_events) if medical_events else 0} records from Redis")
+        
+    except Exception as e:
+        logger.error(f"❌ Error handling medical data Socket.IO request: {e}")
+        emit('medical_data_error', {
+            'type': 'error',
+            'message': str(e),
+            'timestamp': datetime.now(timezone.utc).isoformat()
+        })
+
+def broadcast_medical_data_update(medical_data: dict):
+    """Broadcast medical data update to all connected Socket.IO clients"""
+    try:
+        # Convert medical data to JSON serializable format
+        def convert_for_broadcast(obj):
+            if isinstance(obj, dict):
+                return {k: convert_for_broadcast(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_for_broadcast(item) for item in obj]
+            elif hasattr(obj, 'isoformat'):
+                return obj.isoformat()
+            elif hasattr(obj, '__str__'):
+                return str(obj)
+            else:
+                return obj
+        
+        # Convert the medical data to ensure it's JSON serializable
+        serializable_medical_data = convert_for_broadcast(medical_data)
+        
+        # Cache the medical data in Redis
+        redis_cache_event({
+            'event_type': 'medical_stored',
+            'data': serializable_medical_data,
+            'timestamp': datetime.now(timezone.utc).isoformat()
+        })
+        
+        # Broadcast to all connected clients
+        socketio.emit('medical_data_update', {
+            'type': 'new_medical_data',
+            'data': serializable_medical_data,
+            'timestamp': datetime.now(timezone.utc).isoformat()
+        })
+        
+        logger.debug(f"📡 Medical data broadcasted via Socket.IO: {serializable_medical_data.get('device_id', 'unknown')}")
+        
+    except Exception as e:
+        logger.error(f"❌ Error broadcasting medical data: {e}")
+
+@app.route('/api/medical-data/broadcast', methods=['POST'])
+def broadcast_medical_data():
+    """Receive medical data broadcasts and forward to Socket.IO clients"""
+    try:
+        data = request.get_json()
+        if not data or 'medical_data' not in data:
+            return jsonify({'success': False, 'error': 'Missing medical_data in request'}), 400
+        
+        medical_data = data['medical_data']
+        
+        # Broadcast to all connected Socket.IO clients
+        broadcast_medical_data_update(medical_data)
+        
+        logger.info(f"📡 Medical data broadcasted via Socket.IO: {medical_data.get('device_id', 'unknown')}")
+        
+        return jsonify({'success': True, 'message': 'Medical data broadcasted successfully'})
+        
+    except Exception as e:
+        logger.error(f"❌ Error broadcasting medical data: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=8098, debug=True, allow_unsafe_werkzeug=True) 

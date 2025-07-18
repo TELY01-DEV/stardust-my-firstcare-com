@@ -132,12 +132,28 @@ class FHIRDataValidator:
                                 for coord in ['latitude', 'longitude']:
                                     if coord in gps:
                                         value = gps[coord]
+                                        # Handle empty string or None values
+                                        if value is None or value == "" or value == "null":
+                                            warnings.append(f"GPS {coord} is empty or null, skipping validation")
+                                            continue
+                                        
+                                        # Handle string coordinates by converting to float
+                                        if isinstance(value, str):
+                                            try:
+                                                # Try to parse as float, handle various string formats
+                                                value = float(value.strip())
+                                                gps[coord] = value  # Update the value in the data
+                                            except (ValueError, AttributeError):
+                                                warnings.append(f"GPS {coord} '{value}' could not be converted to numeric, skipping")
+                                                continue
+                                        
                                         if not isinstance(value, (int, float)):
-                                            errors.append(f"GPS {coord} must be numeric")
+                                            warnings.append(f"GPS {coord} is not numeric, skipping validation")
+                                            continue
                                         elif coord == 'latitude' and not (-90 <= value <= 90):
-                                            errors.append("Latitude must be between -90 and 90")
+                                            warnings.append("Latitude must be between -90 and 90")
                                         elif coord == 'longitude' and not (-180 <= value <= 180):
-                                            errors.append("Longitude must be between -180 and 180")
+                                            warnings.append("Longitude must be between -180 and 180")
                 
                 # Transform for FHIR
                 transformed_data['resource_type'] = 'Observation'
@@ -164,6 +180,44 @@ class FHIRDataValidator:
                 transformed_data['code'] = '93832-4'  # Sleep study LOINC code
                 transformed_data['unit'] = 'unknown'
                 transformed_data['category'] = 'survey'
+                
+            elif topic == 'iMEDE_watch/hb':
+                # Heartbeat with step count, battery, signal
+                if 'step' not in data:
+                    warnings.append("Missing 'step' field")
+                else:
+                    step = data['step']
+                    if not isinstance(step, (int, float)):
+                        errors.append("'step' field must be numeric")
+                    elif step < 0:
+                        warnings.append("Step count cannot be negative")
+                
+                if 'battery' in data:
+                    battery = data['battery']
+                    if not isinstance(battery, (int, float)):
+                        errors.append("'battery' field must be numeric")
+                    elif not (0 <= battery <= 100):
+                        warnings.append("Battery level outside valid range (0-100%)")
+                
+                if 'signalGSM' in data:
+                    signal = data['signalGSM']
+                    if not isinstance(signal, (int, float)):
+                        errors.append("'signalGSM' field must be numeric")
+                    elif not (0 <= signal <= 100):
+                        warnings.append("GSM signal outside valid range (0-100%)")
+                
+                if 'workingMode' in data:
+                    mode = data['workingMode']
+                    if not isinstance(mode, (int, float)):
+                        errors.append("'workingMode' field must be numeric")
+                    elif mode not in [1, 2, 3, 8]:
+                        warnings.append(f"Unknown working mode: {mode}")
+                
+                # Transform for FHIR
+                transformed_data['resource_type'] = 'Observation'
+                transformed_data['code'] = '55423-8'  # Step count LOINC code
+                transformed_data['unit'] = 'steps'
+                transformed_data['category'] = 'vital-signs'
                 
             elif topic in ['iMEDE_watch/sos', 'iMEDE_watch/fallDown']:
                 # Emergency alerts
@@ -278,7 +332,7 @@ class FHIRDataValidator:
                 device = data.get('device', '')
                 
                 # Validate based on device type
-                if attribute == 'BP_BIOLIGTH':  # Blood Pressure
+                if attribute in ['BP_BIOLIGTH', 'BLE_BPG']:  # Blood Pressure
                     value = data_section.get('value', {})
                     if not isinstance(value, dict):
                         errors.append("Blood pressure value must be an object")

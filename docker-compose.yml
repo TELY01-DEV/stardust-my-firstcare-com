@@ -109,6 +109,8 @@ services:
       - LOG_LEVEL=INFO
       - MAX_RETRIES=3
       - RETRY_DELAY=5
+      # Web Panel Configuration
+      - WEB_PANEL_URL=http://mqtt-panel:8098
     volumes:
       - ./ssl:/app/ssl:ro
     restart: unless-stopped
@@ -156,6 +158,8 @@ services:
       - LOG_LEVEL=INFO
       - MAX_RETRIES=3
       - RETRY_DELAY=5
+      # Web Panel Configuration
+      - WEB_PANEL_URL=http://mqtt-panel:8098
     volumes:
       - ./ssl:/app/ssl:ro
     restart: unless-stopped
@@ -203,6 +207,8 @@ services:
       - LOG_LEVEL=INFO
       - MAX_RETRIES=3
       - RETRY_DELAY=5
+      # Web Panel Configuration
+      - WEB_PANEL_URL=http://mqtt-panel:8098
     volumes:
       - ./ssl:/app/ssl:ro
     restart: unless-stopped
@@ -263,8 +269,8 @@ services:
   # MQTT Monitor Web Panel
   mqtt-panel:
     build: 
-      context: ./services/mqtt-monitor
-      dockerfile: web-panel/Dockerfile
+      context: .
+      dockerfile: services/mqtt-monitor/web-panel/Dockerfile
     container_name: stardust-mqtt-panel
     ports:
       - "8098:8098"
@@ -315,10 +321,103 @@ services:
     networks:
       - stardust-network
 
+  # ========================================
+  # MEDICAL DATA MONITOR SERVICE
+  # ========================================
+  
+  # Medical Data Monitor with Telegram Alerts
+  opera-godeye-medical-data-monitor:
+    build: 
+      context: ./services/mqtt-monitor/medical-monitor
+      dockerfile: Dockerfile
+    container_name: stardust-opera-godeye-medical-data-monitor
+    environment:
+      # MQTT Configuration
+      - MQTT_BROKER_HOST=adam.amy.care
+      - MQTT_BROKER_PORT=1883
+      - MQTT_USERNAME=webapi
+      - MQTT_PASSWORD=Sim!4433
+      
+      # Telegram Configuration (from .env file)
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      
+      # Monitor Configuration
+      - FAILURE_THRESHOLD=5
+      - FAILURE_WINDOW_MINUTES=10
+      - LOG_LEVEL=INFO
+      
+      # Timezone Configuration
+      - TZ=Asia/Bangkok
+      
+      # MongoDB Configuration (for container monitoring)
+      - MONGO_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin&tlsAllowInvalidCertificates=true&tlsAllowInvalidHostnames=true&tlsCAFile=/app/ssl/ca-latest.pem&tlsCertificateKeyFile=/app/ssl/client-combined-latest.pem
+      - MONGODB_HOST=coruscant.my-firstcare.com
+      - MONGODB_PORT=27023
+      - MONGODB_USERNAME=opera_admin
+      - MONGODB_PASSWORD=Sim!443355
+      - MONGODB_AUTH_DB=admin
+      - MONGODB_SSL=true
+      - MONGODB_SSL_CA_FILE=/app/ssl/ca-latest.pem
+      - MONGODB_SSL_CLIENT_FILE=/app/ssl/client-combined-latest.pem
+      
+      # Redis Configuration
+      - REDIS_URL=redis://redis:6374/5
+    volumes:
+      - ./ssl:/app/ssl:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # For container monitoring
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - stardust-api
+      - ava4-listener
+      - kati-listener
+      - qube-listener
+    networks:
+      - stardust-network
+
+  # ========================================
+  # SERVICE MONITOR WITH TELEGRAM ALERTS
+  # ========================================
+  
+  # Service Status Monitor with Telegram Alerts
+  service-monitor:
+    build: 
+      context: ./services/mqtt-monitor
+      dockerfile: Dockerfile.service-monitor
+    container_name: stardust-service-monitor
+    environment:
+      # Telegram Configuration (from .env file)
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      
+      # Monitor Configuration
+      - SERVICE_CHECK_INTERVAL=30
+      - ALERT_COOLDOWN_MINUTES=5
+      - LOG_LEVEL=INFO
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # For Docker API access
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - stardust-api
+      - ava4-listener
+      - kati-listener
+      - qube-listener
+      - mqtt-panel
+      - mqtt-websocket
+    networks:
+      - stardust-network 
+
+# ========================================
+# NETWORKS
+# ========================================
 networks:
   stardust-network:
     driver: bridge
 
+# ========================================
+# VOLUMES
+# ========================================
 volumes:
-  redis-data:
-    driver: local 
+  redis-data: 
