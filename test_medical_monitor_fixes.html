@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Monitor Fixes Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>Medical Monitor JavaScript Fixes Test</h1>
+    
+    <div id="testResults"></div>
+    
+    <script>
+        function addTestResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('testResults');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${type}`;
+            resultDiv.textContent = message;
+            resultsDiv.appendChild(resultDiv);
+        }
+        
+        // Test 1: Check if getDataValue function handles null data
+        function testGetDataValue() {
+            try {
+                // Test with null event
+                const result1 = getDataValue(null);
+                if (result1 === 'No Data') {
+                    addTestResult('✅ getDataValue handles null event correctly', 'success');
+                } else {
+                    addTestResult('❌ getDataValue should return "No Data" for null event', 'error');
+                }
+                
+                // Test with event without data
+                const result2 = getDataValue({ source: 'Kati' });
+                if (result2 === 'No Data') {
+                    addTestResult('✅ getDataValue handles event without data correctly', 'success');
+                } else {
+                    addTestResult('❌ getDataValue should return "No Data" for event without data', 'error');
+                }
+                
+                // Test with valid Kati data
+                const result3 = getDataValue({ 
+                    source: 'Kati', 
+                    data: { battery: 85 } 
+                });
+                if (result3 === '85%') {
+                    addTestResult('✅ getDataValue handles valid Kati data correctly', 'success');
+                } else {
+                    addTestResult('❌ getDataValue should return "85%" for valid Kati battery data', 'error');
+                }
+                
+                // Test with valid AVA4 data
+                const result4 = getDataValue({ 
+                    source: 'AVA4', 
+                    data: { data: { msg: 'Heart rate: 72 bpm' } } 
+                });
+                if (result4 === 'Heart rate: 72 bpm') {
+                    addTestResult('✅ getDataValue handles valid AVA4 data correctly', 'success');
+                } else {
+                    addTestResult('❌ getDataValue should return "Heart rate: 72 bpm" for valid AVA4 data', 'error');
+                }
+                
+            } catch (error) {
+                addTestResult(`❌ getDataValue test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Test 2: Check if showDeviceDetails function exists and doesn't use Bootstrap
+        function testShowDeviceDetails() {
+            try {
+                if (typeof showDeviceDetails === 'function') {
+                    addTestResult('✅ showDeviceDetails function exists', 'success');
+                    
+                    // Check if it uses vanilla JavaScript instead of Bootstrap
+                    const functionStr = showDeviceDetails.toString();
+                    if (functionStr.includes('bootstrap.Modal')) {
+                        addTestResult('❌ showDeviceDetails still uses Bootstrap Modal', 'error');
+                    } else if (functionStr.includes('document.getElementById') && functionStr.includes('style.display')) {
+                        addTestResult('✅ showDeviceDetails uses vanilla JavaScript', 'success');
+                    } else {
+                        addTestResult('⚠️ showDeviceDetails implementation unclear', 'info');
+                    }
+                } else {
+                    addTestResult('❌ showDeviceDetails function not found', 'error');
+                }
+            } catch (error) {
+                addTestResult(`❌ showDeviceDetails test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Test 3: Check if closeModal function exists
+        function testCloseModal() {
+            try {
+                if (typeof closeModal === 'function') {
+                    addTestResult('✅ closeModal function exists', 'success');
+                } else {
+                    addTestResult('❌ closeModal function not found', 'error');
+                }
+            } catch (error) {
+                addTestResult(`❌ closeModal test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Test 4: Check API connectivity
+        async function testAPI() {
+            try {
+                const response = await fetch('http://localhost:8098/api/medical-data');
+                if (response.ok) {
+                    const data = await response.json();
+                    addTestResult(`✅ Medical data API is accessible (${data.data.length} records)`, 'success');
+                } else {
+                    addTestResult(`❌ Medical data API returned status ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addTestResult(`❌ Medical data API test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Run all tests
+        async function runAllTests() {
+            addTestResult('🚀 Starting Medical Monitor JavaScript Fixes Test...', 'info');
+            
+            // Wait for functions to be available (they might be loaded from external script)
+            setTimeout(() => {
+                testGetDataValue();
+                testShowDeviceDetails();
+                testCloseModal();
+                testAPI();
+                
+                addTestResult('✅ All tests completed!', 'info');
+            }, 1000);
+        }
+        
+        // Start tests when page loads
+        window.addEventListener('load', runAllTests);
+    </script>
+    
+    <p><strong>Note:</strong> This test page checks if the JavaScript fixes for the medical monitor are working correctly. Open the browser console to see detailed results.</p>
+</body>
+</html> 

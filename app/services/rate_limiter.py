@@ -82,6 +82,12 @@ class RateLimiter:
             "172.20.0.0/16",  # Additional Docker network range
             "10.0.0.0/8",     # Private network range
             "192.168.0.0/16", # Private network range
+            # MQTT Listener containers
+            "stardust-ava4-listener",
+            "stardust-kati-listener", 
+            "stardust-qube-listener",
+            "stardust-mqtt-panel",
+            "stardust-mqtt-websocket",
             # Add more trusted IPs here
         ])
         
@@ -136,7 +142,7 @@ class RateLimiter:
             return False, {"error": "ip_blacklisted", "ip": client_ip}
         
         # Check whitelist
-        if client_ip in self.whitelist:
+        if self._is_whitelisted(client_ip):
             return True, {"status": "whitelisted", "ip": client_ip}
         
         # Get rate limits for tier
@@ -596,6 +602,30 @@ class RateLimiter:
             return request.client.host
         
         return "unknown"
+    
+    def _is_whitelisted(self, ip_address: str) -> bool:
+        """Check if IP address is whitelisted (including CIDR ranges)"""
+        import ipaddress
+        
+        # Check exact IP match
+        if ip_address in self.whitelist:
+            return True
+        
+        # Check CIDR ranges
+        try:
+            ip = ipaddress.ip_address(ip_address)
+            for whitelist_entry in self.whitelist:
+                if "/" in whitelist_entry:  # CIDR range
+                    try:
+                        network = ipaddress.ip_network(whitelist_entry, strict=False)
+                        if ip in network:
+                            return True
+                    except ValueError:
+                        continue  # Skip invalid CIDR ranges
+        except ValueError:
+            pass  # Invalid IP address
+        
+        return False
     
     def _hash_api_key(self, api_key: str) -> str:
         """Hash API key for storage"""

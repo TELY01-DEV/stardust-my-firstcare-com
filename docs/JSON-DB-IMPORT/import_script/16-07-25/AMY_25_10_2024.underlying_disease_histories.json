@@ -1,0 +1,854 @@
+[{
+  "_id": {
+    "$oid": "62baaa53861cb35df30df7c1"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "Hypertension ",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-28T07:14:26.919Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "Diabetes ",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-28T07:14:47.141Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "Diabetes \nBlood pressure",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-28T08:17:36.560Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "624ea7f43c00f99f7a13c6fe"
+  },
+  "created_at": {
+    "$date": "2022-06-28T07:14:27.683Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-28T08:17:37.220Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "62baf8df861cb35df30df88f"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "asdfffghkg",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-28T12:49:34.575Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62bac882861cb35df30df80f"
+  },
+  "created_at": {
+    "$date": "2022-06-28T12:49:35.284Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-28T12:49:35.284Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62bafd0b861cb35df30df8ab"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "ลำไส้อักเสบ",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-28T13:07:23.536Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6267976403089d36dcba9bbf"
+  },
+  "created_at": {
+    "$date": "2022-06-28T13:07:23.590Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-28T13:07:23.590Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62bb015c861cb35df30df8b6"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-28T13:25:46.564Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-28T13:25:46.564Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-28T13:25:46.564Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "622035a5fd26d7b6d9b7730c"
+  },
+  "created_at": {
+    "$date": "2022-06-28T13:25:48.155Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-12T17:01:32.936Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "62bbdf3f861cb35df30e0281"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "N/A",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-29T05:12:31.761Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-30T09:01:53.287Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-01T11:03:26.226Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-01T11:03:26.226Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-01T11:03:26.226Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-01T11:03:26.226Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-01T11:03:26.226Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-01T11:03:26.226Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-01T11:03:26.226Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-01T11:03:26.226Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-01T11:03:26.226Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "ไม่มี",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-01T11:03:26.226Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "n/a",
+      "underlying_desease_import_date": {
+        "$date": "2024-05-21T12:33:04.522Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "n/a",
+      "underlying_desease_import_date": {
+        "$date": "2024-05-21T12:33:04.522Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "n/a",
+      "underlying_desease_import_date": {
+        "$date": "2024-05-21T12:33:04.522Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "n/a",
+      "underlying_desease_import_date": {
+        "$date": "2024-05-21T12:33:04.522Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "n/a",
+      "underlying_desease_import_date": {
+        "$date": "2024-10-26T10:27:49.681Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "n/a",
+      "underlying_desease_import_date": {
+        "$date": "2024-10-26T10:27:49.681Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "n/a",
+      "underlying_desease_import_date": {
+        "$date": "2024-10-26T10:27:49.681Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "n/a",
+      "underlying_desease_import_date": {
+        "$date": "2024-10-26T10:27:49.681Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "623c133cf9e69c3b67a9af64"
+  },
+  "created_at": {
+    "$date": "2022-06-29T05:12:31.846Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-06T17:07:46.314Z"
+  },
+  "__v": 19
+},
+{
+  "_id": {
+    "$oid": "62bbfc60b34f2d5511615ec4"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "หอบ",
+      "underlying_desease_import_date": {
+        "$date": "2022-06-29T07:16:48.840Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6296348b05ac0298d2bedaee"
+  },
+  "created_at": {
+    "$date": "2022-06-29T07:16:48.969Z"
+  },
+  "updated_at": {
+    "$date": "2022-06-29T07:16:48.969Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "62c7a5bc7c0d4281bbc2ea0d"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-08T03:34:20.001Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-08T03:34:20.001Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-08T03:34:20.001Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-08T03:34:20.001Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": {
+        "$date": "2022-07-08T03:34:20.001Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "626b641ccc8269328b027bf2"
+  },
+  "created_at": {
+    "$date": "2022-07-08T03:34:20.234Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T16:32:08.548Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "664ca69190d2c3a5052ca880"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "N.a.",
+      "underlying_desease_import_date": {
+        "$date": "2022-05-12T12:58:42.532Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "N.a.",
+      "underlying_desease_import_date": {
+        "$date": "2022-05-12T12:58:42.532Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "N.a.",
+      "underlying_desease_import_date": {
+        "$date": "2022-05-12T12:58:42.532Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "627d04004b8ec2f57f076a12"
+  },
+  "created_at": {
+    "$date": "2024-05-21T13:50:09.415Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-20T11:43:25.204Z"
+  },
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "666fe0c65e6afbc968762cd7"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "DM",
+      "underlying_desease_import_date": null,
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "666fdde85e6afbc96876242c"
+  },
+  "created_at": {
+    "$date": "2024-06-17T07:07:50.908Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-17T07:07:50.908Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6684006984d0d45376d42cb3"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": null,
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6260cdbf79b00113f9bbe76c"
+  },
+  "created_at": {
+    "$date": "2024-07-02T13:28:09.181Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-02T13:28:09.181Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66892d82dfd9d0fba0abc498"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": {
+        "$date": "2022-05-06T07:25:19.367Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": {
+        "$date": "2022-05-06T07:25:19.367Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": {
+        "$date": "2022-05-06T07:25:19.367Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": {
+        "$date": "2022-05-06T07:25:19.367Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "-",
+      "underlying_desease_import_date": {
+        "$date": "2022-05-06T07:25:19.367Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62458803576e198cc6240a6d"
+  },
+  "created_at": {
+    "$date": "2024-07-06T11:41:54.374Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-06T11:57:51.450Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "66892d98dfd9d0fba0abc4aa"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "srw",
+      "underlying_desease_import_date": null,
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "srw",
+      "underlying_desease_import_date": null,
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "srw",
+      "underlying_desease_import_date": null,
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "srw",
+      "underlying_desease_import_date": null,
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62271048fd26d7b6d9b77348"
+  },
+  "created_at": {
+    "$date": "2024-07-06T11:42:16.959Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-07T08:21:37.351Z"
+  },
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "66d6b4d95b289ade5c817415"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "หอบหืด, Stroke",
+      "underlying_desease_import_date": {
+        "$date": "2024-09-03T04:30:11.353Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "หอบหืด, Stroke",
+      "underlying_desease_import_date": {
+        "$date": "2024-09-03T04:30:11.353Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6680fc1b15aff0f64841958a"
+  },
+  "created_at": {
+    "$date": "2024-09-03T07:03:53.405Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-03T07:14:02.379Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "66e9110e376aa29a046050f7"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "be",
+      "underlying_desease_import_date": {
+        "$date": "2022-03-08T08:42:40.818Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "be",
+      "underlying_desease_import_date": {
+        "$date": "2022-03-08T08:42:40.818Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "be",
+      "underlying_desease_import_date": {
+        "$date": "2022-03-08T08:42:40.818Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "be",
+      "underlying_desease_import_date": {
+        "$date": "2022-03-08T08:42:40.818Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "be",
+      "underlying_desease_import_date": {
+        "$date": "2022-03-08T08:42:40.818Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62271701fd26d7b6d9b7734e"
+  },
+  "created_at": {
+    "$date": "2024-09-17T05:18:06.186Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-21T16:43:16.601Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "66f1688dd8c62728f251bfde"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "Abc ",
+      "underlying_desease_import_date": {
+        "$date": "2024-07-16T05:36:41.282Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "626b5af1cc8269328b027935"
+  },
+  "created_at": {
+    "$date": "2024-09-23T13:09:33.301Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-23T13:09:33.301Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f3959db09731030f47850d"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "none",
+      "underlying_desease_import_date": {
+        "$date": "2022-04-09T11:33:18.045Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "none",
+      "underlying_desease_import_date": {
+        "$date": "2022-04-09T11:33:18.045Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "none",
+      "underlying_desease_import_date": {
+        "$date": "2022-04-09T11:33:18.045Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "none",
+      "underlying_desease_import_date": {
+        "$date": "2022-04-09T11:33:18.045Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62516610762e75d318c034f4"
+  },
+  "created_at": {
+    "$date": "2024-09-25T04:46:21.992Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-25T13:01:11.188Z"
+  },
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "66f3d9fbb4b00ade3f1aaaea"
+  },
+  "data": [
+    {
+      "other_underlying_desease": ".",
+      "underlying_desease_import_date": {
+        "$date": "2024-07-14T10:15:42.241Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6693a2b62df134c3a8ad9ccc"
+  },
+  "created_at": {
+    "$date": "2024-09-25T09:38:03.547Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-25T09:38:03.547Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67207fc5e6938c0337c6d6e7"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "Old CVA",
+      "underlying_desease_import_date": {
+        "$date": "2024-10-03T06:46:38.379Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "Old CVA",
+      "underlying_desease_import_date": {
+        "$date": "2024-10-03T06:46:38.379Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "Old CVA",
+      "underlying_desease_import_date": {
+        "$date": "2024-10-03T06:46:38.379Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "Old CVA",
+      "underlying_desease_import_date": {
+        "$date": "2024-10-03T06:46:38.379Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "Old CVA",
+      "underlying_desease_import_date": {
+        "$date": "2024-10-03T06:46:38.379Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "66fe3c70c5c7a961322f44da"
+  },
+  "created_at": {
+    "$date": "2024-10-29T06:25:09.874Z"
+  },
+  "updated_at": {
+    "$date": "2025-01-30T03:10:38.668Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "67207fe5e6938c0337c6d70e"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "DM",
+      "underlying_desease_import_date": {
+        "$date": "2024-05-02T03:37:07.142Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "DM",
+      "underlying_desease_import_date": {
+        "$date": "2024-05-02T03:37:07.142Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "DM",
+      "underlying_desease_import_date": {
+        "$date": "2024-05-02T03:37:07.142Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "DM",
+      "underlying_desease_import_date": {
+        "$date": "2024-05-02T03:37:07.142Z"
+      },
+      "underlying_desease_source": 0
+    },
+    {
+      "other_underlying_desease": "DM",
+      "underlying_desease_import_date": {
+        "$date": "2024-05-02T03:37:07.142Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6605067800df0d8b0c5a318e"
+  },
+  "created_at": {
+    "$date": "2024-10-29T06:25:41.772Z"
+  },
+  "updated_at": {
+    "$date": "2025-01-30T03:00:20.583Z"
+  },
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "67388da190ed69c1cfe4391e"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "test 121231231",
+      "underlying_desease_import_date": {
+        "$date": "2022-03-22T08:50:48.984Z"
+      },
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "62396d77f9e69c3b67a9af07"
+  },
+  "created_at": {
+    "$date": "2024-11-16T12:18:41.933Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-16T12:18:41.933Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680b9244e155af1a724117e7"
+  },
+  "data": [
+    {
+      "other_underlying_desease": "ILD",
+      "underlying_desease_import_date": null,
+      "underlying_desease_source": 0
+    }
+  ],
+  "patient_id": {
+    "$oid": "6679433c92df55f28174fdb2"
+  },
+  "created_at": {
+    "$date": "2025-04-25T13:46:44.823Z"
+  },
+  "updated_at": {
+    "$date": "2025-04-25T13:46:44.823Z"
+  },
+  "__v": 0
+}]

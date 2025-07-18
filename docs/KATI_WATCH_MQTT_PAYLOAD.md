@@ -104,7 +104,7 @@
 ```
 
 #### 6. Emergency Alarm 
-**Topics:** `iMEDE_watch/sos` or `iMEDE_watch/fallDown`
+**Topics:** `iMEDE_watch/SOS` or `iMEDE_watch/fallDown`
 
 **SOS Payload:**
 ```json

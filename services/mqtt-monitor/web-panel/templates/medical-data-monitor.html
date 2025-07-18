@@ -1,0 +1,2419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>My FirstCare Opera Panel - Medical Data Monitor</title>
+    
+    <!-- CSS files -->
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/iconfont/tabler-icons.min.css" rel="stylesheet"/>
+    
+    <!-- Socket.IO client -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    
+    <!-- IMMEDIATE CACHE BUSTER AND MEDICAL DATA FIX -->
+    <script>
+        console.log('🚀 IMMEDIATE CACHE BUSTER v20250118-4 LOADING...');
+        
+        // Override console.log to show cache buster messages prominently
+        const originalLog = console.log;
+        console.log = function(...args) {
+            if (args[0] && args[0].includes('CACHE BUSTER')) {
+                originalLog('%c' + args.join(' '), 'background: #ff6b35; color: white; padding: 2px 5px; border-radius: 3px;');
+            } else {
+                originalLog.apply(console, args);
+            }
+        };
+        
+        console.log('🚀 IMMEDIATE CACHE BUSTER v20250118-4 - CONSOLE OVERRIDE APPLIED');
+        
+        // Define the fixed getDataValue function immediately
+        window.getDataValueFixed = function(event) {
+            console.log('🔧 CACHE BUSTER: Using FIXED getDataValue function');
+            if (!event) return 'No Data';
+            console.log('🔧 CACHE BUSTER: Full event object:', JSON.stringify(event, null, 2));
+            const source = event.source || 'Unknown';
+            const medicalValues = event.medical_values || {};
+            const rawData = event.raw_data || {};
+            console.log('🔧 CACHE BUSTER: Processing event - Source:', source, 'Medical Values:', JSON.stringify(medicalValues, null, 2));
+            console.log('🔧 CACHE BUSTER: Raw Data:', JSON.stringify(rawData, null, 2));
+            function isValidValue(value) {
+                const valid = value !== null && 
+                       value !== undefined && 
+                       value !== "None" && 
+                       value !== "" && 
+                       value !== "null" &&
+                       value !== "undefined";
+                return valid;
+            }
+            const values = [];
+            
+            // Check for SOS/emergency data first
+            if (rawData.topic === 'iMEDE_watch/SOS') {
+                values.push('🚨 SOS Emergency Alert');
+                if (rawData.data && rawData.data.status) {
+                    values.push(`Status: ${rawData.data.status}`);
+                }
+                if (rawData.location) {
+                    values.push('Location Available');
+                }
+                const result = values.join(', ');
+                console.log('🔧 CACHE BUSTER: SOS RESULT:', result);
+                return result;
+            }
+            
+            // Check for fall detection
+            if (rawData.topic === 'iMEDE_watch/fallDown') {
+                values.push('⚠️ Fall Detection Alert');
+                if (rawData.data && rawData.data.status) {
+                    values.push(`Status: ${rawData.data.status}`);
+                }
+                if (rawData.location) {
+                    values.push('Location Available');
+                }
+                const result = values.join(', ');
+                console.log('🔧 CACHE BUSTER: FALL RESULT:', result);
+                return result;
+            }
+            
+            // Check for batch vital signs data
+            if (rawData.vital_signs_data && Array.isArray(rawData.vital_signs_data) && rawData.vital_signs_data.length > 0) {
+                const batchCount = rawData.vital_signs_data.length;
+                const latest = rawData.vital_signs_data[0];
+                const latestValues = [];
+                
+                if (isValidValue(latest.heartRate)) latestValues.push(`HR: ${latest.heartRate} bpm`);
+                if (latest.bloodPressure && isValidValue(latest.bloodPressure.bp_sys) && isValidValue(latest.bloodPressure.bp_dia)) {
+                    latestValues.push(`BP: ${latest.bloodPressure.bp_sys}/${latest.bloodPressure.bp_dia} mmHg`);
+                }
+                if (isValidValue(latest.spO2)) latestValues.push(`SpO2: ${latest.spO2}%`);
+                if (isValidValue(latest.bodyTemperature)) {
+                    latestValues.push(`BT: ${parseFloat(latest.bodyTemperature).toFixed(1)}°C`);
+                }
+                
+                const result = `📦 Batch (${batchCount}): ${latestValues.join(', ')}`;
+                console.log('🔧 CACHE BUSTER: BATCH RESULT:', result);
+                return result;
+            }
+            
+            // Process regular medical values
+            for (const [key, value] of Object.entries(medicalValues)) {
+                if (key === 'scan_time') continue;
+                if (isValidValue(value)) {
+                    switch (key) {
+                        case 'temperature':
+                            values.push(`BT: ${parseFloat(value).toFixed(1)}°C`); break;
+                        case 'systolic':
+                            const diastolic = medicalValues.diastolic;
+                            if (isValidValue(diastolic)) values.push(`BP: ${value}/${diastolic} mmHg`); break;
+                        case 'diastolic': break;
+                        case 'spO2': values.push(`SpO2: ${value}%`); break;
+                        case 'pulse_rate': values.push(`Pulse: ${value} bpm`); break;
+                        case 'heart_rate': values.push(`HR: ${value} bpm`); break;
+                        case 'pi': values.push(`PI: ${value}`); break;
+                        case 'blood_glucose': values.push(`Glucose: ${value} mg/dL`); break;
+                        case 'weight': values.push(`Weight: ${parseFloat(value).toFixed(1)} kg`); break;
+                        case 'resistance': values.push(`Resistance: ${value}`); break;
+                        case 'steps': values.push(`Steps: ${value}`); break;
+                        case 'battery': if (value > 0) values.push(`Battery: ${value}%`); break;
+                        case 'signal_gsm': if (value > 0) values.push(`Signal: ${value}%`); break;
+                        case 'mode': values.push(`Mode: ${value}`); break;
+                        case 'marker': values.push(`Marker: ${value}`); break;
+                        case 'data_type': values.push(`Type: ${value}`); break;
+                        case 'gps_coords': values.push(`GPS: ${value}`); break;
+                        case 'gps_status': values.push(`GPS: ${value}`); break;
+                        case 'cell_tower': values.push(`Cell: ${value}`); break;
+                        case 'sos_status': values.push(`SOS: ${value}`); break;
+                        case 'emergency_location': values.push(`Location: ${value}`); break;
+                        case 'fall_status': values.push(`Fall: ${value}`); break;
+                        case 'fall_location': values.push(`Location: ${value}`); break;
+                        case 'sleep_data': values.push(`Sleep: ${value}`); break;
+                        case 'device_status': values.push(`Status: ${value}`); break;
+                        case 'vital_signs_count': values.push(`Readings: ${value}`); break;
+                        default: values.push(`${key}: ${value}`);
+                    }
+                }
+            }
+            const result = values.length > 0 ? values.join(', ') : 'No Data';
+            console.log('🔧 CACHE BUSTER: FIXED getDataValue result for', source, ':', result);
+            console.log('🔧 CACHE BUSTER: Valid values found:', values.length, 'Values:', values);
+            return result;
+        };
+        
+        console.log('🚀 IMMEDIATE CACHE BUSTER v20250118-4 - FIXED FUNCTION DEFINED');
+    </script>
+</head>
+<body>
+    <!-- IMMEDIATE FUNCTION OVERRIDE -->
+    <script>
+        console.log('🚀 IMMEDIATE CACHE BUSTER v20250118-4 - BODY SCRIPT LOADING...');
+        
+        // Override getDataValue immediately when DOM starts loading
+        if (window.getDataValueFixed) {
+            window.getDataValue = window.getDataValueFixed;
+            console.log('🔧 CACHE BUSTER: getDataValue function OVERRIDDEN with fixed version');
+        } else {
+            console.log('❌ CACHE BUSTER: getDataValueFixed not found, will retry...');
+        }
+        
+        // Set up a polling mechanism to keep trying to override the function
+        let overrideAttempts = 0;
+        const maxAttempts = 100;
+        
+        const overrideInterval = setInterval(() => {
+            overrideAttempts++;
+            
+            // Try to override the function
+            if (window.getDataValueFixed && (!window.getDataValue || window.getDataValue !== window.getDataValueFixed)) {
+                window.getDataValue = window.getDataValueFixed;
+                console.log('🔧 CACHE BUSTER: getDataValue function OVERRIDDEN (attempt ' + overrideAttempts + ')');
+                
+                // Try to refresh the medical data if the function exists
+                setTimeout(() => {
+                    if (typeof loadMedicalData === 'function') {
+                        console.log('🔧 CACHE BUSTER: Refreshing medical data with fixed function...');
+                        loadMedicalData();
+                    } else {
+                        console.log('🔧 CACHE BUSTER: loadMedicalData not available yet');
+                    }
+                }, 500);
+                
+                clearInterval(overrideInterval);
+                console.log('🚀 CACHE BUSTER v20250118-5 - OVERRIDE SUCCESSFUL!');
+            }
+            
+            if (overrideAttempts >= maxAttempts) {
+                clearInterval(overrideInterval);
+                console.log('❌ CACHE BUSTER: Max override attempts reached - forcing page reload');
+                // Force page reload if override fails
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 2000);
+            }
+        }, 50);
+        
+        console.log('🚀 IMMEDIATE CACHE BUSTER v20250118-4 - OVERRIDE POLLING STARTED');
+    </script>
+    
+    <div class="page">
+        <!-- Navbar -->
+        <header class="navbar navbar-expand-md navbar-light d-print-none">
+            <div class="container-xl">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                    <a href="/">
+                        <img src="/static/LOGO_MFC_EN.png" width="110" height="32" alt="My FirstCare" class="navbar-brand-image">
+                    </a>
+                </h1>
+                <div class="navbar-nav flex-row order-md-last">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
+                            <span class="avatar avatar-sm">
+                                <i class="ti ti-user"></i>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <a href="/logout" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Navbar Menu -->
+        <div class="navbar-expand-md">
+            <div class="collapse navbar-collapse" id="navbar-menu">
+                <div class="navbar navbar-light">
+                    <div class="container-xl">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-home"></i>
+                                    </span>
+                                    <span class="nav-link-title">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/data-flow">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-activity"></i>
+                                    </span>
+                                    <span class="nav-link-title">Data Flow</span>
+                                </a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/medical-monitor">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-heartbeat"></i>
+                                    </span>
+                                    <span class="nav-link-title">Medical Monitor</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/event-log">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-list"></i>
+                                    </span>
+                                    <span class="nav-link-title">Event Log</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            <i class="ti ti-heartbeat text-danger me-2"></i>
+                            Medical Data Monitor
+                        </h2>
+                        <div class="text-muted mt-1">
+                            Real-time monitoring of medical device data and patient vitals
+                        </div>
+                    </div>
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <span class="connection-indicator connection-connected" id="connection-status"></span>
+                            <span id="connection-text">Connected</span>
+                            <button class="btn btn-primary" onclick="refreshMedicalData()">
+                                <i class="ti ti-refresh me-1"></i>
+                                Refresh
+                            </button>
+                            <button class="btn btn-outline-danger" onclick="toggleAlerts()">
+                                <i class="ti ti-bell me-1"></i>
+                                <span id="alertToggleText">Enable Alerts</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <!-- Medical Alerts Section -->
+                <div class="row mb-4" id="medicalAlertsSection" style="display: none;">
+                    <div class="col-12">
+                        <div class="card medical-alert">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="ti ti-alert-triangle text-danger me-2"></i>
+                                    Medical Alerts
+                                </h3>
+                            </div>
+                            <div class="card-body" id="medicalAlertsContent">
+                                <!-- Alerts will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Medical Statistics -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card vital-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-primary text-white avatar">
+                                            <i class="ti ti-device-heart-monitor"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium" id="activeDevices">0</div>
+                                        <div class="text-muted">Active Devices</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card vital-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-success text-white avatar">
+                                            <i class="ti ti-user-check"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium" id="monitoredPatients">0</div>
+                                        <div class="text-muted">Monitored Patients</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card vital-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-warning text-white avatar">
+                                            <i class="ti ti-alert-circle"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium" id="medicalAlerts">0</div>
+                                        <div class="text-muted">Medical Alerts</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card vital-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-info text-white avatar">
+                                            <i class="ti ti-pulse"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium" id="dataPoints">0</div>
+                                        <div class="text-muted">Data Points (24h)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Device Status and Vitals -->
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="ti ti-devices me-2"></i>
+                                    Device Status & Vitals
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-vcenter medical-data-table" id="deviceVitalsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Device</th>
+                                                <th>Patient</th>
+                                                <th>Status</th>
+                                                <th>Battery</th>
+                                                <th>Last Update</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="deviceVitalsBody">
+                                            <!-- Device data will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="ti ti-chart-pie me-2"></i>
+                                    Device Distribution
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="deviceDistributionChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Medical Data Charts -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="ti ti-activity me-2"></i>
+                                    Activity Trends (24h)
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="activityChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="ti ti-battery me-2"></i>
+                                    Battery Levels
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="batteryChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Medical Data -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="ti ti-database me-2"></i>
+                                    Recent Medical Data
+                                </h3>
+                                <div class="card-actions">
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="filterBySource('all')">All</button>
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="filterBySource('Kati')">Kati</button>
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="filterBySource('AVA4')">AVA4</button>
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="filterBySource('Qube')">Qube</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-vcenter medical-data-table" id="medicalDataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Timestamp & Device</th>
+                                                <th>Patient Information</th>
+                                                <th>Medical Data</th>
+                                                <th>Status & Alerts</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="medicalDataTableBody">
+                                            <!-- Medical data will be populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Medical Data Details Modal -->
+    <div class="modal modal-blur fade" id="medicalDataModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Medical Data Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="medicalDataModalContent">
+                    <!-- Medical data details will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let socket = null;
+        let isConnected = false;
+        let medicalData = [];
+        let deviceStatus = {};
+        let alertsEnabled = false;
+        let activityChart, batteryChart, deviceDistributionChart;
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Medical Data Monitor page loaded');
+            console.log('🔧 Initializing medical data monitor...');
+            
+            // Initialize real-time data connection
+            initializeRealTimeData();
+            
+            console.log('✅ Medical Data Monitor initialized');
+            console.log('💡 You can test the API manually by running: testMedicalDataAPI()');
+        });
+        
+        // Initialize Socket.IO connection
+        function initializeSocket() {
+            socket = io({ transports: ['websocket'] });
+            
+            socket.on('connect', function() {
+                document.getElementById('connection-status').className = 'connection-indicator connection-connected';
+                document.getElementById('connection-text').textContent = 'Connected';
+            });
+            
+            socket.on('disconnect', function() {
+                document.getElementById('connection-status').className = 'connection-indicator connection-disconnected';
+                document.getElementById('connection-text').textContent = 'Disconnected';
+            });
+            
+            socket.on('data_flow_update', function(data) {
+                // Map backend event structure to frontend expected format
+                const mappedEvent = {
+                    source: data.data.device_type || 'unknown',
+                    event_type: data.data.step || 'unknown',
+                    status: data.data.status || 'info',
+                    message: data.data.topic || 'No message available',
+                    device_id: data.data.payload?.IMEI || data.data.payload?.mac || 'N/A',
+                    patient_id: data.data.patient_info?.patient_id || 'N/A',
+                    timestamp: data.data.timestamp || data.timestamp,
+                    data: data.data.payload || {},
+                    topic: data.data.topic || 'unknown'
+                };
+                
+                // Process medical data
+                if (mappedEvent.event_type === '5_medical_stored') {
+                    processMedicalData(mappedEvent);
+                }
+                
+                // Update device status
+                updateDeviceStatus(mappedEvent);
+            });
+        }
+        
+        // Initialize charts
+        function initializeCharts() {
+            // Activity Trends Chart
+            const activityCtx = document.getElementById('activityChart').getContext('2d');
+            activityChart = new Chart(activityCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Activity Level',
+                        data: [],
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Battery Levels Chart
+            const batteryCtx = document.getElementById('batteryChart').getContext('2d');
+            batteryChart = new Chart(batteryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['High (>80%)', 'Medium (40-80%)', 'Low (<40%)'],
+                    datasets: [{
+                        data: [0, 0, 0],
+                        backgroundColor: [
+                            'rgba(0, 200, 81, 0.8)',
+                            'rgba(255, 193, 7, 0.8)',
+                            'rgba(220, 53, 69, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            
+            // Device Distribution Chart
+            const distributionCtx = document.getElementById('deviceDistributionChart').getContext('2d');
+            deviceDistributionChart = new Chart(distributionCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Kati', 'AVA4', 'Qube'],
+                    datasets: [{
+                        data: [0, 0, 0],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(255, 205, 86, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+        
+        // Load medical data from API
+        async function loadMedicalData() {
+            try {
+                console.log('🔄 Loading medical data from API...');
+                const response = await fetch('/api/recent-medical-data');
+                const data = await response.json();
+                
+                console.log('📊 API Response:', data);
+                
+                if (data.success) {
+                    console.log('✅ API call successful');
+                    console.log('📊 Raw medical data:', data.data.recent_medical_data);
+                    console.log('📊 Total count:', data.data.total_count);
+                    
+                    medicalData = data.data.recent_medical_data;
+                    
+                    console.log('💊 Processed medical data:', medicalData);
+                    console.log('💊 Medical data length:', medicalData.length);
+                    
+                    // Log each medical data record
+                    medicalData.forEach((record, index) => {
+                        console.log(`💊 Record ${index + 1}:`, {
+                            id: record.id,
+                            device_id: record.device_id,
+                            patient_name: record.patient_name,
+                            patient_id: record.patient_id,
+                            source: record.source,
+                            timestamp: record.timestamp,
+                            medical_values: record.medical_values,
+                            raw_data: record.raw_data
+                        });
+                    });
+                    
+                    updateMedicalDataDisplay(medicalData);
+                    updateStatistics();
+                    updateCharts();
+                } else {
+                    console.error('❌ API call failed:', data.error);
+                }
+            } catch (error) {
+                console.error('❌ Error loading medical data:', error);
+            }
+        }
+        
+        // Process incoming medical data
+        function processMedicalData(event) {
+            medicalData.unshift(event);
+            
+            // Keep only last 1000 medical events
+            if (medicalData.length > 1000) {
+                medicalData = medicalData.slice(0, 1000);
+            }
+            
+            updateMedicalDataDisplay(medicalData);
+            updateStatistics();
+            updateCharts();
+            
+            // Check for alerts
+            if (alertsEnabled) {
+                checkMedicalAlerts(event);
+            }
+        }
+        
+        // Update medical data display
+        function updateMedicalDataDisplay(medicalData) {
+            const tableBody = document.getElementById('medicalDataTableBody');
+            if (!tableBody) {
+                console.error('❌ Medical data table body not found');
+                return;
+            }
+            
+            // Add null/undefined checks
+            if (!medicalData) {
+                console.warn('⚠️ Medical data is null or undefined');
+                medicalData = [];
+            }
+            
+            if (!Array.isArray(medicalData)) {
+                console.warn('⚠️ Medical data is not an array, converting to array');
+                medicalData = [medicalData];
+            }
+            
+            console.log('📊 Updating medical data display with', medicalData.length, 'records');
+            
+            // Clear existing data
+            tableBody.innerHTML = '';
+            
+            if (medicalData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">
+                            <i class="ti ti-database-off me-2"></i>
+                            No medical data available
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Add each medical data record
+            medicalData.forEach((event, index) => {
+                console.log(`📋 Processing record ${index + 1}:`, event);
+                
+                const row = document.createElement('tr');
+                row.className = 'fade-in';
+                
+                            // Check for batch data - look in multiple locations
+            const hasBatchData = (event.medical_values && 
+                               event.medical_values.batch_data && 
+                               Array.isArray(event.medical_values.batch_data) && 
+                               event.medical_values.batch_data.length > 0) ||
+                               (event.raw_data && 
+                               event.raw_data.vital_signs_data && 
+                               Array.isArray(event.raw_data.vital_signs_data) && 
+                               event.raw_data.vital_signs_data.length > 0) ||
+                               (event.raw_data && 
+                               event.raw_data.data && 
+                               event.raw_data.data.data && 
+                               Array.isArray(event.raw_data.data.data) && 
+                               event.raw_data.data.data.length > 0);
+                
+                // Get batch count from the correct location
+                let batchCount = 0;
+                if (event.medical_values && event.medical_values.batch_data && Array.isArray(event.medical_values.batch_data)) {
+                    batchCount = event.medical_values.batch_data.length;
+                } else if (event.raw_data && event.raw_data.vital_signs_data && Array.isArray(event.raw_data.vital_signs_data)) {
+                    batchCount = event.raw_data.vital_signs_data.length;
+                } else if (event.raw_data && event.raw_data.data && event.raw_data.data.data && Array.isArray(event.raw_data.data.data)) {
+                    batchCount = event.raw_data.data.data.length;
+                }
+                
+                const batchIndicator = hasBatchData ? 
+                    `<span class="batch-indicator">📦 ${batchCount}</span>` : '';
+                
+                const dataValue = getDataValue(event);
+                const dataStatus = getDataStatus(event);
+                const statusColor = getStatusColor(dataStatus);
+                const statusDescription = getStatusDescription(event);
+                const medicalSummary = getMedicalDataSummary(event);
+                
+                // Format timestamp
+                const timestamp = event.timestamp ? new Date(event.timestamp).toLocaleString() : 'Unknown';
+                
+                // Get device information for AVA4
+                const deviceInfo = getDeviceInfo(event);
+                const medicalDeviceType = getMedicalDeviceType(event);
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <span class="avatar avatar-sm me-2">
+                                <i class="ti ti-device-heart-monitor"></i>
+                            </span>
+                            <div>
+                                <div class="font-weight-medium">${deviceInfo.name}</div>
+                                <div class="text-muted small">${deviceInfo.mac}</div>
+                                ${medicalDeviceType ? `<div class="text-muted small">${medicalDeviceType}</div>` : ''}
+                            </div>
+                            ${batchIndicator}
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <div class="font-weight-medium">${event.patient_name || 'Unknown'}</div>
+                            <div class="text-muted small">${event.patient_id || 'Unknown'}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-muted">${timestamp}</div>
+                    </td>
+                    <td>
+                        <div class="font-weight-medium">${dataValue}</div>
+                        ${medicalSummary ? `<div class="text-muted small">${medicalSummary}</div>` : ''}
+                    </td>
+                    <td>
+                        <span class="badge bg-${statusColor}">${dataStatus}</span>
+                        ${statusDescription ? `<div class="text-muted small mt-1">${statusDescription}</div>` : ''}
+                    </td>
+                    <td>
+                        <div class="btn-list">
+                            <button class="btn btn-sm btn-outline-primary" onclick="showMedicalDataDetails(${JSON.stringify(event).replace(/"/g, '&quot;')})">
+                                <i class="ti ti-eye me-1"></i>
+                                Details
+                            </button>
+                            ${hasBatchData ? `
+                                <button class="btn btn-sm btn-outline-info" onclick="showBatchData('${event.id || index}')">
+                                    <i class="ti ti-database me-1"></i>
+                                    Batch
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            console.log('✅ Medical data display updated successfully');
+        }
+        
+        // Show batch data in a dedicated view
+        function showBatchData(eventId) {
+            // Add null check for medicalData
+            if (!medicalData || !Array.isArray(medicalData)) {
+                console.error('❌ Medical data not available for batch view');
+                alert('Medical data not available');
+                return;
+            }
+            
+            // Find the event data
+            const event = medicalData.find(e => e.id === eventId || e === medicalData[eventId]);
+            
+            // Get batch data from multiple possible locations
+            let batchData = null;
+            if (event.medical_values && event.medical_values.batch_data) {
+                batchData = event.medical_values.batch_data;
+            } else if (event.raw_data && event.raw_data.vital_signs_data) {
+                batchData = event.raw_data.vital_signs_data;
+            } else if (event.raw_data && event.raw_data.data && event.raw_data.data.data) {
+                batchData = event.raw_data.data.data;
+            }
+            
+            if (!event || !batchData || !Array.isArray(batchData) || batchData.length === 0) {
+                alert('No batch data available for this record');
+                return;
+            }
+            
+            // Create a dedicated batch data modal
+            const modal = document.getElementById('medicalDataModal');
+            const content = document.getElementById('medicalDataModalContent');
+            
+            if (!modal || !content) {
+                alert('Modal not available');
+                return;
+            }
+            
+            const summary = calculateBatchSummary(batchData);
+            
+            content.innerHTML = `
+                <div class="row">
+                    <div class="col-12">
+                        <h6><i class="ti ti-database"></i> AP55 Batch Vital Signs Data</h6>
+                        <div class="batch-data-container">
+                            <div class="batch-header">
+                                <div class="batch-title">
+                                    <i class="ti ti-database"></i>
+                                    Batch Vital Signs (${batchData.length} readings)
+                                </div>
+                                <div class="batch-count">
+                                    ${batchData.length} Readings
+                                </div>
+                            </div>
+                            
+                            <div class="batch-readings">
+                                ${batchData.map((reading, index) => renderBatchReading(reading, index)).join('')}
+                            </div>
+                            
+                            <div class="batch-summary">
+                                <div class="batch-summary-stats">
+                                    <div class="summary-stat">
+                                        <div class="summary-stat-value">${summary.avgHR}</div>
+                                        <div class="summary-stat-label">Avg HR (bpm)</div>
+                                    </div>
+                                    <div class="summary-stat">
+                                        <div class="summary-stat-value">${summary.avgSystolic}/${summary.avgDiastolic}</div>
+                                        <div class="summary-stat-label">Avg BP (mmHg)</div>
+                                    </div>
+                                    <div class="summary-stat">
+                                        <div class="summary-stat-value">${summary.avgSpO2}%</div>
+                                        <div class="summary-stat-label">Avg SpO2</div>
+                                    </div>
+                                    <div class="summary-stat">
+                                        <div class="summary-stat-value">${summary.avgTemp}°C</div>
+                                        <div class="summary-stat-label">Avg Temp</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Show modal
+            modal.style.display = 'block';
+            modal.classList.add('show');
+            
+            // Add backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fade show';
+            backdrop.id = 'modalBackdrop';
+            document.body.appendChild(backdrop);
+            
+            // Close modal when clicking backdrop or close button
+            backdrop.onclick = closeModal;
+            const closeBtn = document.querySelector('.btn-close');
+            if (closeBtn) closeBtn.onclick = closeModal;
+        }
+        
+        // Get data type from event
+        function getDataType(event) {
+            if (!event) {
+                return 'Unknown';
+            }
+            
+            const source = event.source;
+            const medicalValues = event.medical_values || {};
+            
+            // Handle Kati devices (including variations like Kati_Watch)
+            if (source === 'Kati' || source === 'Kati_Watch' || (source && source.includes('Kati'))) {
+                if (medicalValues.steps !== undefined) return 'Step Count';
+                if (medicalValues.heart_rate !== undefined) return 'Heart Rate';
+                if (medicalValues.systolic !== undefined) return 'Blood Pressure';
+                if (medicalValues.spO2 !== undefined) return 'SpO2';
+                if (medicalValues.temperature !== undefined) return 'Body Temperature';
+                return 'Vital Signs';
+            } 
+            // Handle AVA4 devices (including variations like AVA4_Gateway)
+            else if (source === 'AVA4' || source === 'AVA4_Gateway' || (source && source.includes('AVA4'))) {
+                if (medicalValues.blood_glucose !== undefined) return 'Blood Glucose';
+                if (medicalValues.systolic !== undefined) return 'Blood Pressure';
+                if (medicalValues.spO2 !== undefined) return 'SpO2';
+                if (medicalValues.temperature !== undefined) return 'Body Temperature';
+                return 'Medical Data';
+            } 
+            // Handle Qube devices
+            else if (source === 'Qube' || source === 'Qube-Vital' || (source && source.includes('Qube'))) {
+                return 'Vital Signs';
+            }
+            
+            // If source is unknown, try to determine from medical values
+            if (medicalValues.steps !== undefined) return 'Step Count';
+            if (medicalValues.heart_rate !== undefined) return 'Heart Rate';
+            if (medicalValues.systolic !== undefined) return 'Blood Pressure';
+            if (medicalValues.spO2 !== undefined) return 'SpO2';
+            if (medicalValues.temperature !== undefined) return 'Body Temperature';
+            if (medicalValues.blood_glucose !== undefined) return 'Blood Glucose';
+            
+            return 'Unknown';
+        }
+        
+        // Get data value from event
+        function getDataValue(event) {
+            if (!event) {
+                return 'No Data';
+            }
+            
+            const source = event.source;
+            const medicalValues = event.medical_values || {};
+            
+            // Also check processed_data structure (for stored medical data)
+            const processedData = event.processed_data || {};
+            const eventData = processedData.data || event.data || {};
+            
+            // NEW: Check raw_data structure for heartbeat data
+            const rawData = event.raw_data || {};
+            
+            // Debug logging to see what's in the medical values
+            console.log('🔍 getDataValue - Event:', event);
+            console.log('🔍 getDataValue - Source:', source);
+            console.log('🔍 getDataValue - Medical Values:', medicalValues);
+            console.log('🔍 getDataValue - Processed Data:', processedData);
+            console.log('🔍 getDataValue - Event Data:', eventData);
+            console.log('🔍 getDataValue - Raw Data:', rawData);
+            
+            const values = [];
+            
+            // CACHE BUSTER: Version 2.0 - Updated 2025-01-18 - FIXED MEDICAL VALUE FILTERING
+            console.log('🔧 getDataValue CACHE BUSTER v2.0 - FIXED VERSION LOADED');
+            
+            // Helper function to check if a value is valid (not null, undefined, "None", or empty)
+            function isValidValue(value) {
+                const isValid = value !== null && 
+                       value !== undefined && 
+                       value !== "None" && 
+                       value !== "" && 
+                       value !== "null" &&
+                       value !== "undefined";
+                
+                // Debug logging for invalid values
+                if (!isValid) {
+                    console.log(`🚫 isValidValue FILTERED OUT: "${value}" (type: ${typeof value})`);
+                }
+                
+                return isValid;
+            }
+            
+            // Helper function to round temperature to 1 decimal place
+            function formatTemperature(temp) {
+                if (!isValidValue(temp)) return null;
+                return Math.round(parseFloat(temp) * 10) / 10;
+            }
+            
+            // Check for AP55 batch data first
+            if (medicalValues.batch_data && Array.isArray(medicalValues.batch_data) && medicalValues.batch_data.length > 0) {
+                const batchCount = medicalValues.batch_data.length;
+                const latest = medicalValues.batch_data[0];
+                const latestValues = [];
+                
+                // Add latest reading summary (only if values exist)
+                if (isValidValue(latest.heartRate)) latestValues.push(`HR: ${latest.heartRate} bpm`);
+                if (latest.bloodPressure && isValidValue(latest.bloodPressure.bp_sys) && isValidValue(latest.bloodPressure.bp_dia)) {
+                    const bp = latest.bloodPressure;
+                    latestValues.push(`BP: ${bp.bp_sys}/${bp.bp_dia} mmHg`);
+                }
+                if (isValidValue(latest.spO2)) latestValues.push(`SpO2: ${latest.spO2}%`);
+                if (isValidValue(latest.bodyTemperature)) {
+                    const temp = formatTemperature(latest.bodyTemperature);
+                    if (temp !== null) latestValues.push(`BT: ${temp}°C`);
+                }
+                
+                return `📦 Batch (${batchCount}): ${latestValues.join(', ')}`;
+            }
+            
+            // Handle single vital signs data (only add values that exist and are not None)
+            if (isValidValue(medicalValues.heart_rate)) {
+                values.push(`HR: ${medicalValues.heart_rate} bpm`);
+            }
+            if (isValidValue(medicalValues.systolic) && isValidValue(medicalValues.diastolic)) {
+                values.push(`BP: ${medicalValues.systolic}/${medicalValues.diastolic} mmHg`);
+            }
+            if (isValidValue(medicalValues.spO2)) {
+                values.push(`SpO2: ${medicalValues.spO2}%`);
+            }
+            if (isValidValue(medicalValues.temperature)) {
+                const temp = formatTemperature(medicalValues.temperature);
+                if (temp !== null) values.push(`BT: ${temp}°C`);
+            }
+            if (isValidValue(medicalValues.blood_glucose)) {
+                values.push(`Glucose: ${medicalValues.blood_glucose} mg/dL`);
+            }
+            
+            // Extract heartbeat data from multiple possible locations with priority order
+            let steps, battery, signal;
+            
+            // Priority 1: medicalValues (processed)
+            if (isValidValue(medicalValues.steps)) steps = medicalValues.steps;
+            if (isValidValue(medicalValues.battery)) battery = medicalValues.battery;
+            if (isValidValue(medicalValues.signal_gsm)) signal = medicalValues.signal_gsm;
+            if (isValidValue(medicalValues.signalGSM)) signal = medicalValues.signalGSM;
+            
+            // Priority 2: rawData (direct from device)
+            if (steps === undefined && isValidValue(rawData.step)) steps = rawData.step;
+            if (battery === undefined && isValidValue(rawData.battery)) battery = rawData.battery;
+            if (signal === undefined && isValidValue(rawData.signalGSM)) signal = rawData.signalGSM;
+            if (signal === undefined && isValidValue(rawData.signal_gsm)) signal = rawData.signal_gsm;
+            
+            // Priority 3: eventData (processed structure)
+            if (steps === undefined && isValidValue(eventData.step)) steps = eventData.step;
+            if (battery === undefined && isValidValue(eventData.battery)) battery = eventData.battery;
+            if (signal === undefined && isValidValue(eventData.signalGSM)) signal = eventData.signalGSM;
+            
+            // Priority 4: processedData (alternative structure)
+            if (steps === undefined && isValidValue(processedData.step_count)) steps = processedData.step_count;
+            if (battery === undefined && isValidValue(processedData.battery)) battery = processedData.battery;
+            if (signal === undefined && isValidValue(processedData.signal_gsm)) signal = processedData.signal_gsm;
+            
+            // Add extracted heartbeat data (only if valid)
+            if (isValidValue(steps)) values.push(`Steps: ${steps}`);
+            if (isValidValue(battery)) values.push(`Battery: ${battery}%`);
+            if (isValidValue(signal)) values.push(`Signal: ${signal}%`);
+            
+            // AVA4 specific fields (only add if they exist and are not None)
+            if (isValidValue(medicalValues.pulse_rate)) {
+                values.push(`Pulse: ${medicalValues.pulse_rate} bpm`);
+            }
+            if (isValidValue(medicalValues.pi)) {
+                values.push(`PI: ${medicalValues.pi}`);
+            }
+            if (isValidValue(medicalValues.weight)) {
+                values.push(`Weight: ${medicalValues.weight} kg`);
+            }
+            if (isValidValue(medicalValues.uric_acid)) {
+                values.push(`Uric Acid: ${medicalValues.uric_acid} μmol/L`);
+            }
+            if (isValidValue(medicalValues.cholesterol)) {
+                values.push(`Cholesterol: ${medicalValues.cholesterol} mmol/L`);
+            }
+            if (isValidValue(medicalValues.marker)) {
+                values.push(`Marker: ${medicalValues.marker}`);
+            }
+            if (isValidValue(medicalValues.mode)) {
+                values.push(`Mode: ${medicalValues.mode}`);
+            }
+            if (isValidValue(medicalValues.resistance)) {
+                values.push(`Resistance: ${medicalValues.resistance}`);
+            }
+            
+            // Check for alternative field names that might be used (only if valid)
+            if (isValidValue(medicalValues.heartRate) && !values.some(v => v.includes('HR:'))) {
+                values.push(`HR: ${medicalValues.heartRate} bpm`);
+            }
+            if (isValidValue(medicalValues.bodyTemperature) && !values.some(v => v.includes('BT:'))) {
+                const temp = formatTemperature(medicalValues.bodyTemperature);
+                if (temp !== null) values.push(`BT: ${temp}°C`);
+            }
+            if (isValidValue(medicalValues.bloodPressure) && !values.some(v => v.includes('BP:'))) {
+                const bp = medicalValues.bloodPressure;
+                if (isValidValue(bp.bp_sys) && isValidValue(bp.bp_dia)) {
+                    values.push(`BP: ${bp.bp_sys}/${bp.bp_dia} mmHg`);
+                }
+            }
+            
+            console.log('🔍 getDataValue - Extracted values:', values);
+            console.log('🔧 CACHE BUSTER v2.0 - About to return filtered values:', values);
+            console.log('🔧 Final result length:', values.length);
+            
+            // If no specific values found, check for general data availability
+            if (values.length === 0) {
+                console.log('🔧 No values found, checking for heartbeat data...');
+                
+                // Check for AVA4 heartbeat data in raw_data
+                const rawData = event.raw_data || {};
+                if (rawData.type === 'HB_Msg' && source === 'AVA4') {
+                    console.log('🔧 Found AVA4 heartbeat data:', rawData);
+                    const heartbeatValues = [];
+                    
+                    // Extract heartbeat-specific information
+                    if (rawData.name) {
+                        heartbeatValues.push(`Device: ${rawData.name}`);
+                    }
+                    if (rawData.data && rawData.data.msg) {
+                        heartbeatValues.push(`Status: ${rawData.data.msg}`);
+                    }
+                    if (rawData.IMEI) {
+                        heartbeatValues.push(`IMEI: ${rawData.IMEI}`);
+                    }
+                    
+                    if (heartbeatValues.length > 0) {
+                        const heartbeatResult = heartbeatValues.join(', ');
+                        console.log('🔧 AVA4 HEARTBEAT RESULT:', heartbeatResult);
+                        return heartbeatResult;
+                    }
+                }
+                
+                // Check for other device heartbeat patterns
+                if (source && (source.includes('Kati') || source.includes('AVA4') || source.includes('Qube'))) {
+                    console.log('🔧 Fallback to generic status for source:', source);
+                    return 'Device Online';
+                }
+                return 'No Data';
+            }
+            
+            const finalResult = values.join(', ');
+            console.log('🔧 FINAL RESULT:', finalResult);
+            return finalResult;
+        }
+        
+        // Render AP55 batch data
+        function renderBatchData(batchData, containerId) {
+            if (!batchData || !Array.isArray(batchData) || batchData.length === 0) {
+                return '';
+            }
+            
+            const container = document.getElementById(containerId);
+            if (!container) return '';
+            
+            // Calculate summary statistics
+            const summary = calculateBatchSummary(batchData);
+            
+            // Create batch data HTML
+            const batchHtml = `
+                <div class="batch-data-container fade-in">
+                    <div class="batch-header">
+                        <div class="batch-title">
+                            <i class="ti ti-database"></i>
+                            AP55 Batch Vital Signs Data
+                        </div>
+                        <div class="batch-count">
+                            ${batchData.length} Readings
+                        </div>
+                    </div>
+                    
+                    <div class="batch-readings">
+                        ${batchData.map((reading, index) => renderBatchReading(reading, index)).join('')}
+                    </div>
+                    
+                    <div class="batch-summary">
+                        <div class="batch-summary-stats">
+                            <div class="summary-stat">
+                                <div class="summary-stat-value">${summary.avgHR}</div>
+                                <div class="summary-stat-label">Avg HR (bpm)</div>
+                            </div>
+                            <div class="summary-stat">
+                                <div class="summary-stat-value">${summary.avgSystolic}/${summary.avgDiastolic}</div>
+                                <div class="summary-stat-label">Avg BP (mmHg)</div>
+                            </div>
+                            <div class="summary-stat">
+                                <div class="summary-stat-value">${summary.avgSpO2}%</div>
+                                <div class="summary-stat-label">Avg SpO2</div>
+                            </div>
+                            <div class="summary-stat">
+                                <div class="summary-stat-value">${summary.avgTemp}°C</div>
+                                <div class="summary-stat-label">Avg Temp</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = batchHtml;
+            return batchHtml;
+        }
+        
+        // Render individual batch reading
+        function renderBatchReading(reading, index) {
+            const timestamp = reading.timestamp ? new Date(reading.timestamp * 1000).toLocaleString() : 'Unknown Time';
+            const status = getReadingStatus(reading);
+            const statusClass = status === 'critical' ? 'critical' : status === 'warning' ? 'warning' : 'normal';
+            
+            return `
+                <div class="batch-reading ${statusClass}">
+                    <div class="reading-timestamp">
+                        <i class="ti ti-clock"></i>
+                        ${timestamp}
+                    </div>
+                    <div class="reading-vitals">
+                        ${reading.heartRate ? `
+                            <div class="vital-item">
+                                <span class="vital-label">❤️ Heart Rate</span>
+                                <span class="vital-value ${getVitalStatusClass(reading.heartRate, 'heartRate')}">${reading.heartRate} bpm</span>
+                            </div>
+                        ` : ''}
+                        ${reading.bloodPressure ? `
+                            <div class="vital-item">
+                                <span class="vital-label">🩸 Blood Pressure</span>
+                                <span class="vital-value ${getVitalStatusClass(reading.bloodPressure.bp_sys, 'systolic')}">${reading.bloodPressure.bp_sys}/${reading.bloodPressure.bp_dia} mmHg</span>
+                            </div>
+                        ` : ''}
+                        ${reading.spO2 ? `
+                            <div class="vital-item">
+                                <span class="vital-label">🫁 SpO2</span>
+                                <span class="vital-value ${getVitalStatusClass(reading.spO2, 'spO2')}">${reading.spO2}%</span>
+                            </div>
+                        ` : ''}
+                        ${reading.bodyTemperature ? `
+                            <div class="vital-item">
+                                <span class="vital-label">🌡️ Temperature</span>
+                                <span class="vital-value ${getVitalStatusClass(reading.bodyTemperature, 'temperature')}">${reading.bodyTemperature}°C</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Calculate batch summary statistics
+        function calculateBatchSummary(batchData) {
+            const heartRates = batchData.filter(r => r.heartRate).map(r => r.heartRate);
+            const systolicBPs = batchData.filter(r => r.bloodPressure?.bp_sys).map(r => r.bloodPressure.bp_sys);
+            const diastolicBPs = batchData.filter(r => r.bloodPressure?.bp_dia).map(r => r.bloodPressure.bp_dia);
+            const spO2s = batchData.filter(r => r.spO2).map(r => r.spO2);
+            const temperatures = batchData.filter(r => r.bodyTemperature).map(r => r.bodyTemperature);
+            
+            return {
+                avgHR: heartRates.length > 0 ? Math.round(heartRates.reduce((a, b) => a + b, 0) / heartRates.length) : 'N/A',
+                avgSystolic: systolicBPs.length > 0 ? Math.round(systolicBPs.reduce((a, b) => a + b, 0) / systolicBPs.length) : 'N/A',
+                avgDiastolic: diastolicBPs.length > 0 ? Math.round(diastolicBPs.reduce((a, b) => a + b, 0) / diastolicBPs.length) : 'N/A',
+                avgSpO2: spO2s.length > 0 ? Math.round(spO2s.reduce((a, b) => a + b, 0) / spO2s.length) : 'N/A',
+                avgTemp: temperatures.length > 0 ? (temperatures.reduce((a, b) => a + b, 0) / temperatures.length).toFixed(1) : 'N/A'
+            };
+        }
+        
+        // Get reading status
+        function getReadingStatus(reading) {
+            if (reading.heartRate && (reading.heartRate < 60 || reading.heartRate > 100)) return 'warning';
+            if (reading.bloodPressure?.bp_sys && (reading.bloodPressure.bp_sys > 140 || reading.bloodPressure.bp_sys < 90)) return 'warning';
+            if (reading.spO2 && reading.spO2 < 95) return 'warning';
+            if (reading.bodyTemperature && (reading.bodyTemperature < 35 || reading.bodyTemperature > 38)) return 'warning';
+            return 'normal';
+        }
+        
+        // Get vital status class
+        function getVitalStatusClass(value, type) {
+            if (!value) return 'normal';
+            
+            switch (type) {
+                case 'heartRate':
+                    return value < 60 || value > 100 ? 'warning' : 'normal';
+                case 'systolic':
+                    return value > 140 || value < 90 ? 'warning' : 'normal';
+                case 'spO2':
+                    return value < 95 ? 'warning' : 'normal';
+                case 'temperature':
+                    return value < 35 || value > 38 ? 'warning' : 'normal';
+                default:
+                    return 'normal';
+            }
+        }
+        
+        // Get data status
+        function getDataStatus(event) {
+            if (!event) {
+                return 'Unknown';
+            }
+            
+            const source = event.source;
+            const medicalValues = event.medical_values || {};
+            
+            // Handle Kati devices (including variations)
+            if (source === 'Kati' || source === 'Kati_Watch' || (source && source.includes('Kati'))) {
+                // Check for critical values
+                if (medicalValues.heart_rate !== undefined) {
+                    if (medicalValues.heart_rate < 60 || medicalValues.heart_rate > 100) return 'Warning';
+                }
+                if (medicalValues.systolic !== undefined) {
+                    if (medicalValues.systolic > 140 || medicalValues.systolic < 90) return 'Warning';
+                }
+                if (medicalValues.spO2 !== undefined) {
+                    if (medicalValues.spO2 < 95) return 'Warning';
+                }
+                if (medicalValues.temperature !== undefined) {
+                    if (medicalValues.temperature < 35 || medicalValues.temperature > 38) return 'Warning';
+                }
+            } 
+            // Handle AVA4 devices (including variations)
+            else if (source === 'AVA4' || source === 'AVA4_Gateway' || (source && source.includes('AVA4'))) {
+                if (medicalValues.blood_glucose !== undefined) {
+                    if (medicalValues.blood_glucose > 200 || medicalValues.blood_glucose < 70) return 'Warning';
+                }
+                if (medicalValues.systolic !== undefined) {
+                    if (medicalValues.systolic > 140 || medicalValues.systolic < 90) return 'Warning';
+                }
+                if (medicalValues.spO2 !== undefined) {
+                    if (medicalValues.spO2 < 95) return 'Warning';
+                }
+                if (medicalValues.temperature !== undefined) {
+                    if (medicalValues.temperature < 35 || medicalValues.temperature > 38) return 'Warning';
+                }
+            }
+            // Handle Qube devices
+            else if (source === 'Qube' || source === 'Qube-Vital' || (source && source.includes('Qube'))) {
+                if (medicalValues.heart_rate !== undefined) {
+                    if (medicalValues.heart_rate < 60 || medicalValues.heart_rate > 100) return 'Warning';
+                }
+                if (medicalValues.spO2 !== undefined) {
+                    if (medicalValues.spO2 < 95) return 'Warning';
+                }
+            }
+            
+            return 'Normal';
+        }
+        
+        // Get status color
+        function getStatusColor(status) {
+            // Debug logging to see what's being passed
+            console.log('🔍 getStatusColor called with:', status, 'Type:', typeof status);
+            
+            // Handle undefined, null, or empty status
+            if (!status || typeof status !== 'string') {
+                console.log('⚠️ getStatusColor: Invalid status, returning secondary');
+                return 'secondary';
+            }
+            
+            try {
+                switch (status.toLowerCase()) {
+                    case 'critical': return 'danger';
+                    case 'warning': return 'warning';
+                    case 'normal': return 'success';
+                    case 'success': return 'success';
+                    case 'error': return 'danger';
+                    default: return 'secondary';
+                }
+            } catch (error) {
+                console.error('❌ getStatusColor error:', error, 'Status:', status);
+                return 'secondary';
+            }
+        }
+        
+        // Get status description
+        function getStatusDescription(event) {
+            if (!event) {
+                return '';
+            }
+            
+            const source = event.source;
+            const medicalValues = event.medical_values || {};
+            const descriptions = [];
+            
+            // Handle Kati devices (including variations)
+            if (source === 'Kati' || source === 'Kati_Watch' || (source && source.includes('Kati'))) {
+                if (medicalValues.heart_rate !== undefined) {
+                    if (medicalValues.heart_rate < 60 || medicalValues.heart_rate > 100) descriptions.push('Heart rate warning');
+                }
+                if (medicalValues.systolic !== undefined) {
+                    if (medicalValues.systolic > 140 || medicalValues.systolic < 90) descriptions.push('Blood pressure warning');
+                }
+                if (medicalValues.spO2 !== undefined) {
+                    if (medicalValues.spO2 < 95) descriptions.push('SpO2 warning');
+                }
+                if (medicalValues.temperature !== undefined) {
+                    if (medicalValues.temperature < 35 || medicalValues.temperature > 38) descriptions.push('Temperature warning');
+                }
+            } 
+            // Handle AVA4 devices (including variations)
+            else if (source === 'AVA4' || source === 'AVA4_Gateway' || (source && source.includes('AVA4'))) {
+                if (medicalValues.blood_glucose !== undefined) {
+                    if (medicalValues.blood_glucose > 200 || medicalValues.blood_glucose < 70) descriptions.push('Blood glucose warning');
+                }
+                if (medicalValues.systolic !== undefined) {
+                    if (medicalValues.systolic > 140 || medicalValues.systolic < 90) descriptions.push('Blood pressure warning');
+                }
+                if (medicalValues.spO2 !== undefined) {
+                    if (medicalValues.spO2 < 95) descriptions.push('SpO2 warning');
+                }
+                if (medicalValues.temperature !== undefined) {
+                    if (medicalValues.temperature < 35 || medicalValues.temperature > 38) descriptions.push('Temperature warning');
+                }
+            }
+            // Handle Qube devices
+            else if (source === 'Qube' || source === 'Qube-Vital' || (source && source.includes('Qube'))) {
+                if (medicalValues.heart_rate !== undefined) {
+                    if (medicalValues.heart_rate < 60 || medicalValues.heart_rate > 100) descriptions.push('Heart rate warning');
+                }
+                if (medicalValues.spO2 !== undefined) {
+                    if (medicalValues.spO2 < 95) descriptions.push('SpO2 warning');
+                }
+            }
+            
+            return descriptions.join(', ') || 'Normal operation';
+        }
+        
+        // Get medical data summary
+        function getMedicalDataSummary(event) {
+            if (!event || !event.medical_values) {
+                return null;
+            }
+            
+            const medicalValues = event.medical_values;
+            const summaries = [];
+            
+            // For batch data, don't show summary since it's already in the main value
+            if (medicalValues.batch_data && Array.isArray(medicalValues.batch_data) && medicalValues.batch_data.length > 0) {
+                return null; // No summary needed for batch data
+            }
+            
+            // For single readings, only show additional info not in main value
+            const mainValue = getDataValue(event);
+            
+            // Only add battery and signal data if not already shown in main value
+            if (medicalValues.battery !== undefined && !mainValue.includes('Battery:')) {
+                summaries.push(`Battery: ${medicalValues.battery}%`);
+            }
+            if (medicalValues.signal_gsm !== undefined && !mainValue.includes('Signal:')) {
+                summaries.push(`Signal: ${medicalValues.signal_gsm}%`);
+            }
+            if (medicalValues.signalGSM !== undefined && !mainValue.includes('Signal:')) {
+                summaries.push(`Signal: ${medicalValues.signalGSM}%`);
+            }
+            
+            // Only show summary if there's additional info
+            return summaries.length > 0 ? summaries.join(', ') : null;
+        }
+        
+        // Update device status
+        function updateDeviceStatus(event) {
+            const deviceId = event.device_id || 'unknown';
+            const now = new Date();
+            
+            deviceStatus[deviceId] = {
+                source: event.source,
+                lastSeen: now,
+                status: event.status,
+                data: event.data
+            };
+            
+            updateDeviceVitalsTable();
+        }
+        
+        // Update device vitals table
+        function updateDeviceVitalsTable() {
+            const tbody = document.getElementById('deviceVitalsBody');
+            tbody.innerHTML = '';
+            
+            Object.entries(deviceStatus).forEach(([deviceId, status]) => {
+                const row = document.createElement('tr');
+                const timeSince = getTimeSince(status.lastSeen);
+                const batteryLevel = status.data?.battery || 'N/A';
+                const batteryStatus = getBatteryStatus(batteryLevel);
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <span class="avatar avatar-sm me-2">
+                                <i class="ti ti-device-heart-monitor"></i>
+                            </span>
+                            <div>
+                                <div class="font-weight-medium">${deviceId}</div>
+                                <div class="text-muted">${status.source}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Patient ID</td>
+                    <td>
+                        <span class="device-status device-${status.status === 'success' ? 'online' : 'offline'}">
+                            ${status.status === 'success' ? 'Online' : 'Offline'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-${batteryStatus.color}" style="width: ${batteryLevel}%"></div>
+                        </div>
+                        <div class="text-muted">${batteryLevel}%</div>
+                    </td>
+                    <td>${timeSince}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="showDeviceDetails('${deviceId}')">
+                            <i class="ti ti-eye me-1"></i>
+                            Details
+                        </button>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Get battery status
+        function getBatteryStatus(battery) {
+            if (battery === 'N/A') return { color: 'secondary' };
+            if (battery < 20) return { color: 'danger' };
+            if (battery < 40) return { color: 'warning' };
+            return { color: 'success' };
+        }
+        
+        // Get time since
+        function getTimeSince(date) {
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(minutes / 60);
+            
+            if (hours > 0) return `${hours}h ${minutes % 60}m ago`;
+            if (minutes > 0) return `${minutes}m ago`;
+            return 'Just now';
+        }
+        
+        // Update statistics
+        function updateStatistics() {
+            const activeDevices = Object.keys(deviceStatus).length;
+            const monitoredPatients = new Set(medicalData.map(d => d.patient_id).filter(p => p !== 'N/A')).size;
+            const dataPoints = medicalData.length;
+            
+            document.getElementById('activeDevices').textContent = activeDevices;
+            document.getElementById('monitoredPatients').textContent = monitoredPatients;
+            document.getElementById('dataPoints').textContent = dataPoints;
+        }
+        
+        // Update charts
+        function updateCharts() {
+            // Update activity chart
+            const activityData = medicalData
+                .filter(d => d.medical_values && d.medical_values.steps !== undefined)
+                .slice(-24)
+                .map(d => ({ x: new Date(d.timestamp), y: d.medical_values.steps }));
+            
+            if (activityChart && activityChart.data && activityChart.data.datasets && activityChart.data.datasets[0]) {
+                activityChart.data.datasets[0].data = activityData;
+                activityChart.update('none');
+            }
+            
+            // Update battery chart
+            const batteryData = medicalData.filter(d => d.medical_values && d.medical_values.battery !== undefined);
+            const highBattery = batteryData.filter(d => d.medical_values.battery > 80).length;
+            const mediumBattery = batteryData.filter(d => d.medical_values.battery >= 40 && d.medical_values.battery <= 80).length;
+            const lowBattery = batteryData.filter(d => d.medical_values.battery < 40).length;
+            
+            if (batteryChart && batteryChart.data && batteryChart.data.datasets && batteryChart.data.datasets[0]) {
+                batteryChart.data.datasets[0].data = [highBattery, mediumBattery, lowBattery];
+                batteryChart.update('none');
+            }
+            
+            // Update device distribution chart
+            const sourceCounts = {};
+            medicalData.forEach(d => {
+                if (d.source) {
+                    sourceCounts[d.source] = (sourceCounts[d.source] || 0) + 1;
+                }
+            });
+            
+            if (deviceDistributionChart && deviceDistributionChart.data && deviceDistributionChart.data.datasets && deviceDistributionChart.data.datasets[0]) {
+                deviceDistributionChart.data.datasets[0].data = [
+                    sourceCounts['Kati'] || 0,
+                    sourceCounts['AVA4'] || 0,
+                    sourceCounts['Qube'] || 0
+                ];
+                deviceDistributionChart.update('none');
+            }
+        }
+        
+        // Check medical alerts
+        function checkMedicalAlerts(event) {
+            const alerts = [];
+            
+            if (event.source === 'Kati' && event.medical_values) {
+                const medicalValues = event.medical_values;
+                
+                if (medicalValues.heart_rate !== undefined && medicalValues.heart_rate < 60) {
+                    alerts.push({
+                        type: 'warning',
+                        message: `Low heart rate alert: Device ${event.device_id} HR at ${medicalValues.heart_rate} bpm`
+                    });
+                }
+                if (medicalValues.heart_rate !== undefined && medicalValues.heart_rate > 100) {
+                    alerts.push({
+                        type: 'warning',
+                        message: `High heart rate alert: Device ${event.device_id} HR at ${medicalValues.heart_rate} bpm`
+                    });
+                }
+                if (medicalValues.systolic !== undefined && medicalValues.systolic > 140) {
+                    alerts.push({
+                        type: 'warning',
+                        message: `High blood pressure alert: Device ${event.device_id} Systolic at ${medicalValues.systolic} mmHg`
+                    });
+                }
+                if (medicalValues.spO2 !== undefined && medicalValues.spO2 < 95) {
+                    alerts.push({
+                        type: 'warning',
+                        message: `Low SpO2 alert: Device ${event.device_id} SpO2 at ${medicalValues.spO2}%`
+                    });
+                }
+            }
+            
+            if (event.source === 'AVA4' && event.medical_values) {
+                const medicalValues = event.medical_values;
+                
+                if (medicalValues.blood_glucose !== undefined && medicalValues.blood_glucose > 200) {
+                    alerts.push({
+                        type: 'warning',
+                        message: `High blood glucose alert: Device ${event.device_id} BG at ${medicalValues.blood_glucose} mg/dL`
+                    });
+                }
+                if (medicalValues.blood_glucose !== undefined && medicalValues.blood_glucose < 70) {
+                    alerts.push({
+                        type: 'warning',
+                        message: `Low blood glucose alert: Device ${event.device_id} BG at ${medicalValues.blood_glucose} mg/dL`
+                    });
+                }
+                if (medicalValues.systolic !== undefined && medicalValues.systolic > 140) {
+                    alerts.push({
+                        type: 'warning',
+                        message: `High blood pressure alert: Device ${event.device_id} Systolic at ${medicalValues.systolic} mmHg`
+                    });
+                }
+            }
+            
+            if (alerts.length > 0) {
+                showMedicalAlerts(alerts);
+            }
+        }
+        
+        // Show medical alerts
+        function showMedicalAlerts(alerts) {
+            const alertsSection = document.getElementById('medicalAlertsSection');
+            const alertsContent = document.getElementById('medicalAlertsContent');
+            
+            alerts.forEach(alert => {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${alert.type === 'critical' ? 'danger' : 'warning'} mb-2`;
+                alertDiv.innerHTML = `
+                    <i class="ti ti-alert-triangle me-2"></i>
+                    ${alert.message}
+                `;
+                alertsContent.appendChild(alertDiv);
+            });
+            
+            alertsSection.style.display = 'block';
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                alertsSection.style.display = 'none';
+                alertsContent.innerHTML = '';
+            }, 10000);
+        }
+        
+        // Toggle alerts
+        function toggleAlerts() {
+            alertsEnabled = !alertsEnabled;
+            const button = document.getElementById('alertToggleText');
+            button.textContent = alertsEnabled ? 'Disable Alerts' : 'Enable Alerts';
+        }
+        
+        // Filter by source
+        function filterBySource(source) {
+            // Implementation for filtering medical data by source
+            console.log('Filtering by source:', source);
+        }
+        
+        // Show medical data details
+        function showMedicalDataDetails(event) {
+            // Debug logging
+            console.log('🔍 showMedicalDataDetails called with:', event);
+            console.log('🔍 Event type:', typeof event);
+            
+            // Handle undefined or null event
+            if (!event) {
+                console.error('❌ showMedicalDataDetails: Event is undefined or null');
+                alert('Error: No data available for this record');
+                return;
+            }
+            
+            // Use vanilla JavaScript instead of Bootstrap Modal
+            const modal = document.getElementById('medicalDataModal');
+            const content = document.getElementById('medicalDataModalContent');
+            
+            if (!modal || !content) {
+                console.error('❌ Modal elements not found');
+                alert('Error: Modal elements not found');
+                return;
+            }
+            
+            // Ensure event has required properties with defaults
+            const safeEvent = {
+                device_id: event.device_id || 'N/A',
+                source: event.source || 'N/A',
+                patient_id: event.patient_id || 'N/A',
+                patient_name: event.patient_name || 'N/A',
+                status: event.status || 'Normal',
+                timestamp: event.timestamp || 'N/A',
+                medical_values: event.medical_values || {},
+                raw_data: event.raw_data || {}
+            };
+            
+            console.log('🔍 Safe event object:', safeEvent);
+            
+            // Check for AP55 batch data
+            const hasBatchData = safeEvent.medical_values.batch_data && 
+                               Array.isArray(safeEvent.medical_values.batch_data) && 
+                               safeEvent.medical_values.batch_data.length > 0;
+            
+            // Create medical data display
+            const medicalDataDisplay = Object.keys(safeEvent.medical_values).length > 0 
+                ? JSON.stringify(safeEvent.medical_values, null, 2)
+                : 'No medical values available';
+            
+            // Create raw data display
+            const rawDataDisplay = Object.keys(safeEvent.raw_data).length > 0 
+                ? JSON.stringify(safeEvent.raw_data, null, 2)
+                : 'No raw data available';
+            
+            // Create modal content based on data type
+            let modalContent = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="ti ti-device-heart-monitor"></i> Device Information</h6>
+                        <table class="table table-sm">
+                            <tr><td><strong>Device ID:</strong></td><td>${safeEvent.device_id}</td></tr>
+                            <tr><td><strong>Source:</strong></td><td>${safeEvent.source}</td></tr>
+                            <tr><td><strong>Patient ID:</strong></td><td>${safeEvent.patient_id}</td></tr>
+                            <tr><td><strong>Patient Name:</strong></td><td>${safeEvent.patient_name}</td></tr>
+                            <tr><td><strong>Status:</strong></td><td><span class="badge bg-${getStatusColor(safeEvent.status)}">${safeEvent.status}</span></td></tr>
+                            <tr><td><strong>Timestamp:</strong></td><td>${safeEvent.timestamp}</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="ti ti-chart-line"></i> Medical Values</h6>
+                        <div class="json-viewer">
+                            <pre>${medicalDataDisplay}</pre>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add batch data section if available
+            if (hasBatchData) {
+                const batchData = safeEvent.medical_values.batch_data;
+                const summary = calculateBatchSummary(batchData);
+                
+                modalContent += `
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h6><i class="ti ti-database"></i> AP55 Batch Vital Signs Data</h6>
+                            <div class="batch-data-container">
+                                <div class="batch-header">
+                                    <div class="batch-title">
+                                        <i class="ti ti-database"></i>
+                                        Batch Vital Signs (${batchData.length} readings)
+                                    </div>
+                                    <div class="batch-count">
+                                        ${batchData.length} Readings
+                                    </div>
+                                </div>
+                                
+                                <div class="batch-readings">
+                                    ${batchData.map((reading, index) => renderBatchReading(reading, index)).join('')}
+                                </div>
+                                
+                                <div class="batch-summary">
+                                    <div class="batch-summary-stats">
+                                        <div class="summary-stat">
+                                            <div class="summary-stat-value">${summary.avgHR}</div>
+                                            <div class="summary-stat-label">Avg HR (bpm)</div>
+                                        </div>
+                                        <div class="summary-stat">
+                                            <div class="summary-stat-value">${summary.avgSystolic}/${summary.avgDiastolic}</div>
+                                            <div class="summary-stat-label">Avg BP (mmHg)</div>
+                                        </div>
+                                        <div class="summary-stat">
+                                            <div class="summary-stat-value">${summary.avgSpO2}%</div>
+                                            <div class="summary-stat-label">Avg SpO2</div>
+                                        </div>
+                                        <div class="summary-stat">
+                                            <div class="summary-stat-value">${summary.avgTemp}°C</div>
+                                            <div class="summary-stat-label">Avg Temp</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Add raw data section
+            modalContent += `
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6><i class="ti ti-code"></i> Raw Data</h6>
+                        <div class="json-viewer">
+                            <pre>${rawDataDisplay}</pre>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = modalContent;
+            
+            // Show modal using vanilla JavaScript
+            modal.style.display = 'block';
+            modal.classList.add('show');
+            
+            // Add backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fade show';
+            backdrop.id = 'modalBackdrop';
+            document.body.appendChild(backdrop);
+            
+            // Close modal when clicking backdrop or close button
+            backdrop.onclick = closeModal;
+            const closeBtn = document.querySelector('.btn-close');
+            if (closeBtn) closeBtn.onclick = closeModal;
+        }
+        
+        // Show device details
+        function showDeviceDetails(deviceId) {
+            const status = deviceStatus[deviceId];
+            if (!status) return;
+            
+            // Use vanilla JavaScript instead of Bootstrap Modal
+            const modal = document.getElementById('medicalDataModal');
+            const content = document.getElementById('medicalDataModalContent');
+            
+            content.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Device Information</h6>
+                        <table class="table table-sm">
+                            <tr><td>Device ID:</td><td>${deviceId}</td></tr>
+                            <tr><td>Source:</td><td>${status.source || 'N/A'}</td></tr>
+                            <tr><td>Status:</td><td><span class="badge bg-${getStatusColor(status.status)}">${status.status || 'N/A'}</span></td></tr>
+                            <tr><td>Last Seen:</td><td>${status.lastSeen ? status.lastSeen.toLocaleString() : 'N/A'}</td></tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Device Data</h6>
+                        <div class="json-viewer">
+                            <pre>${JSON.stringify(status.data || {}, null, 2)}</pre>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Show modal using vanilla JavaScript
+            modal.style.display = 'block';
+            modal.classList.add('show');
+            
+            // Add backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fade show';
+            backdrop.id = 'modalBackdrop';
+            document.body.appendChild(backdrop);
+            
+            // Close modal when clicking backdrop or close button
+            backdrop.onclick = closeModal;
+            const closeBtn = document.querySelector('.btn-close');
+            if (closeBtn) closeBtn.onclick = closeModal;
+        }
+        
+        // Refresh medical data
+        function refreshMedicalData() {
+            loadMedicalData();
+        }
+        
+        // Test function to manually check API endpoint
+        async function testMedicalDataAPI() {
+            console.log('🧪 Testing medical data API endpoint...');
+            try {
+                const response = await fetch('/api/recent-medical-data');
+                console.log('📡 Response status:', response.status);
+                console.log('📡 Response headers:', response.headers);
+                
+                const data = await response.json();
+                console.log('📊 Full API response:', data);
+                
+                if (data.success) {
+                    console.log('✅ API test successful');
+                    console.log('📊 Total records:', data.data.total_count);
+                    console.log('📊 Records:', data.data.recent_medical_data);
+                    
+                    // Show first few records in detail
+                    data.data.recent_medical_data.slice(0, 3).forEach((record, index) => {
+                        console.log(`📋 Sample record ${index + 1}:`, {
+                            id: record.id,
+                            device_id: record.device_id,
+                            patient_name: record.patient_name,
+                            patient_id: record.patient_id,
+                            source: record.source,
+                            timestamp: record.timestamp,
+                            medical_values: record.medical_values,
+                            raw_data_keys: record.raw_data ? Object.keys(record.raw_data) : 'No raw data'
+                        });
+                    });
+                } else {
+                    console.error('❌ API test failed:', data.error);
+                }
+            } catch (error) {
+                console.error('❌ API test error:', error);
+            }
+        }
+        
+        // Initialize real-time data connection
+        function initializeRealTimeData() {
+            console.log('🚀 Initializing real-time medical data connection...');
+            
+            // Try Socket.IO first
+            try {
+                initializeSocketIO();
+            } catch (error) {
+                console.error('❌ Socket.IO initialization failed:', error);
+                console.log('🔄 Falling back to API polling...');
+                startAPIPolling();
+            }
+        }
+
+        // Close modal function
+        function closeModal() {
+            const modal = document.getElementById('medicalDataModal');
+            const backdrop = document.getElementById('modalBackdrop');
+            
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+            
+            if (backdrop) {
+                backdrop.remove();
+            }
+        }
+        
+        // Get device information for display
+        function getDeviceInfo(event) {
+            if (!event) {
+                return { name: 'Unknown', mac: 'Unknown' };
+            }
+            
+            const source = event.source;
+            const data = event.data || {};
+            const medicalValues = event.medical_values || {};
+            const rawData = event.raw_data || {};
+            const nestedRawData = rawData.raw_data || {};
+            
+            // For AVA4 devices, try to get device name and MAC from various sources
+            if (source === 'AVA4' || (source && source.includes('AVA4'))) {
+                // Check for AVA4 device name in the data
+                const ava4DeviceName = data.ava4_device_name || 
+                                     data.device_name || 
+                                     medicalValues.ava4_device_name ||
+                                     medicalValues.device_name ||
+                                     rawData.device_name ||
+                                     'AVA4 Device';
+                
+                // Check for MAC address in various locations (including nested raw_data)
+                const macAddress = data.ava4_mac || 
+                                 data.mac || 
+                                 medicalValues.ava4_mac ||
+                                 medicalValues.mac ||
+                                 rawData.device_mac ||
+                                 rawData.ble_addr ||
+                                 nestedRawData.device_mac ||
+                                 nestedRawData.ble_addr ||
+                                 event.device_id ||
+                                 'Unknown MAC';
+                
+                return {
+                    name: ava4DeviceName,
+                    mac: macAddress
+                };
+            }
+            
+            // For Kati devices, use device_id as name and source as type
+            if (source === 'Kati' || (source && source.includes('Kati'))) {
+                return {
+                    name: event.device_id || 'Kati Watch',
+                    mac: source || 'Kati Watch'
+                };
+            }
+            
+            // For Qube devices
+            if (source === 'Qube' || (source && source.includes('Qube'))) {
+                return {
+                    name: event.device_id || 'Qube-Vital',
+                    mac: source || 'Qube-Vital'
+                };
+            }
+            
+            // For other devices, use device_id and source
+            return {
+                name: event.device_id || 'Unknown Device',
+                mac: source || 'Unknown Source'
+            };
+        }
+        
+        // Get medical device type for AVA4
+        function getMedicalDeviceType(event) {
+            if (!event) {
+                return null;
+            }
+            
+            const source = event.source;
+            const data = event.data || {};
+            const medicalValues = event.medical_values || {};
+            
+            // For AVA4 devices, determine the medical device type
+            if (source === 'AVA4' || (source && source.includes('AVA4'))) {
+                // Check for device type in the data
+                const deviceType = data.device_type || 
+                                 data.attribute ||
+                                 medicalValues.device_type ||
+                                 medicalValues.attribute;
+                
+                if (deviceType) {
+                    return deviceType;
+                }
+                
+                // Determine type from medical values
+                if (medicalValues.blood_glucose !== undefined) {
+                    return 'Blood Glucose Monitor';
+                }
+                if (medicalValues.systolic !== undefined || medicalValues.diastolic !== undefined) {
+                    return 'Blood Pressure Monitor';
+                }
+                if (medicalValues.spO2 !== undefined) {
+                    return 'SpO2 Monitor';
+                }
+                if (medicalValues.temperature !== undefined) {
+                    return 'Temperature Monitor';
+                }
+                if (medicalValues.weight !== undefined) {
+                    return 'Weight Scale';
+                }
+                
+                return 'Medical Device';
+            }
+            
+            return null;
+        }
+
+        // Initialize Socket.IO connection for real-time medical data
+        function initializeSocketIO() {
+            console.log('🔌 Initializing Socket.IO connection...');
+            
+            // Connect to Socket.IO server
+            socket = io();
+            
+            // Connection events
+            socket.on('connect', function() {
+                console.log('✅ Socket.IO connected');
+                isConnected = true;
+                
+                // Update connection status if element exists
+                const connectionStatus = document.getElementById('connection-status');
+                const connectionText = document.getElementById('connection-text');
+                if (connectionStatus) {
+                    connectionStatus.className = 'connection-indicator connection-connected';
+                }
+                if (connectionText) {
+                    connectionText.textContent = 'Connected';
+                }
+                
+                // Request initial medical data
+                socket.emit('get_medical_data');
+            });
+            
+            socket.on('disconnect', function() {
+                console.log('❌ Socket.IO disconnected');
+                isConnected = false;
+                
+                // Update connection status if element exists
+                const connectionStatus = document.getElementById('connection-status');
+                const connectionText = document.getElementById('connection-text');
+                if (connectionStatus) {
+                    connectionStatus.className = 'connection-indicator connection-disconnected';
+                }
+                if (connectionText) {
+                    connectionText.textContent = 'Disconnected';
+                }
+            });
+            
+            // Data flow events (for device status updates)
+            socket.on('data_flow_update', function(data) {
+                // Map backend event structure to frontend expected format
+                const mappedEvent = {
+                    source: data.data.device_type || 'unknown',
+                    event_type: data.data.step || 'unknown',
+                    status: data.data.status || 'info',
+                    message: data.data.topic || 'No message available',
+                    device_id: data.data.payload?.IMEI || data.data.payload?.mac || 'N/A',
+                    patient_id: data.data.patient_info?.patient_id || 'N/A',
+                    timestamp: data.data.timestamp || data.timestamp,
+                    data: data.data.payload || {},
+                    topic: data.data.topic || 'unknown'
+                };
+                
+                // Process medical data
+                if (mappedEvent.event_type === '5_medical_stored') {
+                    processMedicalData(mappedEvent);
+                }
+                
+                // Update device status
+                updateDeviceStatus(mappedEvent);
+            });
+            
+            // Medical data events
+            socket.on('medical_data_update', function(data) {
+                console.log('📊 Received medical data update:', data);
+                
+                if (data.type === 'medical_data' || data.type === 'new_medical_data') {
+                    if (Array.isArray(data.data)) {
+                        medicalData = data.data;
+                        updateMedicalDataDisplay(medicalData);
+                        updateStatistics();
+                        updateCharts();
+                    } else if (data.type === 'new_medical_data') {
+                        // Add new medical data to the beginning of the list
+                        medicalData.unshift(data.data);
+                        
+                        // Keep only last 1000 medical events
+                        if (medicalData.length > 1000) {
+                            medicalData = medicalData.slice(0, 1000);
+                        }
+                        
+                        updateMedicalDataDisplay(medicalData);
+                        updateStatistics();
+                        updateCharts();
+                        
+                        // Check for alerts
+                        if (alertsEnabled) {
+                            checkMedicalAlerts(data.data);
+                        }
+                    }
+                }
+            });
+            
+            socket.on('medical_data_error', function(data) {
+                console.error('❌ Medical data error:', data);
+            });
+            
+            // Handle connection errors
+            socket.on('connect_error', function(error) {
+                console.error('❌ Socket.IO connection error:', error);
+                isConnected = false;
+                
+                // Fallback to API polling if Socket.IO fails
+                setTimeout(() => {
+                    if (!isConnected) {
+                        console.log('🔄 Falling back to API polling...');
+                        startAPIPolling();
+                    }
+                }, 5000);
+            });
+        }
+
+        // Fallback API polling function
+        function startAPIPolling() {
+            console.log('🔄 Starting API polling as fallback...');
+            setInterval(() => {
+                if (!isConnected) {
+                    loadMedicalData();
+                }
+            }, 10000); // Poll every 10 seconds as fallback
+        }
+
+        // Load medical data from API (fallback method)
+        async function loadMedicalData() {
+            try {
+                console.log('🔄 Loading medical data from API (fallback)...');
+                const response = await fetch('/api/recent-medical-data');
+                const data = await response.json();
+                
+                console.log('📊 API Response:', data);
+                
+                if (data.success) {
+                    console.log('✅ API call successful');
+                    console.log('📊 Raw medical data:', data.data.recent_medical_data);
+                    console.log('📊 Total count:', data.data.total_count);
+                    
+                    medicalData = data.data.recent_medical_data;
+                    
+                    console.log('💊 Processed medical data:', medicalData);
+                    console.log('💊 Medical data length:', medicalData.length);
+                    
+                    // Log each medical data record
+                    medicalData.forEach((record, index) => {
+                        console.log(`💊 Record ${index + 1}:`, {
+                            id: record.id,
+                            device_id: record.device_id,
+                            patient_name: record.patient_name,
+                            patient_id: record.patient_id,
+                            source: record.source,
+                            timestamp: record.timestamp,
+                            medical_values: record.medical_values,
+                            raw_data: record.raw_data
+                        });
+                    });
+                    
+                    updateMedicalDataDisplay(medicalData);
+                    updateStatistics();
+                    updateCharts();
+                } else {
+                    console.error('❌ API call failed:', data.error);
+                }
+            } catch (error) {
+                console.error('❌ Error loading medical data:', error);
+            }
+        }
+
+        // Refresh medical data (manual refresh button)
+        function refreshMedicalData() {
+            if (isConnected && socket) {
+                console.log('🔄 Requesting medical data via Socket.IO...');
+                socket.emit('get_medical_data');
+            } else {
+                console.log('🔄 Using API fallback for manual refresh...');
+                loadMedicalData();
+            }
+        }
+
+        // Initialize real-time data connection
+        function initializeRealTimeData() {
+            console.log('🚀 Initializing real-time medical data connection...');
+            
+            // Try Socket.IO first
+            try {
+                initializeSocketIO();
+            } catch (error) {
+                console.error('❌ Socket.IO initialization failed:', error);
+                console.log('🔄 Falling back to API polling...');
+                startAPIPolling();
+            }
+        }
+        
+        /* CACHE BUSTER FIX v20250118-3 - Override getDataValue function */
+        console.log('🔧 APPLYING CACHE BUSTER FIX v20250118-3');
+        
+        // Override the getDataValue function to only show valid values
+        window.getDataValue = function(event) {
+            if (!event) return 'No Data';
+            
+            const source = event.source || 'Unknown';
+            const medicalValues = event.medical_values || {};
+            
+            console.log('🔧 CACHE BUSTER: Processing event with source:', source, 'medical_values:', medicalValues);
+            
+            // Helper function to check if a value is valid
+            function isValidValue(value) {
+                return value !== null && 
+                       value !== undefined && 
+                       value !== "None" && 
+                       value !== "" && 
+                       value !== "null" &&
+                       value !== "undefined" &&
+                       value !== 0; // Only for non-critical fields
+            }
+            
+            const values = [];
+            
+            // Process each medical value
+            for (const [key, value] of Object.entries(medicalValues)) {
+                if (key === 'scan_time') continue; // Skip scan_time
+                
+                if (isValidValue(value)) {
+                    switch (key) {
+                        case 'temperature':
+                            values.push(`BT: ${parseFloat(value).toFixed(1)}°C`);
+                            break;
+                        case 'systolic':
+                            const diastolic = medicalValues.diastolic;
+                            if (isValidValue(diastolic)) {
+                                values.push(`BP: ${value}/${diastolic} mmHg`);
+                            }
+                            break;
+                        case 'diastolic':
+                            // Skip - handled in systolic
+                            break;
+                        case 'spO2':
+                            values.push(`SpO2: ${value}%`);
+                            break;
+                        case 'pulse_rate':
+                            values.push(`Pulse: ${value} bpm`);
+                            break;
+                        case 'heart_rate':
+                            values.push(`HR: ${value} bpm`);
+                            break;
+                        case 'pi':
+                            values.push(`PI: ${value}`);
+                            break;
+                        case 'blood_glucose':
+                            values.push(`Glucose: ${value} mg/dL`);
+                            break;
+                        case 'weight':
+                            values.push(`Weight: ${parseFloat(value).toFixed(1)} kg`);
+                            break;
+                        case 'resistance':
+                            values.push(`Resistance: ${value}`);
+                            break;
+                        case 'steps':
+                            values.push(`Steps: ${value}`);
+                            break;
+                        case 'battery':
+                            if (value > 0) values.push(`Battery: ${value}%`);
+                            break;
+                        case 'signal_gsm':
+                            if (value > 0) values.push(`Signal: ${value}%`);
+                            break;
+                        case 'mode':
+                            values.push(`Mode: ${value}`);
+                            break;
+                        case 'marker':
+                            values.push(`Marker: ${value}`);
+                            break;
+                        default:
+                            // For unknown fields, just add them if valid
+                            values.push(`${key}: ${value}`);
+                    }
+                }
+            }
+            
+            const result = values.length > 0 ? values.join(', ') : 'No Data';
+            console.log('🔧 CACHE BUSTER: Final result for', source, ':', result);
+            return result;
+        };
+        
+        // Force refresh the medical data table after override
+        setTimeout(() => {
+            console.log('🔧 CACHE BUSTER: Refreshing medical data table...');
+                    if (typeof loadMedicalData === 'function') {
+            loadMedicalData();
+            }
+        }, 1000);
+        
+        console.log('🔧 CACHE BUSTER FIX v20250118-3 APPLIED SUCCESSFULLY');
+    </script>
+</body>
+</html> 

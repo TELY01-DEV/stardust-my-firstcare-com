@@ -23,6 +23,11 @@ class MQTTMonitorApp {
         this.userProfile = null;
         this.currentTab = 'dashboard';
         
+        // Redis real-time data properties
+        this.redisEvents = [];
+        this.redisStats = {};
+        this.redisUpdateInterval = null;
+        
         this.init();
     }
     
@@ -32,6 +37,7 @@ class MQTTMonitorApp {
         this.loadInitialData();
         this.setupEventListeners();
         this.setupNavigation();
+        this.startRedisRealTimeUpdates();
     }
     
     setupNavigation() {
@@ -61,20 +67,22 @@ class MQTTMonitorApp {
     
     connectWebSocket() {
         // Connect to web panel using Socket.IO
-        this.socket = io('http://localhost:8098');
-        
+        let socketUrl = window.location.origin;
+        console.log('[DEBUG] Attempting Socket.IO connection to:', socketUrl);
+        this.socket = io(socketUrl);
+
         this.socket.on('connect', () => {
-            console.log('Connected to web panel via Socket.IO');
+            console.log('[DEBUG] Connected to web panel via Socket.IO');
             this.updateConnectionStatus('connected');
         });
         
         this.socket.on('disconnect', () => {
-            console.log('Disconnected from web panel');
+            console.log('[DEBUG] Disconnected from web panel');
             this.updateConnectionStatus('disconnected');
         });
         
         this.socket.on('connect_error', (error) => {
-            console.error('Socket.IO connection error:', error);
+            console.error('[DEBUG] Socket.IO connection error:', error);
             this.updateConnectionStatus('disconnected');
         });
         
@@ -164,7 +172,8 @@ class MQTTMonitorApp {
         console.log('🔍 Container found:', container);
         
         if (!container) {
-            console.error('❌ data-flow-container not found!');
+            // This is expected behavior on pages without data-flow-container
+            console.log('ℹ️  data-flow-container not found (expected on non-data-flow pages)');
             return;
         }
         
@@ -205,6 +214,17 @@ class MQTTMonitorApp {
     
     createDataFlowElement(flowEvent) {
         console.log('🛠️ [DEBUG] createDataFlowElement input:', flowEvent);
+        console.log('🛠️ [DEBUG] Flow event keys:', Object.keys(flowEvent));
+        console.log('🛠️ [DEBUG] Flow event step:', flowEvent.step);
+        console.log('🛠️ [DEBUG] Flow event device_type:', flowEvent.device_type);
+        console.log('🛠️ [DEBUG] Flow event processed_data:', flowEvent.processed_data);
+        console.log('🛠️ [DEBUG] Flow event patient_info:', flowEvent.patient_info);
+        
+        // Try to parse medical data from this event
+        console.log('🛠️ [DEBUG] Attempting to parse medical data from flow event...');
+        const medicalDataHtml = this.parseMedicalData(flowEvent);
+        console.log('🛠️ [DEBUG] Medical data HTML result:', medicalDataHtml);
+        
         const div = document.createElement('div');
         div.className = `flow-step ${flowEvent.status || ''}`;
         
@@ -253,6 +273,12 @@ class MQTTMonitorApp {
                             <strong>Error:</strong> ${error}
                         </div>
                     ` : ''}
+                    <div class="mb-2">
+                        <strong>Medical Data:</strong>
+                        <div class="medical-data-display">
+                            ${medicalDataHtml}
+                        </div>
+                    </div>
                     <div class="payload-display">
                         <strong>Payload:</strong>
                         <pre>${payload}</pre>
@@ -784,7 +810,7 @@ class MQTTMonitorApp {
                                     <td>${lastSeen}</td>
                                     <td><span class="badge ${statusClass}">${device.status}</span></td>
                                     <td>${device.patient_name || 'Not Mapped'}</td>
-                                </tr>
+                            </tr>
                             `;
                         }).join('')}
                     </tbody>
@@ -796,29 +822,96 @@ class MQTTMonitorApp {
     }
     
     parseMedicalData(message) {
-        console.log('Parsing medical data for message:', message);
-        console.log('Medical data:', message.medical_data);
+        console.log('🔍 === MEDICAL DATA PARSING DEBUG ===');
+        console.log('📋 Full message object:', message);
+        console.log('📋 Message keys:', Object.keys(message));
+        console.log('📋 Message type:', typeof message);
         
-        if (!message.medical_data) {
-            console.log('No medical data found');
-            return '<span class="text-muted">-</span>';
+        // Check for medical_data field
+        console.log('💊 Medical data field:', message.medical_data);
+        console.log('💊 Medical data type:', typeof message.medical_data);
+        
+        // Check for processed_data field (alternative location)
+        console.log('📊 Processed data field:', message.processed_data);
+        console.log('📊 Processed data type:', typeof message.processed_data);
+        
+        // Check for payload field
+        console.log('📦 Payload field:', message.payload);
+        console.log('📦 Payload type:', typeof message.payload);
+        
+        // Check for device_type field
+        console.log('📱 Device type field:', message.device_type);
+        console.log('📱 Device type type:', typeof message.device_type);
+        
+        // Check for topic field
+        console.log('📡 Topic field:', message.topic);
+        console.log('📡 Topic type:', typeof message.topic);
+        
+        // Check for step field
+        console.log('🔄 Step field:', message.step);
+        console.log('🔄 Step type:', typeof message.step);
+        
+        // Check for status field
+        console.log('✅ Status field:', message.status);
+        console.log('✅ Status type:', typeof message.status);
+        
+        // Check for patient_info field
+        console.log('👤 Patient info field:', message.patient_info);
+        console.log('👤 Patient info type:', typeof message.patient_info);
+        
+        // Check for error field
+        console.log('❌ Error field:', message.error);
+        console.log('❌ Error type:', typeof message.error);
+        
+        console.log('🔍 === END DEBUG ===');
+        
+        // Try to find medical data in different possible locations
+        let medicalData = null;
+        let dataSource = 'unknown';
+        
+        if (message.medical_data) {
+            medicalData = message.medical_data;
+            dataSource = 'medical_data';
+        } else if (message.processed_data) {
+            medicalData = message.processed_data;
+            dataSource = 'processed_data';
+        } else if (message.payload && typeof message.payload === 'object') {
+            // Check if payload contains medical data
+            if (message.payload.data) {
+                medicalData = message.payload.data;
+                dataSource = 'payload.data';
+            } else if (message.payload.value) {
+                medicalData = message.payload.value;
+                dataSource = 'payload.value';
+            } else {
+                medicalData = message.payload;
+                dataSource = 'payload';
+            }
         }
         
-        const data = message.medical_data;
-        const deviceType = message.device_type;
+        console.log(`💊 Found medical data in: ${dataSource}`);
+        console.log(`💊 Medical data content:`, medicalData);
         
-        console.log('Device type:', deviceType);
-        console.log('Medical data structure:', data);
+        if (!medicalData) {
+            console.log('❌ No medical data found in any location');
+            return '<span class="text-muted">No Data</span>';
+        }
+        
+        const deviceType = message.device_type || this.getDeviceType(message.topic);
+        
+        console.log('📱 Device type:', deviceType);
+        console.log('💊 Medical data structure:', medicalData);
         
         if (deviceType === 'AVA4') {
-            return this.parseAva4MedicalData(data);
-        } else if (deviceType === 'Kati Watch') {
-            return this.parseKatiMedicalData(data);
-        } else if (deviceType === 'Qube-Vital') {
-            return this.parseQubeMedicalData(data);
+            return this.parseAva4MedicalData(medicalData);
+        } else if (deviceType === 'Kati' || deviceType === 'Kati Watch') {
+            return this.parseKatiMedicalData(medicalData);
+        } else if (deviceType === 'Qube' || deviceType === 'Qube-Vital') {
+            return this.parseQubeMedicalData(medicalData);
         }
         
-        return '<span class="text-muted">Unknown</span>';
+        console.log('❓ Unknown device type:', deviceType);
+        return '<span class="text-muted">Unknown Device Type</span>';
     }
     
     parseAva4MedicalData(data) {
@@ -1212,6 +1305,205 @@ class MQTTMonitorApp {
             // Show modal
             const modal = new bootstrap.Modal(document.getElementById('profileModal'));
             modal.show();
+        }
+    }
+    
+    // Redis-based real-time data fetching
+    async startRedisRealTimeUpdates() {
+        console.log('🚀 Starting Redis real-time updates...');
+        
+        // Load initial Redis data
+        await this.loadRedisEvents();
+        await this.loadRedisStats();
+        
+        // Set up periodic updates
+        this.redisUpdateInterval = setInterval(async () => {
+            await this.loadRedisEvents();
+            await this.loadRedisStats();
+        }, 2000); // Update every 2 seconds
+        
+        // Listen for real-time events from Socket.IO
+        if (this.socket) {
+            this.socket.on('real_time_event', (data) => {
+                console.log('📡 Redis real-time event received:', data);
+                this.handleRedisRealTimeEvent(data);
+            });
+        }
+    }
+    
+    async loadRedisEvents() {
+        try {
+            const response = await fetch('/api/redis/events?limit=50');
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    this.redisEvents = data.data;
+                    this.updateRedisEventsDisplay();
+                }
+            }
+        } catch (error) {
+            console.error('Error loading Redis events:', error);
+        }
+    }
+    
+    async loadRedisStats() {
+        try {
+            const response = await fetch('/api/redis/stats');
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    this.redisStats = data.data;
+                    this.updateRedisStatsDisplay();
+                }
+            }
+        } catch (error) {
+            console.error('Error loading Redis stats:', error);
+        }
+    }
+    
+    handleRedisRealTimeEvent(eventData) {
+        console.log('📡 Handling Redis real-time event:', eventData);
+        
+        // Add to events list
+        this.redisEvents.unshift(eventData.data);
+        if (this.redisEvents.length > 100) {
+            this.redisEvents.pop();
+        }
+        
+        // Update displays
+        this.updateRedisEventsDisplay();
+        this.updateRedisStatsDisplay();
+        
+        // Update real-time event stream
+        this.updateRealTimeEventStream(eventData.data);
+    }
+    
+    updateRedisEventsDisplay() {
+        const container = document.getElementById('redis-events-container');
+        if (!container) return;
+        
+        // Clear loading message
+        const loadingMessage = container.querySelector('.text-center.text-muted');
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
+        
+        // Update events list
+        container.innerHTML = '';
+        this.redisEvents.slice(0, 20).forEach(event => {
+            const eventElement = this.createRedisEventElement(event);
+            container.appendChild(eventElement);
+        });
+    }
+    
+    updateRedisStatsDisplay() {
+        const container = document.getElementById('redis-stats-container');
+        if (!container) return;
+        
+        const stats = this.redisStats;
+        
+        // Update total events
+        const totalElement = container.querySelector('#redis-total-events');
+        if (totalElement) {
+            totalElement.textContent = stats.total || 0;
+        }
+        
+        // Update source breakdown
+        const sourceElement = container.querySelector('#redis-source-breakdown');
+        if (sourceElement) {
+            sourceElement.innerHTML = '';
+            Object.entries(stats.by_source || {}).forEach(([source, count]) => {
+                const sourceItem = document.createElement('div');
+                sourceItem.className = 'd-flex justify-content-between align-items-center mb-2';
+                sourceItem.innerHTML = `
+                    <span class="badge bg-primary">${source}</span>
+                    <span class="fw-bold">${count}</span>
+                `;
+                sourceElement.appendChild(sourceItem);
+            });
+        }
+        
+        // Update event type breakdown
+        const typeElement = container.querySelector('#redis-type-breakdown');
+        if (typeElement) {
+            typeElement.innerHTML = '';
+            Object.entries(stats.by_type || {}).forEach(([type, count]) => {
+                const typeItem = document.createElement('div');
+                typeItem.className = 'd-flex justify-content-between align-items-center mb-2';
+                typeItem.innerHTML = `
+                    <span class="badge bg-info">${type}</span>
+                    <span class="fw-bold">${count}</span>
+                `;
+                typeElement.appendChild(typeItem);
+            });
+        }
+    }
+    
+    createRedisEventElement(event) {
+        const eventElement = document.createElement('div');
+        eventElement.className = 'card mb-2 border-start border-3 border-primary';
+        
+        const timestamp = new Date(event.timestamp).toLocaleTimeString();
+        const source = event.source || 'unknown';
+        const eventType = event.event_type || 'unknown';
+        const status = event.status || 'info';
+        const message = event.message || 'No message';
+        
+        eventElement.innerHTML = `
+            <div class="card-body py-2">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="badge bg-${this.getStatusColor(status)} me-2">${status.toUpperCase()}</span>
+                            <span class="badge bg-secondary me-2">${source}</span>
+                            <span class="badge bg-info">${eventType}</span>
+                        </div>
+                        <p class="mb-1 small">${message}</p>
+                        <small class="text-muted">${timestamp}</small>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        return eventElement;
+    }
+    
+    getStatusColor(status) {
+        switch (status.toLowerCase()) {
+            case 'success': return 'success';
+            case 'error': return 'danger';
+            case 'warning': return 'warning';
+            case 'info': return 'info';
+            default: return 'secondary';
+        }
+    }
+    
+    updateRealTimeEventStream(event) {
+        const container = document.getElementById('real-time-event-stream');
+        if (!container) return;
+        
+        const streamElement = document.createElement('div');
+        streamElement.className = 'alert alert-info alert-dismissible fade show';
+        streamElement.innerHTML = `
+            <strong>${event.source || 'Unknown'}</strong> - ${event.message || 'Event received'}
+            <small class="d-block text-muted">${new Date(event.timestamp).toLocaleTimeString()}</small>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        container.insertBefore(streamElement, container.firstChild);
+        
+        // Limit to 10 events
+        const alerts = container.querySelectorAll('.alert');
+        if (alerts.length > 10) {
+            alerts[alerts.length - 1].remove();
+        }
+    }
+    
+    // Cleanup method
+    cleanup() {
+        if (this.redisUpdateInterval) {
+            clearInterval(this.redisUpdateInterval);
+            this.redisUpdateInterval = null;
         }
     }
 }

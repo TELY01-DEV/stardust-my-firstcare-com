@@ -606,6 +606,47 @@ async def search_observations(
     }
     return await search_fhir_resources_endpoint("Observation", request, current_user, **search_params)
 
+@router.post("/Observation/batch", summary="Create Multiple Observations")
+@api_endpoint_timing("fhir_create_observations_batch")
+async def create_observations_batch(
+    request: Request,
+    observations_data: List[Dict[str, Any]] = Body(..., description="List of observation data"),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Create multiple FHIR R5 Observations in a single request"""
+    try:
+        results = []
+        errors = []
+        
+        for i, observation_data in enumerate(observations_data):
+            try:
+                result = await create_fhir_resource_endpoint("Observation", observation_data, request, current_user)
+                results.append({
+                    "index": i,
+                    "success": True,
+                    "resource_id": result.get("resource_id"),
+                    "mongo_id": result.get("mongo_id")
+                })
+            except Exception as e:
+                errors.append({
+                    "index": i,
+                    "success": False,
+                    "error": str(e)
+                })
+                logger.error(f"Error creating observation at index {i}: {e}")
+        
+        return {
+            "success": len(errors) == 0,
+            "total_requested": len(observations_data),
+            "successful": len(results),
+            "failed": len(errors),
+            "results": results,
+            "errors": errors
+        }
+    except Exception as e:
+        logger.error(f"Error in batch observation creation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # =============== Device Resource Endpoints ===============
 
 @router.post("/Device", summary="Create Device")
@@ -726,6 +767,374 @@ async def search_organizations(
         "_sort": _sort
     }
     return await search_fhir_resources_endpoint("Organization", request, current_user, **search_params)
+
+# =============== Hospital Data Integration Endpoints ===============
+
+@router.post("/Organization/hospital", summary="Create Hospital Organization")
+@api_endpoint_timing("fhir_create_hospital_organization")
+async def create_hospital_organization(
+    request: Request,
+    hospital_id: str = Body(..., description="Hospital ID from master data"),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Create a comprehensive FHIR R5 Organization resource from hospital master data"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Get or create hospital organization
+        org_id = await fhir_service.get_or_create_hospital_organization(hospital_id)
+        
+        if not org_id:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Hospital {hospital_id} not found in master data"
+            )
+        
+        # Get the created organization
+        organization = await fhir_service.get_fhir_resource("Organization", org_id)
+        
+        return {
+            "success": True,
+            "message": f"Hospital organization created successfully",
+            "organization_id": org_id,
+            "organization": organization,
+            "request_id": request_id
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to create hospital organization: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create hospital organization: {str(e)}"
+        )
+
+@router.post("/Location/hospital", summary="Create Hospital Location")
+@api_endpoint_timing("fhir_create_hospital_location")
+async def create_hospital_location(
+    request: Request,
+    hospital_id: str = Body(..., description="Hospital ID from master data"),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Create a FHIR R5 Location resource for hospital physical location"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Get hospital data from master data
+        hospital_collection = mongodb_service.get_collection("hospitals")
+        hospital_doc = await hospital_collection.find_one({"_id": ObjectId(hospital_id)})
+        
+        if not hospital_doc:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Hospital {hospital_id} not found in master data"
+            )
+        
+        # Get or create hospital organization first
+        org_id = await fhir_service.get_or_create_hospital_organization(hospital_id)
+        
+        if not org_id:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to create hospital organization for {hospital_id}"
+            )
+        
+        # Create location resource
+        location_id = await fhir_service.create_hospital_location(hospital_doc, org_id)
+        
+        # Get the created location
+        location = await fhir_service.get_fhir_resource("Location", location_id)
+        
+        return {
+            "success": True,
+            "message": f"Hospital location created successfully",
+            "location_id": location_id,
+            "organization_id": org_id,
+            "location": location,
+            "request_id": request_id
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to create hospital location: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create hospital location: {str(e)}"
+        )
+
+@router.post("/Patient/with-hospital", summary="Create Patient with Hospital Context")
+@api_endpoint_timing("fhir_create_patient_with_hospital")
+async def create_patient_with_hospital(
+    request: Request,
+    patient_data: Dict[str, Any] = Body(..., description="Patient data with hospital_id"),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Create a FHIR R5 Patient resource with hospital organization context"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Create patient with hospital context
+        patient_id = await fhir_service.migrate_existing_patient_to_fhir_with_hospital(patient_data)
+        
+        # Get the created patient
+        patient = await fhir_service.get_fhir_resource("Patient", patient_id)
+        
+        return {
+            "success": True,
+            "message": f"Patient created successfully with hospital context",
+            "patient_id": patient_id,
+            "patient": patient,
+            "request_id": request_id
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to create patient with hospital context: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create patient with hospital context: {str(e)}"
+        )
+
+# =============== Enhanced MQTT Integration with Hospital Context ===============
+
+@router.post("/Observation/from-mqtt-with-hospital", summary="Create Observation from MQTT with Hospital Context")
+@api_endpoint_timing("fhir_create_observation_mqtt_hospital")
+async def create_observation_from_mqtt_with_hospital(
+    request: Request,
+    mqtt_payload: Dict[str, Any] = Body(..., description="MQTT payload"),
+    patient_id: str = Body(..., description="Patient ID"),
+    device_id: str = Body(..., description="Device ID"),
+    hospital_id: Optional[str] = Body(None, description="Hospital ID (optional)"),
+    device_type: str = Body(..., description="Device type (ava4, qube, kati)"),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Create FHIR R5 Observations from MQTT data with hospital context"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Transform MQTT data to FHIR Observations with hospital context
+        if device_type.lower() == "ava4":
+            observations = await fhir_service.transform_ava4_mqtt_to_fhir_with_hospital(
+                mqtt_payload=mqtt_payload,
+                patient_id=patient_id,
+                device_id=device_id,
+                hospital_id=hospital_id
+            )
+        elif device_type.lower() == "qube":
+            observations = await fhir_service.transform_qube_mqtt_to_fhir_with_hospital(
+                mqtt_payload=mqtt_payload,
+                patient_id=patient_id,
+                device_id=device_id,
+                hospital_id=hospital_id
+            )
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Unsupported device type: {device_type}. Supported types: ava4, qube"
+            )
+        
+        # Create FHIR Observation resources
+        created_observations = []
+        for obs_data in observations:
+            result = await fhir_service.create_fhir_resource(
+                resource_type="Observation",
+                resource_data=obs_data,
+                source_system="mqtt_with_hospital",
+                device_mac_address=device_id,
+                user_id=current_user.get("user_id"),
+                request_id=request_id
+            )
+            created_observations.append(result)
+        
+        return {
+            "success": True,
+            "message": f"Created {len(created_observations)} observations with hospital context",
+            "observations": created_observations,
+            "device_type": device_type,
+            "hospital_id": hospital_id,
+            "request_id": request_id
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to create observations from MQTT with hospital context: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create observations from MQTT with hospital context: {str(e)}"
+        )
+
+@router.post("/Device/with-hospital", summary="Create Device with Hospital Context")
+@api_endpoint_timing("fhir_create_device_with_hospital")
+async def create_device_with_hospital(
+    request: Request,
+    device_data: Dict[str, Any] = Body(..., description="Device data"),
+    hospital_id: Optional[str] = Body(None, description="Hospital ID (optional)"),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Create a FHIR R5 Device resource with hospital organization context"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Add hospital context to device
+        device_data = await fhir_service.add_hospital_context_to_device(device_data, hospital_id)
+        
+        # Create FHIR Device resource
+        result = await fhir_service.create_fhir_resource(
+            resource_type="Device",
+            resource_data=device_data,
+            source_system="manual_with_hospital",
+            user_id=current_user.get("user_id"),
+            request_id=request_id
+        )
+        
+        return {
+            "success": True,
+            "message": f"Device created successfully with hospital context",
+            "device_id": result["resource_id"],
+            "device": result["resource"],
+            "hospital_id": hospital_id,
+            "request_id": request_id
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to create device with hospital context: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create device with hospital context: {str(e)}"
+        )
+
+# =============== Hospital Data Migration Endpoints ===============
+
+@router.post("/migrate/hospitals", summary="Migrate Hospitals to FHIR")
+@api_endpoint_timing("fhir_migrate_hospitals")
+async def migrate_hospitals_to_fhir(
+    request: Request,
+    hospital_ids: Optional[List[str]] = Body(None, description="Specific hospital IDs to migrate (optional)"),
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Migrate hospital master data to FHIR R5 Organization and Location resources"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        hospital_collection = mongodb_service.get_collection("hospitals")
+        
+        # Build query
+        if hospital_ids:
+            # Migrate specific hospitals
+            object_ids = [ObjectId(hid) for hid in hospital_ids]
+            query = {"_id": {"$in": object_ids}}
+        else:
+            # Migrate all active hospitals
+            query = {"is_active": True, "is_deleted": {"$ne": True}}
+        
+        # Get hospitals to migrate
+        hospitals = await hospital_collection.find(query).to_list(length=None)
+        
+        if not hospitals:
+            return {
+                "success": True,
+                "message": "No hospitals found to migrate",
+                "migrated_count": 0,
+                "request_id": request_id
+            }
+        
+        # Migrate each hospital
+        migrated_organizations = []
+        migrated_locations = []
+        errors = []
+        
+        for hospital_doc in hospitals:
+            try:
+                # Migrate to Organization
+                org_id = await fhir_service.migrate_hospital_to_organization(hospital_doc)
+                migrated_organizations.append({
+                    "hospital_id": str(hospital_doc["_id"]),
+                    "organization_id": org_id,
+                    "hospital_name": hospital_doc.get("en_name", "Unknown")
+                })
+                
+                # Location is created automatically in migrate_hospital_to_organization
+                migrated_locations.append({
+                    "hospital_id": str(hospital_doc["_id"]),
+                    "organization_id": org_id
+                })
+                
+            except Exception as e:
+                errors.append({
+                    "hospital_id": str(hospital_doc["_id"]),
+                    "error": str(e)
+                })
+        
+        return {
+            "success": True,
+            "message": f"Migrated {len(migrated_organizations)} hospitals to FHIR",
+            "migrated_organizations": migrated_organizations,
+            "migrated_locations": migrated_locations,
+            "total_hospitals": len(hospitals),
+            "successful_migrations": len(migrated_organizations),
+            "errors": errors,
+            "request_id": request_id
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to migrate hospitals to FHIR: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to migrate hospitals to FHIR: {str(e)}"
+        )
+
+@router.get("/hospitals/summary", summary="Get Hospital FHIR Summary")
+@api_endpoint_timing("fhir_get_hospital_summary")
+async def get_hospital_fhir_summary(
+    request: Request,
+    current_user: Dict[str, Any] = Depends(require_auth())
+):
+    """Get summary of hospital data in FHIR R5 format"""
+    try:
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        
+        # Get counts from FHIR collections
+        org_collection = mongodb_service.get_fhir_collection("fhir_organizations")
+        location_collection = mongodb_service.get_fhir_collection("fhir_locations")
+        hospital_collection = mongodb_service.get_collection("hospitals")
+        
+        # Count FHIR resources
+        org_count = await org_collection.count_documents({"is_deleted": {"$ne": True}})
+        location_count = await location_collection.count_documents({"is_deleted": {"$ne": True}})
+        
+        # Count master data hospitals
+        total_hospitals = await hospital_collection.count_documents({"is_active": True, "is_deleted": {"$ne": True}})
+        
+        # Get sample organizations
+        sample_orgs = await org_collection.find({"is_deleted": {"$ne": True}}).limit(5).to_list(length=5)
+        
+        return {
+            "success": True,
+            "summary": {
+                "total_hospitals_master_data": total_hospitals,
+                "fhir_organizations": org_count,
+                "fhir_locations": location_count,
+                "migration_coverage": f"{(org_count/total_hospitals*100):.1f}%" if total_hospitals > 0 else "0%"
+            },
+            "sample_organizations": [
+                {
+                    "id": org["resource_id"],
+                    "name": org["resource_data"].get("name", "Unknown"),
+                    "active": org["resource_data"].get("active", False)
+                }
+                for org in sample_orgs
+            ],
+            "request_id": request_id
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to get hospital FHIR summary: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get hospital FHIR summary: {str(e)}"
+        )
 
 # =============== AVA4 MQTT Integration Endpoint ===============
 

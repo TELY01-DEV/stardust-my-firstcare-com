@@ -9,6 +9,7 @@ import logging
 import requests
 from datetime import datetime
 from typing import Optional, Dict, Any
+from bson import ObjectId
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,21 @@ class DataFlowEmitter:
     def __init__(self, web_panel_url: str = "http://mqtt-panel:8098"):
         self.web_panel_url = web_panel_url
         self.enabled = os.getenv('DATA_FLOW_EMISSION_ENABLED', 'true').lower() == 'true'
+    
+    def _serialize_for_json(self, obj):
+        """Convert objects to JSON-serializable format"""
+        if isinstance(obj, dict):
+            return {k: self._serialize_for_json(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [self._serialize_for_json(item) for item in obj]
+        elif isinstance(obj, ObjectId):
+            return str(obj)
+        elif hasattr(obj, 'isoformat'):  # datetime objects
+            return obj.isoformat()
+        elif hasattr(obj, '__str__'):
+            return str(obj)
+        else:
+            return obj
         
     def emit_data_flow_event(self, step: str, status: str, device_type: str, topic: str,
                            payload: Dict[str, Any], patient_info: Optional[Dict[str, Any]] = None,
@@ -33,9 +49,9 @@ class DataFlowEmitter:
                 "device_type": device_type,
                 "topic": topic,
                 "timestamp": datetime.utcnow().isoformat(),
-                "payload": payload,
-                "patient_info": patient_info,
-                "processed_data": processed_data,
+                "payload": self._serialize_for_json(payload),
+                "patient_info": self._serialize_for_json(patient_info) if patient_info else None,
+                "processed_data": self._serialize_for_json(processed_data) if processed_data else None,
                 "error": error
             }
             
@@ -92,6 +108,9 @@ class DataFlowEmitter:
     def emit_patient_updated(self, device_type: str, topic: str, payload: Dict[str, Any],
                            patient_info: Dict[str, Any], medical_data: Dict[str, Any]):
         """Emit patient collection updated event"""
+        logger.debug(f"🔍 DEBUG: emit_patient_updated called with device_type: {device_type}, topic: {topic}")
+        logger.debug(f"🔍 DEBUG: patient_info: {patient_info}")
+        logger.debug(f"🔍 DEBUG: medical_data: {medical_data}")
         self.emit_data_flow_event(
             step="4_patient_updated",
             status="success",
@@ -128,6 +147,32 @@ class DataFlowEmitter:
             processed_data=fhir_data
         )
     
+    def emit_fhir_storage(self, device_type: str, topic: str, payload: Dict[str, Any],
+                         patient_info: Dict[str, Any]):
+        """Emit FHIR storage event (alias for emit_fhir_r5_stored for backward compatibility)"""
+        self.emit_data_flow_event(
+            step="6_fhir_storage",
+            status="success",
+            device_type=device_type,
+            topic=topic,
+            payload=payload,
+            patient_info=patient_info,
+            processed_data={"fhir_stored": True, "topic": topic}
+        )
+    
+    def emit_data_processed(self, device_type: str, topic: str, payload: Dict[str, Any],
+                           patient_info: Dict[str, Any]):
+        """Emit data processed event (for non-FHIR data)"""
+        self.emit_data_flow_event(
+            step="6_data_processed",
+            status="success",
+            device_type=device_type,
+            topic=topic,
+            payload=payload,
+            patient_info=patient_info,
+            processed_data={"data_processed": True, "topic": topic}
+        )
+    
     def emit_fhir_validation(self, device_type: str, topic: str, payload: Dict[str, Any], validation_data: Dict[str, Any]):
         """Emit FHIR data format validation event"""
         self.emit_data_flow_event(
@@ -148,6 +193,17 @@ class DataFlowEmitter:
             topic=topic,
             payload=payload,
             error=error
+        )
+    
+    def emit_device_status(self, device_type: str, topic: str, payload: Dict[str, Any], status_data: Dict[str, Any]):
+        """Emit device status event (for AVA4 online/offline status)"""
+        self.emit_data_flow_event(
+            step="3_device_status",
+            status="success",
+            device_type=device_type,
+            topic=topic,
+            payload=payload,
+            processed_data=status_data
         )
 
 # Global instance

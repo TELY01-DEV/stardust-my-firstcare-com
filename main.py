@@ -45,7 +45,9 @@ from app.routes.visualization import router as visualization_router
 from app.routes.reports import router as reports_router
 from app.routes.patient_devices import router as patient_devices_router, router_lookup as patient_devices_lookup_router
 from app.routes.fhir_r5 import router as fhir_r5_router
+from app.routes.fhir_validation import router as fhir_validation_router
 from app.routes.hash_audit import router as hash_audit_router
+from app.routes.kati_transaction import router as kati_transaction_router
 
 from app.services.rate_limiter import rate_limiter
 from app.services.scheduler import report_scheduler
@@ -209,6 +211,7 @@ A comprehensive Medical IoT Device Management System for healthcare institutions
 - Real-time device data integration
 - Multi-hospital support
 - **Raw Document Access**: 431 patients with 269 fields per document
+- **Unregistered Patient Auto-Creation**: Qube-Vital devices automatically create unregistered patients when citizen ID doesn't match existing records
 
 ## 🔍 **Debugging & Troubleshooting**
 
@@ -475,6 +478,7 @@ app.include_router(analytics_router, tags=["analytics"])             # has prefi
 app.include_router(visualization_router, tags=["visualization"])       # has prefix /admin/visualization
 app.include_router(reports_router, tags=["reports"])             # has prefix /admin/reports
 app.include_router(hash_audit_router, tags=["hash-audit"])      # has prefix /api/v1/audit/hash
+app.include_router(kati_transaction_router, tags=["kati-transaction"]) # has prefix /api/kati/transactions
 
 # Add debugging for FHIR router
 try:
@@ -483,6 +487,16 @@ try:
     logger.info("✅ FHIR R5 router successfully included")
 except Exception as e:
     logger.error(f"❌ Failed to include FHIR R5 router: {e}")
+    import traceback
+    logger.error(traceback.format_exc())
+
+# Add FHIR validation router
+try:
+    logger.info(f"🔍 Adding FHIR validation router with {len(fhir_validation_router.routes)} routes...")
+    app.include_router(fhir_validation_router, tags=["fhir-validation"])  # has prefix /fhir/validation
+    logger.info("✅ FHIR validation router successfully included")
+except Exception as e:
+    logger.error(f"❌ Failed to include FHIR validation router: {e}")
     import traceback
     logger.error(traceback.format_exc())
 
@@ -863,6 +877,7 @@ A comprehensive Medical IoT Device Management System for healthcare institutions
 - Real-time device data integration
 - Multi-hospital support
 - **Raw Document Access**: 431 patients with 269 fields per document
+- **Unregistered Patient Auto-Creation**: Qube-Vital devices automatically create unregistered patients when citizen ID doesn't match existing records
 
 ## 🔍 **Debugging & Troubleshooting**
 

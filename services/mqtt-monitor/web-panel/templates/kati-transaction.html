@@ -368,8 +368,7 @@
                                     <tr>
                                         <th>Timestamp</th>
                                         <th>Patient</th>
-                                        <th>Device ID</th>
-                                        <th>Topic</th>
+                                        <th>Device & Topic</th>
                                         <th>Event Type</th>
                                         <th>Data</th>
                                         <th>Status</th>
@@ -380,6 +379,37 @@
                                     <!-- Data will be populated here -->
                                 </tbody>
                             </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="text-muted">
+                                Showing <span id="pagination-info">0-0 of 0</span> transactions
+                            </div>
+                            <div class="btn-group" id="pagination-controls">
+                                <button class="btn btn-sm btn-outline-secondary" onclick="changePage(1)" id="first-page">
+                                    <i class="ti ti-chevrons-left"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="changePage(currentPage - 1)" id="prev-page">
+                                    <i class="ti ti-chevron-left"></i>
+                                </button>
+                                <span class="btn btn-sm btn-outline-primary" id="current-page">1</span>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="changePage(currentPage + 1)" id="next-page">
+                                    <i class="ti ti-chevron-right"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="changePage(totalPages)" id="last-page">
+                                    <i class="ti ti-chevrons-right"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <label class="form-label me-2">Per page:</label>
+                                <select class="form-select form-select-sm" style="width: auto;" id="per-page-select" onchange="changePerPage()">
+                                    <option value="25">25</option>
+                                    <option value="50" selected>50</option>
+                                    <option value="100">100</option>
+                                    <option value="200">200</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -398,6 +428,9 @@
         let currentFilter = 'all';
         let currentDataFilter = 'patient_only'; // 'patient_only' or 'all_devices'
         let katiData = [];
+        let currentPage = 1;
+        let totalPages = 1;
+        let perPage = 50;
         
         // Initialize Socket.IO connection
         function initializeSocket() {
@@ -428,6 +461,7 @@
             patientOnlyRadio.addEventListener('change', function() {
                 if (this.checked) {
                     currentDataFilter = 'patient_only';
+                    currentPage = 1; // Reset to first page
                     loadKatiData();
                 }
             });
@@ -435,6 +469,7 @@
             allDevicesRadio.addEventListener('change', function() {
                 if (this.checked) {
                     currentDataFilter = 'all_devices';
+                    currentPage = 1; // Reset to first page
                     loadKatiData();
                 }
             });
@@ -443,8 +478,8 @@
         // Load Kati transaction data
         function loadKatiData() {
             const url = currentDataFilter === 'patient_only' 
-                ? '/api/kati-transactions?filter=patient_only'
-                : '/api/kati-transactions?filter=all_devices';
+                ? `/api/kati-transactions?filter=patient_only&page=${currentPage}&per_page=${perPage}`
+                : `/api/kati-transactions?filter=all_devices&page=${currentPage}&per_page=${perPage}`;
                 
             fetch(url)
                 .then(response => response.json())
@@ -455,6 +490,7 @@
                         updateStatistics(data.data.statistics);
                         updateTopicDistribution(data.data.statistics.topic_distribution);
                         updateDataFilterDisplay();
+                        updatePagination(data.data.statistics.pagination);
                     } else {
                         console.error('Failed to load Kati data:', data.error);
                     }
@@ -462,6 +498,44 @@
                 .catch(error => {
                     console.error('Error loading Kati data:', error);
                 });
+        }
+        
+        // Update pagination controls
+        function updatePagination(pagination) {
+            if (!pagination) return;
+            
+            currentPage = pagination.page;
+            totalPages = pagination.total_pages;
+            const totalCount = pagination.total_count;
+            const startItem = (currentPage - 1) * perPage + 1;
+            const endItem = Math.min(currentPage * perPage, totalCount);
+            
+            // Update pagination info
+            document.getElementById('pagination-info').textContent = `${startItem}-${endItem} of ${totalCount}`;
+            document.getElementById('current-page').textContent = currentPage;
+            
+            // Update button states
+            document.getElementById('first-page').disabled = currentPage === 1;
+            document.getElementById('prev-page').disabled = currentPage === 1;
+            document.getElementById('next-page').disabled = currentPage === totalPages;
+            document.getElementById('last-page').disabled = currentPage === totalPages;
+            
+            // Update per page select
+            document.getElementById('per-page-select').value = perPage;
+        }
+        
+        // Change page
+        function changePage(page) {
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            loadKatiData();
+        }
+        
+        // Change per page
+        function changePerPage() {
+            perPage = parseInt(document.getElementById('per-page-select').value);
+            currentPage = 1; // Reset to first page
+            loadKatiData();
         }
         
         // Update display based on data filter
@@ -503,18 +577,8 @@
             const timestamp = new Date(transaction.timestamp);
             const formattedTime = timestamp.toLocaleString();
             
-            // Get patient name or device info
-            let patientInfo = 'Unknown';
-            if (transaction.patient_name) {
-                patientInfo = transaction.patient_name;
-            } else if (transaction.device_id) {
-                patientInfo = `Device: ${transaction.device_id}`;
-            }
-            
-            // Add unmapped device indicator
-            if (!transaction.patient_id && transaction.device_id) {
-                patientInfo += ' <span class="badge bg-warning">Unmapped</span>';
-            }
+            // Get patient info with photo and hospital/ward
+            let patientInfo = createPatientInfo(transaction);
             
             // Get status badge
             const statusBadge = getStatusBadge(transaction.event_type, transaction.status);
@@ -532,13 +596,11 @@
                 <td>
                     <div class="text-muted">${formattedTime}</div>
                 </td>
-                <td>
-                    <div>${patientInfo}</div>
-                </td>
+                <td>${patientInfo}</td>
                 <td>
                     <div class="text-muted">${transaction.device_id || 'N/A'}</div>
+                    ${topicBadge}
                 </td>
-                <td>${topicBadge}</td>
                 <td>
                     <div class="text-muted">${transaction.event_type || 'Unknown'}</div>
                 </td>
@@ -555,6 +617,53 @@
             `;
             
             return row;
+        }
+        
+        // Create patient info with photo and hospital/ward
+        function createPatientInfo(transaction) {
+            let patientInfo = 'Unknown';
+            let patientPhoto = '';
+            let hospitalInfo = '';
+            
+            if (transaction.patient_info) {
+                const info = transaction.patient_info;
+                const firstName = info.first_name || '';
+                const lastName = info.last_name || '';
+                patientInfo = `${firstName} ${lastName}`.trim() || 'Unknown Patient';
+                
+                // Add patient photo
+                if (info.profile_image) {
+                    patientPhoto = `<img src="${info.profile_image}" alt="Patient Photo" class="avatar avatar-sm me-2" onerror="this.style.display='none'">`;
+                }
+                
+                // Add hospital and ward info
+                if (info.hospital_info) {
+                    const hospital = info.hospital_info;
+                    if (hospital.hospital_name) {
+                        hospitalInfo += `<div class="text-muted small">🏥 ${hospital.hospital_name}</div>`;
+                    }
+                    if (hospital.ward_name) {
+                        hospitalInfo += `<div class="text-muted small">🏥 ${hospital.ward_name}</div>`;
+                    }
+                }
+            } else if (transaction.device_id) {
+                patientInfo = `Device: ${transaction.device_id}`;
+            }
+            
+            // Add unmapped device indicator
+            if (!transaction.patient_id && transaction.device_id) {
+                patientInfo += ' <span class="badge bg-warning">Unmapped</span>';
+            }
+            
+            return `
+                <div class="d-flex align-items-center">
+                    ${patientPhoto}
+                    <div>
+                        <div class="font-weight-medium">${patientInfo}</div>
+                        ${hospitalInfo}
+                    </div>
+                </div>
+            `;
         }
         
         // Format transaction data for display
@@ -691,8 +800,8 @@
             }
             
             katiData.unshift(transaction);
-            if (katiData.length > 500) {
-                katiData = katiData.slice(0, 500);
+            if (katiData.length > perPage) {
+                katiData = katiData.slice(0, perPage);
             }
             displayKatiTransactions();
         }

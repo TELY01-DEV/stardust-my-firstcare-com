@@ -357,7 +357,23 @@ Additional Details:
             logger.warning("Telegram bot token or chat ID not configured.")
             return
         try:
-            message = f"🚨 <b>{alert.title}</b>\nLevel: <b>{alert.level.value.upper()}</b>\nSource: <b>{alert.source}</b>\nTime: <b>{alert.timestamp.strftime('%Y-%m-%d %H:%M:%S')}</b>\n\n{alert.message}"
+            # Create base message
+            base_message = f"🚨 <b>{alert.title}</b>\nLevel: <b>{alert.level.value.upper()}</b>\nSource: <b>{alert.source}</b>\nTime: <b>{alert.timestamp.strftime('%Y-%m-%d %H:%M:%S')}</b>\n\n"
+            
+            # Truncate alert message if too long (Telegram limit is 4096 characters)
+            alert_message = alert.message
+            if len(alert_message) > 3000:  # Leave room for base message and formatting
+                alert_message = alert_message[:3000] + "... [truncated]"
+            
+            # Clean the message of any invalid HTML characters
+            alert_message = self._clean_telegram_message(alert_message)
+            
+            message = base_message + alert_message
+            
+            # Final length check
+            if len(message) > 4096:
+                message = message[:4090] + "... [truncated]"
+            
             url = f"https://api.telegram.org/bot{token}/sendMessage"
             payload = {
                 "chat_id": chat_id,
@@ -369,6 +385,38 @@ Additional Details:
             logger.info(f"Telegram alert sent for {alert.id}")
         except Exception as e:
             logger.error(f"Failed to send Telegram alert: {str(e)}")
+    
+    def _clean_telegram_message(self, message: str) -> str:
+        """Clean message for Telegram HTML parsing"""
+        # Remove or escape problematic characters
+        cleaned = message
+        
+        # Replace common problematic characters
+        replacements = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }
+        
+        # Only replace if not already in HTML tags
+        for char, replacement in replacements.items():
+            # Simple approach: replace all instances
+            cleaned = cleaned.replace(char, replacement)
+        
+        # Remove any non-printable characters
+        cleaned = ''.join(char for char in cleaned if char.isprintable() or char in '\n\r\t')
+        
+        # Limit line length to prevent formatting issues
+        lines = cleaned.split('\n')
+        limited_lines = []
+        for line in lines:
+            if len(line) > 100:
+                line = line[:97] + "..."
+            limited_lines.append(line)
+        
+        return '\n'.join(limited_lines)
     
     def _log_alert(self, alert: Alert):
         """Log alert to application logs"""
@@ -433,7 +481,7 @@ class HealthChecker:
     
     def __init__(self, alert_manager: AlertManager):
         self.alert_manager = alert_manager
-        self.health_checks: List[Callable] = []
+        self.health_checks: List[tuple[str, Callable]] = []
     
     def add_health_check(self, name: str, check_func: Callable):
         """Add a health check function"""
@@ -531,13 +579,19 @@ def configure_webhook_alerts(url: str, headers: Optional[Dict[str, str]] = None)
 if __name__ == "__main__":
     import asyncio
     from datetime import datetime
-    class DummyAlert:
-        id = "test"
-        title = "Test Alert"
-        level = AlertLevel.CRITICAL
-        source = "test_system"
-        timestamp = datetime.utcnow()
-        message = "This is a test alert from the system."
+    
+    # Create a proper Alert instance for testing
+    test_alert = Alert(
+        id="test",
+        title="Test Alert",
+        message="This is a test alert from the system.",
+        level=AlertLevel.CRITICAL,
+        timestamp=datetime.utcnow(),
+        source="test_system",
+        details={},
+        tags=[]
+    )
+    
     print("Sending test Telegram alert...")
-    asyncio.run(alert_manager._send_telegram_alert(DummyAlert()))
+    asyncio.run(alert_manager._send_telegram_alert(test_alert))
     print("Done.") 

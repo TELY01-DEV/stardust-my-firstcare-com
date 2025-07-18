@@ -77,6 +77,38 @@ class AuthService:
         except requests.RequestException as e:
             logger.error(f"Stardust-V1 refresh error: {e}")
             raise HTTPException(status_code=503, detail="Authentication service unavailable")
+    
+    async def get_current_user(self, credentials: HTTPAuthorizationCredentials = Depends(http_bearer)) -> Dict[str, Any]:
+        """Get current user from JWT token"""
+        if not settings.enable_jwt_auth:
+            # Return mock user for development
+            return {"username": "dev_user", "role": "admin"}
+        
+        return self.verify_token_with_stardust(credentials.credentials)
+    
+    async def get_current_user_optional(self, credentials: Optional[HTTPAuthorizationCredentials] = Depends(HTTPBearer(auto_error=False))) -> Optional[Dict[str, Any]]:
+        """Get current user from JWT token (optional - returns None if no token)"""
+        if not settings.enable_jwt_auth:
+            # Return mock user for development
+            return {"username": "dev_user", "role": "admin"}
+        
+        if not credentials:
+            return None
+        
+        try:
+            return self.verify_token_with_stardust(credentials.credentials)
+        except HTTPException:
+            return None
+    
+    def has_role(self, user: Dict[str, Any], required_roles: list) -> bool:
+        """Check if user has any of the required roles"""
+        if not user:
+            return False
+        
+        user_role = user.get("role", "").lower()
+        required_roles_lower = [role.lower() for role in required_roles]
+        
+        return user_role in required_roles_lower
 
 # Global auth service instance
 auth_service = AuthService()

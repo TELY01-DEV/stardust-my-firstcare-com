@@ -12,27 +12,28 @@ MQTT_BROKER = "adam.amy.care"
 MQTT_PORT = 1883
 MQTT_USERNAME = "webapi"
 MQTT_PASSWORD = "Sim!4433"
-TOPIC = "dusun_sub"
+TOPIC = "dusun_pub"
 
-# Payload from patient
+# SUGA AccuCheck blood glucose payload
 payload = {
     "from": "BLE",
     "to": "CLOUD", 
     "time": 1770852839,
-    "deviceCode": "08:B6:1F:88:12:98",
-    "mac": "08:B6:1F:88:12:98",
+    "deviceCode": "80:65:99:A1:DC:77",
+    "mac": "80:65:99:A1:DC:77",
     "type": "reportAttribute",
+    "device": "SUGA AccuCheck",
     "data": {
-        "attribute": "BLE_BPG",
-        "mac": "08:B6:1F:88:12:98",
+        "attribute": "AccuChek_Instant",
+        "mac": "80:65:99:A1:DC:77",
         "value": {
             "device_list": [
                 {
                     "scan_time": 1770852839,
-                    "ble_addr": "c12488906de0",
-                    "bp_high": 128,
-                    "bp_low": 91,
-                    "PR": 66
+                    "ble_addr": "60e85b7aab77",
+                    "scan_rssi": -66,
+                    "blood_glucose": "111",
+                    "marker": "After Meal"
                 }
             ]
         }

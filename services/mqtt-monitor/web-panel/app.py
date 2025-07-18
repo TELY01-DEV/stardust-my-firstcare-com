@@ -2630,6 +2630,11 @@ def get_kati_transactions():
         # Get filter parameter from request
         data_filter = request.args.get('filter', 'patient_only')  # 'patient_only' or 'all_devices'
         
+        # Get pagination parameters
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 50))
+        skip = (page - 1) * per_page
+        
         # Get Kati Watch data from the last 24 hours
         one_day_ago = datetime.now(timezone.utc) - timedelta(days=1)
         
@@ -2643,13 +2648,13 @@ def get_kati_transactions():
                 'device_type': 'Kati_Watch',
                 'timestamp': {'$gte': one_day_ago},
                 'patient_id': {'$exists': True, '$ne': None}
-            }).sort('timestamp', -1).limit(500))
+            }).sort('timestamp', -1).skip(skip).limit(per_page))
         else:
             # Show all Kati Watch data (including unmapped devices)
             kati_transactions = list(medical_data_collection.find({
                 'device_type': 'Kati_Watch',
                 'timestamp': {'$gte': one_day_ago}
-            }).sort('timestamp', -1).limit(500))
+            }).sort('timestamp', -1).skip(skip).limit(per_page))
         
         # Also get emergency alarms for Kati devices
         emergency_collection = mqtt_monitor.db['emergency_alarm']
@@ -2670,6 +2675,49 @@ def get_kati_transactions():
         all_transactions = kati_transactions + emergency_alarms
         all_transactions.sort(key=lambda x: x.get('timestamp', datetime.min), reverse=True)
         
+        # Enhance transactions with patient information
+        enhanced_transactions = []
+        for transaction in all_transactions:
+            enhanced_transaction = transaction.copy()
+            
+            # Add hospital and ward information if patient_id exists
+            if transaction.get('patient_id'):
+                try:
+                    # Get patient information from patients collection
+                    patient = mqtt_monitor.db.patients.find_one({'_id': transaction['patient_id']})
+                    if patient:
+                        enhanced_transaction['patient_info'] = {
+                            'first_name': patient.get('first_name', ''),
+                            'last_name': patient.get('last_name', ''),
+                            'profile_image': patient.get('profile_image', ''),
+                            'hospital_info': {}
+                        }
+                        
+                        # Get hospital and ward information
+                        hospital_ward_data = patient.get('hospital_ward_data', {})
+                        if hospital_ward_data:
+                            hospital_id = hospital_ward_data.get('hospitalId')
+                            if hospital_id:
+                                # Get hospital information
+                                hospital = mqtt_monitor.db.hospitals.find_one({'_id': hospital_id})
+                                if hospital:
+                                    enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = hospital.get('name', 'Unknown Hospital')
+                                    enhanced_transaction['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
+                                    
+                                    # Get ward information
+                                    ward_list = hospital_ward_data.get('wardList', [])
+                                    if ward_list:
+                                        # Find the ward for this hospital
+                                        for ward in ward_list:
+                                            if ward.get('hospitalId') == hospital_id:
+                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = ward.get('wardName', 'Unknown Ward')
+                                                enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward.get('_id', ''))
+                                                break
+                except Exception as e:
+                    logger.warning(f"Error enhancing patient info for transaction {transaction.get('_id')}: {e}")
+            
+            enhanced_transactions.append(enhanced_transaction)
+        
         # Convert ObjectIds to strings
         def convert_objectids(obj):
             if isinstance(obj, dict):
@@ -2688,33 +2736,52 @@ def get_kati_transactions():
                     convert_objectids(item)
             return obj
         
-        all_transactions = convert_objectids(all_transactions)
+        enhanced_transactions = convert_objectids(enhanced_transactions)
+        
+        # Get total count for pagination
+        if data_filter == 'patient_only':
+            total_count = medical_data_collection.count_documents({
+                'device_type': 'Kati_Watch',
+                'timestamp': {'$gte': one_day_ago},
+                'patient_id': {'$exists': True, '$ne': None}
+            })
+        else:
+            total_count = medical_data_collection.count_documents({
+                'device_type': 'Kati_Watch',
+                'timestamp': {'$gte': one_day_ago}
+            })
         
         # Calculate statistics
-        mapped_count = len([t for t in all_transactions if t.get('patient_id')])
-        unmapped_count = len([t for t in all_transactions if not t.get('patient_id')])
+        mapped_count = len([t for t in enhanced_transactions if t.get('patient_id')])
+        unmapped_count = len([t for t in enhanced_transactions if not t.get('patient_id')])
         
         statistics = {
-            'total_transactions': len(all_transactions),
+            'total_transactions': len(enhanced_transactions),
             'mapped_devices': mapped_count,
             'unmapped_devices': unmapped_count,
-            'active_devices': len(set(t.get('device_id') for t in all_transactions if t.get('device_id'))),
+            'active_devices': len(set(t.get('device_id') for t in enhanced_transactions if t.get('device_id'))),
             'success_rate': 100,  # All stored transactions are successful
             'topic_distribution': {},
             'emergency_count': len(emergency_alarms),
             'filter_applied': data_filter,
+            'pagination': {
+                'page': page,
+                'per_page': per_page,
+                'total_count': total_count,
+                'total_pages': (total_count + per_page - 1) // per_page
+            },
             'last_updated': datetime.now(timezone.utc).isoformat()
         }
         
         # Calculate topic distribution
-        for transaction in all_transactions:
+        for transaction in enhanced_transactions:
             topic = transaction.get('topic', 'unknown')
             statistics['topic_distribution'][topic] = statistics['topic_distribution'].get(topic, 0) + 1
         
         return jsonify({
             "success": True,
             "data": {
-                "transactions": all_transactions,
+                "transactions": enhanced_transactions,
                 "statistics": statistics
             }
         })
@@ -2988,6 +3055,17 @@ def broadcast_kati_transaction_update(transaction_data: dict):
         
     except Exception as e:
         logger.error(f"❌ Error broadcasting Kati transaction: {e}")
+
+# Add route to serve patient profile images
+@app.route('/patient_profile_images/<path:filename>')
+def serve_patient_image(filename):
+    """Serve patient profile images from static directory"""
+    try:
+        return app.send_static_file(f'patient_profile_images/{filename}')
+    except Exception as e:
+        logger.warning(f"Patient image not found: {filename}")
+        # Return a default avatar or 404
+        return app.send_static_file('user_profiles/default-avatar.png')
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=8098, debug=True, allow_unsafe_werkzeug=True) 

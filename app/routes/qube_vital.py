@@ -63,7 +63,40 @@ async def receive_qube_vital_data(
     request: Request,
     current_user: Dict[str, Any] = Depends(require_auth())
 ):
-    """Receive data from Qube-Vital device"""
+    """
+    Receive data from Qube-Vital device
+    
+    ## Patient Handling Behavior
+    
+    ### Registered Patients
+    - If a patient with the provided citizen ID exists, medical data is stored normally
+    - Patient's latest medical data is updated in the `patients` collection
+    - Medical history is stored in appropriate history collections
+    
+    ### Unregistered Patients (Auto-Creation)
+    - **Auto-Creation**: If no patient exists with the provided citizen ID, a new patient is automatically created
+    - **Registration Status**: New patients are marked with `"registration_status": "unregistered"`
+    - **Data Sources**: Patient information is extracted from the Qube-Vital payload:
+      - `citiz`: Citizen ID (Thai national ID)
+      - `nameTH`: Thai name
+      - `nameEN`: English name  
+      - `brith`: Birth date (YYYYMMDD format)
+      - `gender`: Gender (1=male, other=female)
+    - **Medical Data Processing**: Data is processed and stored normally for unregistered patients
+    - **No Data Loss**: All medical data is preserved regardless of registration status
+    
+    ### FHIR R5 Processing
+    - **MQTT Listener**: FHIR R5 processing is disabled in the Qube-Vital MQTT listener
+    - **Main API Service**: FHIR R5 resources are created by the main API service
+    - **Unregistered Patients**: FHIR processing applies to both registered and unregistered patients
+    
+    ## Data Flow
+    1. **MQTT Reception**: Qube-Vital listener receives data on `CM4_BLE_GW_TX` topic
+    2. **Patient Lookup**: System searches for patient by citizen ID
+    3. **Auto-Creation**: If not found, creates unregistered patient
+    4. **Data Storage**: Stores medical data in patient collection and history collections
+    5. **FHIR Processing**: Main API service handles FHIR R5 resource creation
+    """
     try:
         request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
         

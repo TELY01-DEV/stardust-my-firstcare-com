@@ -31,7 +31,7 @@ services:
       - MQTT_BROKER_PORT=1883
       - MQTT_USERNAME=webapi
       - MQTT_PASSWORD=Sim!4433
-      - MQTT_TOPICS=iMEDE_watch/VitalSign,iMEDE_watch/AP55,iMEDE_watch/hb,iMEDE_watch/location,iMEDE_watch/sleepdata,iMEDE_watch/sos,iMEDE_watch/fallDown,iMEDE_watch/onlineTrigger
+              - MQTT_TOPICS=iMEDE_watch/VitalSign,iMEDE_watch/AP55,iMEDE_watch/hb,iMEDE_watch/location,iMEDE_watch/sleepdata,iMEDE_watch/sos,iMEDE_watch/SOS,iMEDE_watch/fallDown,iMEDE_watch/fallDown,iMEDE_watch/onlineTrigger
       - MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin
       - MONGODB_DATABASE=AMY
       - LOG_LEVEL=DEBUG

@@ -16,9 +16,63 @@ class DeviceMapper:
     """Maps device identifiers to patient records"""
     
     def __init__(self, mongodb_uri: str, database_name: str = "AMY"):
-        self.client = MongoClient(mongodb_uri)
-        self.db = self.client[database_name]
+        # Parse MongoDB URI to extract components
+        if mongodb_uri.startswith("mongodb://"):
+            # Handle mongodb:// format
+            self._setup_mongodb_connection(mongodb_uri, database_name)
+        else:
+            # Handle mongodb+srv:// format or other formats
+            self.client = MongoClient(mongodb_uri)
+            self.db = self.client[database_name]
+        
         logger.info(f"DeviceMapper initialized for database: {database_name}")
+    
+    def _setup_mongodb_connection(self, mongodb_uri: str, database_name: str):
+        """Setup MongoDB connection with SSL certificates"""
+        try:
+            # Check if SSL certificate files exist
+            ssl_ca_file = "/app/ssl/ca-latest.pem"
+            ssl_client_file = "/app/ssl/client-combined-latest.pem"
+            
+            ssl_ca_exists = os.path.exists(ssl_ca_file)
+            ssl_client_exists = os.path.exists(ssl_client_file)
+            
+            # MongoDB configuration
+            mongodb_config = {
+                "tls": True,
+                "tlsAllowInvalidCertificates": True,
+                "tlsAllowInvalidHostnames": True,
+                "serverSelectionTimeoutMS": 20000,
+                "connectTimeoutMS": 20000
+            }
+            
+            # Only add SSL certificate files if they exist
+            if ssl_ca_exists:
+                mongodb_config["tlsCAFile"] = ssl_ca_file
+                logger.info(f"✅ Using SSL CA file: {ssl_ca_file}")
+            else:
+                logger.warning(f"⚠️ SSL CA file not found: {ssl_ca_file}, proceeding without it")
+                
+            if ssl_client_exists:
+                mongodb_config["tlsCertificateKeyFile"] = ssl_client_file
+                logger.info(f"✅ Using SSL client file: {ssl_client_file}")
+            else:
+                logger.warning(f"⚠️ SSL client file not found: {ssl_client_file}, proceeding without it")
+            
+            # Create client with SSL configuration
+            self.client = MongoClient(mongodb_uri, **mongodb_config)
+            self.db = self.client[database_name]
+            
+            # Test connection
+            self.client.admin.command('ping')
+            logger.info("✅ Connected to MongoDB with SSL certificates")
+            
+        except Exception as e:
+            logger.error(f"❌ MongoDB connection with SSL failed: {e}")
+            # Fallback to simple connection
+            logger.warning("⚠️ Falling back to simple MongoDB connection")
+            self.client = MongoClient(mongodb_uri)
+            self.db = self.client[database_name]
         
     def find_patient_by_ava4_mac(self, mac_address: str) -> Optional[Dict[str, Any]]:
         """Find patient by AVA4 box MAC address"""
@@ -45,7 +99,7 @@ class DeviceMapper:
         try:
             logger.debug(f"🔍 Looking up patient by device MAC: {device_mac}, Type: {device_type}")
             
-            # Map device types to patient fields
+            # Map device types to patient fields (patients collection)
             mac_field_mapping = {
                 "blood_pressure": "blood_pressure_mac_address",
                 "spo2": "fingertip_pulse_oximeter_mac_address", 
@@ -56,21 +110,73 @@ class DeviceMapper:
                 "cholesterol": "cholesterol_mac_address"
             }
             
+            # Map device types to amy_devices fields
+            amy_devices_field_mapping = {
+                "blood_pressure": ["mac_bps", "mac_dusun_bps"],
+                "spo2": ["mac_oxymeter", "mac_mgss_oxymeter"], 
+                "body_temp": ["mac_body_temp"],
+                "weight": ["mac_weight"],
+                "blood_sugar": ["mac_gluc"],
+                "uric": ["mac_ua"],
+                "cholesterol": ["mac_chol"]
+            }
+            
+            # Method 1: Check patients collection
             field_name = mac_field_mapping.get(device_type)
-            if not field_name:
-                logger.warning(f"❌ Unknown device type: {device_type}")
-                return None
-            
-            logger.debug(f"📝 Field mapping: {device_type} -> {field_name}")
+            if field_name:
+                logger.debug(f"📝 Checking patients collection - Field: {field_name}")
+                patient = self.db.patients.find_one({field_name: device_mac})
                 
-            patient = self.db.patients.find_one({field_name: device_mac})
+                if patient:
+                    logger.info(f"✅ Found patient by device MAC (patients collection): {patient.get('_id')} - {patient.get('first_name', '')} {patient.get('last_name', '')}")
+                    return patient
             
-            if patient:
-                logger.info(f"✅ Found patient by device MAC: {patient.get('_id')} - {patient.get('first_name', '')} {patient.get('last_name', '')}")
-                return patient
-            else:
-                logger.warning(f"⚠️ No patient found for device MAC: {device_mac}, Type: {device_type}")
-                return None
+            # Method 2: Check amy_devices collection
+            amy_fields = amy_devices_field_mapping.get(device_type, [])
+            if amy_fields:
+                logger.debug(f"📝 Checking amy_devices collection - Fields: {amy_fields}")
+                
+                # Build query to check all possible fields for this device type
+                amy_query = {"$or": []}
+                for field in amy_fields:
+                    amy_query["$or"].append({field: device_mac})
+                
+                device_registry = self.db.amy_devices.find_one(amy_query)
+                
+                if device_registry and device_registry.get("patient_id"):
+                    logger.debug(f"✅ Found device in amy_devices - Patient ID: {device_registry.get('patient_id')}")
+                    
+                    # Get patient info from patients collection
+                    patient_id = device_registry["patient_id"]
+                    
+                    # Handle different patient_id formats
+                    try:
+                        if isinstance(patient_id, dict) and '$oid' in patient_id:
+                            patient_id = ObjectId(patient_id['$oid'])
+                        elif isinstance(patient_id, str):
+                            if len(patient_id) == 24:
+                                patient_id = ObjectId(patient_id)
+                            else:
+                                logger.warning(f"❌ Invalid patient_id format in amy_devices: {patient_id}")
+                                return None
+                        elif isinstance(patient_id, ObjectId):
+                            pass  # Already ObjectId
+                        else:
+                            logger.warning(f"❌ Unknown patient_id format: {patient_id}")
+                            return None
+                        
+                        patient = self.db.patients.find_one({"_id": patient_id})
+                        if patient:
+                            logger.info(f"✅ Found patient by device MAC (amy_devices collection): {patient.get('_id')} - {patient.get('first_name', '')} {patient.get('last_name', '')}")
+                            return patient
+                        else:
+                            logger.warning(f"⚠️ Patient not found for ID from amy_devices: {patient_id}")
+                            
+                    except Exception as e:
+                        logger.warning(f"❌ Error processing patient_id from amy_devices: {e}")
+            
+            logger.warning(f"⚠️ No patient found for device MAC: {device_mac}, Type: {device_type}")
+            return None
                 
         except Exception as e:
             logger.error(f"❌ Error finding patient by device MAC {device_mac}: {e}")

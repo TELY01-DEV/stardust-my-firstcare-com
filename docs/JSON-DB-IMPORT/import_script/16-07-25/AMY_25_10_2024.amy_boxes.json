@@ -1,0 +1,6696 @@
+[{
+  "_id": {
+    "$oid": "65ee589eeb4259c2eab88527"
+  },
+  "box_name": "M5-AVA3-MFC-05",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FB:74",
+  "location": "",
+  "sim_number": "9991126648",
+  "provider": "AIS iOT (15)",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-09T11:34:28.117Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2025-07-09T05:44:43.055Z"
+  },
+  "created_at": {
+    "$date": "2024-03-11T01:04:30.049Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-09T11:37:26.941Z"
+  },
+  "unique_id": 63,
+  "__v": 0,
+  "patient_id": null,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "65ee58c6eb4259c2eab88547"
+  },
+  "box_name": "MFC-17 / จันทร์เพ็ญ พัฒแทน",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:99:14",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-18T14:20:56.420Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2025-02-18T14:20:56.420Z"
+  },
+  "created_at": {
+    "$date": "2024-03-11T01:05:10.697Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-18T14:22:52.940Z"
+  },
+  "unique_id": 64,
+  "__v": 0,
+  "patient_id": {
+    "$oid": "65e88b3d0705ee793b74e9cf"
+  },
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "65ee58f3eb4259c2eab88569"
+  },
+  "box_name": "MFC-15 / วัลภา โภคัย",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:C9:14",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-04-13T00:22:49.222Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2024-04-13T00:22:49.222Z"
+  },
+  "created_at": {
+    "$date": "2024-03-11T01:05:55.161Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-23T06:14:17.500Z"
+  },
+  "unique_id": 66,
+  "__v": 0,
+  "patient_id": {
+    "$oid": "65e88b1d0705ee793b74e9c2"
+  },
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "65eebbdbeb4259c2eab8db26"
+  },
+  "box_name": "ER-THK-03",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:C2:50",
+  "location": "",
+  "sim_number": "9991126636",
+  "provider": "AIS iOT (3)",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Accuceck",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-05-28T08:04:36.607Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2025-05-28T06:34:39.504Z"
+  },
+  "created_at": {
+    "$date": "2024-03-11T08:07:55.481Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-28T08:06:06.631Z"
+  },
+  "unique_id": 69,
+  "__v": 0,
+  "patient_id": {
+    "$oid": "67a475217a8421c6ad92cc98"
+  },
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "65f1523e3f088fbbb011865a"
+  },
+  "box_name": "MFC-23 / ภิญโญ บุญลึก",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:E6:64",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-01-08T12:11:54.843Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2025-01-07T23:07:01.222Z"
+  },
+  "created_at": {
+    "$date": "2024-03-13T07:14:06.209Z"
+  },
+  "updated_at": {
+    "$date": "2025-01-08T12:14:36.980Z"
+  },
+  "unique_id": 76,
+  "__v": 0,
+  "patient_id": {
+    "$oid": "65e88bb50705ee793b74ea05"
+  },
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "65f179b0f10de3e239a5be87"
+  },
+  "box_name": "ER-TKH-02",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FC:18",
+  "location": "",
+  "sim_number": "9991126635",
+  "provider": "AIS iOT (2)",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Accuceck",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-03-12T23:31:51.813Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2025-03-12T11:26:18.425Z"
+  },
+  "created_at": {
+    "$date": "2024-03-13T10:02:24.853Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-12T23:34:26.154Z"
+  },
+  "unique_id": 78,
+  "__v": 0,
+  "patient_id": {
+    "$oid": "67a4756909af987621e9a8ff"
+  },
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "65f70bf0c24dd6a8f8949d61"
+  },
+  "box_name": "MFC-25 / เชาวลิต ช่วยสงค์",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:9D:24",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-06T09:53:53.494Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2025-02-06T09:53:43.174Z"
+  },
+  "created_at": {
+    "$date": "2024-03-17T15:27:44.359Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-06T09:56:48.943Z"
+  },
+  "unique_id": 81,
+  "__v": 0,
+  "patient_id": {
+    "$oid": "65f70467c24dd6a8f8949546"
+  },
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "65f959c7c24dd6a8f897630e"
+  },
+  "box_name": "MFC-27 / อารี ศรีนิล",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:E6:70",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-10-01T20:21:25.846Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2024-10-01T20:21:25.846Z"
+  },
+  "created_at": {
+    "$date": "2024-03-19T09:24:23.801Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-01T20:23:06.069Z"
+  },
+  "unique_id": 85,
+  "__v": 0,
+  "patient_id": {
+    "$oid": "65e88c1b0705ee793b74ea30"
+  },
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "65f959dbc24dd6a8f897632c"
+  },
+  "box_name": "OPD-TKH-03",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:81:08",
+  "location": "",
+  "sim_number": "9991126639",
+  "provider": "AIS iOT",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Accuchek",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-03T11:30:30.596Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2025-02-03T11:26:30.527Z"
+  },
+  "created_at": {
+    "$date": "2024-03-19T09:24:43.492Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-03T11:32:05.542Z"
+  },
+  "unique_id": 86,
+  "__v": 0,
+  "patient_id": {
+    "$oid": "65e88c270705ee793b74ea37"
+  },
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "66012f158073f188db4c2796"
+  },
+  "box_name": "Takhun_HP_1",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:C2:C8",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 8.90913,
+  "lng": 98.88554166666667,
+  "version": "1.0.2 Instant-MI",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-05-30T23:05:00.295Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2025-05-30T02:44:19.899Z"
+  },
+  "created_at": {
+    "$date": "2024-03-25T08:00:21.204Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-30T23:07:01.568Z"
+  },
+  "unique_id": 88,
+  "__v": 0,
+  "patient_id": {
+    "$oid": "6604f5e200df0d8b0c5a1e34"
+  },
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6602784a8073f188db4e13d6"
+  },
+  "box_name": "M5 AVA3 MFC-11",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FE:38",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-11-09T10:08:45.391Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2024-11-09T10:08:03.118Z"
+  },
+  "created_at": {
+    "$date": "2024-03-26T07:24:58.019Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-09T10:10:19.370Z"
+  },
+  "unique_id": 90,
+  "__v": 0,
+  "patient_id": {
+    "$oid": "65e88adc0705ee793b74e9a0"
+  },
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "66037e279f3836c95038f0b6"
+  },
+  "box_name": "Takhun_HP_2",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:EA:38",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instan-MI",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-05-29T23:44:32.096Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6605067800df0d8b0c5a318e"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-05-29T23:41:59.780Z"
+  },
+  "created_at": {
+    "$date": "2024-03-27T02:02:15.200Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-01T11:28:15.006Z"
+  },
+  "unique_id": 92,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "660411f300df0d8b0c58f527"
+  },
+  "box_name": "M5-AVA3-MFC-14",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FB:70",
+  "location": "",
+  "sim_number": "9991126646",
+  "provider": "AIS iOT (13)",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 1,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T12:38:30.253Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-07-16T06:08:48.723Z"
+  },
+  "created_at": {
+    "$date": "2024-03-27T12:32:51.397Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T12:38:30.254Z"
+  },
+  "unique_id": 94,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6604f89100df0d8b0c5a215a"
+  },
+  "box_name": "Takhun_HP_4",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:79:D0",
+  "location": "",
+  "sim_number": "9991126640",
+  "provider": "AIS iOT",
+  "lat": 8.9584866,
+  "lng": 98.841015,
+  "version": "1.0.2 Instant-MI",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-03-15T16:40:53.246Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6605084300df0d8b0c5a33ad"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-03-13T00:50:58.740Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T04:56:49.075Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-15T16:43:27.819Z"
+  },
+  "unique_id": 96,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6604f8bd00df0d8b0c5a218a"
+  },
+  "box_name": "Takhun_HP_5",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D2:42:88",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant-MI",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-17T10:31:35.180Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6605087000df0d8b0c5a33dd"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-02-17T04:59:51.802Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T04:57:33.302Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-17T10:33:15.240Z"
+  },
+  "unique_id": 97,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6604f8e000df0d8b0c5a21bd"
+  },
+  "box_name": "Takhun_HP_6",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FE:54",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant-MI",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-06-06T14:05:32.913Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "660508c400df0d8b0c5a343b"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-06-06T13:16:51.315Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T04:58:08.149Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-01T11:27:52.924Z"
+  },
+  "unique_id": 98,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6604f91500df0d8b0c5a2206"
+  },
+  "box_name": "Takhun_HP_7",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:EF:5C",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 8.9520183,
+  "lng": 98.82782,
+  "version": "1.0.2 Intant-MI",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-06T09:51:40.951Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "660508d400df0d8b0c5a3456"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-02-06T09:46:18.969Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T04:59:01.687Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-06T09:53:48.928Z"
+  },
+  "unique_id": 99,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6604f96900df0d8b0c5a2268"
+  },
+  "box_name": "Takhun_HP_8",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:F7:B4",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": null,
+  "lng": null,
+  "version": "1.0.2 Instant-MI",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 1,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T12:38:48.469Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "660508fc00df0d8b0c5a3484"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-07-15T23:29:32.898Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T05:00:25.633Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T12:38:48.470Z"
+  },
+  "unique_id": 100,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6604f98900df0d8b0c5a2282"
+  },
+  "box_name": "Takhun_HP_9",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:F2:24",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 8.947635,
+  "lng": 98.85706333333333,
+  "version": "1.0.2 Instant-MI",
+  "model": "M5-AVA3",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-04-15T07:36:25.138Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6605091000df0d8b0c5a349e"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-04-15T03:01:34.162Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T05:00:57.104Z"
+  },
+  "updated_at": {
+    "$date": "2025-04-15T07:38:10.045Z"
+  },
+  "unique_id": 101,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6604fa4500df0d8b0c5a236f"
+  },
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D2:3E:10",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant IM",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-04T14:59:22.307Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "uptime_updated_at": {
+    "$date": "2024-12-04T14:58:45.364Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T05:04:05.477Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-16T11:14:51.420Z"
+  },
+  "unique_id": 104,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6605048a00df0d8b0c5a2f44"
+  },
+  "box_name": "M5-Lampang-04",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FE:88",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-04T14:47:02.513Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2024-12-04T14:46:09.940Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T05:47:54.708Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-04T14:49:16.149Z"
+  },
+  "unique_id": 105,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "660504b100df0d8b0c5a2f72"
+  },
+  "box_name": "M5-Lampang-02",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D2:01:38",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-03-22T15:22:19.028Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-03-22T15:15:42.140Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T05:48:33.387Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-22T15:24:01.072Z"
+  },
+  "unique_id": 106,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "660504f900df0d8b0c5a2fd4"
+  },
+  "box_name": "M5-Lanpang-08",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:BD:44",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-14T12:07:26.061Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759483132d3aed5b93b8f4d"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-02-14T12:06:12.071Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T05:49:45.705Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-14T12:09:12.760Z"
+  },
+  "unique_id": 108,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "660505a700df0d8b0c5a3090"
+  },
+  "box_name": "M5-Chai Ya No.1",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:F2:B4",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-03-28T09:11:35.802Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "660509d700df0d8b0c5a359e"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-03-28T09:09:55.257Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T05:52:39.362Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-28T09:14:03.040Z"
+  },
+  "unique_id": 111,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "660505ba00df0d8b0c5a30a8"
+  },
+  "box_name": "M5-Chai Ya No.2",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:CC:54",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T00:12:15.538Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "660509f300df0d8b0c5a35b6"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-07-15T14:01:24.565Z"
+  },
+  "created_at": {
+    "$date": "2024-03-28T05:52:58.927Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T00:15:01.308Z"
+  },
+  "unique_id": 112,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "660d07ebff9ad052fcc3b18d"
+  },
+  "box_name": "M5-Ban Na San No.1",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:82:80",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-15T09:32:08.326Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "666fd1865e6afbc9687604ff"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-07-15T09:32:08.326Z"
+  },
+  "created_at": {
+    "$date": "2024-04-03T07:40:27.921Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-15T09:34:31.243Z"
+  },
+  "unique_id": 114,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6637316a9d1455f0ff05df23"
+  },
+  "box_name": "M5-AVA3 BanNaSan #4",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:ED:38",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "V 1.0.2 Instant MI",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-09T05:22:55.933Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6680f82715aff0f648418e48"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-06-09T01:33:30.345Z"
+  },
+  "created_at": {
+    "$date": "2024-05-05T07:12:42.931Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-09T05:25:29.753Z"
+  },
+  "unique_id": 117,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "663b3754c205820576915e94"
+  },
+  "box_name": "DEV-TAE",
+  "ip_address": "",
+  "mac_address": "48:27:E2:EA:5C:98",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "DEV",
+  "model": "M5",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-06-24T11:10:38.765Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "627d04004b8ec2f57f076a12"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-06-24T05:23:08.834Z"
+  },
+  "created_at": {
+    "$date": "2024-05-08T08:27:00.621Z"
+  },
+  "updated_at": {
+    "$date": "2024-06-24T11:12:29.900Z"
+  },
+  "unique_id": 119,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "663cb21bf4969eea358a1c46"
+  },
+  "box_name": "AVA3 No.23 @521",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:F8:68",
+  "location": "",
+  "sim_number": "9991126641",
+  "provider": "AIS iOT",
+  "lat": 0,
+  "lng": 0,
+  "version": "AVA3-Contour V 1.0.2",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-15T03:05:37.429Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "663cb57af4969eea358a2404"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-07-15T02:56:26.357Z"
+  },
+  "created_at": {
+    "$date": "2024-05-09T11:23:07.575Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-15T03:07:30.288Z"
+  },
+  "unique_id": 120,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "663ce2af630e70faa393046c"
+  },
+  "box_name": "AVA4-HOME-WARD-No.2",
+  "ip_address": "",
+  "mac_address": "80:65:99:A1:EC:E8",
+  "location": "",
+  "sim_number": "9991126652",
+  "provider": "AIS iOT (19)",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.6",
+  "model": "AVA4",
+  "factory": "INONSOFT",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-20T02:38:24.834Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "67b55de72b58938cb2a3c0a1"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-02-20T02:34:04.276Z"
+  },
+  "created_at": {
+    "$date": "2024-05-09T14:50:23.813Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-20T02:40:54.532Z"
+  },
+  "unique_id": 122,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "66587698d1c3ec487e4995a1"
+  },
+  "box_name": "DAD&MOM-AVA-2B19",
+  "ip_address": "",
+  "mac_address": "30:ae:7b:e2:2b:19",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "V4.6.260.3571808_z4G_tely360_2b4cf8c",
+  "model": "DSI0134",
+  "factory": "dusun",
+  "wireless_ip": "0.0.0.0",
+  "ethernet_ip": "192.168.1.100",
+  "uplinkType": "eth",
+  "box_type": 1,
+  "is_have_bluetooth_connection": true,
+  "is_required_registration": false,
+  "status": 1,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T12:39:00.067Z"
+  },
+  "gw_send_time": "1752669539",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6253f93e81b72a332b364187"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-07-15T20:47:07.554Z"
+  },
+  "created_at": {
+    "$date": "2024-05-30T12:52:40.143Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T12:39:00.068Z"
+  },
+  "unique_id": 136,
+  "__v": 0,
+  "uptime": 1356561
+},
+{
+  "_id": {
+    "$oid": "6662f8dbe5170c16e1791144"
+  },
+  "box_name": "M5-Lampang-07",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D2:00:34",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "Contour_Jumper_V1.0.3",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-18T02:03:14.776Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759482832d3aed5b93b8f24"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-18T01:59:12.339Z"
+  },
+  "created_at": {
+    "$date": "2024-06-07T12:11:07.647Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-18T02:05:50.075Z"
+  },
+  "unique_id": 137,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "66729656853b1c5075cb06b3"
+  },
+  "box_name": "M5-Lampang-05",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:BC:B4",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-26T13:17:11.544Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759481632d3aed5b93b8eaf"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-26T13:17:11.544Z"
+  },
+  "created_at": {
+    "$date": "2024-06-19T08:27:02.195Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-26T13:19:28.396Z"
+  },
+  "unique_id": 147,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "66794d5992df55f281750c08"
+  },
+  "box_name": "AVA4 No.8 Kitisak",
+  "ip_address": "",
+  "mac_address": "80:65:99:A2:80:08",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 13.91154,
+  "lng": 100.67668,
+  "version": "1.0.6",
+  "model": "AVA4",
+  "factory": "INOSOFT",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 1,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T12:39:00.031Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6679433c92df55f28174fdb2"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-07-03T04:59:04.462Z"
+  },
+  "created_at": {
+    "$date": "2024-06-24T10:41:29.047Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T12:39:00.031Z"
+  },
+  "unique_id": 159,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "667a33be92df55f28176801d"
+  },
+  "box_name": "M5-AVA3 Phunpin No.4 ",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:E2:14",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-07-24T00:09:49.448Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "66791d3f92df55f28174be4c"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-07-24T00:03:51.738Z"
+  },
+  "created_at": {
+    "$date": "2024-06-25T03:04:30.738Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-24T00:11:57.313Z"
+  },
+  "unique_id": 160,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "667c28448cbee167c0a4bcfb"
+  },
+  "box_name": "AVA4 No.6 Arranya R.",
+  "ip_address": "",
+  "mac_address": "DC:DA:0C:5A:6E:68",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.6",
+  "model": "AVA4",
+  "factory": "INNOSOFT",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-11-26T02:15:23.120Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "627e158d4b8ec2f57f079e67"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-11-26T02:09:42.492Z"
+  },
+  "created_at": {
+    "$date": "2024-06-26T14:40:04.856Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-26T02:17:55.147Z"
+  },
+  "unique_id": 168,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6680f29e15aff0f6484183f1"
+  },
+  "box_name": "M5 AVA3 BanNaSan #3",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:EC:C8",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "M5 AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-30T07:40:34.754Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6680f27f15aff0f6484183a9"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-06-30T03:53:38.035Z"
+  },
+  "created_at": {
+    "$date": "2024-06-30T05:52:30.691Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-30T07:43:22.389Z"
+  },
+  "unique_id": 179,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6684ba0584d0d45376d5d344"
+  },
+  "box_name": "M5-AVA3 พูนพิน No.5",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:BD:10",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-09-20T11:44:01.375Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6684b6eb84d0d45376d5cab4"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-09-20T11:38:01.006Z"
+  },
+  "created_at": {
+    "$date": "2024-07-03T02:40:05.637Z"
+  },
+  "updated_at": {
+    "$date": "2024-09-20T11:45:59.556Z"
+  },
+  "unique_id": 181,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6684ef60ea1a3e9e87d22bcf"
+  },
+  "box_name": "M5-Punpin No.2",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:F3:50",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-01-03T13:35:46.971Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6684ebcaea1a3e9e87d22108"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-01-03T11:17:17.795Z"
+  },
+  "created_at": {
+    "$date": "2024-07-03T06:27:44.764Z"
+  },
+  "updated_at": {
+    "$date": "2025-01-03T13:37:31.519Z"
+  },
+  "unique_id": 183,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6684f7bcea1a3e9e87d24565"
+  },
+  "box_name": "M5-AVA3 Phunpin No.1",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:F6:64",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.02 Accucheck",
+  "model": "M5 AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-07-03T07:09:27.321Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6684f400ea1a3e9e87d239c7"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-07-03T07:03:26.805Z"
+  },
+  "created_at": {
+    "$date": "2024-07-03T07:03:24.425Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-25T03:34:54.793Z"
+  },
+  "unique_id": 185,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6687ea4afa51925f6e67ecbb"
+  },
+  "box_name": "AVA4 No.5 BanNaSan #5",
+  "ip_address": "",
+  "mac_address": "74:4D:BD:83:42:58",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.6",
+  "model": "AVA4",
+  "factory": "INNOSOFT",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 1,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T12:39:13.426Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-07-15T06:40:33.401Z"
+  },
+  "created_at": {
+    "$date": "2024-07-05T12:42:50.494Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T12:39:13.426Z"
+  },
+  "unique_id": 191,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6689817bdfd9d0fba0abeea0"
+  },
+  "box_name": "AVA4 No.13",
+  "ip_address": "",
+  "mac_address": "74:4D:BD:83:42:F4",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Instant MI",
+  "model": "AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-07-26T17:01:56.577Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "660a4579634e39fc0343855e"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-07-26T16:57:41.165Z"
+  },
+  "created_at": {
+    "$date": "2024-07-06T17:40:11.288Z"
+  },
+  "updated_at": {
+    "$date": "2024-07-27T09:56:07.871Z"
+  },
+  "unique_id": 198,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6694c23c2df134c3a8ae35bf"
+  },
+  "box_name": "Mai-AVA-2C00-63",
+  "ip_address": "",
+  "mac_address": "30:ae:7b:e2:2c:00",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "V4.6.260.3571808_z4G_tely360_2b4cf8c",
+  "model": "DSI0134",
+  "factory": "dusun",
+  "wireless_ip": "0.0.0.0",
+  "ethernet_ip": "10.7.161.32",
+  "uplinkType": "4G",
+  "box_type": 1,
+  "is_have_bluetooth_connection": true,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-01-01T10:20:00.879Z"
+  },
+  "gw_send_time": "1735726800",
+  "is_active": true,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "625ce462e405cfa083081f33"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-01-01T10:12:06.388Z"
+  },
+  "created_at": {
+    "$date": "2024-07-15T06:31:24.165Z"
+  },
+  "updated_at": {
+    "$date": "2025-01-01T10:22:32.402Z"
+  },
+  "unique_id": 214,
+  "__v": 0,
+  "uptime": 1484565
+},
+{
+  "_id": {
+    "$oid": "6694c4c32df134c3a8ae37db"
+  },
+  "box_name": "M5 -Lampang-10",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D2:00:30",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-12T09:09:38.061Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759484132d3aed5b93b8fa5"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-12T09:00:18.678Z"
+  },
+  "created_at": {
+    "$date": "2024-07-15T06:42:11.842Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T09:11:48.395Z"
+  },
+  "unique_id": 215,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "669a381ff3adfef19aa6d10e"
+  },
+  "box_name": "M5 AVA3 MFC-13",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FC:04",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-11-09T04:27:03.484Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "669a292ef3adfef19aa6c5e6"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-11-09T03:27:34.500Z"
+  },
+  "created_at": {
+    "$date": "2024-07-19T09:55:43.483Z"
+  },
+  "updated_at": {
+    "$date": "2024-11-09T04:29:49.269Z"
+  },
+  "unique_id": 233,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "66a06d5ffd3958a3edad23de"
+  },
+  "box_name": "M5-AVA3 Punpin no.3",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:7B:64",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-08-26T10:28:13.795Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "66a067dcfd3958a3edad2086"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-08-26T10:14:03.078Z"
+  },
+  "created_at": {
+    "$date": "2024-07-24T02:56:31.638Z"
+  },
+  "updated_at": {
+    "$date": "2024-08-26T10:30:06.863Z"
+  },
+  "unique_id": 236,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66b044bbff65261084830020"
+  },
+  "box_name": "AVA4 #3 CNMI",
+  "ip_address": "",
+  "mac_address": "80:65:99:A1:DC:0C",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-19T08:22:10.699Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "66437616343da82f08127ce8"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-02-19T08:21:25.847Z"
+  },
+  "created_at": {
+    "$date": "2024-08-05T03:19:23.461Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-19T08:24:23.277Z"
+  },
+  "unique_id": 244,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66d04feb038ba1169382583c"
+  },
+  "box_name": "M5 AVA3 MFC-19",
+  "ip_address": "",
+  "mac_address": "",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-03-05T11:18:01.855Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "669a2862f3adfef19aa6c54d"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-03-05T11:18:01.855Z"
+  },
+  "created_at": {
+    "$date": "2024-08-29T10:39:39.237Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-05T11:46:40.132Z"
+  },
+  "unique_id": 251,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66d14d5b9e81f546d3584ca8"
+  },
+  "box_name": "",
+  "ip_address": "",
+  "mac_address": "",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-26T09:07:22.619Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "66d14cd99e81f546d3584c31"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-02-26T08:55:16.643Z"
+  },
+  "created_at": {
+    "$date": "2024-08-30T04:40:59.128Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-26T09:09:27.633Z"
+  },
+  "unique_id": 254,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66ebe022adac0ff5a815841f"
+  },
+  "box_name": "AVA4 Chaiya#5",
+  "ip_address": "",
+  "mac_address": "74:4D:BD:83:34:60\t",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "672869f37ca74706a0c1df76"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-09-19T08:26:10.316Z"
+  },
+  "created_at": {
+    "$date": "2024-09-19T08:26:10.316Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-13T07:40:31.999Z"
+  },
+  "unique_id": 255,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "671e92a0400e1856ae15f400"
+  },
+  "box_name": "AVA4 No.1",
+  "ip_address": "",
+  "mac_address": "DC:DA:0C:5A:80:64",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "AVA4",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 1,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T12:38:58.685Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "661f2b5d818cc24bd96a8722"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-06-28T17:45:23.903Z"
+  },
+  "created_at": {
+    "$date": "2024-10-27T19:21:04.361Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T12:38:58.686Z"
+  },
+  "unique_id": 259,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6721be63e6938c0337c79799"
+  },
+  "box_name": "AVA4 no.9 TKH",
+  "ip_address": "",
+  "mac_address": "74:4D:BD:83:39:C4",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-10-31T08:01:00.937Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "67209b7de6938c0337c6f006"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-10-30T22:06:05.533Z"
+  },
+  "created_at": {
+    "$date": "2024-10-30T05:04:35.882Z"
+  },
+  "updated_at": {
+    "$date": "2024-10-31T08:03:37.010Z"
+  },
+  "unique_id": 262,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6750529932d3aed5b90a3428"
+  },
+  "box_name": "M5-Lampang 11",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:E7:60",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-12T09:44:56.693Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759484b32d3aed5b93b8fd0"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-12T09:39:59.459Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T13:01:13.072Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T09:47:48.396Z"
+  },
+  "unique_id": 272,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6750554b32d3aed5b90a4d21"
+  },
+  "box_name": "M5-Lampang 12",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:E2:34",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-22T18:11:35.080Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759485332d3aed5b93b8ff3"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-06-22T16:32:01.384Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T13:12:43.564Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-22T18:13:34.808Z"
+  },
+  "unique_id": 273,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67505d4532d3aed5b90a9317"
+  },
+  "box_name": "M5-Lampang 13",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:DC:84",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-01-22T16:28:51.236Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759485a32d3aed5b93b901c"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-01-22T16:06:27.934Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T13:46:45.706Z"
+  },
+  "updated_at": {
+    "$date": "2025-01-22T16:30:22.399Z"
+  },
+  "unique_id": 276,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6750613732d3aed5b90aaca7"
+  },
+  "box_name": "M5-Lampang 14",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:BE:B0",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-20T08:40:14.414Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759486332d3aed5b93b9064"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-02-10T00:13:13.086Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T14:03:35.090Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-20T08:42:24.614Z"
+  },
+  "unique_id": 277,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "675064d232d3aed5b90ac9cd"
+  },
+  "box_name": "AVA4-Lampang 20",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FC:98",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-20T08:39:39.434Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-02-19T03:34:50.056Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T14:18:58.791Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-20T08:42:24.595Z"
+  },
+  "unique_id": 278,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6750666732d3aed5b90adbb2"
+  },
+  "box_name": "AVA4-Lampang 15",
+  "ip_address": "",
+  "mac_address": "74:4D:BD:83:42:6C",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-23T07:51:12.159Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759486b32d3aed5b93b9087"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-23T07:47:21.685Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T14:25:43.373Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-23T07:53:57.129Z"
+  },
+  "unique_id": 279,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6750678d32d3aed5b90ae961"
+  },
+  "box_name": "AVA3 BanNaDoem#3",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:E7:60",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2024-12-04T14:30:37.111Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T14:30:37.111Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-11T08:10:54.540Z"
+  },
+  "unique_id": 280,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67506b6632d3aed5b90b1265"
+  },
+  "box_name": "AVA4-Lampang 16",
+  "ip_address": "",
+  "mac_address": "74:4D:BD:83:07:F4",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-12T09:37:55.504Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759487632d3aed5b93b90c3"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-12T09:31:49.864Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T14:47:02.774Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T09:40:18.400Z"
+  },
+  "unique_id": 281,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "675070d732d3aed5b90b4c07"
+  },
+  "box_name": "M5 AVA3 Kanchanadit #2",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:BD:44",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2024-12-04T15:10:15.182Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T15:10:15.182Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-11T08:10:44.462Z"
+  },
+  "unique_id": 283,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675071c532d3aed5b90b54ff"
+  },
+  "box_name": "M5-Lampang-09",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:F2:94",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "Contour Version 2.1",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-05T22:35:26.272Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-07-05T12:58:54.695Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T15:14:13.239Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-05T22:37:25.477Z"
+  },
+  "unique_id": 284,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "6750750432d3aed5b90b76db"
+  },
+  "box_name": "AVA4-Lampang 18",
+  "ip_address": "",
+  "mac_address": "74:4D:BD:83:44:34",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-12T08:37:54.683Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759488532d3aed5b93b910e"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-12T08:19:34.479Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T15:28:04.473Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T08:40:18.384Z"
+  },
+  "unique_id": 285,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67507b3732d3aed5b90bb6ac"
+  },
+  "box_name": "M5-Lampang-09",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:F2:94",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-12T08:47:20.412Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759488e32d3aed5b93b9124"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-12T08:43:34.623Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T15:54:31.945Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T08:49:18.383Z"
+  },
+  "unique_id": 286,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67507c6932d3aed5b90bc391"
+  },
+  "box_name": "M5-Ban Na Doem No.2",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D2:01:38",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2024-12-04T15:59:37.986Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T15:59:37.986Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-11T08:18:57.022Z"
+  },
+  "unique_id": 287,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67507d0d32d3aed5b90bcc14"
+  },
+  "box_name": "AVA3 BanNaDoem#4",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:E2:34",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2024-12-04T16:02:21.825Z"
+  },
+  "created_at": {
+    "$date": "2024-12-04T16:02:21.825Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-11T08:19:08.596Z"
+  },
+  "unique_id": 288,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67594a6d32d3aed5b93b9933"
+  },
+  "box_name": "AVA4-Lampang 17",
+  "ip_address": "",
+  "mac_address": "74:4D:BD:83:39:B8",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "AVA4",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-25T02:37:44.931Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759487d32d3aed5b93b90e6"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-24T12:54:43.925Z"
+  },
+  "created_at": {
+    "$date": "2024-12-11T08:16:45.473Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-10T00:33:25.437Z"
+  },
+  "unique_id": 289,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67594bcf32d3aed5b93b9eed"
+  },
+  "box_name": "M5-Lampang-02",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D2:01:38",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759471532d3aed5b93b8a5e"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-11T08:22:39.983Z"
+  },
+  "created_at": {
+    "$date": "2024-12-11T08:22:39.983Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-11T08:23:55.771Z"
+  },
+  "unique_id": 290,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67594bda32d3aed5b93b9f26"
+  },
+  "box_name": "M5-Ban Na Doem No.2",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D2:01:38",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6605096f00df0d8b0c5a351d"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-11T08:22:50.187Z"
+  },
+  "created_at": {
+    "$date": "2024-12-11T08:22:50.187Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-11T08:22:53.437Z"
+  },
+  "unique_id": 291,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675a91eb32d3aed5b9427948"
+  },
+  "box_name": "08:F9:E0:D1:FC:98",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FC:98",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2024-12-12T07:34:34.360Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2024-12-12T07:34:34.359Z"
+  },
+  "created_at": {
+    "$date": "2024-12-12T07:34:03.274Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T07:37:18.362Z"
+  },
+  "unique_id": 292,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675a933a32d3aed5b9428516"
+  },
+  "box_name": "M5-Lampang 01",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FC:98",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "675945de32d3aed5b93b8501"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-12T07:39:38.605Z"
+  },
+  "created_at": {
+    "$date": "2024-12-12T07:39:38.605Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T07:39:38.605Z"
+  },
+  "unique_id": 293,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675a9bb932d3aed5b942d1cf"
+  },
+  "box_name": "M5 AVA3 Kanchanadit #3",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D2:00:30",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6694c3122df134c3a8ae3688"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-12T08:15:53.851Z"
+  },
+  "created_at": {
+    "$date": "2024-12-12T08:15:53.851Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-12T08:16:09.567Z"
+  },
+  "unique_id": 295,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675aa49932d3aed5b9432650"
+  },
+  "box_name": "AVA4-Lampang-19",
+  "ip_address": "",
+  "mac_address": "DC:DA:0C:5A:7F:20",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-05-15T10:49:06.169Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759483932d3aed5b93b8f83"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-15T10:47:00.667Z"
+  },
+  "created_at": {
+    "$date": "2024-12-12T08:53:45.835Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-15T10:51:11.654Z"
+  },
+  "unique_id": 297,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "675aa64c32d3aed5b9433a0f"
+  },
+  "box_name": "AVA4-Lampang-01",
+  "ip_address": "",
+  "mac_address": "80:65:99:A2:75:AC",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-03-17T10:55:50.705Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6759489632d3aed5b93b9150"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-03-17T10:55:50.705Z"
+  },
+  "created_at": {
+    "$date": "2024-12-12T09:01:00.433Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-17T10:58:29.067Z"
+  },
+  "unique_id": 298,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675bcfc732d3aed5b950d26b"
+  },
+  "box_name": "M5-AVA3-ชัยบุรี No.1",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:BC:B4",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6605092d00df0d8b0c5a34cc"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-13T06:10:15.280Z"
+  },
+  "created_at": {
+    "$date": "2024-12-13T06:10:15.280Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-16T06:14:10.242Z"
+  },
+  "unique_id": 299,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675fafd732d3aed5b97bc0b0"
+  },
+  "box_name": "AVA3 BanNaDoem#3",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:E7:60",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "669780d4744e1ded785dccf8"
+  },
+  "uptime_updated_at": {
+    "$date": "2024-12-16T04:43:03.999Z"
+  },
+  "created_at": {
+    "$date": "2024-12-16T04:43:03.999Z"
+  },
+  "updated_at": {
+    "$date": "2024-12-16T04:43:10.926Z"
+  },
+  "unique_id": 301,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67666b60b83b418cf3c20ad5"
+  },
+  "box_name": "AVA4-No17-Teerawat",
+  "ip_address": "",
+  "mac_address": "DC:DA:0C:5A:6E:50",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-01T23:06:45.039Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "624ac947576e198cc6240b08"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-07-01T23:02:20.247Z"
+  },
+  "created_at": {
+    "$date": "2024-12-21T07:16:48.789Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-01T23:08:53.587Z"
+  },
+  "unique_id": 310,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67909d77d4033a728e3cbe0d"
+  },
+  "box_name": "Km Contour Jumper",
+  "ip_address": "",
+  "mac_address": "08:B6:1F:88:12:98",
+  "location": "",
+  "sim_number": "9991126643",
+  "provider": "AIS iOT(10)",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "M5",
+  "factory": "M5 AVA3",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 1,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T12:38:26.057Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-07-14T06:24:41.673Z"
+  },
+  "created_at": {
+    "$date": "2025-01-22T07:25:43.061Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T12:38:26.058Z"
+  },
+  "unique_id": 312,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67a03cf6c4e6c80c67cefee1"
+  },
+  "box_name": "ER-TKH-01",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:C3:8C",
+  "location": "",
+  "sim_number": "9991126634",
+  "provider": "AISn iOT (1)",
+  "lat": 0,
+  "lng": 0,
+  "version": "Accu 1.02",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-02T02:27:41.498Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "67a474c27a8421c6ad92c953"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-07-02T02:04:27.689Z"
+  },
+  "created_at": {
+    "$date": "2025-02-03T03:50:14.770Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-02T02:29:53.629Z"
+  },
+  "unique_id": 313,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67a0a25e9b0ee0a69056f8d6"
+  },
+  "box_name": "OPD-THK-01",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:DD:AC",
+  "location": "",
+  "sim_number": "9991126637",
+  "provider": "AIS iOT",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Acuucheck",
+  "model": "AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-03T11:05:21.376Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-02-03T11:03:31.979Z"
+  },
+  "created_at": {
+    "$date": "2025-02-03T11:02:54.654Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-03T11:08:18.416Z"
+  },
+  "unique_id": 314,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67a0a598375c1c675720effe"
+  },
+  "box_name": "OPD-TKH-02",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:7A:FC",
+  "location": "",
+  "sim_number": "9991126638",
+  "provider": "AIS iOT",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.2 Accuchek",
+  "model": "AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-02-03T12:07:05.171Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-02-03T12:02:46.882Z"
+  },
+  "created_at": {
+    "$date": "2025-02-03T11:16:40.262Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-03T12:09:35.545Z"
+  },
+  "unique_id": 315,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a493b6f517eac521e34ee0"
+  },
+  "box_name": "AVA3-M5-MFC-20",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:E9:F8",
+  "location": "",
+  "sim_number": "9991126645",
+  "provider": "AIS iOT(12)",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 1,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T12:38:31.098Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-07-16T06:08:42.968Z"
+  },
+  "created_at": {
+    "$date": "2025-02-06T10:49:26.812Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T12:38:31.099Z"
+  },
+  "unique_id": 318,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a494f37a4adbf449e6ff60"
+  },
+  "box_name": "M5-AVA3-MFC-12",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FC:A0",
+  "location": "",
+  "sim_number": "9991126647",
+  "provider": "AIS iOT (14)",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-11T23:48:30.198Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "665843cd749f132ef0d8a288"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-06-09T13:31:30.904Z"
+  },
+  "created_at": {
+    "$date": "2025-02-06T10:54:43.989Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-11T23:51:00.901Z"
+  },
+  "unique_id": 319,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67a49754f1a46825cf9c1669"
+  },
+  "box_name": "M5-AVA3-MFC-01",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FB:F8",
+  "location": "",
+  "sim_number": "9991126649",
+  "provider": "AIS iOT (16)",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.3 Accuceck Jumper",
+  "model": "M5-AVA3",
+  "factory": "M5",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-14T12:40:34.211Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-06-14T12:11:53.726Z"
+  },
+  "created_at": {
+    "$date": "2025-02-06T11:04:52.305Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-14T12:43:31.889Z"
+  },
+  "unique_id": 320,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67a49846f1a46825cf9c1e3f"
+  },
+  "box_name": "M5-AVA3-MFC-4",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:9B:9C",
+  "location": "",
+  "sim_number": "9991126650",
+  "provider": "AIS iOT (17)",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.0.3 Accuceck Jumper",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-03-28T05:11:00.665Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-03-28T05:10:20.241Z"
+  },
+  "created_at": {
+    "$date": "2025-02-06T11:08:54.419Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-28T05:12:32.968Z"
+  },
+  "unique_id": 321,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a49d109069fb33bfd1b008"
+  },
+  "box_name": "M5-P'Pu",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:7D:40",
+  "location": "",
+  "sim_number": "9991126651",
+  "provider": "AIS IOT (18)",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-19T02:48:00.072Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-06-18T23:11:12.117Z"
+  },
+  "created_at": {
+    "$date": "2025-02-06T11:29:20.829Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-19T02:49:33.515Z"
+  },
+  "unique_id": 322,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67a8740ed4670407a0a39242"
+  },
+  "box_name": "AVA4 Pirom A,",
+  "ip_address": "",
+  "mac_address": "DC:DA:0C:5A:6D:64",
+  "location": "",
+  "sim_number": "9991126653",
+  "provider": "AIS iOT (20)",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "AVA4",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-09T02:45:26.056Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6253d6d340fff815a52097ec"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-07-09T01:39:15.271Z"
+  },
+  "created_at": {
+    "$date": "2025-02-09T09:23:26.103Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-09T02:47:56.844Z"
+  },
+  "unique_id": 328,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67ad59b82b58938cb24cc65d"
+  },
+  "box_name": "MFC-06 / ปทุม บัวสุวรรณ",
+  "ip_address": "",
+  "mac_address": "08:D1:F9:6A:C2:50",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "65e88a8c0705ee793b74e97a"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-02-13T02:32:24.086Z"
+  },
+  "created_at": {
+    "$date": "2025-02-13T02:32:24.086Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T02:32:24.086Z"
+  },
+  "unique_id": 337,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ad5b1e2b58938cb24cd73d"
+  },
+  "box_name": "MFC-14 / ไพรัช เกตุนุสิทธิ",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:FB:70",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "65e88b0b0705ee793b74e9b9"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-02-13T02:38:22.047Z"
+  },
+  "created_at": {
+    "$date": "2025-02-13T02:38:22.047Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-13T02:38:22.047Z"
+  },
+  "unique_id": 341,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b1ef8d2b58938cb27e3cae"
+  },
+  "box_name": "08:F9:E0:D1:82:CC",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D1:82:CC",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-02-16T14:00:45.551Z"
+  },
+  "created_at": {
+    "$date": "2025-02-16T14:00:45.551Z"
+  },
+  "updated_at": {
+    "$date": "2025-02-16T14:00:45.551Z"
+  },
+  "unique_id": 345,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b4249d2b58938cb2961368"
+  },
+  "box_name": "AVA4-HOME-WARD-No.1",
+  "ip_address": "",
+  "mac_address": "74:4D:BD:7A:9A:70",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-03-06T00:29:18.909Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "67c6a6610ffd3d0774d01d4f"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-03-06T00:26:13.210Z"
+  },
+  "created_at": {
+    "$date": "2025-02-18T06:11:41.638Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-06T00:32:10.517Z"
+  },
+  "unique_id": 347,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67bedd4d2b58938cb2f45c69"
+  },
+  "box_name": "AVA4-KHIAN-SA-01",
+  "ip_address": "",
+  "mac_address": "80:65:99:A2:7B:98",
+  "location": "",
+  "sim_number": "9991126655",
+  "provider": "AIS iOT (22)",
+  "lat": 0,
+  "lng": 0,
+  "version": "1.03",
+  "model": "AVA4",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 1,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T12:38:52.928Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": null,
+  "uptime_updated_at": {
+    "$date": "2025-07-16T06:08:57.673Z"
+  },
+  "created_at": {
+    "$date": "2025-02-26T09:22:21.285Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T12:38:52.929Z"
+  },
+  "unique_id": 348,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67c837220ffd3d0774dd2d73"
+  },
+  "box_name": "M5-AVA3-No.15",
+  "ip_address": "",
+  "mac_address": "3C:61:05:0C:3A:F0",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-07-16T10:47:39.649Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "6641bdf02c0a79188f6f29b5"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-07-16T01:55:38.948Z"
+  },
+  "created_at": {
+    "$date": "2025-03-05T11:36:02.911Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-16T10:49:31.751Z"
+  },
+  "unique_id": 350,
+  "__v": 0,
+  "uptime": 0
+},
+{
+  "_id": {
+    "$oid": "67e6676fe155af1a7280e8d3"
+  },
+  "box_name": "",
+  "ip_address": "",
+  "mac_address": "08:F9:E0:D2:3E:10",
+  "location": "",
+  "sim_number": "",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "67600bab32d3aed5b980d2f6"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-03-28T09:10:07.595Z"
+  },
+  "created_at": {
+    "$date": "2025-03-28T09:10:07.595Z"
+  },
+  "updated_at": {
+    "$date": "2025-03-28T09:10:07.595Z"
+  },
+  "unique_id": 352,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68380a4af82f9eebc98e78ce"
+  },
+  "box_name": "AVA4-PHAi-060",
+  "ip_address": "",
+  "mac_address": "64:E8:33:4D:31:54",
+  "location": "",
+  "sim_number": "0624136086",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-05T04:02:45.378Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b7cfd94d407871b987358"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-06-05T04:00:14.570Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:18:34.717Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-05T04:04:26.670Z"
+  },
+  "unique_id": 354,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68380acbf82f9eebc98e7ae0"
+  },
+  "box_name": "AVA4-PHAi-059",
+  "ip_address": "",
+  "mac_address": "64:E8:33:76:B6:2C",
+  "location": "",
+  "sim_number": "0624134682",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-05T04:10:08.832Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b7c8094d407871b986cee"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-06-05T04:07:37.687Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:20:43.868Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-05T04:11:56.687Z"
+  },
+  "unique_id": 355,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68380e0ff82f9eebc98e8930"
+  },
+  "box_name": "AVA4-PHAi_001",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:89:E0",
+  "location": "",
+  "sim_number": "0624139336",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b55e894d407871b96be8b"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T07:34:39.761Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:34:39.761Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:34:39.761Z"
+  },
+  "unique_id": 356,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68380e5cf82f9eebc98e8ab3"
+  },
+  "box_name": "AVA4-PHAi-002",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8B:20:9C",
+  "location": "",
+  "sim_number": " 0624137486",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b572c94d407871b96c99a"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T07:35:56.197Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:35:56.197Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:35:56.197Z"
+  },
+  "unique_id": 357,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683810a2f82f9eebc98e9372"
+  },
+  "box_name": "AVA4-PHAi-005",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:8E:44",
+  "location": "",
+  "sim_number": "0624137737",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b598294d407871b96e176"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T07:45:38.394Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:45:38.394Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:45:38.394Z"
+  },
+  "unique_id": 358,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6838111bf82f9eebc98e962d"
+  },
+  "box_name": "AVA4-PHAi_006",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:92:10",
+  "location": "",
+  "sim_number": "0624134268",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b5a2194d407871b96e7c0"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T07:47:39.095Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:47:39.095Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:47:39.095Z"
+  },
+  "unique_id": 359,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68381181f82f9eebc98e9823"
+  },
+  "box_name": "AVA4-PHAi_007",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8B:22:0C",
+  "location": "",
+  "sim_number": "0624131379",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b5ac394d407871b96edeb"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T07:49:21.978Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:49:21.978Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:49:21.978Z"
+  },
+  "unique_id": 360,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68381213f82f9eebc98e9ac7"
+  },
+  "box_name": "AVA4-PHAi-008",
+  "ip_address": "",
+  "mac_address": " F0:9E:9E:20:8B:24",
+  "location": "",
+  "sim_number": "0624138965",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b5bee94d407871b96f9b8"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T07:51:47.771Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:51:47.771Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:51:47.771Z"
+  },
+  "unique_id": 361,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6838126df82f9eebc98e9c46"
+  },
+  "box_name": "AVA4-PHAi-009",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:0D:60",
+  "location": "",
+  "sim_number": "0624137782",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b5cc394d407871b9701a5"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T07:53:17.354Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:53:17.354Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:53:17.354Z"
+  },
+  "unique_id": 362,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683812dff82f9eebc98e9e93"
+  },
+  "box_name": "AVA4-PHAI-010",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:73:68",
+  "location": "",
+  "sim_number": "0624135687",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b5d6e94d407871b9708bd"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T07:55:11.149Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:55:11.149Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:55:11.149Z"
+  },
+  "unique_id": 363,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68381330f82f9eebc98ea006"
+  },
+  "box_name": "AVA4-PHAi-012",
+  "ip_address": "",
+  "mac_address": "64:E8:33:4D:2A:08",
+  "location": "",
+  "sim_number": "0624135694",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b607494d407871b97293b"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T07:56:32.493Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T07:56:32.493Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T07:56:32.493Z"
+  },
+  "unique_id": 364,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683814a5f82f9eebc98ea723"
+  },
+  "box_name": "AVA4-PHAi-013",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8B:22:30",
+  "location": "",
+  "sim_number": "0624133687",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b60fc94d407871b972f4d"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:02:45.733Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:02:45.733Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:02:45.733Z"
+  },
+  "unique_id": 365,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683814e7f82f9eebc98ea856"
+  },
+  "box_name": "AVA4-PHAi-014",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8A:16:8C",
+  "location": "",
+  "sim_number": "0624131397",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b618b94d407871b97351e"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:03:51.391Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:03:51.391Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:03:51.391Z"
+  },
+  "unique_id": 366,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6838153ef82f9eebc98eaa28"
+  },
+  "box_name": "AVA4-PHAi-015",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:85:74",
+  "location": "",
+  "sim_number": " 0624134688",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b627494d407871b973dd0"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:05:18.803Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:05:18.803Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:05:18.803Z"
+  },
+  "unique_id": 367,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68381639f82f9eebc98eae09"
+  },
+  "box_name": "AVA4-PHAi-016",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:24:D4",
+  "location": "",
+  "sim_number": "0624135438",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b636f94d407871b974855"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:09:29.265Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:09:29.265Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:09:29.265Z"
+  },
+  "unique_id": 368,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6838167af82f9eebc98eaf56"
+  },
+  "box_name": "AVA4-PHAi-017",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:90:B0",
+  "location": "",
+  "sim_number": "0624133894",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b63ee94d407871b974d85"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:10:34.901Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:10:34.901Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:10:34.901Z"
+  },
+  "unique_id": 369,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683816b5f82f9eebc98eb09a"
+  },
+  "box_name": "AVA4-PHAi-018",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:8B:70",
+  "location": "",
+  "sim_number": "0624136581",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b647194d407871b975341"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:11:33.067Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:11:33.067Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:11:33.067Z"
+  },
+  "unique_id": 370,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68381767f82f9eebc98eb3a3"
+  },
+  "box_name": "AVA4-PHAi-019",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:7C:30",
+  "location": "",
+  "sim_number": "0624133098",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b653294d407871b975b95"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:14:31.838Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:14:31.838Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:14:31.838Z"
+  },
+  "unique_id": 371,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683817adf82f9eebc98eb4d7"
+  },
+  "box_name": "AVA4-PHAi-020",
+  "ip_address": "",
+  "mac_address": "B4:3A:45:A2:41:20",
+  "location": "",
+  "sim_number": "0624138697",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b65eb94d407871b9763e1"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:15:41.492Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:15:41.492Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:15:41.492Z"
+  },
+  "unique_id": 372,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683817e5f82f9eebc98eb5d3"
+  },
+  "box_name": "AVA4-PHAi-021",
+  "ip_address": "",
+  "mac_address": "64:E8:33:7A:11:A8",
+  "location": "",
+  "sim_number": "0624135938",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b665194d407871b976854"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:16:37.264Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:16:37.264Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:16:37.264Z"
+  },
+  "unique_id": 373,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6838181af82f9eebc98eb6c3"
+  },
+  "box_name": "AVA4-PHAi-022",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:90:DC",
+  "location": "",
+  "sim_number": "0624135784",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b66b694d407871b976d09"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:17:30.875Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:17:30.875Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:17:30.875Z"
+  },
+  "unique_id": 374,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68381d4bf82f9eebc98edb4e"
+  },
+  "box_name": "AVA4-PHAi-023",
+  "ip_address": "",
+  "mac_address": "64:E8:33:76:B0:50",
+  "location": "",
+  "sim_number": "0624139168",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b673294d407871b977283"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:39:39.017Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:39:39.017Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:39:39.017Z"
+  },
+  "unique_id": 375,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68381d85f82f9eebc98edd34"
+  },
+  "box_name": "AVA4-PHAi-024",
+  "ip_address": "",
+  "mac_address": "64:E8:33:76:D6:98",
+  "location": "",
+  "sim_number": "0624135294",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b679a94d407871b9777ab"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T08:40:37.499Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T08:40:37.499Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T08:40:37.499Z"
+  },
+  "unique_id": 376,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683823d9f82f9eebc98f0e56"
+  },
+  "box_name": "AVA4-PHAi-025",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:92:1C",
+  "location": "",
+  "sim_number": "0624137904",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b681494d407871b977d35"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:07:37.162Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:07:37.162Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:07:37.162Z"
+  },
+  "unique_id": 377,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382413f82f9eebc98f1080"
+  },
+  "box_name": "AVA4-PHAi-026",
+  "ip_address": "",
+  "mac_address": "64:E8:33:7A:64:68",
+  "location": "",
+  "sim_number": "0624137584",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b692294d407871b9789fa"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:08:35.699Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:08:35.699Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:08:35.699Z"
+  },
+  "unique_id": 378,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382443f82f9eebc98f1222"
+  },
+  "box_name": "AVA4-PHAi-027",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:91:04",
+  "location": "",
+  "sim_number": "0624138309",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b698f94d407871b978eae"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:09:23.480Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:09:23.480Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:09:23.480Z"
+  },
+  "unique_id": 379,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382506f82f9eebc98f1867"
+  },
+  "box_name": "AVA4-PHAi-028",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8A:23:E8",
+  "location": "",
+  "sim_number": "0624137577",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b6a1e94d407871b979551"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:12:38.608Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:12:38.608Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:12:38.608Z"
+  },
+  "unique_id": 380,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6838254bf82f9eebc98f1a8d"
+  },
+  "box_name": "AVA4-PHAi-029",
+  "ip_address": "",
+  "mac_address": "64:E8:33:4D:2F:BC",
+  "location": "",
+  "sim_number": "0624134475",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b6a8294d407871b979a8b"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:13:47.775Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:13:47.775Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:13:47.775Z"
+  },
+  "unique_id": 381,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683825b6f82f9eebc98f1eae"
+  },
+  "box_name": "AVA4-PHAi-003",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8A:22:70",
+  "location": "",
+  "sim_number": "0624131430",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b57ef94d407871b96d126"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:15:34.157Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:15:34.157Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:15:34.157Z"
+  },
+  "unique_id": 382,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683825f9f82f9eebc98f20e9"
+  },
+  "box_name": "AVA4-PHAi-004",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:7C:10",
+  "location": "",
+  "sim_number": "0624137995",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b587394d407871b96d5e3"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:16:41.929Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:16:41.929Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:16:41.929Z"
+  },
+  "unique_id": 383,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382631f82f9eebc98f2309"
+  },
+  "box_name": "AVA4-PHAi-011",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:08:68",
+  "location": "",
+  "sim_number": "0624133890",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b5e5994d407871b9712d2"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:17:37.820Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:17:37.820Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:17:37.820Z"
+  },
+  "unique_id": 384,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683826d2f82f9eebc98f2838"
+  },
+  "box_name": "AVA4-PHAi-031",
+  "ip_address": "",
+  "mac_address": " E4:B0:63:8A:23:F0",
+  "location": "",
+  "sim_number": "0624132918",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b6c4194d407871b97af82"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:20:18.676Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:20:18.676Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:20:18.676Z"
+  },
+  "unique_id": 385,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382709f82f9eebc98f2a39"
+  },
+  "box_name": "AVA4-PHAi-032",
+  "ip_address": "",
+  "mac_address": "B4:3A:45:A2:47:B4",
+  "location": "",
+  "sim_number": "0624133579",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b6c9f94d407871b97b370"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:21:13.399Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:21:13.399Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:21:13.399Z"
+  },
+  "unique_id": 386,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382754f82f9eebc98f2cd9"
+  },
+  "box_name": "AVA4-PHAi-033",
+  "ip_address": "",
+  "mac_address": " F0:9E:9E:20:85:B8",
+  "location": "",
+  "sim_number": "0624132231",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b6d1994d407871b97ba37"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:22:28.898Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:22:28.898Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:22:28.898Z"
+  },
+  "unique_id": 387,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382796f82f9eebc98f2f44"
+  },
+  "box_name": "AVA4-PHAi-034",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:1E:14",
+  "location": "",
+  "sim_number": "0624139848",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b6d9394d407871b97c0ad"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:23:34.987Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:23:34.987Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:23:34.987Z"
+  },
+  "unique_id": 388,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382804f82f9eebc98f335f"
+  },
+  "box_name": "AVA4-PHAi-035",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:8A:D8",
+  "location": "",
+  "sim_number": "0624137648",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b6ee594d407871b97d188"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:25:24.302Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:25:24.302Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:25:24.302Z"
+  },
+  "unique_id": 389,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6838283af82f9eebc98f357b"
+  },
+  "box_name": "AVA4-PHAi-036",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:20:C0",
+  "location": "",
+  "sim_number": "0624136676",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b6f2194d407871b97d478"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:26:18.685Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:26:18.685Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:26:18.685Z"
+  },
+  "unique_id": 390,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6838288af82f9eebc98f3823"
+  },
+  "box_name": "AVA4-PHAi-037",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:90:EC",
+  "location": "",
+  "sim_number": "062413757",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b6fcf94d407871b97dba2"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:27:38.631Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:27:38.631Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:27:38.631Z"
+  },
+  "unique_id": 391,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683828cbf82f9eebc98f3a31"
+  },
+  "box_name": "AVA4-PHAi-038",
+  "ip_address": "",
+  "mac_address": " F0:9E:9E:20:75:10",
+  "location": "",
+  "sim_number": " 0624131799",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b703a94d407871b97e10e"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:28:43.850Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:28:43.850Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:28:43.850Z"
+  },
+  "unique_id": 392,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382917f82f9eebc98f3cc1"
+  },
+  "box_name": "AVA4-PHAi-039",
+  "ip_address": "",
+  "mac_address": "64:E8:33:7A:47:D8",
+  "location": "",
+  "sim_number": "0624133881",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b70a794d407871b97e5b2"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:29:59.684Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:29:59.684Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:29:59.684Z"
+  },
+  "unique_id": 393,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382a4cf82f9eebc98f484e"
+  },
+  "box_name": "AVA4-PHAi-040",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:1B:80",
+  "location": "",
+  "sim_number": "0624135168",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b711894d407871b97eb32"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:35:08.981Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:35:08.981Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:35:08.981Z"
+  },
+  "unique_id": 394,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382a88f82f9eebc98f4a4d"
+  },
+  "box_name": "AVA4-PHAi-041",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8B:3C:7C",
+  "location": "",
+  "sim_number": "0624133500",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b71c894d407871b97f2ea"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:36:08.423Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:36:08.423Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:36:08.423Z"
+  },
+  "unique_id": 395,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382abaf82f9eebc98f4c30"
+  },
+  "box_name": "AVA4-PHAi-042",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:23:0C",
+  "location": "",
+  "sim_number": "0624139317",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b72b894d407871b97fd07"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:36:58.769Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:36:58.769Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:36:58.769Z"
+  },
+  "unique_id": 396,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382aeff82f9eebc98f4e39"
+  },
+  "box_name": "AVA4-PHAi-043",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:7C:9C ",
+  "location": "",
+  "sim_number": "0624133584",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b733594d407871b980276"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:37:51.890Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:37:51.890Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:37:51.890Z"
+  },
+  "unique_id": 397,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382b1df82f9eebc98f4fd1"
+  },
+  "box_name": "AVA4-PHAi-044",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:75:20",
+  "location": "",
+  "sim_number": "0624137328",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b73d094d407871b980946"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:38:37.571Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:38:37.571Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:38:37.571Z"
+  },
+  "unique_id": 398,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382b4ff82f9eebc98f51a2"
+  },
+  "box_name": "AVA4-PHAi-045",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:2C:9C",
+  "location": "",
+  "sim_number": "0624135087",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b749d94d407871b981269"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:39:27.439Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:39:27.439Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:39:27.439Z"
+  },
+  "unique_id": 399,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382b88f82f9eebc98f53b8"
+  },
+  "box_name": "AVA4-PHAi-046",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:8A:EC ",
+  "location": "",
+  "sim_number": " 0624130956",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b756894d407871b981aac"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:40:24.193Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:40:24.193Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:40:24.193Z"
+  },
+  "unique_id": 400,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382c2af82f9eebc98f58ce"
+  },
+  "box_name": "AVA4-PHAi-047",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8A:22:EC",
+  "location": "",
+  "sim_number": "0624132976",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b75e894d407871b9820f7"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:43:06.158Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:43:06.158Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:43:06.158Z"
+  },
+  "unique_id": 401,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382c6df82f9eebc98f5b58"
+  },
+  "box_name": "AVA4-PHAi-049",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:73:70",
+  "location": "",
+  "sim_number": "0624138709",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b770494d407871b982cfb"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:44:13.591Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:44:13.592Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:44:13.592Z"
+  },
+  "unique_id": 402,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382cc9f82f9eebc98f5e5d"
+  },
+  "box_name": "AVA4-PHAi-050",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:8B:B8",
+  "location": "",
+  "sim_number": " 0624139539",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b77b494d407871b983562"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:45:45.937Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:45:45.937Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:45:45.937Z"
+  },
+  "unique_id": 403,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382d6af82f9eebc98f63f5"
+  },
+  "box_name": "AVA4-PHAi-051",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8B:21:40",
+  "location": "",
+  "sim_number": "0624130776",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b782b94d407871b983af4"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:48:26.733Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:48:26.733Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:48:26.733Z"
+  },
+  "unique_id": 404,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382da6f82f9eebc98f661c"
+  },
+  "box_name": "AVA4-PHAi-052",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:90:F4",
+  "location": "",
+  "sim_number": "0624139858",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b788694d407871b983f37"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:49:26.791Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:49:26.791Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:49:26.791Z"
+  },
+  "unique_id": 405,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382ddcf82f9eebc98f6825"
+  },
+  "box_name": "AVA4-PHAi-053",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8B:73:04",
+  "location": "",
+  "sim_number": "0624130488",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-05T04:44:09.809Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b796294d407871b984845"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-06-05T04:35:08.461Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:50:20.597Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-05T04:46:29.999Z"
+  },
+  "unique_id": 406,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382ea5f82f9eebc98f6e5f"
+  },
+  "box_name": "AVA4-PHAi-054",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:73:AC",
+  "location": "",
+  "sim_number": "0624132873",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b79ed94d407871b984e8a"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:53:41.405Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:53:41.405Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:53:41.405Z"
+  },
+  "unique_id": 407,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382ef4f82f9eebc98f7148"
+  },
+  "box_name": "AVA4-PHAi-055",
+  "ip_address": "",
+  "mac_address": "E4:B0:63:8B:1C:58",
+  "location": "",
+  "sim_number": "0624135964",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b7aab94d407871b985665"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:55:00.941Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:55:00.941Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:55:00.941Z"
+  },
+  "unique_id": 408,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382f34f82f9eebc98f7368"
+  },
+  "box_name": "AVA4-PHAi-056",
+  "ip_address": "",
+  "mac_address": "64:E8:33:76:B6:24",
+  "location": "",
+  "sim_number": "0624135258",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-05T04:32:14.279Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b7b2794d407871b985c2b"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-06-05T04:27:42.886Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:56:04.270Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-05T04:34:26.678Z"
+  },
+  "unique_id": 409,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382f6af82f9eebc98f7545"
+  },
+  "box_name": "AVA4-PHAi-057",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:85:94",
+  "location": "",
+  "sim_number": "0624135389",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b7b9c94d407871b98616e"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T09:56:58.058Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:56:58.058Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T09:56:58.058Z"
+  },
+  "unique_id": 410,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68382fe5f82f9eebc98f796c"
+  },
+  "box_name": "AVA4-PHAi-058",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:20:85:7C",
+  "location": "",
+  "sim_number": "0625601394",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": {
+    "$date": "2025-06-05T04:20:44.632Z"
+  },
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b7c1994d407871b9867ec"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-06-05T04:17:43.823Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T09:59:01.068Z"
+  },
+  "updated_at": {
+    "$date": "2025-06-05T04:22:26.680Z"
+  },
+  "unique_id": 411,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683830c2f82f9eebc98f811c"
+  },
+  "box_name": "AVA4-PHAi-030",
+  "ip_address": "",
+  "mac_address": "F0:9E:9E:1F:A6:40",
+  "location": "",
+  "sim_number": "0624133588",
+  "provider": "",
+  "lat": 0,
+  "lng": 0,
+  "version": "",
+  "model": "",
+  "factory": "",
+  "wireless_ip": "",
+  "ethernet_ip": "",
+  "uplinkType": "",
+  "uptime": 0,
+  "box_type": 0,
+  "is_have_bluetooth_connection": false,
+  "is_required_registration": false,
+  "status": 0,
+  "heart_count": 0,
+  "data_update_time": null,
+  "gw_send_time": "",
+  "is_active": false,
+  "is_deleted": false,
+  "patient_id": {
+    "$oid": "681b6b1c94d407871b97a1ed"
+  },
+  "uptime_updated_at": {
+    "$date": "2025-05-29T10:02:42.125Z"
+  },
+  "created_at": {
+    "$date": "2025-05-29T10:02:42.125Z"
+  },
+  "updated_at": {
+    "$date": "2025-05-29T10:02:42.125Z"
+  },
+  "unique_id": 412,
+  "__v": 0
+}]

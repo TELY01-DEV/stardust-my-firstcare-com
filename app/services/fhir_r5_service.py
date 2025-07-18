@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from typing import Dict, List, Optional, Any, Union, Tuple
 from bson import ObjectId
 from pymongo import ASCENDING, DESCENDING
+import os
 
 from app.services.mongo import mongodb_service
 from app.services.blockchain_hash import blockchain_hash_service, BlockchainHash, HashVerificationResult
@@ -25,6 +26,7 @@ from app.models.fhir_r5 import (
     ContactPoint, Address, Period, ObservationComponent
 )
 from app.utils.structured_logging import get_logger
+from app.models.master_data import Hospital
 
 logger = get_logger(__name__)
 
@@ -252,7 +254,7 @@ class FHIRR5Service:
             
             # Generate new blockchain hash for the updated resource
             previous_hash = current_doc.get("blockchain_hash")
-            blockchain_hash_obj = blockchain_hash_service.generate_resource_hash(
+            blockchain_hash_obj = await blockchain_hash_service.generate_resource_hash(
                 resource_data=resource_data,
                 previous_hash=previous_hash,
                 include_merkle=True
@@ -4258,6 +4260,812 @@ class FHIRR5Service:
         }
         
         return observation
+
+    # =============== Hospital Data Integration ===============
+
+    async def get_or_create_hospital_organization(self, hospital_id: str) -> Optional[str]:
+        """Get existing hospital Organization or create new one"""
+        try:
+            # Check if hospital Organization already exists
+            existing_org = await self.get_fhir_resource("Organization", hospital_id)
+            if existing_org:
+                return hospital_id
+            
+            # Get hospital data from master data
+            hospital_collection = mongodb_service.get_collection("hospitals")
+            hospital_doc = await hospital_collection.find_one({"_id": ObjectId(hospital_id)})
+            
+            if not hospital_doc:
+                logger.warning(f"Hospital {hospital_id} not found in master data")
+                return None
+            
+            # Create FHIR Organization from hospital data
+            org_id = await self.migrate_hospital_to_organization(hospital_doc)
+            logger.info(f"Created FHIR Organization {org_id} for hospital {hospital_id}")
+            
+            return org_id
+            
+        except Exception as e:
+            logger.error(f"Failed to get/create hospital organization: {e}")
+            return None
+
+    async def migrate_hospital_to_organization(self, hospital_doc: Dict[str, Any]) -> str:
+        """Migrate hospital document to comprehensive FHIR Organization resource"""
+        try:
+            org_id = str(hospital_doc.get("_id", ObjectId()))
+            
+            # Extract hospital name from name array or fallback fields
+            hospital_name = "Unknown Hospital"
+            if "name" in hospital_doc and isinstance(hospital_doc["name"], list):
+                name_array = hospital_doc["name"]
+                for name_obj in name_array:
+                    if isinstance(name_obj, dict):
+                        if name_obj.get("code") == "en" and name_obj.get("name"):
+                            hospital_name = name_obj["name"]
+                            break
+                        elif name_obj.get("code") == "th" and name_obj.get("name"):
+                            hospital_name = name_obj["name"]
+            
+            # Fallback to other name fields
+            if hospital_name == "Unknown Hospital":
+                if hospital_doc.get("en_name"):
+                    hospital_name = hospital_doc["en_name"]
+                elif hospital_doc.get("hospital_name"):
+                    hospital_name = hospital_doc["hospital_name"]
+            
+            # Build identifiers
+            identifiers = []
+            if hospital_doc.get("code"):
+                identifiers.append({
+                    "use": "official",
+                    "type": {
+                        "coding": [{
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                            "code": "PRN",
+                            "display": "Provider number"
+                        }]
+                    },
+                    "system": "https://my-firstcare.com/hospital-codes",
+                    "value": hospital_doc["code"]
+                })
+            
+            if hospital_doc.get("organizecode"):
+                identifiers.append({
+                    "use": "secondary",
+                    "type": {
+                        "coding": [{
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                            "code": "ACSN",
+                            "display": "Accession ID"
+                        }]
+                    },
+                    "system": "https://my-firstcare.com/organization-codes",
+                    "value": str(hospital_doc["organizecode"])
+                })
+            
+            if hospital_doc.get("hospital_area_code"):
+                identifiers.append({
+                    "use": "usual",
+                    "type": {
+                        "coding": [{
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                            "code": "ACSN",
+                            "display": "Accession ID"
+                        }]
+                    },
+                    "system": "https://my-firstcare.com/hospital-area-codes",
+                    "value": hospital_doc["hospital_area_code"]
+                })
+            
+            # Build contact information
+            telecom = []
+            if hospital_doc.get("phone"):
+                telecom.append({
+                    "system": "phone",
+                    "value": hospital_doc["phone"],
+                    "use": "work"
+                })
+            
+            if hospital_doc.get("email"):
+                telecom.append({
+                    "system": "email",
+                    "value": hospital_doc["email"],
+                    "use": "work"
+                })
+            
+            if hospital_doc.get("website"):
+                telecom.append({
+                    "system": "url",
+                    "value": hospital_doc["website"],
+                    "use": "work"
+                })
+            
+            # Enhanced contact information from contact object
+            if hospital_doc.get("contact") and isinstance(hospital_doc["contact"], dict):
+                contact = hospital_doc["contact"]
+                if contact.get("phone"):
+                    telecom.append({
+                        "system": "phone",
+                        "value": contact["phone"],
+                        "use": "work"
+                    })
+                if contact.get("email"):
+                    telecom.append({
+                        "system": "email",
+                        "value": contact["email"],
+                        "use": "work"
+                    })
+                if contact.get("fax"):
+                    telecom.append({
+                        "system": "fax",
+                        "value": contact["fax"],
+                        "use": "work"
+                    })
+                if contact.get("mobile"):
+                    telecom.append({
+                        "system": "phone",
+                        "value": contact["mobile"],
+                        "use": "mobile"
+                    })
+                if contact.get("emergency_phone"):
+                    telecom.append({
+                        "system": "phone",
+                        "value": contact["emergency_phone"],
+                        "use": "emergency"
+                    })
+            
+            # Build comprehensive address information
+            addresses = []
+            address_text = hospital_doc.get("address", "")
+            city = hospital_doc.get("district", "")
+            state = hospital_doc.get("province", "")
+            postal_code = hospital_doc.get("postal_code", "")
+            
+            # Enhanced address from address_details
+            if hospital_doc.get("address_details") and isinstance(hospital_doc["address_details"], dict):
+                addr_details = hospital_doc["address_details"]
+                if addr_details.get("street_address"):
+                    address_text = addr_details["street_address"]
+                if addr_details.get("postal_code"):
+                    postal_code = addr_details["postal_code"]
+                
+                # Build structured address
+                address = {
+                    "use": "work",
+                    "type": "physical",
+                    "text": address_text,
+                    "city": city,
+                    "state": state,
+                    "postalCode": postal_code,
+                    "country": "TH"
+                }
+                
+                # Add building details if available
+                if addr_details.get("building_name"):
+                    address["line"] = [addr_details["building_name"]]
+                if addr_details.get("floor"):
+                    address["line"] = address.get("line", []) + [f"Floor {addr_details['floor']}"]
+                if addr_details.get("room"):
+                    address["line"] = address.get("line", []) + [f"Room {addr_details['room']}"]
+                
+                addresses.append(address)
+            elif address_text or city or state:
+                addresses.append({
+                    "use": "work",
+                    "type": "physical",
+                    "text": address_text,
+                    "city": city,
+                    "state": state,
+                    "postalCode": postal_code,
+                    "country": "TH"
+                })
+            
+            # Build Organization resource with comprehensive hospital data
+            organization_resource = {
+                "resourceType": "Organization",
+                "id": org_id,
+                "active": hospital_doc.get("is_active", True),
+                "identifier": identifiers,
+                "type": [{
+                    "coding": [{
+                        "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+                        "code": "prov",
+                        "display": "Healthcare Provider"
+                    }]
+                }],
+                "name": hospital_name,
+                "alias": [],
+                "telecom": telecom,
+                "address": addresses
+            }
+            
+            # Add description if available
+            if hospital_doc.get("description"):
+                organization_resource["description"] = hospital_doc["description"]
+            
+            # Add service information
+            if hospital_doc.get("services") and isinstance(hospital_doc["services"], dict):
+                services = hospital_doc["services"]
+                if services.get("description"):
+                    organization_resource["description"] = services["description"]
+                
+                # Add service types as organization types
+                service_types = []
+                if services.get("emergency_services"):
+                    service_types.append({
+                        "coding": [{
+                            "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+                            "code": "emergency",
+                            "display": "Emergency Services"
+                        }]
+                    })
+                if services.get("trauma_center"):
+                    service_types.append({
+                        "coding": [{
+                            "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+                            "code": "trauma",
+                            "display": "Trauma Center"
+                        }]
+                    })
+                if services.get("icu_beds", 0) > 0:
+                    service_types.append({
+                        "coding": [{
+                            "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+                            "code": "icu",
+                            "display": "Intensive Care Unit"
+                        }]
+                    })
+                
+                if service_types:
+                    organization_resource["type"].extend(service_types)
+            
+            # Create FHIR Organization resource
+            result = await self.create_fhir_resource(
+                "Organization", 
+                organization_resource,
+                source_system="hospital_migration"
+            )
+            
+            # Create Location resource for the hospital
+            await self.create_hospital_location(hospital_doc, org_id)
+            
+            logger.info(f"Migrated hospital '{hospital_name}' to comprehensive FHIR Organization {org_id}")
+            
+            return org_id
+            
+        except Exception as e:
+            logger.error(f"Failed to migrate hospital to organization: {e}")
+            raise
+
+    async def create_hospital_location(self, hospital_doc: Dict[str, Any], organization_id: str) -> str:
+        """Create FHIR Location resource for hospital"""
+        try:
+            location_id = str(uuid.uuid4())
+            
+            # Extract location data
+            location_data = hospital_doc.get("location", {})
+            latitude = location_data.get("latitude")
+            longitude = location_data.get("longitude")
+            elevation = location_data.get("elevation")
+            
+            # Build location resource
+            location_resource = {
+                "resourceType": "Location",
+                "id": location_id,
+                "status": "active",
+                "name": hospital_doc.get("en_name", "Hospital Location"),
+                "description": f"Physical location of {hospital_doc.get('en_name', 'hospital')}",
+                "mode": "instance",
+                "type": [{
+                    "coding": [{
+                        "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                        "code": "HOSP",
+                        "display": "Hospital"
+                    }]
+                }],
+                "managingOrganization": {
+                    "reference": f"Organization/{organization_id}"
+                }
+            }
+            
+            # Add address if available
+            if hospital_doc.get("address"):
+                location_resource["address"] = {
+                    "use": "work",
+                    "type": "physical",
+                    "text": hospital_doc["address"],
+                    "country": "TH"
+                }
+            
+            # Add position if coordinates are available
+            if latitude is not None and longitude is not None:
+                position = {
+                    "longitude": longitude,
+                    "latitude": latitude
+                }
+                if elevation is not None:
+                    position["altitude"] = elevation
+                
+                location_resource["position"] = position
+            
+            # Create FHIR Location resource
+            result = await self.create_fhir_resource(
+                "Location",
+                location_resource,
+                source_system="hospital_migration"
+            )
+            
+            logger.info(f"Created FHIR Location {location_id} for hospital {organization_id}")
+            
+            return location_id
+            
+        except Exception as e:
+            logger.error(f"Failed to create hospital location: {e}")
+            raise
+
+    async def add_hospital_context_to_observation(self, observation_data: Dict[str, Any], hospital_id: Optional[str] = None) -> Dict[str, Any]:
+        """Add hospital context to FHIR Observation resource"""
+        if not hospital_id:
+            return observation_data
+        
+        try:
+            # Add performer reference to hospital organization
+            if "performer" not in observation_data:
+                observation_data["performer"] = []
+            
+            observation_data["performer"].append({
+                "reference": f"Organization/{hospital_id}",
+                "type": "Organization"
+            })
+            
+            # Add encounter context if not present
+            if "encounter" not in observation_data:
+                # Create a reference to a hospital encounter
+                observation_data["encounter"] = {
+                    "reference": f"Encounter/hospital-{hospital_id}",
+                    "type": "Encounter"
+                }
+            
+            return observation_data
+            
+        except Exception as e:
+            logger.error(f"Failed to add hospital context to observation: {e}")
+            return observation_data
+
+    async def add_hospital_context_to_device(self, device_data: Dict[str, Any], hospital_id: Optional[str] = None) -> Dict[str, Any]:
+        """Add hospital context to FHIR Device resource"""
+        if not hospital_id:
+            return device_data
+        
+        try:
+            # Add owner reference to hospital organization
+            device_data["owner"] = {
+                "reference": f"Organization/{hospital_id}",
+                "type": "Organization"
+            }
+            
+            # Add location reference if not present
+            if "location" not in device_data:
+                device_data["location"] = {
+                    "reference": f"Location/hospital-{hospital_id}",
+                    "type": "Location"
+                }
+            
+            return device_data
+            
+        except Exception as e:
+            logger.error(f"Failed to add hospital context to device: {e}")
+            return device_data
+
+    # =============== Enhanced MQTT Transformation with Hospital Context ===============
+
+    async def transform_ava4_mqtt_to_fhir_with_hospital(
+        self, 
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str,
+        patient: Optional[Dict[str, Any]] = None,
+        ava_mac_address: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """Transform AVA4 MQTT data to FHIR R5 with AVA4-specific hospital context"""
+        try:
+            # Get hospital_id using AVA4-specific lookup
+            hospital_id = await self.get_hospital_id_for_ava4(patient)
+            
+            if not hospital_id:
+                logger.warning("No hospital_id found, proceeding without hospital context")
+                return await self.transform_ava4_mqtt_to_fhir(mqtt_payload, patient_id, device_id)
+            
+            # Get or create hospital organization
+            org_id = await self.get_or_create_hospital_organization(hospital_id)
+            if not org_id:
+                logger.warning("Failed to get/create hospital organization, proceeding without hospital context")
+                return await self.transform_ava4_mqtt_to_fhir(mqtt_payload, patient_id, device_id)
+            
+            # Get hospital document for location creation
+            hospital_collection = mongodb_service.get_collection("hospitals")
+            hospital_doc = await hospital_collection.find_one({"_id": ObjectId(hospital_id)})
+            
+            # Create hospital location
+            location_id = None
+            if hospital_doc:
+                location_id = await self.create_hospital_location(hospital_doc, org_id)
+            
+            # Transform to FHIR with hospital context
+            fhir_resources = await self.transform_ava4_mqtt_to_fhir(mqtt_payload, patient_id, device_id)
+            
+            # Add hospital context to all resources
+            enhanced_resources = []
+            for resource in fhir_resources:
+                if resource.get("resourceType") == "Observation":
+                    # Add hospital context to observations
+                    resource = await self.add_hospital_context_to_observation(resource, hospital_id)
+                elif resource.get("resourceType") == "Device":
+                    # Add hospital context to devices
+                    resource = await self.add_hospital_context_to_device(resource, hospital_id)
+                
+                enhanced_resources.append(resource)
+            
+            logger.info(f"Transformed AVA4 data with hospital context - Hospital: {hospital_id}, Organization: {org_id}, Location: {location_id}")
+            return enhanced_resources
+            
+        except Exception as e:
+            logger.error(f"Error transforming AVA4 MQTT data with hospital context: {e}")
+            # Fallback to basic transformation
+            return await self.transform_ava4_mqtt_to_fhir(mqtt_payload, patient_id, device_id)
+
+    async def transform_qube_mqtt_to_fhir_with_hospital(
+        self, 
+        mqtt_payload: Dict[str, Any],
+        patient_id: str,
+        device_id: str,
+        patient: Optional[Dict[str, Any]] = None,
+        ava_mac_address: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """Transform Qube-Vital MQTT payload to FHIR R5 Observations with Qube-Vital-specific hospital context"""
+        try:
+            # Get hospital_id using Qube-Vital-specific enhanced lookup
+            hospital_id = await self.get_hospital_id_for_qube_vital(patient, ava_mac_address)
+            
+            if not hospital_id:
+                logger.warning("No hospital_id found, proceeding without hospital context")
+                return await self.transform_qube_mqtt_to_fhir(mqtt_payload, patient_id, device_id)
+            
+            # Get or create hospital organization
+            org_id = await self.get_or_create_hospital_organization(hospital_id)
+            if not org_id:
+                logger.warning("Failed to get/create hospital organization, proceeding without hospital context")
+                return await self.transform_qube_mqtt_to_fhir(mqtt_payload, patient_id, device_id)
+            
+            # Get hospital document for location creation
+            hospital_collection = mongodb_service.get_collection("hospitals")
+            hospital_doc = await hospital_collection.find_one({"_id": ObjectId(hospital_id)})
+            
+            # Create hospital location
+            location_id = None
+            if hospital_doc:
+                location_id = await self.create_hospital_location(hospital_doc, org_id)
+            
+            # Transform to FHIR with hospital context
+            fhir_resources = await self.transform_qube_mqtt_to_fhir(mqtt_payload, patient_id, device_id)
+            
+            # Add hospital context to all resources
+            enhanced_resources = []
+            for resource in fhir_resources:
+                if resource.get("resourceType") == "Observation":
+                    # Add hospital context to observations
+                    resource = await self.add_hospital_context_to_observation(resource, hospital_id)
+                elif resource.get("resourceType") == "Device":
+                    # Add hospital context to devices
+                    resource = await self.add_hospital_context_to_device(resource, hospital_id)
+                
+                enhanced_resources.append(resource)
+            
+            logger.info(f"Transformed Qube-Vital data with enhanced hospital context - Hospital: {hospital_id}, Organization: {org_id}, Location: {location_id}")
+            return enhanced_resources
+            
+        except Exception as e:
+            logger.error(f"Error transforming Qube-Vital MQTT data with hospital context: {e}")
+            # Fallback to basic transformation
+            return await self.transform_qube_mqtt_to_fhir(mqtt_payload, patient_id, device_id)
+
+    # =============== Enhanced Patient Migration with Hospital Context ===============
+
+    async def migrate_existing_patient_to_fhir_with_hospital(self, patient_doc: Dict[str, Any]) -> str:
+        """Migrate existing patient document to FHIR R5 Patient resource with hospital context"""
+        try:
+            patient_id = str(uuid.uuid4())
+            
+            # Build HumanName
+            names = []
+            if patient_doc.get("first_name") or patient_doc.get("last_name"):
+                names.append({
+                    "use": "official",
+                    "family": patient_doc.get("last_name", ""),
+                    "given": [patient_doc.get("first_name", "")]
+                })
+            
+            if patient_doc.get("nickname"):
+                names.append({
+                    "use": "nickname",
+                    "text": patient_doc.get("nickname")
+                })
+            
+            # Build identifiers
+            identifiers = []
+            if patient_doc.get("national_id"):
+                identifiers.append({
+                    "use": "official",
+                    "type": {
+                        "coding": [{
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                            "code": "NI",
+                            "display": "National identifier"
+                        }]
+                    },
+                    "system": "http://thailand.gov.th/national-id",
+                    "value": patient_doc["national_id"]
+                })
+            
+            if patient_doc.get("hn_id_no"):
+                identifiers.append({
+                    "use": "usual",
+                    "type": {
+                        "coding": [{
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                            "code": "MR",
+                            "display": "Medical record number"
+                        }]
+                    },
+                    "system": "http://my-firstcare.com/patient-id",
+                    "value": patient_doc["hn_id_no"]
+                })
+            
+            # Build contact points
+            telecom = []
+            if patient_doc.get("mobile_no"):
+                telecom.append({
+                    "system": "phone",
+                    "value": patient_doc["mobile_no"],
+                    "use": "mobile"
+                })
+            
+            if patient_doc.get("telephone_no"):
+                telecom.append({
+                    "system": "phone",
+                    "value": patient_doc["telephone_no"],
+                    "use": "home"
+                })
+            
+            if patient_doc.get("email"):
+                telecom.append({
+                    "system": "email",
+                    "value": patient_doc["email"]
+                })
+            
+            # Build address
+            addresses = []
+            if any([patient_doc.get("address"), patient_doc.get("province"), 
+                   patient_doc.get("district"), patient_doc.get("sub_district")]):
+                addresses.append({
+                    "use": "home",
+                    "type": "physical",
+                    "text": patient_doc.get("address", ""),
+                    "city": patient_doc.get("district", ""),
+                    "state": patient_doc.get("province", ""),
+                    "postalCode": patient_doc.get("postal_code", ""),
+                    "country": "TH"
+                })
+            
+            # Build Patient resource
+            patient_resource = {
+                "resourceType": "Patient",
+                "id": patient_id,
+                "active": patient_doc.get("is_active", True),
+                "identifier": identifiers,
+                "name": names,
+                "telecom": telecom,
+                "gender": self._map_gender(patient_doc.get("gender")),
+                "birthDate": self._format_birth_date(patient_doc.get("dob")),
+                "address": addresses
+            }
+            
+            # Add managing organization if hospital_id exists
+            if patient_doc.get("hospital_id"):
+                # Ensure hospital Organization exists
+                hospital_org_id = await self.get_or_create_hospital_organization(patient_doc["hospital_id"])
+                if hospital_org_id:
+                    patient_resource["managingOrganization"] = {
+                        "reference": f"Organization/{hospital_org_id}"
+                    }
+            
+            # Create FHIR Patient resource
+            result = await self.create_fhir_resource(
+                "Patient", 
+                patient_resource,
+                source_system="migration",
+                device_mac_address=patient_doc.get("ava_mac_address")
+            )
+            
+            logger.info(f"Migrated patient {patient_doc.get('_id')} to FHIR Patient {patient_id} with hospital context")
+            
+            return patient_id
+            
+        except Exception as e:
+            logger.error(f"Failed to migrate patient to FHIR with hospital context: {e}")
+            raise
+
+    async def get_hospital_id_from_multiple_sources(self, patient: Dict[str, Any], ava_mac_address: str = None) -> Optional[str]:
+        """Get hospital_id from multiple sources with fallback logic"""
+        try:
+            hospital_id = None
+            
+            # Method 1: Check patient's hospital_id field
+            if patient and patient.get("hospital_id"):
+                hospital_id = patient.get("hospital_id")
+                logger.info(f"Found hospital_id from patient record: {hospital_id}")
+                return hospital_id
+            
+            # Method 2: Check hospitals.mac_hv01_box collection
+            if not hospital_id and ava_mac_address:
+                hospital_collection = mongodb_service.get_collection("hospitals")
+                hv01_box = await hospital_collection.find_one({
+                    "mac_hv01_box": ava_mac_address
+                })
+                if hv01_box:
+                    hospital_id = str(hv01_box.get("_id"))
+                    logger.info(f"Found hospital_id from hospitals.mac_hv01_box: {hospital_id}")
+                    return hospital_id
+            
+            # Method 3: Check mfc_hv01_boxes collection
+            if not hospital_id and ava_mac_address:
+                mfc_hv01_boxes_collection = mongodb_service.get_collection("mfc_hv01_boxes")
+                hv01_box = await mfc_hv01_boxes_collection.find_one({
+                    "mac_address": ava_mac_address
+                })
+                if hv01_box:
+                    hospital_id = hv01_box.get("hospital_id")
+                    logger.info(f"Found hospital_id from mfc_hv01_boxes: {hospital_id}")
+                    return hospital_id
+            
+            # Method 4: Use default hospital for unregistered patients
+            if not hospital_id:
+                hospital_id = os.getenv("DEFAULT_HOSPITAL_ID", "default_hospital")
+                logger.info(f"Using default hospital_id: {hospital_id}")
+                return hospital_id
+            
+            return hospital_id
+            
+        except Exception as e:
+            logger.error(f"Error getting hospital_id from multiple sources: {e}")
+            # Fallback to default hospital
+            default_hospital = os.getenv("DEFAULT_HOSPITAL_ID", "default_hospital")
+            logger.warning(f"Falling back to default hospital: {default_hospital}")
+            return default_hospital
+
+    async def get_hospital_id_for_qube_vital(self, patient: Dict[str, Any], ava_mac_address: str = None) -> Optional[str]:
+        """Get hospital_id for Qube-Vital devices using enhanced multi-source lookup"""
+        try:
+            hospital_id = None
+            
+            # Method 1: Check patient's hospital_id field
+            if patient and patient.get("hospital_id"):
+                hospital_id = patient.get("hospital_id")
+                logger.info(f"Found hospital_id from patient record: {hospital_id}")
+                return hospital_id
+            
+            # Method 2: Check hospitals.mac_hv01_box collection (Qube-Vital specific)
+            if not hospital_id and ava_mac_address:
+                hospital_collection = mongodb_service.get_collection("hospitals")
+                hv01_box = await hospital_collection.find_one({
+                    "mac_hv01_box": ava_mac_address
+                })
+                if hv01_box:
+                    hospital_id = str(hv01_box.get("_id"))
+                    logger.info(f"Found hospital_id from hospitals.mac_hv01_box: {hospital_id}")
+                    return hospital_id
+            
+            # Method 3: Check mfc_hv01_boxes collection (Qube-Vital specific)
+            if not hospital_id and ava_mac_address:
+                mfc_hv01_boxes_collection = mongodb_service.get_collection("mfc_hv01_boxes")
+                hv01_box = await mfc_hv01_boxes_collection.find_one({
+                    "mac_address": ava_mac_address
+                })
+                if hv01_box:
+                    hospital_id = hv01_box.get("hospital_id")
+                    logger.info(f"Found hospital_id from mfc_hv01_boxes: {hospital_id}")
+                    return hospital_id
+            
+            # Method 4: Use default hospital for unregistered patients
+            if not hospital_id:
+                hospital_id = os.getenv("DEFAULT_HOSPITAL_ID", "default_hospital")
+                logger.info(f"Using default hospital_id: {hospital_id}")
+                return hospital_id
+            
+            return hospital_id
+            
+        except Exception as e:
+            logger.error(f"Error getting hospital_id for Qube-Vital: {e}")
+            # Fallback to default hospital
+            default_hospital = os.getenv("DEFAULT_HOSPITAL_ID", "default_hospital")
+            logger.warning(f"Falling back to default hospital: {default_hospital}")
+            return default_hospital
+
+    async def get_hospital_id_for_ava4(self, patient: Dict[str, Any]) -> Optional[str]:
+        """Get hospital_id for AVA4+Sub-Devices using patient-based lookup"""
+        try:
+            hospital_id = None
+            
+            # Method 1: Check patient's hospital_id field
+            if patient and patient.get("hospital_id"):
+                hospital_id = patient.get("hospital_id")
+                logger.info(f"Found hospital_id from patient record: {hospital_id}")
+                return hospital_id
+            
+            # Method 2: Check amy_devices collection for AVA4 devices
+            if not hospital_id and patient:
+                amy_devices_collection = mongodb_service.get_collection("amy_devices")
+                # Look for any AVA4 device associated with this patient
+                ava4_device = await amy_devices_collection.find_one({
+                    "patient_id": patient.get("_id")
+                })
+                if ava4_device and ava4_device.get("hospital_id"):
+                    hospital_id = ava4_device.get("hospital_id")
+                    logger.info(f"Found hospital_id from amy_devices: {hospital_id}")
+                    return hospital_id
+            
+            # Method 3: Use default hospital for unregistered patients
+            if not hospital_id:
+                hospital_id = os.getenv("DEFAULT_HOSPITAL_ID", "default_hospital")
+                logger.info(f"Using default hospital_id: {hospital_id}")
+                return hospital_id
+            
+            return hospital_id
+            
+        except Exception as e:
+            logger.error(f"Error getting hospital_id for AVA4: {e}")
+            # Fallback to default hospital
+            default_hospital = os.getenv("DEFAULT_HOSPITAL_ID", "default_hospital")
+            logger.warning(f"Falling back to default hospital: {default_hospital}")
+            return default_hospital
+
+    async def get_hospital_id_for_kati_watch(self, patient: Dict[str, Any]) -> Optional[str]:
+        """Get hospital_id for Kati Watch using patient-based lookup"""
+        try:
+            hospital_id = None
+            
+            # Method 1: Check patient's hospital_id field
+            if patient and patient.get("hospital_id"):
+                hospital_id = patient.get("hospital_id")
+                logger.info(f"Found hospital_id from patient record: {hospital_id}")
+                return hospital_id
+            
+            # Method 2: Check watches collection for Kati Watch devices
+            if not hospital_id and patient:
+                watches_collection = mongodb_service.get_collection("watches")
+                # Look for any Kati Watch associated with this patient
+                watch = await watches_collection.find_one({
+                    "patient_id": patient.get("_id")
+                })
+                if watch and watch.get("hospital_id"):
+                    hospital_id = watch.get("hospital_id")
+                    logger.info(f"Found hospital_id from watches: {hospital_id}")
+                    return hospital_id
+            
+            # Method 3: Use default hospital for unregistered patients
+            if not hospital_id:
+                hospital_id = os.getenv("DEFAULT_HOSPITAL_ID", "default_hospital")
+                logger.info(f"Using default hospital_id: {hospital_id}")
+                return hospital_id
+            
+            return hospital_id
+            
+        except Exception as e:
+            logger.error(f"Error getting hospital_id for Kati Watch: {e}")
+            # Fallback to default hospital
+            default_hospital = os.getenv("DEFAULT_HOSPITAL_ID", "default_hospital")
+            logger.warning(f"Falling back to default hospital: {default_hospital}")
+            return default_hospital
 
 # Global service instance
 fhir_service = FHIRR5Service() 

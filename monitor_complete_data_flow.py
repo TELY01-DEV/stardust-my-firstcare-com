@@ -8,11 +8,22 @@ import os
 import json
 import time
 import logging
+import requests
 from datetime import datetime
 from typing import Dict, Any
 from paho.mqtt import client as mqtt_client
 import threading
 from collections import deque
+
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    print("✅ Loaded environment variables from .env file")
+except ImportError:
+    print("⚠️ python-dotenv not installed, using system environment variables")
+except Exception as e:
+    print(f"⚠️ Could not load .env file: {e}")
 
 # Configure logging
 logging.basicConfig(
@@ -20,6 +31,54 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+class TelegramAlert:
+    """Telegram alert functionality"""
+    
+    def __init__(self):
+        self.bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+        self.chat_id = os.getenv('TELEGRAM_CHAT_ID')
+        self.enabled = bool(self.bot_token and self.chat_id)
+        
+        if self.enabled:
+            logger.info("✅ Telegram alerts enabled")
+        else:
+            logger.warning("⚠️ Telegram alerts disabled - Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID environment variables")
+    
+    def send_alert(self, message: str, alert_type: str = "WARNING"):
+        """Send alert to Telegram"""
+        if not self.enabled:
+            return
+        
+        try:
+            # Add emoji based on alert type
+            emoji_map = {
+                "ERROR": "🚨",
+                "WARNING": "⚠️", 
+                "SUCCESS": "✅",
+                "INFO": "ℹ️"
+            }
+            emoji = emoji_map.get(alert_type, "📢")
+            
+            # Format message
+            formatted_message = f"{emoji} **{alert_type}**\n\n{message}\n\n⏰ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+            
+            # Send to Telegram
+            url = f"https://api.telegram.org/bot{self.bot_token}/sendMessage"
+            data = {
+                "chat_id": self.chat_id,
+                "text": formatted_message,
+                "parse_mode": "Markdown"
+            }
+            
+            response = requests.post(url, data=data, timeout=10)
+            if response.status_code == 200:
+                logger.info(f"✅ Telegram alert sent: {alert_type}")
+            else:
+                logger.error(f"❌ Failed to send Telegram alert: {response.status_code} - {response.text}")
+                
+        except Exception as e:
+            logger.error(f"❌ Error sending Telegram alert: {e}")
 
 class CompleteDataFlowMonitor:
     """Monitor complete data flow from MQTT to database"""
@@ -63,6 +122,88 @@ class CompleteDataFlowMonitor:
         self.start_time = datetime.utcnow()
         self.total_messages = 0
         
+        # Failure tracking for alerts
+        self.failure_count = 0
+        self.last_failure_time = None
+        self.failure_threshold = int(os.getenv('FAILURE_ALERT_THRESHOLD', '5'))  # Alert after 5 failures
+        self.failure_window = int(os.getenv('FAILURE_WINDOW_MINUTES', '10'))  # 10 minute window
+        
+        # Telegram alerts
+        self.telegram = TelegramAlert()
+        
+        # Container monitoring
+        self.container_status = {}
+        self.last_container_check = None
+        
+    def check_container_status(self):
+        """Check Docker container status for failures"""
+        try:
+            import subprocess
+            result = subprocess.run(['docker', 'ps', '--format', 'table {{.Names}}\t{{.Status}}'], 
+                                  capture_output=True, text=True, timeout=10)
+            
+            if result.returncode == 0:
+                lines = result.stdout.strip().split('\n')[1:]  # Skip header
+                current_status = {}
+                
+                for line in lines:
+                    if line.strip():
+                        parts = line.split('\t')
+                        if len(parts) >= 2:
+                            container_name = parts[0]
+                            status = parts[1]
+                            current_status[container_name] = status
+                            
+                            # Check for failures
+                            if 'Exited' in status or 'unhealthy' in status.lower():
+                                if container_name not in self.container_status or self.container_status[container_name] != status:
+                                    self.telegram.send_alert(
+                                        f"🚨 **Container Failure Detected**\n\n"
+                                        f"**Container:** {container_name}\n"
+                                        f"**Status:** {status}\n\n"
+                                        f"Please check the container immediately!",
+                                        "ERROR"
+                                    )
+                
+                self.container_status = current_status
+                self.last_container_check = datetime.utcnow()
+                
+        except Exception as e:
+            logger.error(f"❌ Error checking container status: {e}")
+    
+    def track_failure(self, failure_type: str, details: str, device_type: str = "Unknown"):
+        """Track failures and send alerts if threshold is reached"""
+        self.failure_count += 1
+        self.last_failure_time = datetime.utcnow()
+        
+        # Check if we should send an alert
+        if self.failure_count >= self.failure_threshold:
+            # Check if failures are within the time window
+            if (self.last_failure_time - self.start_time).total_seconds() <= (self.failure_window * 60):
+                self.telegram.send_alert(
+                    f"🚨 **High Failure Rate Detected**\n\n"
+                    f"**Failures:** {self.failure_count} in {self.failure_window} minutes\n"
+                    f"**Latest Failure:** {failure_type}\n"
+                    f"**Device:** {device_type}\n"
+                    f"**Details:** {details}\n\n"
+                    f"Please investigate the system immediately!",
+                    "ERROR"
+                )
+                
+                # Reset counter after alert
+                self.failure_count = 0
+        
+        # Send immediate alert for critical failures
+        if failure_type in ["FHIR_R5_ERROR", "DATABASE_ERROR", "PATIENT_NOT_FOUND"]:
+            self.telegram.send_alert(
+                f"⚠️ **Critical Failure Detected**\n\n"
+                f"**Type:** {failure_type}\n"
+                f"**Device:** {device_type}\n"
+                f"**Details:** {details}\n\n"
+                f"Please check the system!",
+                "WARNING"
+            )
+    
     def connect_mqtt(self) -> mqtt_client.Client:
         """Connect to MQTT broker"""
         def on_connect(client, userdata, flags, rc):
@@ -139,10 +280,48 @@ class CompleteDataFlowMonitor:
             # Display complete data flow
             self.display_complete_data_flow(message_record)
             
+            # Check for potential failures in the payload
+            self.check_payload_for_failures(message_record)
+            
         except json.JSONDecodeError as e:
             logger.error(f"❌ Invalid JSON payload on topic {topic}: {e}")
+            self.track_failure("JSON_PARSE_ERROR", f"Topic: {topic}, Error: {e}", "Unknown")
         except Exception as e:
             logger.error(f"❌ Error processing message on topic {topic}: {e}")
+            self.track_failure("MESSAGE_PROCESSING_ERROR", f"Topic: {topic}, Error: {e}", "Unknown")
+    
+    def check_payload_for_failures(self, message_record: Dict[str, Any]):
+        """Check payload for potential failure indicators"""
+        topic = message_record["topic"]
+        device_type = message_record["device_type"]
+        payload = message_record["payload"]
+        
+        # Check for error indicators in payload
+        if isinstance(payload, dict):
+            # Check for error fields
+            if 'error' in payload and payload['error']:
+                self.track_failure("PAYLOAD_ERROR", f"Error in payload: {payload['error']}", device_type)
+            
+            # Check for status fields indicating failure
+            if 'status' in payload and payload['status'] in ['error', 'failed', 'failure']:
+                self.track_failure("PAYLOAD_STATUS_ERROR", f"Status: {payload['status']}", device_type)
+            
+            # Check for specific device failures
+            if device_type == "AVA4":
+                if topic == "dusun_sub":
+                    msg_type = payload.get('type', '')
+                    if msg_type == 'cmdResult':
+                        code = payload.get('data', {}).get('code', 0)
+                        if code != 101:  # 101 is success code
+                            self.track_failure("AVA4_COMMAND_FAILURE", f"Command failed with code: {code}", device_type)
+            
+            elif device_type == "Kati_Watch":
+                # Check for low battery or signal issues
+                if 'battery' in payload and payload['battery'] < 20:
+                    self.track_failure("KATI_LOW_BATTERY", f"Battery level: {payload['battery']}%", device_type)
+                
+                if 'signalGSM' in payload and payload['signalGSM'] < 50:
+                    self.track_failure("KATI_LOW_SIGNAL", f"GSM signal: {payload['signalGSM']}%", device_type)
     
     def identify_device_type(self, topic: str, data: Dict[str, Any]) -> str:
         """Identify device type from topic and payload"""
@@ -437,13 +616,97 @@ class CompleteDataFlowMonitor:
         
         print(f"{'='*100}")
     
+    def monitor_container_logs(self):
+        """Monitor container logs for failure patterns"""
+        try:
+            import subprocess
+            
+            # List of containers to monitor
+            containers = [
+                'stardust-ava4-listener',
+                'stardust-kati-listener', 
+                'stardust-qube-listener',
+                'stardust-my-firstcare-com',
+                'stardust-mqtt-panel',
+                'stardust-mqtt-websocket'
+            ]
+            
+            for container in containers:
+                try:
+                    # Get recent logs (last 10 lines)
+                    result = subprocess.run([
+                        'docker', 'logs', '--tail', '10', container
+                    ], capture_output=True, text=True, timeout=10)
+                    
+                    if result.returncode == 0:
+                        logs = result.stdout
+                        
+                        # Check for failure patterns
+                        failure_patterns = [
+                            ('ERROR', 'Error'),
+                            ('FHIR_R5_ERROR', 'FHIR R5 processing failed'),
+                            ('DATABASE_ERROR', 'Database error'),
+                            ('PATIENT_NOT_FOUND', 'No patient found'),
+                            ('JSON_PARSE_ERROR', 'Invalid JSON'),
+                            ('CONNECTION_ERROR', 'Connection failed'),
+                            ('MODULE_ERROR', 'No module named'),
+                            ('EXCEPTION', 'Exception'),
+                            ('FAILED', 'Failed'),
+                            ('CRITICAL', 'Critical')
+                        ]
+                        
+                        for pattern_name, pattern in failure_patterns:
+                            if pattern.lower() in logs.lower():
+                                # Check if we haven't already alerted for this container/pattern recently
+                                alert_key = f"{container}_{pattern_name}"
+                                current_time = datetime.utcnow()
+                                
+                                if (alert_key not in getattr(self, '_last_alerts', {}) or 
+                                    (current_time - getattr(self, '_last_alerts', {}).get(alert_key, datetime.min)).total_seconds() > 300):  # 5 minutes
+                                    
+                                    # Extract relevant log lines
+                                    relevant_lines = []
+                                    for line in logs.split('\n'):
+                                        if pattern.lower() in line.lower():
+                                            relevant_lines.append(line.strip())
+                                    
+                                    # Send alert
+                                    self.telegram.send_alert(
+                                        f"🚨 **Container Log Failure Detected**\n\n"
+                                        f"**Container:** {container}\n"
+                                        f"**Pattern:** {pattern_name}\n"
+                                        f"**Recent Logs:**\n```\n" + "\n".join(relevant_lines[-3:]) + "\n```\n\n"
+                                        f"Please check the container immediately!",
+                                        "ERROR"
+                                    )
+                                    
+                                    # Track alert time
+                                    if not hasattr(self, '_last_alerts'):
+                                        self._last_alerts = {}
+                                    self._last_alerts[alert_key] = current_time
+                                    
+                                    # Track failure
+                                    self.track_failure(f"CONTAINER_{pattern_name}", f"Container: {container}", "System")
+                
+                except subprocess.TimeoutExpired:
+                    logger.warning(f"⚠️ Timeout checking logs for {container}")
+                except subprocess.CalledProcessError:
+                    logger.warning(f"⚠️ Container {container} not found or not running")
+                except Exception as e:
+                    logger.error(f"❌ Error monitoring logs for {container}: {e}")
+                    
+        except Exception as e:
+            logger.error(f"❌ Error in container log monitoring: {e}")
+    
     def start_monitoring(self):
         """Start complete data flow monitoring"""
-        print("🚀 Starting Complete Data Flow Monitor")
+        print("🚀 Starting Complete Data Flow Monitor with Telegram Alerts")
         print("="*100)
         print(f"📡 Broker: {self.mqtt_broker}:{self.mqtt_port}")
         print(f"👤 Username: {self.mqtt_username}")
         print(f"📋 Topics: {', '.join(self.topics)}")
+        print(f"🚨 Failure Threshold: {self.failure_threshold} failures in {self.failure_window} minutes")
+        print(f"📱 Telegram Alerts: {'✅ Enabled' if self.telegram.enabled else '❌ Disabled'}")
         print("="*100)
         print("🔍 This monitor shows the COMPLETE data flow:")
         print("   1. MQTT Payload Reception")
@@ -451,17 +714,41 @@ class CompleteDataFlowMonitor:
         print("   3. Expected Patient Mapping")
         print("   4. Expected Data Transformation")
         print("   5. Expected Database Operations")
+        print("   6. Container Log Monitoring")
+        print("   7. Telegram Failure Alerts")
         print("="*100)
+        
+        # Send startup notification
+        if self.telegram.enabled:
+            self.telegram.send_alert(
+                "🚀 **Medical Data Monitor Started**\n\n"
+                f"Monitoring {len(self.topics)} MQTT topics\n"
+                f"Failure threshold: {self.failure_threshold} in {self.failure_window} minutes\n"
+                f"Container log monitoring: Enabled\n\n"
+                f"System is now actively monitoring for failures!",
+                "INFO"
+            )
         
         # Connect to MQTT broker
         self.client = self.connect_mqtt()
         if not self.client:
             logger.error("❌ Failed to connect to MQTT broker")
+            if self.telegram.enabled:
+                self.telegram.send_alert(
+                    "❌ **MQTT Connection Failed**\n\n"
+                    f"Failed to connect to {self.mqtt_broker}:{self.mqtt_port}\n"
+                    f"Please check the MQTT broker status!",
+                    "ERROR"
+                )
             return
         
         # Start statistics display thread
         stats_thread = threading.Thread(target=self.stats_loop, daemon=True)
         stats_thread.start()
+        
+        # Start container monitoring thread
+        container_thread = threading.Thread(target=self.container_monitoring_loop, daemon=True)
+        container_thread.start()
         
         try:
             # Keep monitoring
@@ -470,12 +757,42 @@ class CompleteDataFlowMonitor:
                 
         except KeyboardInterrupt:
             print("\n🛑 Stopping complete data flow monitor...")
+            if self.telegram.enabled:
+                self.telegram.send_alert(
+                    "🛑 **Medical Data Monitor Stopped**\n\n"
+                    "Monitor has been manually stopped.\n"
+                    "Please restart if monitoring is needed!",
+                    "WARNING"
+                )
         except Exception as e:
             logger.error(f"❌ Unexpected error: {e}")
+            if self.telegram.enabled:
+                self.telegram.send_alert(
+                    f"❌ **Monitor Unexpected Error**\n\n"
+                    f"Error: {str(e)}\n\n"
+                    f"Please check the monitor immediately!",
+                    "ERROR"
+                )
         finally:
             if self.client:
                 self.client.loop_stop()
                 self.client.disconnect()
+    
+    def container_monitoring_loop(self):
+        """Monitor containers periodically"""
+        while True:
+            try:
+                # Check container status every 30 seconds
+                self.check_container_status()
+                
+                # Monitor container logs every 60 seconds
+                self.monitor_container_logs()
+                
+                time.sleep(30)
+                
+            except Exception as e:
+                logger.error(f"❌ Error in container monitoring loop: {e}")
+                time.sleep(30)
     
     def stats_loop(self):
         """Display statistics periodically"""

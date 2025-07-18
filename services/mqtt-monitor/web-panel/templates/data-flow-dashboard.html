@@ -259,6 +259,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="/medical-monitor">
+                                    <i class="ti ti-heartbeat me-2"></i>
+                                    Medical Monitor
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link active" href="/data-flow">
                                     <i class="ti ti-activity me-2"></i>
                                     Data Flow Monitor
@@ -285,6 +291,10 @@
                         </div>
                         <div class="col-auto ms-auto d-print-none">
                             <div class="btn-list">
+                                <a href="/medical-monitor" class="btn btn-success">
+                                    <i class="ti ti-heartbeat me-2"></i>
+                                    Medical Monitor
+                                </a>
                                 <button class="btn btn-primary" onclick="refreshData()">
                                     <i class="ti ti-refresh me-2"></i>
                                     Refresh
@@ -322,6 +332,32 @@
                             <div class="card stat-card">
                                 <div class="stat-number" id="avg-processing-time">0ms</div>
                                 <div class="stat-label">Processing Time</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Information Card -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <i class="ti ti-info-circle text-info" style="font-size: 2rem;"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h5 class="card-title text-info mb-1">View Medical Data</h5>
+                                            <p class="card-text mb-2">
+                                                This dashboard shows the data processing pipeline. To view actual medical readings (blood pressure, glucose, etc.), 
+                                                click the <strong>Medical Monitor</strong> button above or use the navigation menu.
+                                            </p>
+                                            <a href="/medical-monitor" class="btn btn-info btn-sm">
+                                                <i class="ti ti-heartbeat me-1"></i>
+                                                Go to Medical Monitor
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
