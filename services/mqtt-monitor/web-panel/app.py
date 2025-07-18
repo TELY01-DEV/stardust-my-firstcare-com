@@ -905,7 +905,7 @@ def get_emergency_alerts():
             query['processed'] = processed.lower() == 'true'
         
         # Get alerts from database
-        collection = mqtt_monitor.db['emergency_alerts']
+        collection = mqtt_monitor.db['emergency_alarm']
         alerts = list(collection.find(query).sort('timestamp', -1).limit(100))
         
         # Convert ObjectIds to strings
@@ -946,7 +946,7 @@ def get_emergency_alerts():
 def get_emergency_stats():
     """Get emergency alert statistics"""
     try:
-        collection = mqtt_monitor.db['emergency_alerts']
+        collection = mqtt_monitor.db['emergency_alarm']
         
         # Get stats for last 24 hours
         yesterday = datetime.now(timezone.utc) - timedelta(hours=24)
@@ -997,7 +997,7 @@ def get_emergency_stats():
 def mark_alert_processed(alert_id):
     """Mark an emergency alert as processed"""
     try:
-        collection = mqtt_monitor.db['emergency_alerts']
+        collection = mqtt_monitor.db['emergency_alarm']
         
         # Update the alert
         result = collection.update_one(
@@ -1868,20 +1868,62 @@ def get_recent_medical_data():
                 }
         }), 503
 
-        # Get medical data from the last 24 hours
+        # Get medical data from the last 7 days for AVA4 devices, 24 hours for others
         one_day_ago = datetime.now(timezone.utc) - timedelta(days=1)
+        seven_days_ago = datetime.now(timezone.utc) - timedelta(days=7)
+        
+        # Also create timezone-naive versions for comparison with stored timestamps
+        one_day_ago_naive = datetime.now() - timedelta(days=1)
+        seven_days_ago_naive = datetime.now() - timedelta(days=7)
         
         # Query the medical_data collection directly
         medical_data_collection = mqtt_monitor.db['medical_data']
         
         # Get recent medical data, sorted by timestamp (newest first)
-        # Handle both string and datetime timestamp formats
-        recent_medical_data = list(medical_data_collection.find({
-            '$or': [
-                {'timestamp': {'$gte': one_day_ago}},  # datetime objects
-                {'timestamp': {'$gte': one_day_ago.isoformat()}}  # string format
-            ]
-        }).sort('timestamp', -1).limit(100))
+        # Temporarily remove timestamp filter to include all AVA4 data
+        logger.info(f"🔍 DEBUG: Starting medical data query")
+        
+        # Debug: Check total counts
+        total_ava4 = medical_data_collection.count_documents({'device_type': 'AVA4'})
+        total_kati = medical_data_collection.count_documents({'device_type': {'$ne': 'AVA4'}})
+        logger.info(f"🔍 DEBUG: Total AVA4 records: {total_ava4}")
+        logger.info(f"🔍 DEBUG: Total Kati records: {total_kati}")
+        
+        # Get recent medical data from both AVA4 and Kati_Watch devices
+        # Get the 50 most recent AVA4 records
+        ava4_data = list(medical_data_collection.find({'device_type': 'AVA4'}).sort('timestamp', -1).limit(50))
+        print(f"🔍 DEBUG: AVA4 query returned {len(ava4_data)} records")
+        
+        # Get the 50 most recent Kati_Watch records
+        kati_data = list(medical_data_collection.find({'device_type': 'Kati_Watch'}).sort('timestamp', -1).limit(50))
+        print(f"🔍 DEBUG: Kati query returned {len(kati_data)} records")
+        
+        # Combine the data
+        recent_medical_data = ava4_data + kati_data
+        print(f"🔍 DEBUG: Combined data has {len(recent_medical_data)} records")
+        
+        # Get emergency alarms (SOS, Fall Detection) from emergency_alarm collection
+        emergency_alarm_collection = mqtt_monitor.db['emergency_alarm']
+        emergency_alarms = list(emergency_alarm_collection.find({}).sort('timestamp', -1).limit(20))
+        print(f"🔍 DEBUG: Emergency alarms query returned {len(emergency_alarms)} records")
+        
+        # Convert emergency alarms to medical data format for display
+        for alarm in emergency_alarms:
+            print(f"🔍 DEBUG: Processing emergency alarm: {alarm.get('alert_type')} for patient {alarm.get('patient_name')}")
+            alarm['source'] = 'Emergency'  # Mark as emergency data
+            alarm['collection_type'] = 'emergency_alarm'
+            alarm['device_type'] = alarm.get('source', 'Kati')  # Use source as device_type
+            recent_medical_data.append(alarm)
+        
+        # Sort by timestamp (newest first)
+        recent_medical_data.sort(key=lambda x: x.get('timestamp', datetime.min), reverse=True)
+        
+        logger.info(f"🔍 DEBUG: Query returned {len(recent_medical_data)} records")
+        sources = {}
+        for record in recent_medical_data:
+            source = record.get('device_type', 'Unknown')
+            sources[source] = sources.get(source, 0) + 1
+        logger.info(f"🔍 DEBUG: Sources in result: {sources}")
         
         # Convert ObjectIds to strings
         def convert_objectids(obj):
@@ -1988,6 +2030,36 @@ def get_recent_medical_data():
             if 'step_count' in record:
                 medical_values['steps'] = record['step_count']
                 print(f"✅ [FINAL] Extracted steps from top level: {record['step_count']}")
+            
+            # Handle emergency alarms (SOS, Fall Detection)
+            if record.get('collection_type') == 'emergency_alarm':
+                alert_type = record.get('alert_type', 'Unknown')
+                if alert_type == 'sos':
+                    medical_values['data_type'] = 'SOS Emergency'
+                    medical_values['emergency_status'] = 'CRITICAL'
+                    if 'alert_data' in record and isinstance(record['alert_data'], dict):
+                        alert_data = record['alert_data']
+                        if 'status' in alert_data:
+                            medical_values['sos_status'] = alert_data['status']
+                        if 'location' in alert_data:
+                            medical_values['emergency_location'] = 'Available'
+                        if 'imei' in alert_data:
+                            medical_values['device_id'] = alert_data['imei']
+                        if 'priority' in alert_data:
+                            medical_values['priority'] = alert_data['priority']
+                elif alert_type == 'fall_down':
+                    medical_values['data_type'] = 'Fall Detection'
+                    medical_values['emergency_status'] = 'HIGH'
+                    if 'alert_data' in record and isinstance(record['alert_data'], dict):
+                        alert_data = record['alert_data']
+                        if 'status' in alert_data:
+                            medical_values['fall_status'] = alert_data['status']
+                        if 'location' in alert_data:
+                            medical_values['fall_location'] = 'Available'
+                        if 'imei' in alert_data:
+                            medical_values['device_id'] = alert_data['imei']
+                        if 'priority' in alert_data:
+                            medical_values['priority'] = alert_data['priority']
             
             if source == 'AVA4' or source == 'AVA4_Gateway':
                 print(f"🔍 ENTERING AVA4 PROCESSING - Device: {device_id}, Source: {source}")
@@ -2101,38 +2173,129 @@ def get_recent_medical_data():
             elif source == 'Kati' or source == 'Kati_Watch':
                 print(f"🔍 ENTERING KATI PROCESSING - Device: {device_id}, Source: {source}")
                 
-                # ALWAYS extract battery, signal, and step data from raw_data first (heartbeat data)
-                if 'raw_data' in record and isinstance(record['raw_data'], dict):
-                    raw_data = record['raw_data']
-                    print(f"✅ Processing Kati raw_data: {list(raw_data.keys())}")
-                    
-                    # Extract heartbeat data (most common for Kati)
-                    if 'battery' in raw_data:
-                        medical_values['battery'] = raw_data['battery']
-                        print(f"✅ Extracted Kati battery: {raw_data['battery']}")
-                    if 'signalGSM' in raw_data:
-                        medical_values['signal_gsm'] = raw_data['signalGSM']
-                        print(f"✅ Extracted Kati signal: {raw_data['signalGSM']}")
-                    if 'step' in raw_data:
-                        medical_values['steps'] = raw_data['step']
-                        print(f"✅ Extracted Kati steps: {raw_data['step']}")
+                # Get the topic and event type to determine data type
+                topic = record.get('topic', '')
+                event_type = record.get('event_type', '')
                 
-                # Extract Kati medical data from vital_signs_data (less common, but comprehensive)
-                vital_signs = record.get('vital_signs_data', [])
-                if vital_signs and len(vital_signs) > 0:
-                    latest_vital = vital_signs[0]  # Most recent reading
-                    print(f"✅ Processing Kati vital signs: {list(latest_vital.keys())}")
-                    if 'heartRate' in latest_vital:
-                        medical_values['heart_rate'] = latest_vital['heartRate']
-                    if 'bloodPressure' in latest_vital:
-                        bp = latest_vital['bloodPressure']
-                        medical_values['systolic'] = bp.get('bp_sys', 'N/A')
-                        medical_values['diastolic'] = bp.get('bp_dia', 'N/A')
-                    if 'spO2' in latest_vital:
-                        medical_values['spO2'] = latest_vital['spO2']
-                    if 'bodyTemperature' in latest_vital:
-                        medical_values['temperature'] = latest_vital['bodyTemperature']
+                print(f"📊 Kati Topic: {topic}, Event Type: {event_type}")
+                
+                # Extract data based on topic/event type
+                if topic == 'iMEDE_watch/hb' or event_type == 'heartbeat':
+                    # Heartbeat data - extract battery, signal, steps
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'battery' in raw_data:
+                            medical_values['battery'] = raw_data['battery']
+                        if 'signal_gsm' in raw_data:
+                            medical_values['signal_gsm'] = raw_data['signal_gsm']
+                        if 'step_count' in raw_data:
+                            medical_values['steps'] = raw_data['step_count']
+                    # Also check nested data structure
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'data' in raw_data and isinstance(raw_data['data'], dict):
+                            data = raw_data['data']
+                            if 'battery' in data and 'battery' not in medical_values:
+                                medical_values['battery'] = data['battery']
+                            if 'signalGSM' in data and 'signal_gsm' not in medical_values:
+                                medical_values['signal_gsm'] = data['signalGSM']
+                            if 'step' in data and 'steps' not in medical_values:
+                                medical_values['steps'] = data['step']
+                    medical_values['data_type'] = 'Heartbeat'
+                    
+                elif topic == 'iMEDE_watch/VitalSign' or event_type == 'vital_signs':
+                    # Vital signs data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'heart_rate' in raw_data:
+                            medical_values['heart_rate'] = raw_data['heart_rate']
+                        if 'blood_pressure' in raw_data:
+                            medical_values['blood_pressure'] = raw_data['blood_pressure']
+                        if 'body_temperature' in raw_data:
+                            medical_values['temperature'] = raw_data['body_temperature']
+                        if 'spo2' in raw_data:
+                            medical_values['spO2'] = raw_data['spo2']
+                        if 'battery' in raw_data:
+                            medical_values['battery'] = raw_data['battery']
+                        if 'signal_gsm' in raw_data:
+                            medical_values['signal_gsm'] = raw_data['signal_gsm']
+                    medical_values['data_type'] = 'Vital Signs'
+                    
+                elif topic == 'iMEDE_watch/AP55' or event_type == 'batch_vital_signs':
+                    # Batch vital signs data
+                    vital_signs = record.get('vital_signs_data', [])
+                    if vital_signs and len(vital_signs) > 0:
+                        medical_values['vital_signs_count'] = len(vital_signs)
+                        medical_values['data_type'] = f'Batch Vital Signs ({len(vital_signs)} readings)'
+                    else:
+                        medical_values['data_type'] = 'Batch Vital Signs'
+                        
+                elif topic == 'iMEDE_watch/location' or event_type == 'location':
+                    # Location data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'location' in raw_data:
+                            location = raw_data['location']
+                            if 'GPS' in location:
+                                gps = location['GPS']
+                                if gps.get('latitude') and gps.get('longitude'):
+                                    medical_values['gps_coords'] = f"{gps['latitude']}, {gps['longitude']}"
+                                else:
+                                    medical_values['gps_status'] = 'No GPS signal'
+                            if 'LBS' in location:
+                                lbs = location['LBS']
+                                medical_values['cell_tower'] = f"{lbs.get('MCC', '')}-{lbs.get('MNC', '')}-{lbs.get('LAC', '')}-{lbs.get('CID', '')}"
+                    medical_values['data_type'] = 'Location'
+                    
+                elif topic == 'iMEDE_watch/sos' or event_type == 'emergency_sos':
+                    # SOS emergency data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'status' in raw_data:
+                            medical_values['sos_status'] = raw_data['status']
+                        if 'location' in raw_data:
+                            medical_values['emergency_location'] = 'Available'
+                    medical_values['data_type'] = 'SOS Emergency'
+                    
+                elif topic == 'iMEDE_watch/fallDown' or event_type == 'fall_detection':
+                    # Fall detection data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'status' in raw_data:
+                            medical_values['fall_status'] = raw_data['status']
+                        if 'location' in raw_data:
+                            medical_values['fall_location'] = 'Available'
+                    medical_values['data_type'] = 'Fall Detection'
+                    
+                elif topic == 'iMEDE_watch/sleepdata' or event_type == 'sleep_data':
+                    # Sleep data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'sleep_data' in raw_data:
+                            medical_values['sleep_data'] = 'Available'
+                    medical_values['data_type'] = 'Sleep Data'
+                    
+                elif topic == 'iMEDE_watch/onlineTrigger' or event_type == 'device_status':
+                    # Device status data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'status' in raw_data:
+                            medical_values['device_status'] = raw_data['status']
+                    medical_values['data_type'] = 'Device Status'
+                    
+                else:
+                    # Generic data extraction for unknown topics
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        # Extract common fields
+                        for key in ['battery', 'signal_gsm', 'step_count', 'heart_rate', 'temperature', 'spO2']:
+                            if key in raw_data:
+                                medical_values[key] = raw_data[key]
+                    medical_values['data_type'] = f'Unknown Topic: {topic}'
+                
+                print(f"✅ Extracted Kati values: {medical_values}")
             
+            # Include ALL records with appropriate values for each data type
             formatted_data.append({
                 'id': str(record.get('_id', '')),
                 'device_id': device_id,
@@ -2436,6 +2599,395 @@ def broadcast_medical_data():
     except Exception as e:
         logger.error(f"❌ Error broadcasting medical data: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
+
+# ============================================================================
+# KATI TRANSACTION ENDPOINTS
+# ============================================================================
+
+@app.route('/kati-transaction')
+@login_required
+def kati_transaction_page():
+    """Kati Watch transaction monitoring dashboard"""
+    return render_template('kati-transaction.html')
+
+@app.route('/api/kati-transactions')
+@login_required
+def get_kati_transactions():
+    """Get Kati Watch transaction data with enhanced analysis"""
+    try:
+        # Check if MongoDB connection is available
+        if mqtt_monitor.db is None:
+            return jsonify({
+                "success": False,
+                "error": "Database connection not available",
+                "data": {
+                    "transactions": [],
+                    "statistics": {},
+                    "last_updated": datetime.now(timezone.utc).isoformat()
+                }
+            }), 503
+
+        # Get filter parameter from request
+        data_filter = request.args.get('filter', 'patient_only')  # 'patient_only' or 'all_devices'
+        
+        # Get Kati Watch data from the last 24 hours
+        one_day_ago = datetime.now(timezone.utc) - timedelta(days=1)
+        
+        # Query the medical_data collection for Kati Watch data
+        medical_data_collection = mqtt_monitor.db['medical_data']
+        
+        # Build query based on filter
+        if data_filter == 'patient_only':
+            # Only show data that has patient_id (mapped devices)
+            kati_transactions = list(medical_data_collection.find({
+                'device_type': 'Kati_Watch',
+                'timestamp': {'$gte': one_day_ago},
+                'patient_id': {'$exists': True, '$ne': None}
+            }).sort('timestamp', -1).limit(500))
+        else:
+            # Show all Kati Watch data (including unmapped devices)
+            kati_transactions = list(medical_data_collection.find({
+                'device_type': 'Kati_Watch',
+                'timestamp': {'$gte': one_day_ago}
+            }).sort('timestamp', -1).limit(500))
+        
+        # Also get emergency alarms for Kati devices
+        emergency_collection = mqtt_monitor.db['emergency_alarm']
+        emergency_alarms = list(emergency_collection.find({
+            'timestamp': {'$gte': one_day_ago},
+            'device_type': 'Kati_Watch'
+        }).sort('timestamp', -1).limit(100))
+        
+        # Convert emergency alarms to transaction format
+        for alarm in emergency_alarms:
+            alarm['_id'] = str(alarm['_id'])
+            alarm['topic'] = alarm.get('topic', 'iMEDE_watch/SOS')
+            alarm['event_type'] = 'emergency_sos' if 'SOS' in alarm.get('topic', '') else 'fall_detection'
+            alarm['status'] = 'success'
+            alarm['device_type'] = 'Kati_Watch'
+        
+        # Combine and sort all transactions
+        all_transactions = kati_transactions + emergency_alarms
+        all_transactions.sort(key=lambda x: x.get('timestamp', datetime.min), reverse=True)
+        
+        # Convert ObjectIds to strings
+        def convert_objectids(obj):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    if isinstance(value, dict):
+                        convert_objectids(value)
+                    elif isinstance(value, list):
+                        for item in value:
+                            convert_objectids(item)
+                    elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
+                        obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
+            elif isinstance(obj, list):
+                for item in obj:
+                    convert_objectids(item)
+            return obj
+        
+        all_transactions = convert_objectids(all_transactions)
+        
+        # Calculate statistics
+        mapped_count = len([t for t in all_transactions if t.get('patient_id')])
+        unmapped_count = len([t for t in all_transactions if not t.get('patient_id')])
+        
+        statistics = {
+            'total_transactions': len(all_transactions),
+            'mapped_devices': mapped_count,
+            'unmapped_devices': unmapped_count,
+            'active_devices': len(set(t.get('device_id') for t in all_transactions if t.get('device_id'))),
+            'success_rate': 100,  # All stored transactions are successful
+            'topic_distribution': {},
+            'emergency_count': len(emergency_alarms),
+            'filter_applied': data_filter,
+            'last_updated': datetime.now(timezone.utc).isoformat()
+        }
+        
+        # Calculate topic distribution
+        for transaction in all_transactions:
+            topic = transaction.get('topic', 'unknown')
+            statistics['topic_distribution'][topic] = statistics['topic_distribution'].get(topic, 0) + 1
+        
+        return jsonify({
+            "success": True,
+            "data": {
+                "transactions": all_transactions,
+                "statistics": statistics
+            }
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting Kati transactions: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/kati-transactions/all-devices')
+@login_required
+def get_all_kati_devices():
+    """Get all Kati Watch data including unmapped devices"""
+    try:
+        # Check if MongoDB connection is available
+        if mqtt_monitor.db is None:
+            return jsonify({
+                "success": False,
+                "error": "Database connection not available",
+                "data": {
+                    "transactions": [],
+                    "statistics": {},
+                    "last_updated": datetime.now(timezone.utc).isoformat()
+                }
+            }), 503
+
+        # Get Kati Watch data from the last 24 hours (all devices)
+        one_day_ago = datetime.now(timezone.utc) - timedelta(days=1)
+        
+        # Query the medical_data collection for ALL Kati Watch data
+        medical_data_collection = mqtt_monitor.db['medical_data']
+        
+        # Get all Kati Watch transactions (including unmapped)
+        kati_transactions = list(medical_data_collection.find({
+            'device_type': 'Kati_Watch',
+            'timestamp': {'$gte': one_day_ago}
+        }).sort('timestamp', -1).limit(1000))  # Increased limit for all devices
+        
+        # Also get emergency alarms for Kati devices
+        emergency_collection = mqtt_monitor.db['emergency_alarm']
+        emergency_alarms = list(emergency_collection.find({
+            'timestamp': {'$gte': one_day_ago},
+            'device_type': 'Kati_Watch'
+        }).sort('timestamp', -1).limit(200))
+        
+        # Convert emergency alarms to transaction format
+        for alarm in emergency_alarms:
+            alarm['_id'] = str(alarm['_id'])
+            alarm['topic'] = alarm.get('topic', 'iMEDE_watch/SOS')
+            alarm['event_type'] = 'emergency_sos' if 'SOS' in alarm.get('topic', '') else 'fall_detection'
+            alarm['status'] = 'success'
+            alarm['device_type'] = 'Kati_Watch'
+        
+        # Combine and sort all transactions
+        all_transactions = kati_transactions + emergency_alarms
+        all_transactions.sort(key=lambda x: x.get('timestamp', datetime.min), reverse=True)
+        
+        # Convert ObjectIds to strings
+        def convert_objectids(obj):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    if isinstance(value, dict):
+                        convert_objectids(value)
+                    elif isinstance(value, list):
+                        for item in value:
+                            convert_objectids(item)
+                    elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
+                        obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
+            elif isinstance(obj, list):
+                for item in obj:
+                    convert_objectids(item)
+            return obj
+        
+        all_transactions = convert_objectids(all_transactions)
+        
+        # Calculate statistics
+        mapped_count = len([t for t in all_transactions if t.get('patient_id')])
+        unmapped_count = len([t for t in all_transactions if not t.get('patient_id')])
+        unique_devices = set(t.get('device_id') for t in all_transactions if t.get('device_id'))
+        mapped_devices = set(t.get('device_id') for t in all_transactions if t.get('device_id') and t.get('patient_id'))
+        unmapped_devices = unique_devices - mapped_devices
+        
+        statistics = {
+            'total_transactions': len(all_transactions),
+            'mapped_transactions': mapped_count,
+            'unmapped_transactions': unmapped_count,
+            'total_devices': len(unique_devices),
+            'mapped_devices': len(mapped_devices),
+            'unmapped_devices': len(unmapped_devices),
+            'success_rate': 100,  # All stored transactions are successful
+            'topic_distribution': {},
+            'emergency_count': len(emergency_alarms),
+            'filter_applied': 'all_devices',
+            'last_updated': datetime.now(timezone.utc).isoformat()
+        }
+        
+        # Calculate topic distribution
+        for transaction in all_transactions:
+            topic = transaction.get('topic', 'unknown')
+            statistics['topic_distribution'][topic] = statistics['topic_distribution'].get(topic, 0) + 1
+        
+        return jsonify({
+            "success": True,
+            "data": {
+                "transactions": all_transactions,
+                "statistics": statistics
+            }
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting all Kati devices: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/kati-transactions/stats')
+@login_required
+def get_kati_transaction_stats():
+    """Get Kati Watch transaction statistics"""
+    try:
+        # Check if MongoDB connection is available
+        if mqtt_monitor.db is None:
+            return jsonify({
+                "success": False,
+                "error": "Database connection not available"
+            }), 503
+
+        # Get statistics for different time periods
+        now = datetime.now(timezone.utc)
+        one_hour_ago = now - timedelta(hours=1)
+        one_day_ago = now - timedelta(days=1)
+        one_week_ago = now - timedelta(days=7)
+        
+        medical_data_collection = mqtt_monitor.db['medical_data']
+        emergency_collection = mqtt_monitor.db['emergency_alarm']
+        
+        # Get transaction counts for different periods
+        stats = {
+            'last_hour': {
+                'transactions': medical_data_collection.count_documents({
+                    'device_type': 'Kati_Watch',
+                    'timestamp': {'$gte': one_hour_ago}
+                }),
+                'emergencies': emergency_collection.count_documents({
+                    'device_type': 'Kati_Watch',
+                    'timestamp': {'$gte': one_hour_ago}
+                })
+            },
+            'last_24_hours': {
+                'transactions': medical_data_collection.count_documents({
+                    'device_type': 'Kati_Watch',
+                    'timestamp': {'$gte': one_day_ago}
+                }),
+                'emergencies': emergency_collection.count_documents({
+                    'device_type': 'Kati_Watch',
+                    'timestamp': {'$gte': one_day_ago}
+                })
+            },
+            'last_week': {
+                'transactions': medical_data_collection.count_documents({
+                    'device_type': 'Kati_Watch',
+                    'timestamp': {'$gte': one_week_ago}
+                }),
+                'emergencies': emergency_collection.count_documents({
+                    'device_type': 'Kati_Watch',
+                    'timestamp': {'$gte': one_week_ago}
+                })
+            }
+        }
+        
+        # Get active devices
+        active_devices = medical_data_collection.distinct('device_id', {
+            'device_type': 'Kati_Watch',
+            'timestamp': {'$gte': one_day_ago}
+        })
+        
+        stats['active_devices'] = len(active_devices)
+        stats['last_updated'] = now.isoformat()
+        
+        return jsonify({
+            "success": True,
+            "data": stats
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting Kati transaction stats: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@socketio.on('get_kati_transactions')
+def handle_get_kati_transactions():
+    """Handle Socket.IO request for Kati transaction data"""
+    try:
+        # Get recent Kati transactions
+        if mqtt_monitor.db is not None:
+            one_day_ago = datetime.now(timezone.utc) - timedelta(days=1)
+            medical_data_collection = mqtt_monitor.db['medical_data']
+            
+            recent_transactions = list(medical_data_collection.find({
+                'device_type': 'Kati_Watch',
+                'timestamp': {'$gte': one_day_ago}
+            }).sort('timestamp', -1).limit(50))
+            
+            # Convert ObjectIds to strings
+            def convert_objectids(obj):
+                if isinstance(obj, dict):
+                    for key, value in obj.items():
+                        if isinstance(value, dict):
+                            convert_objectids(value)
+                        elif isinstance(value, list):
+                            for item in value:
+                                convert_objectids(item)
+                        elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
+                            obj[key] = str(value)
+                        elif hasattr(value, 'isoformat'):
+                            obj[key] = value.isoformat()
+                elif isinstance(obj, list):
+                    for item in obj:
+                        convert_objectids(item)
+                return obj
+            
+            recent_transactions = convert_objectids(recent_transactions)
+            
+            emit('kati_transaction_update', {
+                'type': 'kati_transactions',
+                'data': recent_transactions,
+                'timestamp': datetime.now(timezone.utc).isoformat()
+            })
+            
+            logger.debug(f"📡 Kati transactions sent via Socket.IO: {len(recent_transactions)} records")
+        else:
+            emit('kati_transaction_error', {
+                'type': 'error',
+                'message': 'Database connection not available',
+                'timestamp': datetime.now(timezone.utc).isoformat()
+            })
+            
+    except Exception as e:
+        logger.error(f"❌ Error handling Kati transaction Socket.IO request: {e}")
+        emit('kati_transaction_error', {
+            'type': 'error',
+            'message': str(e),
+            'timestamp': datetime.now(timezone.utc).isoformat()
+        })
+
+def broadcast_kati_transaction_update(transaction_data: dict):
+    """Broadcast Kati transaction update to all connected Socket.IO clients"""
+    try:
+        # Convert transaction data to JSON serializable format
+        def convert_for_broadcast(obj):
+            if isinstance(obj, dict):
+                return {k: convert_for_broadcast(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_for_broadcast(item) for item in obj]
+            elif hasattr(obj, 'isoformat'):
+                return obj.isoformat()
+            elif hasattr(obj, '__str__'):
+                return str(obj)
+            else:
+                return obj
+        
+        # Convert the transaction data to ensure it's JSON serializable
+        serializable_transaction = convert_for_broadcast(transaction_data)
+        
+        # Broadcast to all connected clients
+        socketio.emit('kati_transaction_update', {
+            'type': 'new_kati_transaction',
+            'data': serializable_transaction,
+            'timestamp': datetime.now(timezone.utc).isoformat()
+        })
+        
+        logger.debug(f"📡 Kati transaction broadcasted via Socket.IO: {serializable_transaction.get('device_id', 'unknown')}")
+        
+    except Exception as e:
+        logger.error(f"❌ Error broadcasting Kati transaction: {e}")
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=8098, debug=True, allow_unsafe_werkzeug=True) 

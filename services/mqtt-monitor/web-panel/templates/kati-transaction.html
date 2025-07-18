@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>My FirstCare Opera Panel - Kati Transaction Monitor</title>
+    
+    <!-- CSS files -->
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/iconfont/tabler-icons.min.css" rel="stylesheet"/>
+    
+    <!-- Socket.IO client -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    
+    <style>
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+        }
+        .status-success { background-color: #d1e7dd; color: #0f5132; }
+        .status-error { background-color: #f8d7da; color: #721c24; }
+        .status-warning { background-color: #fff3cd; color: #856404; }
+        .status-info { background-color: #d1ecf1; color: #0c5460; }
+        .status-emergency { background-color: #f8d7da; color: #721c24; font-weight: bold; }
+        
+        .topic-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.2rem;
+            font-weight: 500;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        
+        .data-value {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            background-color: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.2rem;
+            border: 1px solid #dee2e6;
+        }
+        
+        .refresh-indicator {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .table-responsive {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .emergency-alert {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            animation: emergency-pulse 1s infinite;
+        }
+        
+        @keyframes emergency-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Navbar -->
+        <header class="navbar navbar-expand-md navbar-light d-print-none">
+            <div class="container-xl">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                    <a href="/">
+                        <img src="/static/AMY_LOGO.png" width="110" height="32" alt="My FirstCare" class="navbar-brand-image">
+                    </a>
+                </h1>
+                <div class="navbar-nav flex-row order-md-last">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
+                            <span class="avatar avatar-sm">
+                                <img src="/static/user_profiles/admin.png" alt="Admin">
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <a href="/logout" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Navbar Menu -->
+        <div class="navbar-expand-md">
+            <div class="collapse navbar-collapse" id="navbar-menu">
+                <div class="navbar navbar-light">
+                    <div class="container-xl">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-home"></i>
+                                    </span>
+                                    <span class="nav-link-title">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/medical-monitor">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-heartbeat"></i>
+                                    </span>
+                                    <span class="nav-link-title">Medical Monitor</span>
+                                </a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/kati-transaction">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-device-watch"></i>
+                                    </span>
+                                    <span class="nav-link-title">Kati Transaction</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/data-flow">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-graph"></i>
+                                    </span>
+                                    <span class="nav-link-title">Data Flow</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/emergency">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="ti ti-alert-triangle"></i>
+                                    </span>
+                                    <span class="nav-link-title">Emergency</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            <i class="ti ti-device-watch text-primary"></i>
+                            Kati Watch Transaction Monitor
+                        </h2>
+                        <div class="text-muted mt-1">Real-time monitoring of Kati Watch data processing</div>
+                    </div>
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <!-- Data Filter Toggle -->
+                            <div class="btn-group" role="group">
+                                <input type="radio" class="btn-check" name="data-filter" id="patient-only" value="patient_only" checked>
+                                <label class="btn btn-outline-primary" for="patient-only">
+                                    <i class="ti ti-user"></i>
+                                    Patient Data Only
+                                </label>
+                                
+                                <input type="radio" class="btn-check" name="data-filter" id="all-devices" value="all_devices">
+                                <label class="btn btn-outline-secondary" for="all-devices">
+                                    <i class="ti ti-devices"></i>
+                                    All Device Data
+                                </label>
+                            </div>
+                            
+                            <button class="btn btn-primary" onclick="loadKatiData()">
+                                <i class="ti ti-refresh"></i>
+                                Refresh
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="toggleAutoRefresh()">
+                                <i class="ti ti-clock" id="auto-refresh-icon"></i>
+                                <span id="auto-refresh-text">Auto Refresh</span>
+                            </button>
+                            <div class="btn btn-outline-info">
+                                <i class="ti ti-wifi"></i>
+                                <span id="connection-status">Connecting...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <!-- Statistics Cards -->
+                <div class="row row-deck row-cards mb-4">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Total Transactions</div>
+                                </div>
+                                <div class="h1 mb-3" id="total-transactions">0</div>
+                                <div class="d-flex mb-2">
+                                    <div>Last 24 hours</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Active Devices</div>
+                                </div>
+                                <div class="h1 mb-3" id="active-devices">0</div>
+                                <div class="d-flex mb-2">
+                                    <div id="device-type-label">Kati Watches</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Success Rate</div>
+                                </div>
+                                <div class="h1 mb-3" id="success-rate">0%</div>
+                                <div class="d-flex mb-2">
+                                    <div>Processing</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card emergency-alert" id="emergency-card" style="display: none;">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Emergency Alerts</div>
+                                </div>
+                                <div class="h1 mb-3" id="emergency-count">0</div>
+                                <div class="d-flex mb-2">
+                                    <div>SOS/Fall Detection</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Statistics for All Devices View -->
+                <div class="row row-deck row-cards mb-4" id="all-devices-stats" style="display: none;">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white;">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Mapped Devices</div>
+                                </div>
+                                <div class="h1 mb-3" id="mapped-devices-count">0</div>
+                                <div class="d-flex mb-2">
+                                    <div>With Patient Data</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%); color: white;">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Unmapped Devices</div>
+                                </div>
+                                <div class="h1 mb-3" id="unmapped-devices-count">0</div>
+                                <div class="d-flex mb-2">
+                                    <div>No Patient Data</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card" style="background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%); color: white;">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Mapped Transactions</div>
+                                </div>
+                                <div class="h1 mb-3" id="mapped-transactions-count">0</div>
+                                <div class="d-flex mb-2">
+                                    <div>Patient Data</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white;">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Unmapped Transactions</div>
+                                </div>
+                                <div class="h1 mb-3" id="unmapped-transactions-count">0</div>
+                                <div class="d-flex mb-2">
+                                    <div>Raw Device Data</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Topic Distribution -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="ti ti-chart-pie"></i>
+                                    Topic Distribution
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row" id="topic-distribution">
+                                    <!-- Topic badges will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kati Transaction Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="ti ti-table"></i>
+                            Kati Watch Transactions
+                            <span class="badge bg-primary ms-2" id="transaction-count">0</span>
+                        </h3>
+                        <div class="card-actions">
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-secondary" onclick="filterByTopic('all')">All</button>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="filterByTopic('iMEDE_watch/hb')">Heartbeat</button>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="filterByTopic('iMEDE_watch/VitalSign')">Vital Signs</button>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="filterByTopic('iMEDE_watch/AP55')">Batch Data</button>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="filterByTopic('iMEDE_watch/location')">Location</button>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="filterByTopic('iMEDE_watch/sleepdata')">Sleep Data</button>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="filterByTopic('iMEDE_watch/SOS')">SOS</button>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="filterByTopic('iMEDE_watch/fallDown')">Fall Detection</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-vcenter card-table" id="kati-transaction-table">
+                                <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Patient</th>
+                                        <th>Device ID</th>
+                                        <th>Topic</th>
+                                        <th>Event Type</th>
+                                        <th>Data</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="kati-transaction-tbody">
+                                    <!-- Data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/iconfont/tabler-icons.min.js"></script>
+    
+    <script>
+        let socket;
+        let autoRefreshInterval;
+        let autoRefreshEnabled = false;
+        let currentFilter = 'all';
+        let currentDataFilter = 'patient_only'; // 'patient_only' or 'all_devices'
+        let katiData = [];
+        
+        // Initialize Socket.IO connection
+        function initializeSocket() {
+            socket = io();
+            
+            socket.on('connect', function() {
+                console.log('Connected to WebSocket server');
+                document.getElementById('connection-status').textContent = 'Connected';
+            });
+            
+            socket.on('disconnect', function() {
+                console.log('Disconnected from WebSocket server');
+                document.getElementById('connection-status').textContent = 'Disconnected';
+            });
+            
+            socket.on('kati_transaction_update', function(data) {
+                console.log('Received Kati transaction update:', data);
+                addKatiTransaction(data);
+                updateStatistics();
+            });
+        }
+        
+        // Initialize data filter toggle
+        function initializeDataFilter() {
+            const patientOnlyRadio = document.getElementById('patient-only');
+            const allDevicesRadio = document.getElementById('all-devices');
+            
+            patientOnlyRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    currentDataFilter = 'patient_only';
+                    loadKatiData();
+                }
+            });
+            
+            allDevicesRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    currentDataFilter = 'all_devices';
+                    loadKatiData();
+                }
+            });
+        }
+        
+        // Load Kati transaction data
+        function loadKatiData() {
+            const url = currentDataFilter === 'patient_only' 
+                ? '/api/kati-transactions?filter=patient_only'
+                : '/api/kati-transactions?filter=all_devices';
+                
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        katiData = data.data.transactions || [];
+                        displayKatiTransactions();
+                        updateStatistics(data.data.statistics);
+                        updateTopicDistribution(data.data.statistics.topic_distribution);
+                        updateDataFilterDisplay();
+                    } else {
+                        console.error('Failed to load Kati data:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading Kati data:', error);
+                });
+        }
+        
+        // Update display based on data filter
+        function updateDataFilterDisplay() {
+            const allDevicesStats = document.getElementById('all-devices-stats');
+            const deviceTypeLabel = document.getElementById('device-type-label');
+            
+            if (currentDataFilter === 'all_devices') {
+                allDevicesStats.style.display = 'block';
+                deviceTypeLabel.textContent = 'All Kati Devices';
+            } else {
+                allDevicesStats.style.display = 'none';
+                deviceTypeLabel.textContent = 'Kati Watches';
+            }
+        }
+        
+        // Display Kati transactions in table
+        function displayKatiTransactions() {
+            const tbody = document.getElementById('kati-transaction-tbody');
+            tbody.innerHTML = '';
+            
+            const filteredData = currentFilter === 'all' 
+                ? katiData 
+                : katiData.filter(item => item.topic === currentFilter);
+            
+            filteredData.forEach(transaction => {
+                const row = createTransactionRow(transaction);
+                tbody.appendChild(row);
+            });
+            
+            document.getElementById('transaction-count').textContent = filteredData.length;
+        }
+        
+        // Create transaction row
+        function createTransactionRow(transaction) {
+            const row = document.createElement('tr');
+            
+            // Format timestamp
+            const timestamp = new Date(transaction.timestamp);
+            const formattedTime = timestamp.toLocaleString();
+            
+            // Get patient name or device info
+            let patientInfo = 'Unknown';
+            if (transaction.patient_name) {
+                patientInfo = transaction.patient_name;
+            } else if (transaction.device_id) {
+                patientInfo = `Device: ${transaction.device_id}`;
+            }
+            
+            // Add unmapped device indicator
+            if (!transaction.patient_id && transaction.device_id) {
+                patientInfo += ' <span class="badge bg-warning">Unmapped</span>';
+            }
+            
+            // Get status badge
+            const statusBadge = getStatusBadge(transaction.event_type, transaction.status);
+            
+            // Get topic badge
+            const topicBadge = `<span class="topic-badge">${transaction.topic}</span>`;
+            
+            // Format data based on event type
+            let dataDisplay = 'No Data';
+            if (transaction.data) {
+                dataDisplay = formatTransactionData(transaction);
+            }
+            
+            row.innerHTML = `
+                <td>
+                    <div class="text-muted">${formattedTime}</div>
+                </td>
+                <td>
+                    <div>${patientInfo}</div>
+                </td>
+                <td>
+                    <div class="text-muted">${transaction.device_id || 'N/A'}</div>
+                </td>
+                <td>${topicBadge}</td>
+                <td>
+                    <div class="text-muted">${transaction.event_type || 'Unknown'}</div>
+                </td>
+                <td>
+                    <div class="data-value">${dataDisplay}</div>
+                </td>
+                <td>${statusBadge}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary" onclick="viewTransactionDetails('${transaction._id}')">
+                        <i class="ti ti-eye"></i>
+                        View
+                    </button>
+                </td>
+            `;
+            
+            return row;
+        }
+        
+        // Format transaction data for display
+        function formatTransactionData(transaction) {
+            const data = transaction.data;
+            const eventType = transaction.event_type;
+            
+            if (!data) return 'No Data';
+            
+            switch (eventType) {
+                case 'heartbeat':
+                    return `Steps: ${transaction.step_count || 0}, Battery: ${transaction.battery || 0}%, Signal: ${transaction.signal_gsm || 0}`;
+                case 'vital_signs':
+                    const hr = data.heartRate || 'N/A';
+                    const bp = data.bloodPressure ? `${data.bloodPressure.bp_sys || 'N/A'}/${data.bloodPressure.bp_dia || 'N/A'}` : 'N/A';
+                    const temp = data.bodyTemperature || 'N/A';
+                    const spo2 = data.spO2 || 'N/A';
+                    return `HR: ${hr}, BP: ${bp}, Temp: ${temp}°C, SpO2: ${spo2}%`;
+                case 'batch_vital_signs':
+                    const numData = transaction.num_datas || 0;
+                    return `Batch: ${numData} vital signs records`;
+                case 'location':
+                    const location = data.location || {};
+                    const gps = location.GPS || {};
+                    if (gps.latitude && gps.longitude) {
+                        return `GPS: ${gps.latitude}, ${gps.longitude}`;
+                    }
+                    return 'Location data available';
+                case 'emergency_sos':
+                    return `SOS Alert - ${data.status || 'Emergency'}`;
+                case 'fall_detection':
+                    return `Fall Detection - ${data.status || 'Fall Detected'}`;
+                case 'sleep_data':
+                    const sleep = data.sleep || {};
+                    return `Sleep: ${sleep.time || 'N/A'}, Slots: ${sleep.num || 0}`;
+                case 'device_status':
+                    return `Status: ${data.status || 'Unknown'}`;
+                default:
+                    return JSON.stringify(data).substring(0, 100) + (JSON.stringify(data).length > 100 ? '...' : '');
+            }
+        }
+        
+        // Get status badge
+        function getStatusBadge(eventType, status) {
+            if (eventType === 'emergency_sos' || eventType === 'fall_detection') {
+                return '<span class="status-badge status-emergency">Emergency</span>';
+            } else if (status === 'success' || status === 'online') {
+                return '<span class="status-badge status-success">Success</span>';
+            } else if (status === 'error' || status === 'offline') {
+                return '<span class="status-badge status-error">Error</span>';
+            } else if (status === 'warning') {
+                return '<span class="status-badge status-warning">Warning</span>';
+            } else {
+                return '<span class="status-badge status-info">Info</span>';
+            }
+        }
+        
+        // Update statistics
+        function updateStatistics(stats) {
+            if (!stats) return;
+            
+            document.getElementById('total-transactions').textContent = stats.total_transactions || 0;
+            document.getElementById('active-devices').textContent = stats.active_devices || 0;
+            document.getElementById('success-rate').textContent = (stats.success_rate || 0) + '%';
+            
+            // Update emergency count
+            const emergencyCount = stats.emergency_count || 0;
+            const emergencyCard = document.getElementById('emergency-card');
+            if (emergencyCount > 0) {
+                document.getElementById('emergency-count').textContent = emergencyCount;
+                emergencyCard.style.display = 'block';
+            } else {
+                emergencyCard.style.display = 'none';
+            }
+            
+            // Update all devices stats if available
+            if (stats.mapped_devices !== undefined) {
+                document.getElementById('mapped-devices-count').textContent = stats.mapped_devices || 0;
+                document.getElementById('unmapped-devices-count').textContent = stats.unmapped_devices || 0;
+                document.getElementById('mapped-transactions-count').textContent = stats.mapped_transactions || 0;
+                document.getElementById('unmapped-transactions-count').textContent = stats.unmapped_transactions || 0;
+            }
+        }
+        
+        // Update topic distribution
+        function updateTopicDistribution(topicDistribution) {
+            const container = document.getElementById('topic-distribution');
+            container.innerHTML = '';
+            
+            if (!topicDistribution) return;
+            
+            Object.entries(topicDistribution).forEach(([topic, count]) => {
+                const badge = document.createElement('div');
+                badge.className = 'col-auto';
+                badge.innerHTML = `
+                    <span class="topic-badge">
+                        ${topic}: ${count}
+                    </span>
+                `;
+                container.appendChild(badge);
+            });
+        }
+        
+        // Filter by topic
+        function filterByTopic(topic) {
+            currentFilter = topic;
+            displayKatiTransactions();
+        }
+        
+        // Toggle auto refresh
+        function toggleAutoRefresh() {
+            autoRefreshEnabled = !autoRefreshEnabled;
+            const icon = document.getElementById('auto-refresh-icon');
+            const text = document.getElementById('auto-refresh-text');
+            
+            if (autoRefreshEnabled) {
+                icon.className = 'ti ti-clock text-success';
+                text.textContent = 'Auto Refresh ON';
+                autoRefreshInterval = setInterval(loadKatiData, 10000); // 10 seconds
+            } else {
+                icon.className = 'ti ti-clock';
+                text.textContent = 'Auto Refresh';
+                if (autoRefreshInterval) {
+                    clearInterval(autoRefreshInterval);
+                }
+            }
+        }
+        
+        // Add new transaction (for real-time updates)
+        function addKatiTransaction(transaction) {
+            // Only add if it matches current filter
+            if (currentDataFilter === 'patient_only' && !transaction.patient_id) {
+                return; // Skip unmapped devices in patient-only mode
+            }
+            
+            katiData.unshift(transaction);
+            if (katiData.length > 500) {
+                katiData = katiData.slice(0, 500);
+            }
+            displayKatiTransactions();
+        }
+        
+        // View transaction details
+        function viewTransactionDetails(transactionId) {
+            const transaction = katiData.find(t => t._id === transactionId);
+            if (transaction) {
+                alert('Transaction Details:\n' + JSON.stringify(transaction, null, 2));
+            }
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSocket();
+            initializeDataFilter();
+            loadKatiData();
+        });
+    </script>
+</body>
+</html> 
