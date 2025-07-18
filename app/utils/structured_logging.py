@@ -95,54 +95,66 @@ class StructuredLogger:
         )
         
         # File logger with JSON-like format
-        logger.add(
-            "logs/app.json",
-            format='{{\"time\":\"{time:YYYY-MM-DD HH:mm:ss.SSS}\",\"level\":\"{level}\",\"logger\":\"{name}\",\"function\":\"{function}\",\"line\":{line},\"message\":\"{message}\",\"extra\":{extra}}}',
-            level="DEBUG",
-            rotation="1 day",
-            retention="30 days",
-            compression="gz",
-            enqueue=True,
-            backtrace=True,
-            diagnose=True
-        )
+        try:
+            logger.add(
+                "logs/app.json",
+                format='{{\"time\":\"{time:YYYY-MM-DD HH:mm:ss.SSS}\",\"level\":\"{level}\",\"logger\":\"{name}\",\"function\":\"{function}\",\"line\":{line},\"message\":\"{message}\",\"extra\":{extra}}}',
+                level="DEBUG",
+                rotation="1 day",
+                retention="30 days",
+                compression="gz",
+                enqueue=True,
+                backtrace=True,
+                diagnose=True
+            )
+        except Exception as e:
+            print(f"Warning: Could not configure app.json logging: {e}")
         
         # Error-specific logger
-        logger.add(
-            "logs/errors.json",
-            format='{{\"time\":\"{time:YYYY-MM-DD HH:mm:ss.SSS}\",\"level\":\"{level}\",\"logger\":\"{name}\",\"function\":\"{function}\",\"line\":{line},\"message\":\"{message}\",\"extra\":{extra}}}',
-            level="ERROR",
-            rotation="1 day",
-            retention="90 days",
-            compression="gz",
-            enqueue=True,
-            backtrace=True,
-            diagnose=True
-        )
+        try:
+            logger.add(
+                "logs/errors.json",
+                format='{{\"time\":\"{time:YYYY-MM-DD HH:mm:ss.SSS}\",\"level\":\"{level}\",\"logger\":\"{name}\",\"function\":\"{function}\",\"line\":{line},\"message\":\"{message}\",\"extra\":{extra}}}',
+                level="ERROR",
+                rotation="1 day",
+                retention="90 days",
+                compression="gz",
+                enqueue=True,
+                backtrace=True,
+                diagnose=True
+            )
+        except Exception as e:
+            print(f"Warning: Could not configure errors.json logging: {e}")
         
         # Security events logger
-        logger.add(
-            "logs/security.json",
-            format='{{\"time\":\"{time:YYYY-MM-DD HH:mm:ss.SSS}\",\"level\":\"{level}\",\"logger\":\"{name}\",\"function\":\"{function}\",\"line\":{line},\"message\":\"{message}\",\"extra\":{extra}}}',
-            level="WARNING",
-            filter=lambda record: "security" in str(record.get("extra", {})).lower() or record["level"].name in ["WARNING", "ERROR"],
-            rotation="1 day",
-            retention="180 days",
-            compression="gz",
-            enqueue=True
-        )
+        try:
+            logger.add(
+                "logs/security.json",
+                format='{{\"time\":\"{time:YYYY-MM-DD HH:mm:ss.SSS}\",\"level\":\"{level}\",\"logger\":\"{name}\",\"function\":\"{function}\",\"line\":{line},\"message\":\"{message}\",\"extra\":{extra}}}',
+                level="WARNING",
+                filter=lambda record: "security" in str(record.get("extra", {})).lower() or record["level"].name in ["WARNING", "ERROR"],
+                rotation="1 day",
+                retention="180 days",
+                compression="gz",
+                enqueue=True
+            )
+        except Exception as e:
+            print(f"Warning: Could not configure security.json logging: {e}")
         
         # Performance logger
-        logger.add(
-            "logs/performance.json",
-            format='{{\"time\":\"{time:YYYY-MM-DD HH:mm:ss.SSS}\",\"level\":\"{level}\",\"logger\":\"{name}\",\"function\":\"{function}\",\"line\":{line},\"message\":\"{message}\",\"extra\":{extra}}}',
-            level="INFO",
-            filter=lambda record: "performance" in str(record.get("extra", {})).lower(),
-            rotation="1 day",
-            retention="7 days",
-            compression="gz",
-            enqueue=True
-        )
+        try:
+            logger.add(
+                "logs/performance.json",
+                format='{{\"time\":\"{time:YYYY-MM-DD HH:mm:ss.SSS}\",\"level\":\"{level}\",\"logger\":\"{name}\",\"function\":\"{function}\",\"line\":{line},\"message\":\"{message}\",\"extra\":{extra}}}',
+                level="INFO",
+                filter=lambda record: "performance" in str(record.get("extra", {})).lower(),
+                rotation="1 day",
+                retention="7 days",
+                compression="gz",
+                enqueue=True
+            )
+        except Exception as e:
+            print(f"Warning: Could not configure performance.json logging: {e}")
     
     def _json_format(self, record: Dict[str, Any]) -> str:
         """JSON format function for loguru"""
