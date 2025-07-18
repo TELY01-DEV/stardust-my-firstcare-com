@@ -59,7 +59,7 @@ class DataFlowEmitter:
             response = requests.post(
                 f"{self.web_panel_url}/api/data-flow/emit",
                 json={"event": event_data},
-                timeout=5
+                timeout=30
             )
             
             if response.status_code == 200:

@@ -78,8 +78,8 @@ class RobustQubeMQTTListener:
         self.errors_count = 0
         self.last_stats_time = time.time()
         
-        self.web_panel_url = os.getenv('WEB_PANEL_URL', 'http://web-panel:554')
-        self.web_panel_timeout = int(os.getenv('WEB_PANEL_TIMEOUT', 5))
+        self.web_panel_url = os.getenv('WEB_PANEL_URL', 'http://mqtt-panel:8098')
+        self.web_panel_timeout = int(os.getenv('WEB_PANEL_TIMEOUT', 30))
         
     def _get_client_id(self) -> str:
         """Generate unique client ID"""
