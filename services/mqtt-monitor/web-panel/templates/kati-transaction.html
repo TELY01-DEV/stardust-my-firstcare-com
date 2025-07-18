@@ -2890,13 +2890,18 @@
                 const response = await fetch('/api/kati-transactions?topic_filter=SOS,fallDown&limit=50');
                 const data = await response.json();
                 
-                if (data.success) {
+                if (data.success && data.transactions && Array.isArray(data.transactions)) {
                     const emergencyAlerts = data.transactions.filter(t => 
                         t.topic === 'iMEDE_watch/SOS' || t.topic === 'iMEDE_watch/fallDown'
                     );
                     
                     updateEmergencyModalStats(emergencyAlerts);
                     displayEmergencyAlerts(emergencyAlerts);
+                } else {
+                    // Handle case where transactions is undefined or not an array
+                    console.warn('No transactions data available or invalid format:', data);
+                    updateEmergencyModalStats([]);
+                    displayEmergencyAlerts([]);
                 }
             } catch (error) {
                 console.error('Error loading emergency alerts:', error);
@@ -2911,19 +2916,32 @@
         
         // Update emergency modal statistics
         function updateEmergencyModalStats(alerts) {
+            if (!alerts || !Array.isArray(alerts)) {
+                alerts = [];
+            }
+            
             const sosCount = alerts.filter(a => a.topic === 'iMEDE_watch/SOS').length;
             const fallCount = alerts.filter(a => a.topic === 'iMEDE_watch/fallDown').length;
             
-            document.getElementById('modal-emergency-count').textContent = alerts.length;
-            document.getElementById('modal-sos-count').textContent = sosCount;
-            document.getElementById('modal-fall-count').textContent = fallCount;
+            const emergencyCountElement = document.getElementById('modal-emergency-count');
+            const sosCountElement = document.getElementById('modal-sos-count');
+            const fallCountElement = document.getElementById('modal-fall-count');
+            
+            if (emergencyCountElement) emergencyCountElement.textContent = alerts.length;
+            if (sosCountElement) sosCountElement.textContent = sosCount;
+            if (fallCountElement) fallCountElement.textContent = fallCount;
         }
         
         // Display emergency alerts in the modal
         function displayEmergencyAlerts(alerts) {
             const container = document.getElementById('emergency-alerts-list');
             
-            if (alerts.length === 0) {
+            if (!container) {
+                console.error('Emergency alerts container not found');
+                return;
+            }
+            
+            if (!alerts || !Array.isArray(alerts) || alerts.length === 0) {
                 container.innerHTML = `
                     <div class="text-center text-muted py-4">
                         <i class="ti ti-check-circle fa-3x mb-3"></i>
