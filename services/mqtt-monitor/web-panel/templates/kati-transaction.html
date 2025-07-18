@@ -78,6 +78,42 @@
             70% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
         }
+        
+        .data-label {
+            font-size: 0.875rem;
+            color: #6c757d;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .location-source-badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .medical-info-section {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.375rem;
+        }
+        
+        .contact-info-section {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.375rem;
+        }
+        
+        .hospital-info-section {
+            background-color: #e2e3e5;
+            border-left: 4px solid #6c757d;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.375rem;
+        }
     </style>
 </head>
 <body>
@@ -170,6 +206,10 @@
                             Kati Watch Transaction Monitor
                         </h2>
                         <div class="text-muted mt-1">Real-time monitoring of Kati Watch data processing</div>
+                        <div class="text-muted small">
+                            <i class="ti ti-clock"></i>
+                            Real-time monitoring
+                        </div>
                     </div>
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
@@ -367,9 +407,8 @@
                                 <thead>
                                     <tr>
                                         <th>Timestamp</th>
+                                        <th>Device & Topic / Event Type</th>
                                         <th>Patient</th>
-                                        <th>Device & Topic</th>
-                                        <th>Event Type</th>
                                         <th>Data</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -415,16 +454,71 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/iconfont/tabler-icons.min.js"></script>
-    
-    <script>
+        
+        <!-- Batch Vital Signs Modal -->
+        <div class="modal fade" id="batchVitalSignsModal" tabindex="-1" aria-labelledby="batchVitalSignsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="batchVitalSignsModalLabel">
+                            <i class="ti ti-activity"></i>
+                            Batch Vital Signs Data
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="batchModalContent">
+                            <!-- Content will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Location/SOS Detail Modal with Google Maps -->
+        <div class="modal fade" id="locationDetailModal" tabindex="-1" aria-labelledby="locationDetailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="locationDetailModalLabel">
+                            <i class="ti ti-map-pin"></i>
+                            Location Details
+                        </h5>
+                        <div class="ms-auto me-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="loadEnhancedLocationInfo()">
+                                <i class="ti ti-search"></i>
+                                Enhanced Info
+                            </button>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="locationModalContent">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Loading location data...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+        <script>
         let socket;
         let autoRefreshInterval;
-        let autoRefreshEnabled = false;
+        let autoRefreshEnabled = true; // Set to true by default
         let currentFilter = 'all';
         let currentDataFilter = 'patient_only'; // 'patient_only' or 'all_devices'
         let katiData = [];
@@ -573,9 +667,24 @@
         function createTransactionRow(transaction) {
             const row = document.createElement('tr');
             
-            // Format timestamp
-            const timestamp = new Date(transaction.timestamp);
-            const formattedTime = timestamp.toLocaleString();
+            // Format timestamp with local timezone - explicitly parse as UTC
+            const timestampString = transaction.timestamp;
+            let timestamp;
+            
+            // Check if timestamp is already a Date object
+            if (timestampString instanceof Date) {
+                timestamp = timestampString;
+            } else {
+                // Parse as UTC if it's a string without timezone
+                if (typeof timestampString === 'string' && !timestampString.includes('Z') && !timestampString.includes('+')) {
+                    // Add 'Z' to indicate UTC
+                    timestamp = new Date(timestampString + 'Z');
+                } else {
+                    timestamp = new Date(timestampString);
+                }
+            }
+            
+            const formattedTime = formatLocalTimestamp(timestamp);
             
             // Get patient info with photo and hospital/ward
             let patientInfo = createPatientInfo(transaction);
@@ -596,27 +705,74 @@
                 <td>
                     <div class="text-muted">${formattedTime}</div>
                 </td>
-                <td>${patientInfo}</td>
                 <td>
                     <div class="text-muted">${transaction.device_id || 'N/A'}</div>
                     ${topicBadge}
+                    <div class="text-muted small mt-1">${transaction.event_type || 'Unknown'}</div>
                 </td>
-                <td>
-                    <div class="text-muted">${transaction.event_type || 'Unknown'}</div>
-                </td>
+                <td>${patientInfo}</td>
                 <td>
                     <div class="data-value">${dataDisplay}</div>
                 </td>
                 <td>${statusBadge}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-primary" onclick="viewTransactionDetails('${transaction._id}')">
-                        <i class="ti ti-eye"></i>
-                        View
-                    </button>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewTransactionDetails('${transaction._id}')">
+                            <i class="ti ti-eye"></i>
+                            View
+                        </button>
+                        ${(transaction.topic === 'iMEDE_watch/location' || transaction.topic === 'iMEDE_watch/sos' || transaction.topic === 'iMEDE_watch/fallDown') ? `
+                            <button class="btn btn-sm btn-outline-info" onclick="viewLocationDetails('${transaction._id}')">
+                                <i class="ti ti-map-pin"></i>
+                                Map
+                            </button>
+                        ` : ''}
+                    </div>
                 </td>
             `;
             
             return row;
+        }
+        
+        // Format timestamp to local timezone with timezone indicator
+        function formatLocalTimestamp(timestamp) {
+            if (!timestamp || isNaN(timestamp.getTime())) {
+                return 'Invalid Date';
+            }
+            
+            // Get timezone offset for display
+            const timezoneOffset = new Date().getTimezoneOffset();
+            const timezoneHours = Math.abs(Math.floor(timezoneOffset / 60));
+            const timezoneMinutes = Math.abs(timezoneOffset % 60);
+            const timezoneSign = timezoneOffset <= 0 ? '+' : '-';
+            const timezoneString = `${timezoneSign}${timezoneHours.toString().padStart(2, '0')}:${timezoneMinutes.toString().padStart(2, '0')}`;
+            
+            // Format date and time - JavaScript automatically converts UTC to local
+            const dateString = timestamp.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            const timeString = timestamp.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            
+            return `${dateString} ${timeString}`;
+        }
+        
+        // Format Unix timestamp to local timezone
+        function formatUnixTimestamp(unixTimestamp) {
+            if (!unixTimestamp) return 'N/A';
+            
+            // Convert Unix timestamp to milliseconds if it's in seconds
+            const timestamp = unixTimestamp > 1000000000000 ? unixTimestamp : unixTimestamp * 1000;
+            const date = new Date(timestamp);
+            
+            return formatLocalTimestamp(date);
         }
         
         // Create patient info with photo and hospital/ward
@@ -684,7 +840,7 @@
                     return `HR: ${hr}, BP: ${bp}, Temp: ${temp}°C, SpO2: ${spo2}%`;
                 case 'batch_vital_signs':
                     const numData = transaction.num_datas || 0;
-                    return `Batch: ${numData} vital signs records`;
+                    return `<span class="batch-data-link" onclick="viewBatchVitalSigns('${transaction._id}')" style="cursor: pointer; color: #206bc4; text-decoration: underline;">Batch: ${numData} vital signs records</span>`;
                 case 'location':
                     const location = data.location || {};
                     const gps = location.GPS || {};
@@ -704,6 +860,368 @@
                 default:
                     return JSON.stringify(data).substring(0, 100) + (JSON.stringify(data).length > 100 ? '...' : '');
             }
+        }
+        
+        // View batch vital signs details
+        function viewBatchVitalSigns(transactionId) {
+            // Show loading state
+            document.getElementById('batchModalContent').innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading batch vital signs data...</p>
+                </div>
+            `;
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('batchVitalSignsModal'));
+            modal.show();
+            
+            // Fetch batch data
+            fetch(`/api/kati-transactions/${transactionId}/batch-details`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayBatchVitalSigns(data.data);
+                    } else {
+                        document.getElementById('batchModalContent').innerHTML = `
+                            <div class="alert alert-danger">
+                                <i class="ti ti-alert-circle"></i>
+                                Error: ${data.error || 'Failed to load batch data'}
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching batch data:', error);
+                    document.getElementById('batchModalContent').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="ti ti-alert-circle"></i>
+                            Error: Failed to load batch data
+                        </div>
+                    `;
+                });
+        }
+        
+        // Display batch vital signs data
+        function displayBatchVitalSigns(batchData) {
+            const content = document.getElementById('batchModalContent');
+            
+            // Create enhanced patient info section
+            let patientInfo = '';
+            if (batchData.enhanced_patient_info) {
+                const enhancedInfo = batchData.enhanced_patient_info;
+                const patientName = `${enhancedInfo.first_name || ''} ${enhancedInfo.last_name || ''}`.trim() || 'Unknown Patient';
+                const patientPhoto = enhancedInfo.profile_image ? `<img src="${enhancedInfo.profile_image}" alt="Patient Photo" class="avatar avatar-sm me-2" onerror="this.style.display='none'">` : '';
+                
+                // Format timestamp with local timezone - handle various timestamp formats
+                const timestampString = batchData.timestamp;
+                let timestamp;
+                
+                // Check if timestamp is already a Date object
+                if (timestampString instanceof Date) {
+                    timestamp = timestampString;
+                } else if (typeof timestampString === 'string') {
+                    // Handle different timestamp formats
+                    if (timestampString.includes('GMT')) {
+                        // Handle "Fri, 18 Jul 2025 15:38:08 GMT" format
+                        timestamp = new Date(timestampString);
+                    } else if (!timestampString.includes('Z') && !timestampString.includes('+')) {
+                        // Add 'Z' to indicate UTC for ISO-like strings
+                        timestamp = new Date(timestampString + 'Z');
+                    } else {
+                        timestamp = new Date(timestampString);
+                    }
+                } else {
+                    timestamp = new Date();
+                }
+                
+                const formattedTimestamp = formatLocalTimestamp(timestamp);
+                
+                // Hospital and ward information
+                let hospitalWardInfo = '';
+                if (enhancedInfo.hospital_name || enhancedInfo.ward_name) {
+                    hospitalWardInfo = `
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-2">
+                                    <i class="ti ti-building-hospital"></i>
+                                    Hospital Information
+                                </h6>
+                                <div class="row">
+                                    ${enhancedInfo.hospital_name ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Hospital:</div>
+                                            <div class="data-value">${enhancedInfo.hospital_name}</div>
+                                        </div>
+                                    ` : ''}
+                                    ${enhancedInfo.ward_name ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Ward:</div>
+                                            <div class="data-value">${enhancedInfo.ward_name}</div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Contact information
+                let contactInfo = '';
+                if (enhancedInfo.mobile_phone || enhancedInfo.emergency_contact) {
+                    contactInfo = `
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6 class="text-info mb-2">
+                                    <i class="ti ti-phone"></i>
+                                    Contact Information
+                                </h6>
+                                <div class="row">
+                                    ${enhancedInfo.mobile_phone ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Mobile Phone:</div>
+                                            <div class="data-value">${enhancedInfo.mobile_phone}</div>
+                                        </div>
+                                    ` : ''}
+                                    ${enhancedInfo.emergency_contact ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Emergency Contact:</div>
+                                            <div class="data-value">${enhancedInfo.emergency_contact}</div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Medical information
+                let medicalInfo = '';
+                if (enhancedInfo.underlying_conditions && enhancedInfo.underlying_conditions.length > 0 || 
+                    enhancedInfo.allergies && enhancedInfo.allergies.length > 0) {
+                    medicalInfo = `
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6 class="text-warning mb-2">
+                                    <i class="ti ti-heartbeat"></i>
+                                    Medical Information
+                                </h6>
+                                <div class="row">
+                                    ${enhancedInfo.underlying_conditions && enhancedInfo.underlying_conditions.length > 0 ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Underlying Conditions:</div>
+                                            <div class="data-value">
+                                                ${enhancedInfo.underlying_conditions.map(condition => 
+                                                    `<span class="badge bg-warning text-dark me-1 mb-1">${condition}</span>`
+                                                ).join('')}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    ${enhancedInfo.allergies && enhancedInfo.allergies.length > 0 ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Allergies:</div>
+                                            <div class="data-value">
+                                                ${enhancedInfo.allergies.map(allergy => 
+                                                    `<span class="badge bg-danger me-1 mb-1">${allergy}</span>`
+                                                ).join('')}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                patientInfo = `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-user"></i>
+                                        Patient Information
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        ${patientPhoto}
+                                        <div>
+                                            <h6 class="mb-1">${patientName}</h6>
+                                            <div class="text-muted">Device: ${batchData.device_id || 'N/A'}</div>
+                                            <div class="text-muted">Batch Size: ${batchData.batch_size} records</div>
+                                            <div class="text-muted">Timestamp: ${formattedTimestamp}</div>
+                                        </div>
+                                    </div>
+                                    ${hospitalWardInfo}
+                                    ${contactInfo}
+                                    ${medicalInfo}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (batchData.patient_info) {
+                // Fallback to basic patient info if enhanced info not available
+                const info = batchData.patient_info;
+                const patientName = `${info.first_name || ''} ${info.last_name || ''}`.trim() || 'Unknown Patient';
+                const patientPhoto = info.profile_image ? `<img src="${info.profile_image}" alt="Patient Photo" class="avatar avatar-sm me-2" onerror="this.style.display='none'">` : '';
+                
+                // Format timestamp with local timezone - handle various timestamp formats
+                const timestampString = batchData.timestamp;
+                let timestamp;
+                
+                // Check if timestamp is already a Date object
+                if (timestampString instanceof Date) {
+                    timestamp = timestampString;
+                } else if (typeof timestampString === 'string') {
+                    // Handle different timestamp formats
+                    if (timestampString.includes('GMT')) {
+                        // Handle "Fri, 18 Jul 2025 15:38:08 GMT" format
+                        timestamp = new Date(timestampString);
+                    } else if (!timestampString.includes('Z') && !timestampString.includes('+')) {
+                        // Add 'Z' to indicate UTC for ISO-like strings
+                        timestamp = new Date(timestampString + 'Z');
+                    } else {
+                        timestamp = new Date(timestampString);
+                    }
+                } else {
+                    timestamp = new Date();
+                }
+                
+                const formattedTimestamp = formatLocalTimestamp(timestamp);
+                
+                patientInfo = `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        ${patientPhoto}
+                                        <div>
+                                            <h6 class="mb-1">${patientName}</h6>
+                                            <div class="text-muted">Device: ${batchData.device_id || 'N/A'}</div>
+                                            <div class="text-muted">Batch Size: ${batchData.batch_size} records</div>
+                                            <div class="text-muted">Timestamp: ${formattedTimestamp}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Create averages section
+            const averages = batchData.averages;
+            let averagesHtml = '';
+            if (averages) {
+                averagesHtml = `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-calculator"></i>
+                                        Averages
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="text-center">
+                                                <div class="h3 text-primary">${Math.round(averages.heartRate) || 'N/A'}</div>
+                                                <div class="text-muted">Heart Rate (bpm)</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center">
+                                                <div class="h3 text-success">${Math.round(averages.bloodPressure.systolic) || 'N/A'}/${Math.round(averages.bloodPressure.diastolic) || 'N/A'}</div>
+                                                <div class="text-muted">Blood Pressure (mmHg)</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center">
+                                                <div class="h3 text-warning">${averages.bodyTemperature || 'N/A'}</div>
+                                                <div class="text-muted">Body Temperature (°C)</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center">
+                                                <div class="h3 text-info">${Math.round(averages.spO2) || 'N/A'}</div>
+                                                <div class="text-muted">SpO2 (%)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Create vital signs table
+            const vitalSigns = batchData.vital_signs;
+            let vitalSignsTable = '';
+            if (vitalSigns && vitalSigns.length > 0) {
+                const tableRows = vitalSigns.map((vital, index) => {
+                    const hr = vital.heartRate || 'N/A';
+                    const bp = vital.bloodPressure ? `${vital.bloodPressure.bp_sys || 'N/A'}/${vital.bloodPressure.bp_dia || 'N/A'}` : 'N/A';
+                    const temp = vital.bodyTemperature || 'N/A';
+                    const spo2 = vital.spO2 || 'N/A';
+                    const timestamp = formatUnixTimestamp(vital.timestamp);
+                    
+                    return `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${timestamp}</td>
+                            <td>${hr}</td>
+                            <td>${bp}</td>
+                            <td>${temp}</td>
+                            <td>${spo2}</td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                vitalSignsTable = `
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-list"></i>
+                                        Individual Vital Signs Records (${vitalSigns.length} records)
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-vcenter">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Timestamp</th>
+                                                    <th>Heart Rate (bpm)</th>
+                                                    <th>Blood Pressure (mmHg)</th>
+                                                    <th>Temperature (°C)</th>
+                                                    <th>SpO2 (%)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                ${tableRows}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Combine all sections
+            content.innerHTML = patientInfo + averagesHtml + vitalSignsTable;
         }
         
         // Get status badge
@@ -819,7 +1337,835 @@
             initializeSocket();
             initializeDataFilter();
             loadKatiData();
+            
+            // Start auto refresh by default
+            const icon = document.getElementById('auto-refresh-icon');
+            const text = document.getElementById('auto-refresh-text');
+            icon.className = 'ti ti-clock text-success';
+            text.textContent = 'Auto Refresh ON';
+            autoRefreshInterval = setInterval(loadKatiData, 10000); // 10 seconds
         });
+        
+        // View location details with Google Maps
+        function viewLocationDetails(transactionId) {
+            const transaction = katiData.find(t => t._id === transactionId);
+            if (!transaction) {
+                alert('Transaction not found');
+                return;
+            }
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('locationDetailModal'));
+            modal.show();
+            
+            // Fetch detailed location data
+            fetch(`/api/kati-transactions/${transactionId}/location-details`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayLocationDetails(data.data, transaction);
+                    } else {
+                        document.getElementById('locationModalContent').innerHTML = `
+                            <div class="alert alert-danger">
+                                <i class="ti ti-alert-circle"></i>
+                                Error: ${data.error || 'Failed to load location data'}
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching location data:', error);
+                    document.getElementById('locationModalContent').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="ti ti-alert-circle"></i>
+                            Error: Failed to load location data
+                        </div>
+                    `;
+                });
+        }
+        
+        // Display location details with Google Maps
+        function displayLocationDetails(locationData, transaction) {
+            console.log('Displaying location details:', locationData);
+            // Store current location data globally for enhanced info access
+            window.currentLocationData = locationData;
+            const content = document.getElementById('locationModalContent');
+            const topic = transaction.topic;
+            const isEmergency = topic === 'iMEDE_watch/sos' || topic === 'iMEDE_watch/fallDown';
+            
+            // Create enhanced patient info section
+            let patientInfo = '';
+            const enhancedPatientInfo = locationData.enhanced_patient_info;
+            
+            if (enhancedPatientInfo) {
+                const patientName = `${enhancedPatientInfo.first_name || ''} ${enhancedPatientInfo.last_name || ''}`.trim() || 'Unknown Patient';
+                const patientPhoto = enhancedPatientInfo.profile_image ? `<img src="${enhancedPatientInfo.profile_image}" alt="Patient Photo" class="avatar avatar-sm me-2" onerror="this.style.display='none'">` : '';
+                
+                // Hospital and ward information
+                let hospitalWardInfo = '';
+                if (enhancedPatientInfo.hospital_name || enhancedPatientInfo.ward_name) {
+                    hospitalWardInfo = `
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-2">
+                                    <i class="ti ti-building-hospital"></i>
+                                    Hospital Information
+                                </h6>
+                                <div class="row">
+                                    ${enhancedPatientInfo.hospital_name ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Hospital:</div>
+                                            <div class="data-value">${enhancedPatientInfo.hospital_name}</div>
+                                        </div>
+                                    ` : ''}
+                                    ${enhancedPatientInfo.ward_name ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Ward:</div>
+                                            <div class="data-value">${enhancedPatientInfo.ward_name}</div>
+                                        </div>
+                                    ` : ''}
+                                    ${enhancedPatientInfo.room_number ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Room:</div>
+                                            <div class="data-value">${enhancedPatientInfo.room_number}</div>
+                                        </div>
+                                    ` : ''}
+                                    ${enhancedPatientInfo.admission_date ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Admission Date:</div>
+                                            <div class="data-value">${enhancedPatientInfo.admission_date}</div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Contact information
+                let contactInfo = '';
+                if (enhancedPatientInfo.mobile_phone || enhancedPatientInfo.emergency_contact) {
+                    contactInfo = `
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6 class="text-info mb-2">
+                                    <i class="ti ti-phone"></i>
+                                    Contact Information
+                                </h6>
+                                <div class="row">
+                                    ${enhancedPatientInfo.mobile_phone ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Mobile Phone:</div>
+                                            <div class="data-value">${enhancedPatientInfo.mobile_phone}</div>
+                                        </div>
+                                    ` : ''}
+                                    ${enhancedPatientInfo.emergency_contact ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Emergency Contact:</div>
+                                            <div class="data-value">${enhancedPatientInfo.emergency_contact}</div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Medical information
+                let medicalInfo = '';
+                if (enhancedPatientInfo.underlying_conditions && enhancedPatientInfo.underlying_conditions.length > 0 || 
+                    enhancedPatientInfo.allergies && enhancedPatientInfo.allergies.length > 0) {
+                    medicalInfo = `
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6 class="text-warning mb-2">
+                                    <i class="ti ti-heartbeat"></i>
+                                    Medical Information
+                                </h6>
+                                <div class="row">
+                                    ${enhancedPatientInfo.underlying_conditions && enhancedPatientInfo.underlying_conditions.length > 0 ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Underlying Conditions:</div>
+                                            <div class="data-value">
+                                                ${enhancedPatientInfo.underlying_conditions.map(condition => 
+                                                    `<span class="badge bg-warning text-dark me-1 mb-1">${condition}</span>`
+                                                ).join('')}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    ${enhancedPatientInfo.allergies && enhancedPatientInfo.allergies.length > 0 ? `
+                                        <div class="col-md-6">
+                                            <div class="data-label">Allergies:</div>
+                                            <div class="data-value">
+                                                ${enhancedPatientInfo.allergies.map(allergy => 
+                                                    `<span class="badge bg-danger me-1 mb-1">${allergy}</span>`
+                                                ).join('')}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                patientInfo = `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-user"></i>
+                                        Patient Information
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        ${patientPhoto}
+                                        <div>
+                                            <h6 class="mb-1">${patientName}</h6>
+                                            <div class="text-muted">Device: ${transaction.device_id || 'N/A'}</div>
+                                            <div class="text-muted">Topic: ${topic}</div>
+                                            <div class="text-muted">Timestamp: ${formatLocalTimestamp(new Date(transaction.timestamp))}</div>
+                                        </div>
+                                    </div>
+                                    ${hospitalWardInfo}
+                                    ${contactInfo}
+                                    ${medicalInfo}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (transaction.patient_info) {
+                // Fallback to basic patient info if enhanced info not available
+                const info = transaction.patient_info;
+                const patientName = `${info.first_name || ''} ${info.last_name || ''}`.trim() || 'Unknown Patient';
+                const patientPhoto = info.profile_image ? `<img src="${info.profile_image}" alt="Patient Photo" class="avatar avatar-sm me-2" onerror="this.style.display='none'">` : '';
+                
+                patientInfo = `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        ${patientPhoto}
+                                        <div>
+                                            <h6 class="mb-1">${patientName}</h6>
+                                            <div class="text-muted">Device: ${transaction.device_id || 'N/A'}</div>
+                                            <div class="text-muted">Topic: ${topic}</div>
+                                            <div class="text-muted">Timestamp: ${formatLocalTimestamp(new Date(transaction.timestamp))}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Create location info section
+            let locationInfo = '';
+            if (locationData.location) {
+                const location = locationData.location;
+                const locationSource = locationData.location_source || 'Unknown';
+                const locationSourceIcon = locationSource === 'GPS' ? 'ti ti-satellite' : 
+                                          locationSource === 'LBS' ? 'ti ti-signal' : 
+                                          locationSource === 'WiFi' ? 'ti ti-wifi' : 'ti ti-map-pin';
+                const locationSourceColor = locationSource === 'GPS' ? 'text-success' : 
+                                           locationSource === 'LBS' ? 'text-warning' : 
+                                           locationSource === 'WiFi' ? 'text-info' : 'text-muted';
+                
+                locationInfo = `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-map-pin"></i>
+                                        Location Information
+                                        <span class="badge ${locationSourceColor} ms-2">
+                                            <i class="${locationSourceIcon}"></i>
+                                            ${locationSource}
+                                        </span>
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        ${location.GPS ? `
+                                            <div class="col-md-6">
+                                                <h6 class="text-success">
+                                                    <i class="ti ti-satellite"></i>
+                                                    GPS Coordinates
+                                                </h6>
+                                                <div class="data-label">Latitude:</div>
+                                                <div class="data-value">${location.GPS.latitude || 'N/A'}</div>
+                                                <div class="data-label">Longitude:</div>
+                                                <div class="data-value">${location.GPS.longitude || 'N/A'}</div>
+                                                ${location.GPS.speed ? `
+                                                    <div class="data-label">Speed:</div>
+                                                    <div class="data-value">${location.GPS.speed} km/h</div>
+                                                ` : ''}
+                                                ${location.GPS.header ? `
+                                                    <div class="data-label">Heading:</div>
+                                                    <div class="data-value">${location.GPS.header}°</div>
+                                                ` : ''}
+                                            </div>
+                                        ` : ''}
+                                        ${location.LBS ? `
+                                            <div class="col-md-6">
+                                                <h6 class="text-warning">
+                                                    <i class="ti ti-signal"></i>
+                                                    LBS (Cell Tower)
+                                                </h6>
+                                                <div class="data-label">MCC (Mobile Country Code):</div>
+                                                <div class="data-value">${location.LBS.MCC || 'N/A'}</div>
+                                                <div class="data-label">MNC (Mobile Network Code):</div>
+                                                <div class="data-value">${location.LBS.MNC || 'N/A'}</div>
+                                                <div class="data-label">LAC (Location Area Code):</div>
+                                                <div class="data-value">${location.LBS.LAC || 'N/A'}</div>
+                                                <div class="data-label">CID (Cell ID):</div>
+                                                <div class="data-value">${location.LBS.CID || 'N/A'}</div>
+                                                ${location.LBS.latitude && location.LBS.longitude ? `
+                                                    <div class="data-label">Estimated Coordinates:</div>
+                                                    <div class="data-value">${location.LBS.latitude}, ${location.LBS.longitude}</div>
+                                                ` : ''}
+                                            </div>
+                                        ` : ''}
+                                        ${location.WiFi ? `
+                                            <div class="col-md-6">
+                                                <h6 class="text-info">
+                                                    <i class="ti ti-wifi"></i>
+                                                    WiFi Networks
+                                                </h6>
+                                                ${typeof location.WiFi === 'string' ? `
+                                                    <div class="data-value">${location.WiFi}</div>
+                                                ` : location.WiFi.latitude && location.WiFi.longitude ? `
+                                                    <div class="data-label">Estimated Coordinates:</div>
+                                                    <div class="data-value">${location.WiFi.latitude}, ${location.WiFi.longitude}</div>
+                                                    ${location.WiFi.networks ? `
+                                                        <div class="data-label">Available Networks:</div>
+                                                        <div class="data-value">
+                                                            ${location.WiFi.networks.map(network => 
+                                                                `<span class="badge bg-info me-1 mb-1">${network.ssid || network}</span>`
+                                                            ).join('')}
+                                                        </div>
+                                                    ` : ''}
+                                                ` : `
+                                                    <div class="data-value">${JSON.stringify(location.WiFi)}</div>
+                                                `}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Create Google Maps section
+            let mapSection = '';
+            if (locationData.coordinates) {
+                const coords = locationData.coordinates;
+                mapSection = `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-map"></i>
+                                        Location Map
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="google-map" style="height: 400px; width: 100%; border-radius: 8px;">
+                                        <div class="text-center" style="padding-top: 150px;">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading map...</span>
+                                            </div>
+                                            <p class="mt-2">Loading Google Map...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Create hospital info section (for emergency alerts)
+            let hospitalInfo = '';
+            if (isEmergency && locationData.hospital) {
+                const hospital = locationData.hospital;
+                hospitalInfo = `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-warning">
+                                <div class="card-header bg-warning text-dark">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-building-hospital"></i>
+                                        Nearest Hospital
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>${hospital.name || 'Unknown Hospital'}</h6>
+                                            <div class="text-muted">${hospital.address || 'Address not available'}</div>
+                                            <div class="text-muted">${hospital.phone || 'Phone not available'}</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text-end">
+                                                <div class="h4 text-warning">${hospital.distance || 'N/A'} km</div>
+                                                <div class="text-muted">Distance from patient</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Combine all sections
+            content.innerHTML = patientInfo + mapSection + locationInfo + hospitalInfo;
+            
+            // Initialize Google Maps if coordinates are available
+            if (locationData.coordinates) {
+                console.log('Coordinates available, initializing map:', locationData.coordinates);
+                setTimeout(async () => {
+                    try {
+                        await initializeGoogleMap(locationData.coordinates, locationData.hospital, isEmergency);
+                    } catch (error) {
+                        console.error('Error initializing map:', error);
+                    }
+                }, 100);
+            } else {
+                console.log('No coordinates available for map initialization');
+            }
+        }
+        
+        // Initialize Google Maps
+        async function initializeGoogleMap(patientCoords, hospitalCoords, isEmergency) {
+            const mapElement = document.getElementById('google-map');
+            if (!mapElement) {
+                console.error('Google map element not found');
+                return;
+            }
+            
+            try {
+                // Wait for Google Maps API to be ready
+                await waitForGoogleMapsAPI();
+                console.log('Initializing Google Map with coordinates:', patientCoords);
+            
+            // Create map centered on patient location
+            const map = new google.maps.Map(mapElement, {
+                zoom: 15,
+                center: { lat: patientCoords.lat, lng: patientCoords.lng },
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                mapId: 'KATI_LOCATION_DETIAL_POPUP' // Custom Map ID for Kati Location Details
+            });
+            
+            // Add patient marker using AdvancedMarkerElement
+            const patientMarkerElement = document.createElement('div');
+            patientMarkerElement.innerHTML = isEmergency ? `
+                <div style="width: 32px; height: 32px; background: red; border: 2px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">!</div>
+            ` : `
+                <div style="width: 32px; height: 32px; background: blue; border: 2px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">P</div>
+            `;
+            
+            const patientMarker = new google.maps.marker.AdvancedMarkerElement({
+                position: { lat: patientCoords.lat, lng: patientCoords.lng },
+                map: map,
+                title: 'Patient Location',
+                content: patientMarkerElement
+            });
+            
+            // Add patient info window
+            const patientInfoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div style="padding: 8px;">
+                        <h6 style="margin: 0 0 4px 0; color: ${isEmergency ? 'red' : 'blue'};">${isEmergency ? 'Emergency Alert' : 'Patient Location'}</h6>
+                        <p style="margin: 0; font-size: 12px;">Lat: ${patientCoords.lat.toFixed(6)}<br>Lng: ${patientCoords.lng.toFixed(6)}</p>
+                    </div>
+                `
+            });
+            
+            patientMarker.addListener('click', () => {
+                patientInfoWindow.open(map, patientMarker);
+            });
+            
+            // Add hospital marker if available
+            if (hospitalCoords) {
+                const hospitalMarkerElement = document.createElement('div');
+                hospitalMarkerElement.innerHTML = `
+                    <div style="width: 32px; height: 32px; background: green; border: 2px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">H</div>
+                `;
+                
+                const hospitalMarker = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: hospitalCoords.lat, lng: hospitalCoords.lng },
+                    map: map,
+                    title: 'Nearest Hospital',
+                    content: hospitalMarkerElement
+                });
+                
+                // Add hospital info window
+                const hospitalInfoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="padding: 8px;">
+                            <h6 style="margin: 0 0 4px 0; color: green;">Nearest Hospital</h6>
+                            <p style="margin: 0; font-size: 12px;">${hospitalCoords.name || 'Hospital'}<br>Distance: ${hospitalCoords.distance || 'N/A'} km</p>
+                        </div>
+                    `
+                });
+                
+                hospitalMarker.addListener('click', () => {
+                    hospitalInfoWindow.open(map, hospitalMarker);
+                });
+                
+                // Draw route between patient and hospital
+                const directionsService = new google.maps.DirectionsService();
+                const directionsRenderer = new google.maps.DirectionsRenderer({
+                    map: map,
+                    suppressMarkers: true // We'll add our own markers
+                });
+                
+                directionsService.route({
+                    origin: { lat: patientCoords.lat, lng: patientCoords.lng },
+                    destination: { lat: hospitalCoords.lat, lng: hospitalCoords.lng },
+                    travelMode: google.maps.TravelMode.DRIVING
+                }, (result, status) => {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(result);
+                    }
+                });
+            }
+            } catch (error) {
+                console.error('Error initializing Google Map:', error);
+                // Show error message in the map container
+                mapElement.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="ti ti-alert-circle"></i>
+                        Error loading map: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // ========================================
+        // GOOGLE MAPS API UTILITY FUNCTIONS
+        // ========================================
+        
+        // Wait for Google Maps API to be ready
+        function waitForGoogleMapsAPI() {
+            return new Promise((resolve, reject) => {
+                const maxAttempts = 50; // 5 seconds max wait
+                let attempts = 0;
+                
+                const checkAPI = () => {
+                    attempts++;
+                    if (typeof google !== 'undefined' && google.maps) {
+                        console.log('Google Maps API ready');
+                        resolve();
+                    } else if (attempts >= maxAttempts) {
+                        reject(new Error('Google Maps API failed to load within timeout'));
+                    } else {
+                        setTimeout(checkAPI, 100);
+                    }
+                };
+                
+                checkAPI();
+            });
+        }
+        
+        // ========================================
+        // GOOGLE PLACES API FUNCTIONS
+        // ========================================
+        
+        // Search for nearby hospitals using Places API (Updated to avoid deprecated PlacesService)
+        async function searchNearbyHospitals(lat, lng, radius = 5000) {
+            await waitForGoogleMapsAPI();
+            
+            // Use the newer Places API with fetch instead of deprecated PlacesService
+            const location = `${lat},${lng}`;
+            const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location}&radius=${radius}&type=hospital&key=${GOOGLE_MAPS_API_KEY}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status === 'OK') {
+                    return data.results;
+                } else {
+                    throw new Error(`Places API error: ${data.status}`);
+                }
+            } catch (error) {
+                console.error('Error searching for hospitals:', error);
+                return [];
+            }
+        }
+        
+        // Get place details using Places API (Updated to avoid deprecated PlacesService)
+        async function getPlaceDetails(placeId) {
+            await waitForGoogleMapsAPI();
+            
+            // Use the newer Places API with fetch instead of deprecated PlacesService
+            const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,formatted_address,formatted_phone_number,geometry,rating,opening_hours&key=${GOOGLE_MAPS_API_KEY}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status === 'OK') {
+                    return data.result;
+                } else {
+                    throw new Error(`Places API error: ${data.status}`);
+                }
+            } catch (error) {
+                console.error('Error getting place details:', error);
+                return null;
+            }
+        }
+        
+        // Search for places by text query (Updated to avoid deprecated PlacesService)
+        async function searchPlaces(query, location, radius = 5000) {
+            await waitForGoogleMapsAPI();
+            
+            // Use the newer Places API with fetch instead of deprecated PlacesService
+            const locationStr = `${location.lat},${location.lng}`;
+            const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&location=${locationStr}&radius=${radius}&key=${GOOGLE_MAPS_API_KEY}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status === 'OK') {
+                    return data.results;
+                } else {
+                    throw new Error(`Places API error: ${data.status}`);
+                }
+            } catch (error) {
+                console.error('Error searching for places:', error);
+                return [];
+            }
+        }
+        
+        // ========================================
+        // GOOGLE GEOLOCATION API FUNCTIONS
+        // ========================================
+        
+        // Get current user location using browser geolocation
+        function getCurrentLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject(new Error('Geolocation is not supported by this browser'));
+                    return;
+                }
+                
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        resolve({
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                            accuracy: position.coords.accuracy
+                        });
+                    },
+                    (error) => {
+                        reject(new Error(`Geolocation error: ${error.message}`));
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 60000
+                    }
+                );
+            });
+        }
+        
+        // Calculate distance between two points using Google Geometry library
+        async function calculateDistance(point1, point2) {
+            await waitForGoogleMapsAPI();
+            
+            const latLng1 = new google.maps.LatLng(point1.lat, point1.lng);
+            const latLng2 = new google.maps.LatLng(point2.lat, point2.lng);
+            return google.maps.geometry.spherical.computeDistanceBetween(latLng1, latLng2);
+        }
+        
+        // Calculate area of a polygon using Google Geometry library
+        async function calculatePolygonArea(points) {
+            await waitForGoogleMapsAPI();
+            
+            const path = points.map(point => new google.maps.LatLng(point.lat, point.lng));
+            return google.maps.geometry.spherical.computeArea(path);
+        }
+        
+        // ========================================
+        // ENHANCED LOCATION FUNCTIONS
+        // ========================================
+        
+        // Enhanced location details with Places API integration
+        async function getEnhancedLocationDetails(lat, lng) {
+            try {
+                // Get nearby hospitals
+                const hospitals = await searchNearbyHospitals(lat, lng);
+                
+                // Get place details for the first hospital
+                let hospitalDetails = null;
+                if (hospitals.length > 0) {
+                    hospitalDetails = await getPlaceDetails(hospitals[0].place_id);
+                }
+                
+                // Search for nearby emergency services
+                const emergencyServices = await searchPlaces('emergency services', { lat: parseFloat(lat), lng: parseFloat(lng) });
+                
+                return {
+                    hospitals: hospitals,
+                    nearestHospital: hospitalDetails,
+                    emergencyServices: emergencyServices,
+                    coordinates: { lat: parseFloat(lat), lng: parseFloat(lng) }
+                };
+            } catch (error) {
+                console.error('Error getting enhanced location details:', error);
+                return null;
+            }
+        }
+        
+        // Display enhanced location information
+        async function displayEnhancedLocationInfo(locationData) {
+            if (!locationData) return;
+            
+            let content = '';
+            
+            // Display nearest hospital
+            if (locationData.nearestHospital) {
+                const hospital = locationData.nearestHospital;
+                content += `
+                    <div class="alert alert-info">
+                        <h6><i class="ti ti-building-hospital"></i> Nearest Hospital</h6>
+                        <p><strong>${hospital.name}</strong></p>
+                        <p>${hospital.formatted_address || 'Address not available'}</p>
+                        <p>${hospital.formatted_phone_number || 'Phone not available'}</p>
+                        ${hospital.rating ? `<p>Rating: ${hospital.rating}/5</p>` : ''}
+                    </div>
+                `;
+            }
+            
+            // Display emergency services
+            if (locationData.emergencyServices && locationData.emergencyServices.length > 0) {
+                content += '<div class="alert alert-warning">';
+                content += '<h6><i class="ti ti-alert-triangle"></i> Nearby Emergency Services</h6>';
+                locationData.emergencyServices.slice(0, 3).forEach(service => {
+                    content += `
+                        <div class="mb-2">
+                            <strong>${service.name}</strong><br>
+                            <small>${service.formatted_address || 'Address not available'}</small>
+                        </div>
+                    `;
+                });
+                content += '</div>';
+            }
+            
+            // Display distance calculations
+            if (locationData.coordinates) {
+                try {
+                    const currentLocation = { lat: 13.7563, lng: 100.5018 }; // Bangkok center as example
+                    const distance = await calculateDistance(currentLocation, locationData.coordinates);
+                    content += `
+                        <div class="alert alert-secondary">
+                            <h6><i class="ti ti-map-pin"></i> Distance Information</h6>
+                            <p>Distance from Bangkok center: ${(distance / 1000).toFixed(2)} km</p>
+                        </div>
+                    `;
+                } catch (error) {
+                    console.error('Error calculating distance:', error);
+                    content += `
+                        <div class="alert alert-secondary">
+                            <h6><i class="ti ti-map-pin"></i> Distance Information</h6>
+                            <p>Distance calculation unavailable</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Display the content in a modal or designated area
+            const enhancedInfoContainer = document.getElementById('enhanced-location-info');
+            if (enhancedInfoContainer) {
+                enhancedInfoContainer.innerHTML = content;
+            }
+        }
+        
+        // Load enhanced location information for current location
+        async function loadEnhancedLocationInfo() {
+            const modalContent = document.getElementById('locationModalContent');
+            const enhancedInfoContainer = document.getElementById('enhanced-location-info');
+            
+            if (!enhancedInfoContainer) {
+                // Create enhanced info container if it doesn't exist
+                const container = document.createElement('div');
+                container.id = 'enhanced-location-info';
+                container.className = 'mt-3';
+                modalContent.appendChild(container);
+            }
+            
+            // Show loading state
+            const container = document.getElementById('enhanced-location-info');
+            container.innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading enhanced location information...</p>
+                </div>
+            `;
+            
+            try {
+                // Get current location coordinates from the map or stored data
+                const mapElement = document.getElementById('google-map');
+                if (mapElement && window.currentLocationData && window.currentLocationData.coordinates) {
+                    const coords = window.currentLocationData.coordinates;
+                    
+                    // Get enhanced location details
+                    const enhancedData = await getEnhancedLocationDetails(coords.lat, coords.lng);
+                    
+                    if (enhancedData) {
+                        await displayEnhancedLocationInfo(enhancedData);
+                    } else {
+                        container.innerHTML = `
+                            <div class="alert alert-warning">
+                                <i class="ti ti-alert-triangle"></i>
+                                Unable to load enhanced location information
+                            </div>
+                        `;
+                    }
+                } else {
+                    container.innerHTML = `
+                        <div class="alert alert-warning">
+                            <i class="ti ti-alert-triangle"></i>
+                            No location data available for enhanced information
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading enhanced location info:', error);
+                container.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="ti ti-alert-circle"></i>
+                        Error loading enhanced location information: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
     </script>
+    
+    <!-- Define Google Maps API Key for JavaScript use -->
+    <script>
+        const GOOGLE_MAPS_API_KEY = '{{ google_maps_api_key }}';
+    </script>
+    
+    <!-- Google Maps API with Places, Geometry, and Marker libraries -->
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places,geometry,marker&loading=async"></script>
 </body>
 </html> 

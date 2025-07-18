@@ -142,3 +142,4 @@ services/mqtt-monitor/web-panel/static/user_profiles/
 docs/JSON-DB-IMPORT/import_script/16-07-25/AMY_25_10_2024.blood_pressure_histories.json
 docs/JSON-DB-IMPORT/import_script/16-07-25/AMY_25_10_2024.spo2_histories.json
 docs/JSON-DB-IMPORT/import_script/16-07-25/AMY_25_10_2024.temprature_data_histories.json
+ssl/

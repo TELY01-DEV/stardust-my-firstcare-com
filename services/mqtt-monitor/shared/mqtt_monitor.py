@@ -390,6 +390,8 @@ class MQTTMonitor:
                             "alert_data": alert_data,
                             "timestamp": datetime.utcnow(),
                             "source": "Kati",
+                            "device_type": "Kati_Watch",
+                            "topic": topic,
                             "status": "ACTIVE",
                             "created_at": datetime.utcnow(),
                             "processed": False

@@ -56,6 +56,9 @@ JWT_AUTH_BASE_URL = os.environ.get('JWT_AUTH_BASE_URL', 'https://stardust-v1.my-
 JWT_LOGIN_ENDPOINT = os.environ.get('JWT_LOGIN_ENDPOINT', '/auth/login')
 JWT_ME_ENDPOINT = os.environ.get('JWT_ME_ENDPOINT', '/auth/me')
 
+# Google Maps API Configuration
+GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', 'AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg')
+
 # Initialize MQTT monitor
 mongodb_uri = os.getenv('MONGODB_URI')
 mongodb_database = os.getenv('MONGODB_DATABASE', 'AMY')
@@ -877,7 +880,7 @@ def messages_page():
 @login_required
 def emergency_dashboard():
     """Emergency alerts dashboard"""
-    return render_template('emergency_dashboard.html')
+    return render_template('emergency_dashboard.html', google_maps_api_key=GOOGLE_MAPS_API_KEY)
 
 @app.route('/api/emergency-alerts')
 @login_required
@@ -2608,7 +2611,7 @@ def broadcast_medical_data():
 @login_required
 def kati_transaction_page():
     """Kati Watch transaction monitoring dashboard"""
-    return render_template('kati-transaction.html')
+    return render_template('kati-transaction.html', google_maps_api_key=GOOGLE_MAPS_API_KEY)
 
 @app.route('/api/kati-transactions')
 @login_required
@@ -2696,23 +2699,90 @@ def get_kati_transactions():
                         # Get hospital and ward information
                         hospital_ward_data = patient.get('hospital_ward_data', {})
                         if hospital_ward_data:
-                            hospital_id = hospital_ward_data.get('hospitalId')
-                            if hospital_id:
-                                # Get hospital information
-                                hospital = mqtt_monitor.db.hospitals.find_one({'_id': hospital_id})
-                                if hospital:
-                                    enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = hospital.get('name', 'Unknown Hospital')
-                                    enhanced_transaction['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
-                                    
-                                    # Get ward information
-                                    ward_list = hospital_ward_data.get('wardList', [])
-                                    if ward_list:
-                                        # Find the ward for this hospital
-                                        for ward in ward_list:
-                                            if ward.get('hospitalId') == hospital_id:
-                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = ward.get('wardName', 'Unknown Ward')
-                                                enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward.get('_id', ''))
-                                                break
+                            # Handle different data structures
+                            if isinstance(hospital_ward_data, dict):
+                                hospital_id = hospital_ward_data.get('hospitalId')
+                                if hospital_id:
+                                    # Get hospital information from AMY.hospitals collection
+                                    hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
+                                    if hospital:
+                                        # Extract Thai hospital name from multi-language object
+                                        hospital_name_obj = hospital.get('name', {})
+                                        if isinstance(hospital_name_obj, list):
+                                            # Find Thai name in the list
+                                            thai_name = next((item.get('name', 'Unknown Hospital') for item in hospital_name_obj if item.get('code') == 'th'), 'Unknown Hospital')
+                                            enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = thai_name
+                                        else:
+                                            enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = hospital.get('name', 'Unknown Hospital')
+                                        enhanced_transaction['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
+                                        
+                                        # Get ward information from AMY.ward_lists collection
+                                        ward_list = hospital_ward_data.get('wardList', [])
+                                        if ward_list:
+                                            # Find the ward for this hospital
+                                            for ward in ward_list:
+                                                if ward.get('hospital_id') == hospital_id:
+                                                    ward_id = ward.get('ward_id')
+                                                    if ward_id:
+                                                        # Lookup ward name from AMY.ward_lists collection
+                                                        ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
+                                                        if ward_info:
+                                                            # Extract Thai ward name from multi-language object
+                                                            ward_name_obj = ward_info.get('name', {})
+                                                            if isinstance(ward_name_obj, list):
+                                                                # Find Thai name in the list
+                                                                thai_name = next((item.get('name', 'Unknown Ward') for item in ward_name_obj if item.get('code') == 'th'), 'Unknown Ward')
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = thai_name
+                                                            else:
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = ward_info.get('name', 'Unknown Ward')
+                                                            enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                        else:
+                                                            enhanced_transaction['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
+                                                            enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                    break
+                            elif isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
+                                # Handle case where hospital_ward_data is a list
+                                first_hospital = hospital_ward_data[0]
+                                if isinstance(first_hospital, dict):
+                                    hospital_id = first_hospital.get('hospitalId')
+                                    if hospital_id:
+                                        # Get hospital information from AMY.hospitals collection
+                                        hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
+                                        if hospital:
+                                            # Extract Thai hospital name from multi-language object
+                                            hospital_name_obj = hospital.get('name', {})
+                                            if isinstance(hospital_name_obj, list):
+                                                # Find Thai name in the list
+                                                thai_name = next((item.get('name', 'Unknown Hospital') for item in hospital_name_obj if item.get('code') == 'th'), 'Unknown Hospital')
+                                                enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = thai_name
+                                            else:
+                                                enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = hospital.get('name', 'Unknown Hospital')
+                                            enhanced_transaction['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
+                                            
+                                            # Get ward information from AMY.ward_lists collection
+                                            ward_list = first_hospital.get('wardList', [])
+                                            if ward_list:
+                                                # Find the ward for this hospital
+                                                for ward in ward_list:
+                                                    if ward.get('hospital_id') == hospital_id:
+                                                        ward_id = ward.get('ward_id')
+                                                        if ward_id:
+                                                            # Lookup ward name from AMY.ward_lists collection
+                                                            ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
+                                                            if ward_info:
+                                                                # Extract Thai ward name from multi-language object
+                                                                ward_name_obj = ward_info.get('name', {})
+                                                                if isinstance(ward_name_obj, list):
+                                                                    # Find Thai name in the list
+                                                                    thai_name = next((item.get('name', 'Unknown Ward') for item in ward_name_obj if item.get('code') == 'th'), 'Unknown Ward')
+                                                                    enhanced_transaction['patient_info']['hospital_info']['ward_name'] = thai_name
+                                                                else:
+                                                                    enhanced_transaction['patient_info']['hospital_info']['ward_name'] = ward_info.get('name', 'Unknown Ward')
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                            else:
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                        break
                 except Exception as e:
                     logger.warning(f"Error enhancing patient info for transaction {transaction.get('_id')}: {e}")
             
@@ -2756,7 +2826,7 @@ def get_kati_transactions():
         unmapped_count = len([t for t in enhanced_transactions if not t.get('patient_id')])
         
         statistics = {
-            'total_transactions': len(enhanced_transactions),
+            'total_transactions': total_count,  # Use the actual total count from database
             'mapped_devices': mapped_count,
             'unmapped_devices': unmapped_count,
             'active_devices': len(set(t.get('device_id') for t in enhanced_transactions if t.get('device_id'))),
@@ -3066,6 +3136,360 @@ def serve_patient_image(filename):
         logger.warning(f"Patient image not found: {filename}")
         # Return a default avatar or 404
         return app.send_static_file('user_profiles/default-avatar.png')
+
+@app.route('/api/kati-transactions/<transaction_id>/location-details')
+@login_required
+def get_location_details(transaction_id):
+    """Get detailed location data with hospital lookup and enhanced patient info for a specific transaction"""
+    try:
+        # Check if MongoDB connection is available
+        if mqtt_monitor.db is None:
+            return jsonify({
+                "success": False,
+                "error": "Database connection not available"
+            }), 503
+
+        # Get the transaction
+        medical_data_collection = mqtt_monitor.db['medical_data']
+        transaction = medical_data_collection.find_one({'_id': ObjectId(transaction_id)})
+        
+        if not transaction:
+            return jsonify({
+                "success": False,
+                "error": "Transaction not found"
+            }), 404
+        
+        # Check if this is a location or emergency transaction
+        topic = transaction.get('topic', '')
+        if topic not in ['iMEDE_watch/location', 'iMEDE_watch/sos', 'iMEDE_watch/fallDown']:
+            return jsonify({
+                "success": False,
+                "error": "Transaction is not a location or emergency record"
+            }), 400
+        
+        # Extract location data
+        location_data = transaction.get('data', {}).get('location', {})
+        
+        if not location_data:
+            return jsonify({
+                "success": False,
+                "error": "No location data found in transaction"
+            }), 404
+        
+        # Extract coordinates from GPS, LBS, or WiFi
+        coordinates = None
+        location_source = None
+        
+        # Try GPS first (most accurate)
+        if location_data.get('GPS') and isinstance(location_data['GPS'], dict) and location_data['GPS'].get('latitude') and location_data['GPS'].get('longitude'):
+            coordinates = {
+                'lat': float(location_data['GPS']['latitude']),
+                'lng': float(location_data['GPS']['longitude'])
+            }
+            location_source = 'GPS'
+        # Try LBS (cell tower) if GPS not available
+        elif location_data.get('LBS') and isinstance(location_data['LBS'], dict) and location_data['LBS'].get('latitude') and location_data['LBS'].get('longitude'):
+            coordinates = {
+                'lat': float(location_data['LBS']['latitude']),
+                'lng': float(location_data['LBS']['longitude'])
+            }
+            location_source = 'LBS'
+        # Try WiFi geolocation if available
+        elif location_data.get('WiFi') and isinstance(location_data['WiFi'], dict) and location_data['WiFi'].get('latitude') and location_data['WiFi'].get('longitude'):
+            coordinates = {
+                'lat': float(location_data['WiFi']['latitude']),
+                'lng': float(location_data['WiFi']['longitude'])
+            }
+            location_source = 'WiFi'
+        
+        # Enhanced patient information
+        enhanced_patient_info = None
+        if transaction.get('patient_id'):
+            try:
+                patients_collection = mqtt_monitor.db['patients']
+                patient = patients_collection.find_one({'_id': ObjectId(transaction['patient_id'])})
+                
+                if patient:
+                    # Extract hospital and ward data with proper type checking
+                    hospital_ward_data = patient.get('hospital_ward_data', {})
+                    
+                    # Handle different data types for hospital_ward_data
+                    if isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
+                        hospital_ward_data = hospital_ward_data[0]  # Take first entry
+                    elif not isinstance(hospital_ward_data, dict):
+                        hospital_ward_data = {}  # Reset to empty dict if not a dict
+                    
+                    enhanced_patient_info = {
+                        'patient_id': str(patient['_id']),
+                        'first_name': patient.get('first_name', ''),
+                        'last_name': patient.get('last_name', ''),
+                        'profile_image': patient.get('profile_image', ''),
+                        'mobile_phone': patient.get('mobile_phone', ''),
+                        'emergency_contact': patient.get('emergency_contact', ''),
+                        'underlying_conditions': patient.get('underlying_conditions', []),
+                        'allergies': patient.get('allergies', []),
+                        'hospital_name': hospital_ward_data.get('hospital_name', '') if isinstance(hospital_ward_data, dict) else '',
+                        'ward_name': hospital_ward_data.get('ward_name', '') if isinstance(hospital_ward_data, dict) else '',
+                        'room_number': hospital_ward_data.get('room_number', '') if isinstance(hospital_ward_data, dict) else '',
+                        'admission_date': hospital_ward_data.get('admission_date', '') if isinstance(hospital_ward_data, dict) else '',
+                        'discharge_date': hospital_ward_data.get('discharge_date', '') if isinstance(hospital_ward_data, dict) else ''
+                    }
+            except Exception as e:
+                logger.warning(f"Error getting enhanced patient info: {e}")
+        
+        # Find nearest hospital if coordinates are available
+        hospital = None
+        if coordinates:
+            try:
+                # Get all hospitals with location data
+                hospitals_collection = mqtt_monitor.db['hospitals']
+                hospitals = list(hospitals_collection.find({
+                    'location': {'$exists': True},
+                    'location.latitude': {'$exists': True},
+                    'location.longitude': {'$exists': True}
+                }))
+                
+                if hospitals:
+                    # Calculate distances and find nearest hospital
+                    nearest_hospital = None
+                    min_distance = float('inf')
+                    
+                    for hosp in hospitals:
+                        hosp_location = hosp.get('location', {})
+                        if hosp_location.get('latitude') and hosp_location.get('longitude'):
+                            # Calculate distance using Haversine formula
+                            distance = calculate_distance(
+                                coordinates['lat'], coordinates['lng'],
+                                float(hosp_location['latitude']), float(hosp_location['longitude'])
+                            )
+                            
+                            if distance < min_distance:
+                                min_distance = distance
+                                nearest_hospital = hosp
+                    
+                    if nearest_hospital:
+                        hospital = {
+                            'name': nearest_hospital.get('name', 'Unknown Hospital'),
+                            'address': nearest_hospital.get('address', 'Address not available'),
+                            'phone': nearest_hospital.get('phone', 'Phone not available'),
+                            'lat': float(nearest_hospital['location']['latitude']),
+                            'lng': float(nearest_hospital['location']['longitude']),
+                            'distance': round(min_distance, 2)
+                        }
+            except Exception as e:
+                logger.warning(f"Error finding nearest hospital: {e}")
+        
+        # Convert ObjectIds to strings
+        def convert_objectids(obj):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    if isinstance(value, dict):
+                        convert_objectids(value)
+                    elif isinstance(value, list):
+                        for item in value:
+                            convert_objectids(item)
+                    elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
+                        obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
+            elif isinstance(obj, list):
+                for item in obj:
+                    convert_objectids(item)
+            return obj
+        
+        # Convert the response data
+        response_data = {
+            'transaction_id': str(transaction['_id']),
+            'topic': topic,
+            'timestamp': transaction.get('timestamp'),
+            'device_id': transaction.get('device_id'),
+            'location': convert_objectids(location_data),
+            'coordinates': coordinates,
+            'location_source': location_source,
+            'hospital': hospital,
+            'enhanced_patient_info': enhanced_patient_info
+        }
+        
+        return jsonify({
+            "success": True,
+            "data": response_data
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting location details: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+def calculate_distance(lat1, lon1, lat2, lon2):
+    """Calculate distance between two points using Haversine formula"""
+    from math import radians, cos, sin, asin, sqrt
+    
+    # Convert decimal degrees to radians
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+    
+    # Haversine formula
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a))
+    
+    # Radius of earth in kilometers
+    r = 6371
+    
+    return c * r
+
+@app.route('/api/kati-transactions/<transaction_id>/batch-details')
+@login_required
+def get_batch_vital_signs_details(transaction_id):
+    """Get detailed batch vital signs data for a specific transaction"""
+    try:
+        # Check if MongoDB connection is available
+        if mqtt_monitor.db is None:
+            return jsonify({
+                "success": False,
+                "error": "Database connection not available"
+            }), 503
+
+        # Get the transaction
+        medical_data_collection = mqtt_monitor.db['medical_data']
+        transaction = medical_data_collection.find_one({'_id': ObjectId(transaction_id)})
+        
+        if not transaction:
+            return jsonify({
+                "success": False,
+                "error": "Transaction not found"
+            }), 404
+        
+        # Check if this is a batch vital signs transaction
+        if transaction.get('event_type') != 'batch_vital_signs':
+            return jsonify({
+                "success": False,
+                "error": "Transaction is not a batch vital signs record"
+            }), 400
+        
+        # Extract batch data
+        batch_data = transaction.get('data', {})
+        # Check for vital_signs array first, then fall back to data array
+        vital_signs_list = batch_data.get('vital_signs', batch_data.get('data', []))
+        
+        if not vital_signs_list:
+            return jsonify({
+                "success": False,
+                "error": "No vital signs data found in batch"
+            }), 404
+        
+        # Calculate averages
+        heart_rates = []
+        blood_pressures_sys = []
+        blood_pressures_dia = []
+        body_temperatures = []
+        spo2_values = []
+        
+        for vital_sign in vital_signs_list:
+            if vital_sign.get('heartRate'):
+                heart_rates.append(float(vital_sign['heartRate']))
+            if vital_sign.get('bloodPressure'):
+                bp = vital_sign['bloodPressure']
+                if bp.get('bp_sys'):
+                    blood_pressures_sys.append(float(bp['bp_sys']))
+                if bp.get('bp_dia'):
+                    blood_pressures_dia.append(float(bp['bp_dia']))
+            if vital_sign.get('bodyTemperature'):
+                body_temperatures.append(float(vital_sign['bodyTemperature']))
+            if vital_sign.get('spO2'):
+                spo2_values.append(float(vital_sign['spO2']))
+        
+        # Calculate averages
+        averages = {
+            'heartRate': round(sum(heart_rates) / len(heart_rates), 1) if heart_rates else None,
+            'bloodPressure': {
+                'systolic': round(sum(blood_pressures_sys) / len(blood_pressures_sys), 1) if blood_pressures_sys else None,
+                'diastolic': round(sum(blood_pressures_dia) / len(blood_pressures_dia), 1) if blood_pressures_dia else None
+            },
+            'bodyTemperature': round(sum(body_temperatures) / len(body_temperatures), 1) if body_temperatures else None,
+            'spO2': round(sum(spo2_values) / len(spo2_values), 1) if spo2_values else None
+        }
+        
+        # Get enhanced patient info if available
+        patient_info = None
+        enhanced_patient_info = None
+        if transaction.get('patient_id'):
+            try:
+                patient = mqtt_monitor.db.patients.find_one({'_id': transaction['patient_id']})
+                if patient:
+                    # Basic patient info
+                    patient_info = {
+                        'first_name': patient.get('first_name', ''),
+                        'last_name': patient.get('last_name', ''),
+                        'profile_image': patient.get('profile_image', '')
+                    }
+                    
+                    # Enhanced patient info (same as location details)
+                    enhanced_patient_info = {
+                        'first_name': patient.get('first_name', ''),
+                        'last_name': patient.get('last_name', ''),
+                        'profile_image': patient.get('profile_image', ''),
+                        'date_of_birth': patient.get('date_of_birth'),
+                        'gender': patient.get('gender'),
+                        'mobile_phone': patient.get('mobile_phone'),
+                        'emergency_contact': patient.get('emergency_contact'),
+                        'underlying_conditions': patient.get('underlying_conditions', []),
+                        'allergies': patient.get('allergies', [])
+                    }
+                    
+                    # Add hospital and ward information if available
+                    if patient.get('hospital_ward_data'):
+                        hospital_ward_data = patient['hospital_ward_data']
+                        if isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
+                            # If it's a list, take the first entry
+                            hospital_info = hospital_ward_data[0]
+                            enhanced_patient_info['hospital_name'] = hospital_info.get('hospital_name', '')
+                            enhanced_patient_info['ward_name'] = hospital_info.get('ward_name', '')
+                        elif isinstance(hospital_ward_data, dict):
+                            # If it's a dict, use it directly
+                            enhanced_patient_info['hospital_name'] = hospital_ward_data.get('hospital_name', '')
+                            enhanced_patient_info['ward_name'] = hospital_ward_data.get('ward_name', '')
+                    
+            except Exception as e:
+                logger.warning(f"Error getting patient info: {e}")
+        
+        # Convert ObjectIds to strings
+        def convert_objectids(obj):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    if isinstance(value, dict):
+                        convert_objectids(value)
+                    elif isinstance(value, list):
+                        for item in value:
+                            convert_objectids(item)
+                    elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
+                        obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
+            elif isinstance(obj, list):
+                for item in obj:
+                    convert_objectids(item)
+            return obj
+        
+        # Convert the response data
+        response_data = {
+            'transaction_id': str(transaction['_id']),
+            'timestamp': transaction.get('timestamp'),
+            'device_id': transaction.get('device_id'),
+            'patient_info': patient_info,
+            'enhanced_patient_info': enhanced_patient_info,
+            'batch_size': len(vital_signs_list),
+            'averages': averages,
+            'vital_signs': convert_objectids(vital_signs_list)
+        }
+        
+        return jsonify({
+            "success": True,
+            "data": response_data
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting batch vital signs details: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=8098, debug=True, allow_unsafe_werkzeug=True) 

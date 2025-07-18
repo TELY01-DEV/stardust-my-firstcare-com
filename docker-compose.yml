@@ -312,6 +312,9 @@ services:
       - JWT_AUTH_BASE_URL=https://stardust-v1.my-firstcare.com
       - JWT_LOGIN_ENDPOINT=/auth/login
       - JWT_ME_ENDPOINT=/auth/me
+      
+      # Google Maps API Configuration
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
     volumes:
       - ./ssl:/app/ssl:ro
     restart: unless-stopped

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗺️ Google Maps API Test</h1>
+        
+        <div class="test-section">
+            <h3>1. API Loading Status</h3>
+            <div id="api-status" class="status warning">Checking API status...</div>
+            <button onclick="checkAPIStatus()">Check API Status</button>
+        </div>
+
+        <div class="test-section">
+            <h3>2. Map Initialization Test</h3>
+            <div id="map-status" class="status warning">Ready to test map initialization</div>
+            <button onclick="testMapInitialization()">Test Map Initialization</button>
+            <div id="map"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. Places API Test</h3>
+            <div id="places-status" class="status warning">Ready to test Places API</div>
+            <button onclick="testPlacesAPI()">Test Places API</button>
+        </div>
+
+        <div class="test-section">
+            <h3>4. Geolocation Test</h3>
+            <div id="geolocation-status" class="status warning">Ready to test geolocation</div>
+            <button onclick="testGeolocation()">Test Geolocation</button>
+        </div>
+
+        <div class="test-section">
+            <h3>5. Debug Log</h3>
+            <div id="debug-log" class="log"></div>
+            <button onclick="clearLog()">Clear Log</button>
+        </div>
+    </div>
+
+    <!-- Google Maps API with async loading -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=places,geometry,marker&loading=async"></script>
+    
+    <script>
+        let map = null;
+        let logElement = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            logElement = document.getElementById('debug-log');
+            log('Page loaded, starting API tests...');
+            checkAPIStatus();
+        });
+
+        // Logging function
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            console.log(logEntry);
+            if (logElement) {
+                logElement.innerHTML += logEntry + '\n';
+                logElement.scrollTop = logElement.scrollHeight;
+            }
+        }
+
+        function clearLog() {
+            if (logElement) {
+                logElement.innerHTML = '';
+            }
+        }
+
+        // Wait for Google Maps API to be ready
+        function waitForGoogleMapsAPI() {
+            return new Promise((resolve, reject) => {
+                const maxAttempts = 50; // 5 seconds max wait
+                let attempts = 0;
+                
+                const checkAPI = () => {
+                    attempts++;
+                    if (typeof google !== 'undefined' && google.maps) {
+                        log('✅ Google Maps API ready');
+                        resolve();
+                    } else if (attempts >= maxAttempts) {
+                        const error = 'Google Maps API failed to load within timeout';
+                        log('❌ ' + error);
+                        reject(new Error(error));
+                    } else {
+                        setTimeout(checkAPI, 100);
+                    }
+                };
+                
+                checkAPI();
+            });
+        }
+
+        // Check API Status
+        async function checkAPIStatus() {
+            const statusElement = document.getElementById('api-status');
+            statusElement.className = 'status warning';
+            statusElement.textContent = 'Checking API status...';
+            
+            try {
+                await waitForGoogleMapsAPI();
+                statusElement.className = 'status success';
+                statusElement.textContent = '✅ Google Maps API loaded successfully';
+                log('✅ API status check passed');
+            } catch (error) {
+                statusElement.className = 'status error';
+                statusElement.textContent = '❌ Google Maps API failed to load: ' + error.message;
+                log('❌ API status check failed: ' + error.message);
+            }
+        }
+
+        // Test Map Initialization
+        async function testMapInitialization() {
+            const statusElement = document.getElementById('map-status');
+            statusElement.className = 'status warning';
+            statusElement.textContent = 'Testing map initialization...';
+            
+            try {
+                await waitForGoogleMapsAPI();
+                
+                const mapElement = document.getElementById('map');
+                if (!mapElement) {
+                    throw new Error('Map element not found');
+                }
+
+                // Test coordinates (Bangkok)
+                const testCoords = { lat: 13.7563, lng: 100.5018 };
+                
+                map = new google.maps.Map(mapElement, {
+                    zoom: 15,
+                    center: testCoords,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    mapId: 'KATI_LOCATION_DETIAL_POPUP' // Custom Map ID for Kati Location Details
+                });
+
+                // Add a test marker using AdvancedMarkerElement
+                const markerElement = document.createElement('div');
+                markerElement.innerHTML = `
+                    <div style="width: 32px; height: 32px; background: red; border: 2px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">T</div>
+                `;
+                
+                new google.maps.marker.AdvancedMarkerElement({
+                    position: testCoords,
+                    map: map,
+                    title: 'Test Location (Bangkok)',
+                    content: markerElement
+                });
+
+                statusElement.className = 'status success';
+                statusElement.textContent = '✅ Map initialized successfully with test marker';
+                log('✅ Map initialization test passed');
+                
+            } catch (error) {
+                statusElement.className = 'status error';
+                statusElement.textContent = '❌ Map initialization failed: ' + error.message;
+                log('❌ Map initialization test failed: ' + error.message);
+            }
+        }
+
+        // Test Places API (Updated to avoid deprecated PlacesService)
+        async function testPlacesAPI() {
+            const statusElement = document.getElementById('places-status');
+            statusElement.className = 'status warning';
+            statusElement.textContent = 'Testing Places API...';
+            
+            try {
+                await waitForGoogleMapsAPI();
+                
+                // Use the newer Places API with fetch instead of deprecated PlacesService
+                const location = '13.7563,100.5018'; // Bangkok
+                const radius = 5000;
+                const apiKey = 'AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg'; // Default key
+                const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location}&radius=${radius}&type=hospital&key=${apiKey}`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status === 'OK') {
+                    statusElement.className = 'status success';
+                    statusElement.textContent = `✅ Places API working - Found ${data.results.length} hospitals`;
+                    log(`✅ Places API test passed - Found ${data.results.length} hospitals`);
+                    return data.results;
+                } else {
+                    const error = `Places API error: ${data.status}`;
+                    statusElement.className = 'status error';
+                    statusElement.textContent = '❌ ' + error;
+                    log('❌ Places API test failed: ' + error);
+                    throw new Error(error);
+                }
+                
+            } catch (error) {
+                statusElement.className = 'status error';
+                statusElement.textContent = '❌ Places API test failed: ' + error.message;
+                log('❌ Places API test failed: ' + error.message);
+            }
+        }
+
+        // Test Geolocation
+        async function testGeolocation() {
+            const statusElement = document.getElementById('geolocation-status');
+            statusElement.className = 'status warning';
+            statusElement.textContent = 'Testing geolocation...';
+            
+            if (!navigator.geolocation) {
+                statusElement.className = 'status error';
+                statusElement.textContent = '❌ Geolocation is not supported by this browser';
+                log('❌ Geolocation not supported');
+                return;
+            }
+            
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 60000
+                    });
+                });
+                
+                const coords = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                    accuracy: position.coords.accuracy
+                };
+                
+                statusElement.className = 'status success';
+                statusElement.textContent = `✅ Geolocation working - Lat: ${coords.lat.toFixed(6)}, Lng: ${coords.lng.toFixed(6)}, Accuracy: ${coords.accuracy}m`;
+                log(`✅ Geolocation test passed - Lat: ${coords.lat}, Lng: ${coords.lng}, Accuracy: ${coords.accuracy}m`);
+                
+                // If map is initialized, center on user location
+                if (map) {
+                    map.setCenter(coords);
+                    const userMarkerElement = document.createElement('div');
+                    userMarkerElement.innerHTML = `
+                        <div style="width: 32px; height: 32px; background: red; border: 2px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">U</div>
+                    `;
+                    
+                    new google.maps.marker.AdvancedMarkerElement({
+                        position: coords,
+                        map: map,
+                        title: 'Your Location',
+                        content: userMarkerElement
+                    });
+                }
+                
+            } catch (error) {
+                statusElement.className = 'status error';
+                statusElement.textContent = '❌ Geolocation failed: ' + error.message;
+                log('❌ Geolocation test failed: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html> 

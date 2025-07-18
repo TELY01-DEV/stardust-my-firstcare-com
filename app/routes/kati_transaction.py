@@ -153,6 +153,120 @@ async def get_kati_transactions(
         all_transactions = kati_transactions + emergency_alarms
         all_transactions.sort(key=lambda x: x.get('timestamp', datetime.min), reverse=True)
         
+        # Enhance transactions with patient information
+        enhanced_transactions = []
+        patients_collection = mongodb_service.main_db.patients
+        hospitals_collection = mongodb_service.main_db.hospitals
+        ward_lists_collection = mongodb_service.main_db.ward_lists
+        
+        for transaction in all_transactions:
+            enhanced_transaction = transaction.copy()
+            
+            # Add patient information if available
+            if transaction.get('patient_id'):
+                try:
+                    patient = await patients_collection.find_one({'_id': ObjectId(transaction['patient_id'])})
+                    if patient:
+                        enhanced_transaction['patient_info'] = {
+                            'patient_id': str(patient['_id']),
+                            'first_name': patient.get('first_name', ''),
+                            'last_name': patient.get('last_name', ''),
+                            'profile_image': patient.get('profile_image', ''),
+                            'hospital_info': {}
+                        }
+                        
+                        # Get hospital and ward information
+                        hospital_ward_data = patient.get('hospital_ward_data', {})
+                        if hospital_ward_data:
+                            # Handle different data structures
+                            if isinstance(hospital_ward_data, dict):
+                                hospital_id = hospital_ward_data.get('hospitalId')
+                                if hospital_id:
+                                    # Get hospital information from AMY.hospitals collection
+                                    hospital = await hospitals_collection.find_one({'_id': ObjectId(hospital_id)})
+                                    if hospital:
+                                        # Extract Thai hospital name from multi-language object
+                                        hospital_name_obj = hospital.get('name', {})
+                                        if isinstance(hospital_name_obj, list):
+                                            # Find Thai name in the list
+                                            thai_name = next((item.get('name', 'Unknown Hospital') for item in hospital_name_obj if item.get('code') == 'th'), 'Unknown Hospital')
+                                            enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = thai_name
+                                        else:
+                                            enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = hospital.get('name', 'Unknown Hospital')
+                                        enhanced_transaction['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
+                                        
+                                        # Get ward information from AMY.ward_lists collection
+                                        ward_list = hospital_ward_data.get('wardList', [])
+                                        if ward_list:
+                                            # Find the ward for this hospital
+                                            for ward in ward_list:
+                                                if ward.get('hospital_id') == hospital_id:
+                                                    ward_id = ward.get('ward_id')
+                                                    if ward_id:
+                                                        # Lookup ward name from AMY.ward_lists collection
+                                                        ward_info = await ward_lists_collection.find_one({'_id': ObjectId(ward_id)})
+                                                        if ward_info:
+                                                            # Extract Thai ward name from multi-language object
+                                                            ward_name_obj = ward_info.get('name', {})
+                                                            if isinstance(ward_name_obj, list):
+                                                                # Find Thai name in the list
+                                                                thai_name = next((item.get('name', 'Unknown Ward') for item in ward_name_obj if item.get('code') == 'th'), 'Unknown Ward')
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = thai_name
+                                                            else:
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = ward_info.get('name', 'Unknown Ward')
+                                                            enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                        else:
+                                                            enhanced_transaction['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
+                                                            enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                    break
+                            elif isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
+                                # Handle case where hospital_ward_data is a list
+                                first_hospital = hospital_ward_data[0]
+                                if isinstance(first_hospital, dict):
+                                    hospital_id = first_hospital.get('hospitalId')
+                                    if hospital_id:
+                                        # Get hospital information from AMY.hospitals collection
+                                        hospital = await hospitals_collection.find_one({'_id': ObjectId(hospital_id)})
+                                        if hospital:
+                                            # Extract Thai hospital name from multi-language object
+                                            hospital_name_obj = hospital.get('name', {})
+                                            if isinstance(hospital_name_obj, list):
+                                                # Find Thai name in the list
+                                                thai_name = next((item.get('name', 'Unknown Hospital') for item in hospital_name_obj if item.get('code') == 'th'), 'Unknown Hospital')
+                                                enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = thai_name
+                                            else:
+                                                enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = hospital.get('name', 'Unknown Hospital')
+                                            enhanced_transaction['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
+                                            
+                                            # Get ward information from AMY.ward_lists collection
+                                            ward_list = first_hospital.get('wardList', [])
+                                            if ward_list:
+                                                # Find the ward for this hospital
+                                                for ward in ward_list:
+                                                    if ward.get('hospital_id') == hospital_id:
+                                                        ward_id = ward.get('ward_id')
+                                                        if ward_id:
+                                                            # Lookup ward name from AMY.ward_lists collection
+                                                            ward_info = await ward_lists_collection.find_one({'_id': ObjectId(ward_id)})
+                                                            if ward_info:
+                                                                # Extract Thai ward name from multi-language object
+                                                                ward_name_obj = ward_info.get('name', {})
+                                                                if isinstance(ward_name_obj, list):
+                                                                    # Find Thai name in the list
+                                                                    thai_name = next((item.get('name', 'Unknown Ward') for item in ward_name_obj if item.get('code') == 'th'), 'Unknown Ward')
+                                                                    enhanced_transaction['patient_info']['hospital_info']['ward_name'] = thai_name
+                                                                else:
+                                                                    enhanced_transaction['patient_info']['hospital_info']['ward_name'] = ward_info.get('name', 'Unknown Ward')
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                            else:
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                        break
+                except Exception as e:
+                    logger.warning(f"Error enhancing patient info for transaction {transaction.get('_id')}: {e}")
+            
+            enhanced_transactions.append(enhanced_transaction)
+        
         # Convert ObjectIds to strings
         def convert_objectids(obj):
             if isinstance(obj, dict):
@@ -171,12 +285,18 @@ async def get_kati_transactions(
                     convert_objectids(item)
             return obj
         
-        all_transactions = convert_objectids(all_transactions)
+        enhanced_transactions = convert_objectids(enhanced_transactions)
+        
+        # Get total count for the time period
+        total_count = await medical_data_collection.count_documents({
+            'device_type': 'Kati_Watch',
+            'timestamp': {'$gte': start_time}
+        })
         
         # Calculate statistics
         statistics = {
-            'total_transactions': len(all_transactions),
-            'active_devices': len(set(t.get('device_id') for t in all_transactions if t.get('device_id'))),
+            'total_transactions': total_count,  # Use actual total count from database
+            'active_devices': len(set(t.get('device_id') for t in enhanced_transactions if t.get('device_id'))),
             'success_rate': 100,  # All stored transactions are successful
             'topic_distribution': {},
             'emergency_count': len(emergency_alarms),
@@ -189,7 +309,7 @@ async def get_kati_transactions(
         }
         
         # Calculate topic distribution
-        for transaction in all_transactions:
+        for transaction in enhanced_transactions:
             topic = transaction.get('topic', 'unknown')
             if topic not in statistics['topic_distribution']:
                 statistics['topic_distribution'][topic] = 0
@@ -199,7 +319,7 @@ async def get_kati_transactions(
             request_id=str(request.state.request_id),
             message="Kati transactions retrieved successfully",
             data={
-                "transactions": all_transactions,
+                "transactions": enhanced_transactions,
                 "statistics": statistics
             }
         )
