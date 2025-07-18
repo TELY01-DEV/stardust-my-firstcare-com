@@ -120,6 +120,30 @@ class MQTTMonitorApp {
             this.patients = data.patients;
             this.updatePatientsDisplay();
         }
+        
+        // Handle MQTT messages for dashboard
+        if (data.message_history && data.message_history.length > 0) {
+            console.log('📊 Loading MQTT message history:', data.message_history.length, 'messages');
+            // Clear existing messages
+            this.messages = [];
+            // Add historical MQTT messages
+            data.message_history.forEach(message => {
+                this.messages.push(message);
+                this.addMessageToDisplay(message);
+            });
+            // Update statistics
+            this.stats.totalMessages = this.messages.length;
+            this.updateStatisticsDisplay();
+        }
+        
+        // Handle data flow events for data flow pages
+        if (data.flow_events && data.flow_events.length > 0) {
+            console.log('📊 Loading data flow events:', data.flow_events.length, 'events');
+            // Add historical flow events to data flow display
+            data.flow_events.forEach(event => {
+                this.updateDataFlowDisplay(event);
+            });
+        }
     }
     
     handleMQTTMessage(message) {
@@ -1339,6 +1363,8 @@ class MQTTMonitorApp {
                 if (data.success) {
                     this.redisEvents = data.data;
                     this.updateRedisEventsDisplay();
+                    // Also update dashboard messages immediately
+                    this.updateDashboardMessages();
                 }
             }
         } catch (error) {
@@ -1394,6 +1420,62 @@ class MQTTMonitorApp {
             const eventElement = this.createRedisEventElement(event);
             container.appendChild(eventElement);
         });
+        
+        // Also update the main dashboard messages container
+        this.updateDashboardMessages();
+    }
+    
+    updateDashboardMessages() {
+        const container = document.getElementById('messages-container');
+        if (!container) {
+            // Silently return if messages-container doesn't exist (not on dashboard page)
+            return;
+        }
+        
+        console.log('🔄 updateDashboardMessages called with', this.redisEvents.length, 'events');
+        console.log('✅ messages-container found, updating...');
+        
+        // Clear loading message
+        const loadingMessage = container.querySelector('.text-center.text-muted');
+        if (loadingMessage) {
+            console.log('🗑️ Removing loading message');
+            loadingMessage.remove();
+        }
+        
+        // Update messages list
+        container.innerHTML = '';
+        console.log('📝 Adding', this.redisEvents.slice(0, 20).length, 'messages to dashboard');
+        
+        this.redisEvents.slice(0, 20).forEach((event, index) => {
+            // Convert data flow event to MQTT message format
+            const mqttMessage = this.convertDataFlowToMQTTMessage(event);
+            const messageElement = this.createMessageElement(mqttMessage);
+            container.appendChild(messageElement);
+            console.log(`✅ Added message ${index + 1}:`, mqttMessage.topic, mqttMessage.device_type);
+        });
+        
+        // Update statistics
+        this.stats.totalMessages = this.redisEvents.length;
+        this.updateStatisticsDisplay();
+        
+        console.log('✅ Dashboard messages updated successfully');
+    }
+    
+    convertDataFlowToMQTTMessage(event) {
+        // Extract MQTT payload from data flow event
+        const payload = event.details?.payload || event.details?.raw_payload || {};
+        const topic = event.details?.topic || 'unknown';
+        const timestamp = event.timestamp || event.server_timestamp;
+        
+        return {
+            timestamp: timestamp,
+            topic: topic,
+            payload: payload,
+            device_type: event.source || 'Unknown',
+            message_type: event.event_type || 'unknown',
+            status: event.status || 'info',
+            message: event.message || 'No message'
+        };
     }
     
     updateRedisStatsDisplay() {

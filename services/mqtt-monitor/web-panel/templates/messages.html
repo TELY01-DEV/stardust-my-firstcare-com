@@ -4,7 +4,11 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>MQTT Messages - MyFirstCare</title>
+    <title>Opera-GodEye Panel - Messages</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
+    <link rel="alternate icon" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
     
     <!-- CSS files -->
     <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css" rel="stylesheet"/>
@@ -159,7 +163,7 @@
                 </button>
                 <a class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" href="/">
                     <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:40px;vertical-align:middle;margin-right:10px;">
-                    My FirstCare Panel
+                    Opera-GodEye Panel
                 </a>
                 <div class="navbar-nav flex-row order-md-last">
                     <div class="nav-item dropdown">
@@ -226,9 +230,33 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="/medical-monitor">
+                                    <i class="ti ti-heartbeat me-2"></i>
+                                    Medical Monitor
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/data-flow">
                                     <i class="ti ti-activity me-2"></i>
                                     Data Flow Monitor
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/event-log">
+                                    <i class="ti ti-list me-2"></i>
+                                    Event Log
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/event-streaming">
+                                    <i class="ti ti-broadcast me-2"></i>
+                                    Live Stream
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/kati-transaction">
+                                    <i class="ti ti-device-watch me-2"></i>
+                                    Kati Transaction
                                 </a>
                             </li>
                         </ul>

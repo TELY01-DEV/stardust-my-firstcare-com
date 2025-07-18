@@ -4,7 +4,11 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Emergency Alerts - MyFirstCare</title>
+    <title>Opera-GodEye Panel - Emergency Alerts</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
+    <link rel="alternate icon" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
     
     <!-- CSS files -->
     <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css" rel="stylesheet"/>
@@ -219,7 +223,7 @@
                 </button>
                 <a class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" href="/">
                     <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:40px;vertical-align:middle;margin-right:10px;">
-                    My FirstCare Panel
+                    Opera-GodEye Panel
                 </a>
                 <div class="navbar-nav flex-row order-md-last">
                     <div class="nav-item dropdown">
@@ -286,9 +290,33 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="/medical-monitor">
+                                    <i class="ti ti-heartbeat me-2"></i>
+                                    Medical Monitor
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/data-flow">
                                     <i class="ti ti-activity me-2"></i>
                                     Data Flow Monitor
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/event-log">
+                                    <i class="ti ti-list me-2"></i>
+                                    Event Log
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/event-streaming">
+                                    <i class="ti ti-broadcast me-2"></i>
+                                    Live Stream
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/kati-transaction">
+                                    <i class="ti ti-device-watch me-2"></i>
+                                    Kati Transaction
                                 </a>
                             </li>
                         </ul>
@@ -312,13 +340,20 @@
                         </div>
                         <div class="col-auto ms-auto d-print-none">
                             <div class="btn-list">
-                                <button class="btn btn-primary" onclick="refreshAlerts()">
+                                <span class="connection-indicator connection-connected" id="connection-status"></span>
+                                <span id="connection-text">Connected</span>
+                                <span id="current-time" class="text-muted"></span>
+                                <button class="btn btn-primary" onclick="refreshData()">
                                     <i class="ti ti-refresh me-2"></i>
                                     Refresh
                                 </button>
-                                <button class="btn btn-outline-secondary" onclick="clearAlerts()">
-                                    <i class="ti ti-trash me-2"></i>
-                                    Clear
+                                <button class="btn btn-outline-secondary" onclick="markAllProcessed()">
+                                    <i class="ti ti-check me-2"></i>
+                                    Mark All Processed
+                                </button>
+                                <button class="btn btn-outline-info" onclick="exportAlerts()">
+                                    <i class="ti ti-download me-2"></i>
+                                    Export
                                 </button>
                             </div>
                         </div>
@@ -331,28 +366,88 @@
                 <div class="container-xl">
                     <!-- Statistics Cards -->
                     <div class="row stats-cards">
-                        <div class="col-sm-6 col-lg-3">
+                        <div class="col-sm-6 col-lg-2">
                             <div class="card stat-card">
                                 <div class="stat-number" id="total-alerts">0</div>
-                                <div class="stat-label">Total Alerts</div>
+                                <div class="stat-label">Total (24h)</div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-lg-3">
+                        <div class="col-sm-6 col-lg-2">
                             <div class="card stat-card">
-                                <div class="stat-number" id="high-priority">0</div>
+                                <div class="stat-number" id="sos-count">0</div>
+                                <div class="stat-label">SOS Alerts</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-2">
+                            <div class="card stat-card">
+                                <div class="stat-number" id="fall-count">0</div>
+                                <div class="stat-label">Fall Detection</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-2">
+                            <div class="card stat-card">
+                                <div class="stat-number" id="active-count">0</div>
+                                <div class="stat-label">Active</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-2">
+                            <div class="card stat-card">
+                                <div class="stat-number" id="critical-count">0</div>
+                                <div class="stat-label">Critical</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-2">
+                            <div class="card stat-card">
+                                <div class="stat-number" id="high-count">0</div>
                                 <div class="stat-label">High Priority</div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="active-alerts">0</div>
-                                <div class="stat-label">Active Alerts</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="response-time">0s</div>
-                                <div class="stat-label">Avg Response</div>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="alert-type-filter" class="form-label">Alert Type</label>
+                                            <select class="form-select" id="alert-type-filter">
+                                                <option value="">All Types</option>
+                                                <option value="SOS">SOS</option>
+                                                <option value="FALL">Fall Detection</option>
+                                                <option value="MEDICAL">Medical</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="priority-filter" class="form-label">Priority</label>
+                                            <select class="form-select" id="priority-filter">
+                                                <option value="">All Priorities</option>
+                                                <option value="CRITICAL">Critical</option>
+                                                <option value="HIGH">High</option>
+                                                <option value="MEDIUM">Medium</option>
+                                                <option value="LOW">Low</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="status-filter" class="form-label">Status</label>
+                                            <select class="form-select" id="status-filter">
+                                                <option value="">All Status</option>
+                                                <option value="active">Active</option>
+                                                <option value="processed">Processed</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="time-range-filter" class="form-label">Time Range</label>
+                                            <select class="form-select" id="time-range-filter">
+                                                <option value="24">Last 24 Hours</option>
+                                                <option value="48">Last 48 Hours</option>
+                                                <option value="168">Last Week</option>
+                                                <option value="720">Last Month</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -368,7 +463,7 @@
                                     </h3>
                                 </div>
                                 <div class="card-body">
-                                    <div id="map" class="map-container"></div>
+                                    <div id="emergency-map" class="map-container"></div>
                                 </div>
                             </div>
                         </div>
@@ -405,10 +500,35 @@
                                 </div>
                                 <div class="card-body">
                                     <div id="alerts-table-container">
-                                        <div class="text-center text-muted py-4">
-                                            <i class="ti ti-list fa-3x mb-3"></i>
-                                            <p class="mb-0">No emergency alerts</p>
-                                            <small class="text-muted">Emergency alerts will be listed here</small>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">Emergency Alerts <span class="badge bg-primary" id="alerts-count">0</span></h5>
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="toggleTable()">
+                                                <i class="ti ti-chevron-up"></i>
+                                            </button>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Time</th>
+                                                        <th>Patient</th>
+                                                        <th>Type</th>
+                                                        <th>Priority</th>
+                                                        <th>Status</th>
+                                                        <th>Location</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="alerts-table-body">
+                                                    <tr>
+                                                        <td colspan="7" class="text-center text-muted">
+                                                            <i class="ti ti-alert-triangle fa-2x mb-2"></i>
+                                                            <p class="mb-0">No emergency alerts</p>
+                                                            <small>Emergency alerts will be listed here</small>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -420,18 +540,82 @@
         </div>
     </div>
 
+    <!-- Emergency Banner -->
+    <div id="emergency-banner" class="alert alert-danger alert-dismissible fade" role="alert" style="position: fixed; top: 0; left: 0; right: 0; z-index: 9999; margin: 0; border-radius: 0;">
+        <div class="container-xl">
+            <div class="d-flex align-items-center">
+                <i class="ti ti-alert-triangle me-2"></i>
+                <strong id="emergency-message">Emergency Alert!</strong>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Sound -->
+    <audio id="emergency-sound" preload="auto">
+        <source src="/static/sounds/emergency.wav" type="audio/wav">
+    </audio>
+
+    <!-- Alert Details Modal -->
+    <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertModalLabel">Emergency Alert Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="alert-modal-body">
+                    <!-- Alert details will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="mark-processed-btn">Mark as Processed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Legend Modal -->
+    <div class="modal fade" id="mapLegendModal" tabindex="-1" aria-labelledby="mapLegendModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mapLegendModalLabel">Map Legend</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h6>Alert Types</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="ti ti-alert-triangle text-danger me-2"></i>SOS Alert</li>
+                                <li><i class="ti ti-alert-triangle text-warning me-2"></i>Fall Detection</li>
+                                <li><i class="ti ti-alert-triangle text-info me-2"></i>Medical Alert</li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <h6>Priority Levels</h6>
+                            <ul class="list-unstyled">
+                                <li><span class="badge bg-danger me-2">Critical</span>Immediate attention required</li>
+                                <li><span class="badge bg-warning me-2">High</span>High priority response</li>
+                                <li><span class="badge bg-info me-2">Medium</span>Standard response</li>
+                                <li><span class="badge bg-secondary me-2">Low</span>Low priority</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript files -->
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-    <script src="/static/js/app.js"></script>
+    <script src="/static/js/emergency.js"></script>
     
     <script>
-        // Initialize the app when the page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Initializing Emergency Alert Dashboard...');
-            window.app = new MQTTMonitorApp();
-            window.app.init();
-        });
+        // Emergency dashboard initialization is handled by emergency.js
+        console.log('🚀 Emergency Alert Dashboard template loaded');
     </script>
 </body>
 </html> 

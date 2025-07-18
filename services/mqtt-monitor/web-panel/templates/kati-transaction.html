@@ -7,16 +7,75 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>My FirstCare Opera Panel - Kati Transaction Monitor</title>
+    <meta name="version" content="{{ range(1, 1000) | random }}" />
+    <title>Opera-GodEye Panel - Kati Transaction Monitor</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
+    <link rel="alternate icon" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
     
     <!-- CSS files -->
-    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/iconfont/tabler-icons.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css?v={{ range(1, 1000) | random }}" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/iconfont/tabler-icons.min.css?v={{ range(1, 1000) | random }}" rel="stylesheet"/>
     
     <!-- Socket.IO client -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js?v={{ range(1, 1000) | random }}"></script>
     
     <style>
+        /* MFC Theme Palette */
+        :root {
+            --mfc-blue: #024F96;
+            --mfc-light-blue: #00A1E8;
+            --mfc-accent-blue: #92E3FF;
+            --mfc-red: #EC1C24;
+            --mfc-dark-red: #981F15;
+            --mfc-gray: #D0D2D3;
+            --mfc-white: #fff;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .connection-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .connection-connected { background-color: #28a745; }
+        .connection-connecting { background-color: #ffc107; }
+        .connection-disconnected { background-color: #dc3545; }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .form-select {
+            border-radius: 8px;
+        }
+        
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        
         .status-badge {
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
@@ -60,6 +119,529 @@
         .table-responsive {
             max-height: 70vh;
             overflow-y: auto;
+        }
+        
+        .stats-cards {
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--mfc-blue);
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        
+        /* Ultra-Enhanced Emergency SOS Card Styles */
+        .emergency-stat-card {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 30%, #a71e2a 60%, #8b1a1a 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 12px 40px rgba(220, 53, 69, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            min-height: 240px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .emergency-stat-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 
+                0 20px 60px rgba(220, 53, 69, 0.7),
+                0 0 0 2px rgba(255, 255, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .emergency-stat-card:active {
+            transform: translateY(-6px) scale(1.02);
+        }
+        
+        /* Emergency Ribbon */
+        .emergency-ribbon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(90deg, #ff4757 0%, #ff3742 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+        }
+        
+        .ribbon-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ribbon-content i {
+            animation: emergency-blink 1.5s infinite;
+        }
+        
+        .emergency-content-wrapper {
+            padding: 2rem 1.5rem 1.5rem;
+            position: relative;
+            z-index: 5;
+        }
+        
+        .emergency-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .emergency-icon-container {
+            position: relative;
+        }
+        
+        .emergency-icon-ring {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 70%, transparent 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: icon-pulse 2s infinite;
+        }
+        
+        .emergency-icon-ring i {
+            font-size: 1.5rem;
+            color: #fff;
+            animation: emergency-blink 1.5s infinite;
+        }
+        
+        @keyframes icon-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        @keyframes emergency-blink {
+            0%, 50% { opacity: 0.9; }
+            51%, 100% { opacity: 0.4; }
+        }
+        
+        .emergency-badge-container {
+            position: relative;
+        }
+        
+        .emergency-badge {
+            transform: rotate(15deg);
+            position: relative;
+        }
+        
+        .emergency-badge .badge {
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            padding: 0.4rem 0.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            animation: badge-pulse 2s infinite;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .emergency-badge .badge::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff4757, #ff3742, #ff4757);
+            border-radius: inherit;
+            z-index: -1;
+            animation: badge-glow 2s infinite;
+        }
+        
+        @keyframes badge-pulse {
+            0%, 100% { transform: rotate(15deg) scale(1); }
+            50% { transform: rotate(15deg) scale(1.15); }
+        }
+        
+        @keyframes badge-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .emergency-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .emergency-main {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .emergency-number-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .emergency-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 0.25rem;
+            text-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(45deg, #fff 0%, #ffe6e6 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
+            animation: number-glow 3s infinite;
+        }
+        
+        .emergency-number-shadow {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+        
+        @keyframes number-glow {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5)); }
+            50% { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8)); }
+        }
+        
+        .emergency-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0.95;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .emergency-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+        }
+        
+        .emergency-status {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .emergency-trend {
+            background: rgba(255, 193, 7, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+        
+        .emergency-breakdown {
+            display: flex;
+            justify-content: space-around;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
+            border-radius: 16px;
+            padding: 1rem;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .breakdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .breakdown-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .breakdown-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .breakdown-icon i {
+            font-size: 0.9rem;
+            color: #fff;
+        }
+        
+        .breakdown-content {
+            text-align: left;
+        }
+        
+        .breakdown-label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .breakdown-value {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #ffd700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            animation: value-pulse 2s infinite;
+        }
+        
+        @keyframes value-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .emergency-pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 70%, transparent 100%);
+            border-radius: 50%;
+            animation: emergency-pulse 3s infinite;
+            z-index: 1;
+        }
+        
+        .emergency-pulse::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: emergency-pulse-inner 2s infinite;
+        }
+        
+        @keyframes emergency-pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.6);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.8);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes emergency-pulse-inner {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        .emergency-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.15) 0%, rgba(200, 35, 51, 0.15) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 15;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .emergency-stat-card:hover .emergency-overlay {
+            opacity: 1;
+        }
+        
+        .overlay-content {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.8) 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transform: translateY(15px) scale(0.9);
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .emergency-stat-card:hover .overlay-content {
+            transform: translateY(0) scale(1);
+        }
+        
+        .overlay-icon {
+            font-size: 1.2rem;
+            color: #ffd700;
+            animation: overlay-icon-pulse 2s infinite;
+        }
+        
+        @keyframes overlay-icon-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Emergency Sound Indicator */
+        .emergency-sound-indicator {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            z-index: 10;
+            animation: sound-pulse 1.5s infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .emergency-sound-indicator:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%);
+        }
+        
+        .emergency-sound-indicator i {
+            font-size: 1rem;
+            color: #fff;
+        }
+        
+        @keyframes sound-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        /* Emergency Details Modal Styles */
+        .emergency-details-modal .modal-content {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .emergency-details-modal .modal-header {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .emergency-details-modal .modal-title {
+            font-weight: 600;
+        }
+        
+        .emergency-alert-item {
+            background: #fff5f5;
+            border-left: 4px solid #dc3545;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .emergency-alert-item:hover {
+            background: #ffe6e6;
+            transform: translateX(5px);
+        }
+        
+        .emergency-alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .emergency-alert-time {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        
+        .emergency-alert-type {
+            background: #dc3545;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .emergency-alert-patient {
+            font-weight: 600;
+            color: #dc3545;
+            margin-bottom: 0.5rem;
+        }
+        
+        .emergency-alert-location {
+            background: #f8f9fa;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
         }
         
         .stats-card {
@@ -118,26 +700,40 @@
 </head>
 <body>
     <div class="page">
-        <!-- Navbar -->
-        <header class="navbar navbar-expand-md navbar-light d-print-none">
+        <!-- Tabler Navbar -->
+        <header class="navbar navbar-expand-md navbar-dark d-print-none" style="background: var(--mfc-blue);">
             <div class="container-xl">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                    <a href="/">
-                        <img src="/static/AMY_LOGO.png" width="110" height="32" alt="My FirstCare" class="navbar-brand-image">
-                    </a>
-                </h1>
+                <a class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" href="/">
+                    <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:40px;vertical-align:middle;margin-right:10px;">
+                    Opera-GodEye Panel
+                </a>
                 <div class="navbar-nav flex-row order-md-last">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
                             <span class="avatar avatar-sm">
-                                <img src="/static/user_profiles/admin.png" alt="Admin">
+                                <img src="{{ url_for('static', filename='user_profiles/admin.png') }}" alt="Admin">
                             </span>
+                            <div class="d-none d-xl-block ps-2">
+                                <div>Kati Transaction Monitor</div>
+                                <div class="mt-n1">
+                                    <span class="connection-indicator connection-connecting" id="connection-status"></span>
+                                    <small id="connection-text">Connecting...</small>
+                                </div>
+                            </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <a href="/logout" class="dropdown-item">Logout</a>
+                            <a href="/" class="dropdown-item">
+                                <i class="ti ti-home me-2"></i>
+                                Main Dashboard
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/logout" class="dropdown-item">
+                                <i class="ti ti-logout me-2"></i>
+                                Logout
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -152,42 +748,62 @@
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link" href="/">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-home"></i>
-                                    </span>
-                                    <span class="nav-link-title">Dashboard</span>
+                                    <i class="ti ti-dashboard me-2"></i>
+                                    Dashboard
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/medical-monitor">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-heartbeat"></i>
-                                    </span>
-                                    <span class="nav-link-title">Medical Monitor</span>
-                                </a>
-                            </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="/kati-transaction">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-device-watch"></i>
-                                    </span>
-                                    <span class="nav-link-title">Kati Transaction</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/data-flow">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-graph"></i>
-                                    </span>
-                                    <span class="nav-link-title">Data Flow</span>
+                                <a class="nav-link" href="/messages">
+                                    <i class="ti ti-message-circle me-2"></i>
+                                    Messages
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/emergency">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-alert-triangle"></i>
-                                    </span>
-                                    <span class="nav-link-title">Emergency</span>
+                                    <i class="ti ti-alert-triangle me-2"></i>
+                                    Emergency Alerts
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/devices">
+                                    <i class="ti ti-devices me-2"></i>
+                                    Devices
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/patients">
+                                    <i class="ti ti-users me-2"></i>
+                                    Patients
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/data-flow">
+                                    <i class="ti ti-activity me-2"></i>
+                                    Data Flow Monitor
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/medical-monitor">
+                                    <i class="ti ti-heartbeat me-2"></i>
+                                    Medical Monitor
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/event-log">
+                                    <i class="ti ti-list me-2"></i>
+                                    Event Log
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/event-streaming">
+                                    <i class="ti ti-broadcast me-2"></i>
+                                    Live Stream
+                                </a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/kati-transaction">
+                                    <i class="ti ti-device-watch me-2"></i>
+                                    Kati Transaction
                                 </a>
                             </li>
                         </ul>
@@ -238,7 +854,7 @@
                             </button>
                             <div class="btn btn-outline-info">
                                 <i class="ti ti-wifi"></i>
-                                <span id="connection-status">Connecting...</span>
+                                <span id="header-connection-status">Connecting...</span>
                             </div>
                         </div>
                     </div>
@@ -250,113 +866,144 @@
         <div class="page-body">
             <div class="container-xl">
                 <!-- Statistics Cards -->
-                <div class="row row-deck row-cards mb-4">
+                <div class="row stats-cards">
                     <div class="col-sm-6 col-lg-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Total Transactions</div>
-                                </div>
-                                <div class="h1 mb-3" id="total-transactions">0</div>
-                                <div class="d-flex mb-2">
-                                    <div>Last 24 hours</div>
-                                </div>
-                            </div>
+                        <div class="card stat-card">
+                            <div class="stat-number" id="total-transactions">0</div>
+                            <div class="stat-label">Total Transactions</div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Active Devices</div>
-                                </div>
-                                <div class="h1 mb-3" id="active-devices">0</div>
-                                <div class="d-flex mb-2">
-                                    <div id="device-type-label">Kati Watches</div>
-                                </div>
-                            </div>
+                        <div class="card stat-card">
+                            <div class="stat-number" id="active-devices">0</div>
+                            <div class="stat-label" id="device-type-label">Kati Watches</div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Success Rate</div>
-                                </div>
-                                <div class="h1 mb-3" id="success-rate">0%</div>
-                                <div class="d-flex mb-2">
-                                    <div>Processing</div>
-                                </div>
-                            </div>
+                        <div class="card stat-card">
+                            <div class="stat-number" id="success-rate">0%</div>
+                            <div class="stat-label">Success Rate</div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-3">
-                        <div class="card emergency-alert" id="emergency-card" style="display: none;">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Emergency Alerts</div>
+                        <div class="card emergency-stat-card" id="emergency-card" style="display: none;" onclick="showEmergencyDetails()">
+                            <!-- Emergency Alert Ribbon -->
+                            <div class="emergency-ribbon">
+                                <div class="ribbon-content">
+                                    <i class="ti ti-alert-triangle"></i>
+                                    <span>EMERGENCY</span>
                                 </div>
-                                <div class="h1 mb-3" id="emergency-count">0</div>
-                                <div class="d-flex mb-2">
-                                    <div>SOS/Fall Detection</div>
+                            </div>
+                            
+                            <!-- Main Content -->
+                            <div class="emergency-content-wrapper">
+                                <div class="emergency-header">
+                                    <div class="emergency-icon-container">
+                                        <div class="emergency-icon-ring">
+                                            <i class="ti ti-alert-triangle"></i>
+                                        </div>
+                                    </div>
+                                    <div class="emergency-badge-container">
+                                        <div class="emergency-badge" id="emergency-severity-badge">
+                                            <span class="badge bg-danger">CRITICAL</span>
+                                        </div>
+                                    </div>
                                 </div>
+                                
+                                <div class="emergency-content">
+                                    <div class="emergency-main">
+                                        <div class="emergency-number-container">
+                                            <div class="emergency-number" id="emergency-count">0</div>
+                                            <div class="emergency-number-shadow"></div>
+                                        </div>
+                                        <div class="emergency-label">Emergency Alerts</div>
+                                    </div>
+                                    
+                                    <div class="emergency-details">
+                                        <div class="emergency-status" id="emergency-status">
+                                            <div class="status-indicator">
+                                                <i class="ti ti-clock"></i>
+                                                <span>Active</span>
+                                            </div>
+                                        </div>
+                                        <div class="emergency-trend" id="emergency-trend">
+                                            <div class="trend-indicator">
+                                                <i class="ti ti-trending-up"></i>
+                                                <span>+3 new</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="emergency-breakdown">
+                                        <div class="breakdown-item">
+                                            <div class="breakdown-icon">
+                                                <i class="ti ti-heart"></i>
+                                            </div>
+                                            <div class="breakdown-content">
+                                                <span class="breakdown-label">SOS</span>
+                                                <span class="breakdown-value" id="sos-count">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <div class="breakdown-icon">
+                                                <i class="ti ti-activity"></i>
+                                            </div>
+                                            <div class="breakdown-content">
+                                                <span class="breakdown-label">Fall</span>
+                                                <span class="breakdown-value" id="fall-count">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Animated Background Elements -->
+                            <div class="emergency-pulse"></div>
+                            <div class="emergency-pulse-secondary"></div>
+                            <div class="emergency-glow"></div>
+                            
+                            <!-- Interactive Overlay -->
+                            <div class="emergency-overlay">
+                                <div class="overlay-content">
+                                    <div class="overlay-icon">
+                                        <i class="ti ti-eye"></i>
+                                    </div>
+                                    <div class="overlay-text">View Details</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Emergency Alert Sound Indicator -->
+                            <div class="emergency-sound-indicator" id="emergency-sound-indicator">
+                                <i class="ti ti-volume"></i>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Additional Statistics for All Devices View -->
-                <div class="row row-deck row-cards mb-4" id="all-devices-stats" style="display: none;">
+                <div class="row stats-cards" id="all-devices-stats" style="display: none;">
                     <div class="col-sm-6 col-lg-3">
-                        <div class="card" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white;">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Mapped Devices</div>
-                                </div>
-                                <div class="h1 mb-3" id="mapped-devices-count">0</div>
-                                <div class="d-flex mb-2">
-                                    <div>With Patient Data</div>
-                                </div>
-                            </div>
+                        <div class="card stat-card">
+                            <div class="stat-number" id="mapped-devices-count">0</div>
+                            <div class="stat-label">Mapped Devices</div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-3">
-                        <div class="card" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%); color: white;">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Unmapped Devices</div>
-                                </div>
-                                <div class="h1 mb-3" id="unmapped-devices-count">0</div>
-                                <div class="d-flex mb-2">
-                                    <div>No Patient Data</div>
-                                </div>
-                            </div>
+                        <div class="card stat-card">
+                            <div class="stat-number" id="unmapped-devices-count">0</div>
+                            <div class="stat-label">Unmapped Devices</div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-3">
-                        <div class="card" style="background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%); color: white;">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Mapped Transactions</div>
-                                </div>
-                                <div class="h1 mb-3" id="mapped-transactions-count">0</div>
-                                <div class="d-flex mb-2">
-                                    <div>Patient Data</div>
-                                </div>
-                            </div>
+                        <div class="card stat-card">
+                            <div class="stat-number" id="mapped-transactions-count">0</div>
+                            <div class="stat-label">Mapped Transactions</div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-3">
-                        <div class="card" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white;">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Unmapped Transactions</div>
-                                </div>
-                                <div class="h1 mb-3" id="unmapped-transactions-count">0</div>
-                                <div class="d-flex mb-2">
-                                    <div>Raw Device Data</div>
-                                </div>
-                            </div>
+                        <div class="card stat-card">
+                            <div class="stat-number" id="unmapped-transactions-count">0</div>
+                            <div class="stat-label">Unmapped Transactions</div>
                         </div>
                     </div>
                 </div>
@@ -478,6 +1125,53 @@
             </div>
         </div>
         
+        <!-- Emergency Details Modal -->
+        <div class="modal fade emergency-details-modal" id="emergencyDetailsModal" tabindex="-1" aria-labelledby="emergencyDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="emergencyDetailsModalLabel">
+                            <i class="ti ti-alert-triangle me-2"></i>
+                            Emergency SOS Alerts
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <div class="h3 text-danger" id="modal-emergency-count">0</div>
+                                    <div class="text-muted">Active Alerts</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <div class="h3 text-warning" id="modal-sos-count">0</div>
+                                    <div class="text-muted">SOS Signals</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <div class="h3 text-info" id="modal-fall-count">0</div>
+                                    <div class="text-muted">Fall Detection</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="emergency-alerts-list">
+                            <!-- Emergency alerts will be populated here -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" onclick="acknowledgeAllAlerts()">
+                            <i class="ti ti-check me-2"></i>
+                            Acknowledge All
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Location/SOS Detail Modal with Google Maps -->
         <div class="modal fade" id="locationDetailModal" tabindex="-1" aria-labelledby="locationDetailModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -514,7 +1208,6 @@
         
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
         <script>
         let socket;
         let autoRefreshInterval;
@@ -528,23 +1221,45 @@
         
         // Initialize Socket.IO connection
         function initializeSocket() {
+            console.log('🔌 Initializing Socket.IO connection...');
             socket = io();
             
             socket.on('connect', function() {
-                console.log('Connected to WebSocket server');
-                document.getElementById('connection-status').textContent = 'Connected';
+                console.log('✅ Connected to WebSocket server');
+                document.getElementById('connection-status').className = 'connection-indicator connection-connected';
+                document.getElementById('connection-text').textContent = 'Connected';
+                document.getElementById('header-connection-status').textContent = 'Connected';
             });
             
             socket.on('disconnect', function() {
-                console.log('Disconnected from WebSocket server');
-                document.getElementById('connection-status').textContent = 'Disconnected';
+                console.log('❌ Disconnected from WebSocket server');
+                document.getElementById('connection-status').className = 'connection-indicator connection-disconnected';
+                document.getElementById('connection-text').textContent = 'Disconnected';
+                document.getElementById('header-connection-status').textContent = 'Disconnected';
+            });
+            
+            socket.on('connect_error', function(error) {
+                console.error('❌ Socket.IO connection error:', error);
+                document.getElementById('connection-status').className = 'connection-indicator connection-disconnected';
+                document.getElementById('connection-text').textContent = 'Connection Error';
+                document.getElementById('header-connection-status').textContent = 'Connection Error';
             });
             
             socket.on('kati_transaction_update', function(data) {
-                console.log('Received Kati transaction update:', data);
+                console.log('📡 Received Kati transaction update:', data);
                 addKatiTransaction(data);
                 updateStatistics();
             });
+            
+            // Add timeout to check connection status
+            setTimeout(function() {
+                if (!socket.connected) {
+                    console.warn('⚠️ Socket.IO connection timeout - still not connected');
+                    document.getElementById('connection-status').className = 'connection-indicator connection-disconnected';
+                    document.getElementById('connection-text').textContent = 'Connection Timeout';
+                    document.getElementById('header-connection-status').textContent = 'Connection Timeout';
+                }
+            }, 5000);
         }
         
         // Initialize data filter toggle
@@ -2157,6 +2872,364 @@
                 `;
             }
         }
+        
+        // ========================================
+        // ENHANCED SOS EMERGENCY FUNCTIONS
+        // ========================================
+        
+        // Show emergency details modal
+        function showEmergencyDetails() {
+            const modal = new bootstrap.Modal(document.getElementById('emergencyDetailsModal'));
+            loadEmergencyAlerts();
+            modal.show();
+        }
+        
+        // Load emergency alerts for the modal
+        async function loadEmergencyAlerts() {
+            try {
+                const response = await fetch('/api/kati-transactions?topic_filter=SOS,fallDown&limit=50');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const emergencyAlerts = data.transactions.filter(t => 
+                        t.topic === 'iMEDE_watch/SOS' || t.topic === 'iMEDE_watch/fallDown'
+                    );
+                    
+                    updateEmergencyModalStats(emergencyAlerts);
+                    displayEmergencyAlerts(emergencyAlerts);
+                }
+            } catch (error) {
+                console.error('Error loading emergency alerts:', error);
+                document.getElementById('emergency-alerts-list').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="ti ti-alert-circle"></i>
+                        Error loading emergency alerts: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // Update emergency modal statistics
+        function updateEmergencyModalStats(alerts) {
+            const sosCount = alerts.filter(a => a.topic === 'iMEDE_watch/SOS').length;
+            const fallCount = alerts.filter(a => a.topic === 'iMEDE_watch/fallDown').length;
+            
+            document.getElementById('modal-emergency-count').textContent = alerts.length;
+            document.getElementById('modal-sos-count').textContent = sosCount;
+            document.getElementById('modal-fall-count').textContent = fallCount;
+        }
+        
+        // Display emergency alerts in the modal
+        function displayEmergencyAlerts(alerts) {
+            const container = document.getElementById('emergency-alerts-list');
+            
+            if (alerts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-muted py-4">
+                        <i class="ti ti-check-circle fa-3x mb-3"></i>
+                        <p class="mb-0">No active emergency alerts</p>
+                        <small>All alerts have been resolved</small>
+                    </div>
+                `;
+                return;
+            }
+            
+            let content = '';
+            alerts.forEach(alert => {
+                const alertType = alert.topic === 'iMEDE_watch/SOS' ? 'SOS Signal' : 'Fall Detection';
+                const alertIcon = alert.topic === 'iMEDE_watch/SOS' ? 'ti-alert-triangle' : 'ti-user-exclamation';
+                const alertColor = alert.topic === 'iMEDE_watch/SOS' ? 'danger' : 'warning';
+                
+                content += `
+                    <div class="emergency-alert-item">
+                        <div class="emergency-alert-header">
+                            <span class="emergency-alert-time">${formatTimestamp(alert.timestamp)}</span>
+                            <span class="emergency-alert-type bg-${alertColor}">${alertType}</span>
+                        </div>
+                        <div class="emergency-alert-patient">
+                            <i class="ti ${alertIcon} me-2"></i>
+                            ${alert.patient_name || 'Unknown Patient'} (${alert.device_id || 'Unknown Device'})
+                        </div>
+                        <div class="small text-muted">
+                            ${getAlertDescription(alert)}
+                        </div>
+                        ${alert.location ? `
+                            <div class="emergency-alert-location">
+                                <i class="ti ti-map-pin me-1"></i>
+                                <strong>Location:</strong> ${alert.location}
+                            </div>
+                        ` : ''}
+                        <div class="mt-2">
+                            <button class="btn btn-sm btn-outline-${alertColor}" onclick="viewAlertDetails('${alert.id}')">
+                                <i class="ti ti-eye me-1"></i>
+                                View Details
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="acknowledgeAlert('${alert.id}')">
+                                <i class="ti ti-check me-1"></i>
+                                Acknowledge
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = content;
+        }
+        
+        // Get alert description based on alert type and data
+        function getAlertDescription(alert) {
+            if (alert.topic === 'iMEDE_watch/SOS') {
+                return 'Emergency SOS signal detected. Patient may require immediate medical attention.';
+            } else if (alert.topic === 'iMEDE_watch/fallDown') {
+                return 'Fall detection alert triggered. Patient may have fallen and needs assistance.';
+            }
+            return 'Emergency alert detected.';
+        }
+        
+        // View detailed alert information
+        function viewAlertDetails(alertId) {
+            // Find the alert in the current data
+            const alert = window.currentKatiData?.find(t => t.id === alertId);
+            if (alert) {
+                // Show location details if available
+                if (alert.location) {
+                    showLocationDetails(alert);
+                } else {
+                    // Show basic alert details
+                    showBasicAlertDetails(alert);
+                }
+            }
+        }
+        
+        // Show basic alert details
+        function showBasicAlertDetails(alert) {
+            const alertType = alert.topic === 'iMEDE_watch/SOS' ? 'SOS Signal' : 'Fall Detection';
+            const alertIcon = alert.topic === 'iMEDE_watch/SOS' ? 'ti-alert-triangle' : 'ti-user-exclamation';
+            
+            const content = `
+                <div class="alert alert-info">
+                    <h6><i class="ti ${alertIcon} me-2"></i>${alertType} Details</h6>
+                    <p><strong>Patient:</strong> ${alert.patient_name || 'Unknown'}</p>
+                    <p><strong>Device:</strong> ${alert.device_id || 'Unknown'}</p>
+                    <p><strong>Time:</strong> ${formatTimestamp(alert.timestamp)}</p>
+                    <p><strong>Status:</strong> <span class="badge bg-warning">Active</span></p>
+                    ${alert.raw_data ? `
+                        <details class="mt-2">
+                            <summary>Raw Data</summary>
+                            <pre class="mt-2 small">${JSON.stringify(alert.raw_data, null, 2)}</pre>
+                        </details>
+                    ` : ''}
+                </div>
+            `;
+            
+            // Show in a simple alert or update the modal
+            alert(content);
+        }
+        
+        // Acknowledge a single alert
+        async function acknowledgeAlert(alertId) {
+            try {
+                // Here you would typically make an API call to acknowledge the alert
+                console.log(`Acknowledging alert: ${alertId}`);
+                
+                // For now, just show a success message
+                showToast('Alert acknowledged successfully', 'success');
+                
+                // Refresh the emergency alerts
+                loadEmergencyAlerts();
+                
+            } catch (error) {
+                console.error('Error acknowledging alert:', error);
+                showToast('Error acknowledging alert', 'error');
+            }
+        }
+        
+        // Acknowledge all alerts
+        async function acknowledgeAllAlerts() {
+            try {
+                // Here you would typically make an API call to acknowledge all alerts
+                console.log('Acknowledging all alerts');
+                
+                // For now, just show a success message
+                showToast('All alerts acknowledged successfully', 'success');
+                
+                // Close the modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('emergencyDetailsModal'));
+                modal.hide();
+                
+                // Update the main emergency card
+                updateEmergencyCard(0);
+                
+            } catch (error) {
+                console.error('Error acknowledging all alerts:', error);
+                showToast('Error acknowledging alerts', 'error');
+            }
+        }
+        
+        // Update emergency card with ultra-enhanced styling
+        function updateEmergencyCard(count, sosCount = 0, fallCount = 0, newAlerts = 0) {
+            const emergencyCard = document.getElementById('emergency-card');
+            const emergencyCount = document.getElementById('emergency-count');
+            const emergencyCountShadow = document.querySelector('.emergency-number-shadow');
+            const emergencyStatus = document.getElementById('emergency-status');
+            const emergencyTrend = document.getElementById('emergency-trend');
+            const sosCountElement = document.getElementById('sos-count');
+            const fallCountElement = document.getElementById('fall-count');
+            const severityBadge = document.getElementById('emergency-severity-badge');
+            
+            if (count > 0) {
+                emergencyCard.style.display = 'block';
+                emergencyCount.textContent = count;
+                emergencyCountShadow.textContent = count;
+                
+                // Update status with enhanced styling
+                emergencyStatus.innerHTML = `
+                    <div class="status-indicator">
+                        <i class="ti ti-clock"></i>
+                        <span>Active</span>
+                    </div>
+                `;
+                
+                // Update trend if there are new alerts
+                if (newAlerts > 0) {
+                    emergencyTrend.innerHTML = `
+                        <div class="trend-indicator">
+                            <i class="ti ti-trending-up"></i>
+                            <span>+${newAlerts} new</span>
+                        </div>
+                    `;
+                    emergencyTrend.style.display = 'flex';
+                } else {
+                    emergencyTrend.style.display = 'none';
+                }
+                
+                // Update breakdown with enhanced styling
+                sosCountElement.textContent = sosCount;
+                fallCountElement.textContent = fallCount;
+                
+                // Add enhanced visual effects
+                emergencyCard.classList.add('emergency-active');
+                
+                // Update badge based on severity with enhanced styling
+                const badge = severityBadge.querySelector('.badge');
+                if (count >= 10) {
+                    badge.textContent = 'CRITICAL';
+                    badge.className = 'badge bg-danger';
+                    emergencyCard.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 30%, #a71e2a 60%, #8b1a1a 100%)';
+                } else if (count >= 5) {
+                    badge.textContent = 'HIGH';
+                    badge.className = 'badge bg-warning';
+                    emergencyCard.style.background = 'linear-gradient(135deg, #fd7e14 0%, #e55a00 30%, #cc4a00 60%, #b33a00 100%)';
+                } else {
+                    badge.textContent = 'ACTIVE';
+                    badge.className = 'badge bg-info';
+                    emergencyCard.style.background = 'linear-gradient(135deg, #17a2b8 0%, #138496 30%, #117a8b 60%, #0f6674 100%)';
+                }
+                
+                // Add emergency sound indicator functionality
+                const soundIndicator = document.getElementById('emergency-sound-indicator');
+                if (soundIndicator) {
+                    soundIndicator.onclick = function(e) {
+                        e.stopPropagation();
+                        toggleEmergencySound();
+                    };
+                }
+                
+            } else {
+                emergencyCard.style.display = 'none';
+            }
+        }
+        
+        // Toggle emergency sound
+        function toggleEmergencySound() {
+            const soundIndicator = document.getElementById('emergency-sound-indicator');
+            const icon = soundIndicator.querySelector('i');
+            
+            if (icon.classList.contains('ti-volume')) {
+                icon.classList.remove('ti-volume');
+                icon.classList.add('ti-volume-off');
+                showToast('Emergency alerts muted', 'warning');
+            } else {
+                icon.classList.remove('ti-volume-off');
+                icon.classList.add('ti-volume');
+                showToast('Emergency alerts enabled', 'success');
+            }
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+            
+            // Add to page
+            const toastContainer = document.getElementById('toast-container') || createToastContainer();
+            toastContainer.appendChild(toast);
+            
+            // Show toast
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            // Remove after hidden
+            toast.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        }
+        
+        // Create toast container if it doesn't exist
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'toast-container position-fixed top-0 end-0 p-3';
+            container.style.zIndex = '9999';
+            document.body.appendChild(container);
+            return container;
+        }
+        
+        // Test function to demonstrate enhanced SOS UX
+        function testEnhancedSOS() {
+            // Simulate different emergency scenarios
+            const scenarios = [
+                { count: 3, sos: 2, fall: 1, new: 1, severity: 'low' },
+                { count: 8, sos: 5, fall: 3, new: 3, severity: 'medium' },
+                { count: 16, sos: 10, fall: 6, new: 5, severity: 'high' }
+            ];
+            
+            let currentScenario = 0;
+            
+            const cycleScenarios = () => {
+                const scenario = scenarios[currentScenario];
+                updateEmergencyCard(scenario.count, scenario.sos, scenario.fall, scenario.new);
+                
+                showToast(`Testing ${scenario.severity} emergency scenario: ${scenario.count} alerts`, 'info');
+                
+                currentScenario = (currentScenario + 1) % scenarios.length;
+            };
+            
+            // Start with first scenario
+            cycleScenarios();
+            
+            // Cycle through scenarios every 5 seconds
+            setInterval(cycleScenarios, 5000);
+        }
+        
+        // Initialize enhanced SOS testing (for demonstration)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Uncomment the line below to test the enhanced SOS UX
+            // testEnhancedSOS();
+        });
 
     </script>
     

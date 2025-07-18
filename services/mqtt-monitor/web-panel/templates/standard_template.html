@@ -4,7 +4,10 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Opera-GodEye Panel - Patients</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Opera-GodEye Panel - {{ page_title }}</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
@@ -16,6 +19,9 @@
     
     <!-- Socket.IO client -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    
+    <!-- Additional scripts for specific pages -->
+    {% block additional_scripts %}{% endblock %}
     
     <style>
         /* MFC Theme Palette */
@@ -155,51 +161,115 @@
             font-size: 0.875rem;
         }
         
-        /* Patient Specific Styles */
-        .patient-card {
-            border-left: 4px solid var(--mfc-blue);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .patient-card.active {
-            border-left-color: #28a745;
-        }
-        
-        .patient-card.inactive {
-            border-left-color: #6c757d;
-        }
-        
-        .patient-card.emergency {
-            border-left-color: var(--mfc-red);
-            background: #fff5f5;
-        }
-        
-        .patient-status {
-            font-weight: 600;
-            text-transform: uppercase;
+        /* Status badges */
+        .status-badge {
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
-            border-radius: 4px;
+            border-radius: 0.25rem;
+            font-weight: 600;
+        }
+        .status-success { background-color: #d1e7dd; color: #0f5132; }
+        .status-error { background-color: #f8d7da; color: #721c24; }
+        .status-warning { background-color: #fff3cd; color: #856404; }
+        .status-info { background-color: #d1ecf1; color: #0c5460; }
+        .status-emergency { background-color: #f8d7da; color: #721c24; font-weight: bold; }
+        
+        /* Topic badges */
+        .topic-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.2rem;
+            font-weight: 500;
+            background-color: #e9ecef;
+            color: #495057;
         }
         
-        .patient-status.active {
-            background: #28a745;
+        /* Data values */
+        .data-value {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            background-color: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.2rem;
+            border: 1px solid #dee2e6;
+        }
+        
+        /* Refresh indicator */
+        .refresh-indicator {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* Table responsive */
+        .table-responsive {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        /* Stats cards with gradients */
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
         
-        .patient-status.inactive {
-            background: #6c757d;
+        .emergency-alert {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
             color: white;
+            animation: emergency-pulse 1s infinite;
         }
         
-        .patient-status.emergency {
-            background: var(--mfc-red);
-            color: white;
+        @keyframes emergency-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
         }
+        
+        /* Data labels */
+        .data-label {
+            font-size: 0.875rem;
+            color: #6c757d;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        /* Location source badges */
+        .location-source-badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        /* Info sections */
+        .medical-info-section {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.375rem;
+        }
+        
+        .contact-info-section {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.375rem;
+        }
+        
+        .hospital-info-section {
+            background-color: #e2e3e5;
+            border-left: 4px solid #6c757d;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.375rem;
+        }
+        
+        /* Page-specific styles */
+        {% block page_specific_styles %}{% endblock %}
     </style>
 </head>
 <body>
@@ -218,10 +288,10 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
                             <span class="avatar avatar-sm">
-                                <i class="ti ti-user"></i>
+                                <img src="{{ url_for('static', filename='user_profiles/admin.png') }}" alt="Admin">
                             </span>
                             <div class="d-none d-xl-block ps-2">
-                                <div>Patient Monitor</div>
+                                <div>{{ user_title }}</div>
                                 <div class="mt-n1">
                                     <span class="connection-indicator connection-connecting" id="connection-status"></span>
                                     <small id="connection-text">Connecting...</small>
@@ -273,7 +343,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="/patients">
+                                <a class="nav-link" href="/patients">
                                     <i class="ti ti-users me-2"></i>
                                     Patients
                                 </a>
@@ -321,18 +391,15 @@
                     <div class="row g-2 align-items-center">
                         <div class="col">
                             <h2 class="page-title">
-                                Patients
+                                {{ page_title }}
                             </h2>
                             <div class="text-muted mt-1">
-                                Patient management and monitoring
+                                {{ page_description }}
                             </div>
                         </div>
                         <div class="col-auto ms-auto d-print-none">
                             <div class="btn-list">
-                                <button class="btn btn-primary" onclick="refreshPatients()">
-                                    <i class="ti ti-refresh me-2"></i>
-                                    Refresh
-                                </button>
+                                {% block page_actions %}{% endblock %}
                             </div>
                         </div>
                     </div>
@@ -342,91 +409,7 @@
             <!-- Page body -->
             <div class="page-body">
                 <div class="container-xl">
-                    <!-- Statistics Cards -->
-                    <div class="row stats-cards">
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="total-patients">0</div>
-                                <div class="stat-label">Total Patients</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="active-patients">0</div>
-                                <div class="stat-label">Active Patients</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="monitored-patients">0</div>
-                                <div class="stat-label">Monitored</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="emergency-patients">0</div>
-                                <div class="stat-label">Emergency</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Filters -->
-                    <div class="filters-bar">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="status-filter" class="form-label">Status</label>
-                                <select class="form-select" id="status-filter">
-                                    <option value="">All Status</option>
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                    <option value="emergency">Emergency</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="device-filter" class="form-label">Device Type</label>
-                                <select class="form-select" id="device-filter">
-                                    <option value="">All Devices</option>
-                                    <option value="ava4">AVA4</option>
-                                    <option value="kati">Kati Watch</option>
-                                    <option value="qube">Qube-Vital</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="search-filter" class="form-label">Search</label>
-                                <input type="text" class="form-control" id="search-filter" placeholder="Search patients...">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-primary w-100" onclick="applyFilters()">
-                                    <i class="ti ti-search me-2"></i>
-                                    Apply Filters
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Patients List -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                        <i class="ti ti-list me-2"></i>
-                                        Patient List
-                                    </h3>
-                                </div>
-                                <div class="card-body">
-                                    <div id="patients-container">
-                                        <div class="text-center text-muted py-4">
-                                            <i class="ti ti-users fa-3x mb-3"></i>
-                                            <p class="mb-0">No patients found</p>
-                                            <small class="text-muted">Patients will appear here when registered</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% block page_content %}{% endblock %}
                 </div>
             </div>
         </div>
@@ -434,14 +417,17 @@
 
     <!-- JavaScript files -->
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
-    <script src="/static/js/app.js?v={{ timestamp }}"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="/static/js/app.js?v=20250718"></script>
+    
+    <!-- Page-specific scripts -->
+    {% block page_specific_scripts %}{% endblock %}
     
     <script>
         // Initialize the app when the page loads
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Initializing Patients Page...');
-            window.app = new MQTTMonitorApp();
-            window.app.init();
+            console.log('🚀 Initializing {{ page_title }}...');
+            {% block page_initialization %}{% endblock %}
         });
     </script>
 </body>

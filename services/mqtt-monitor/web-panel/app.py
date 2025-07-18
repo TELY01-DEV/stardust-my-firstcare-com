@@ -230,7 +230,7 @@ def login_required(f):
 def index():
     """Main dashboard page"""
     logger.info("Dashboard page accessed")
-    return render_template('index.html')
+    return render_template('index.html', timestamp=int(time.time()))
 
 @app.route('/data-flow')
 def data_flow_dashboard():
@@ -434,6 +434,54 @@ def handle_connect():
     """Handle WebSocket connection"""
     logger.info(f"Client connected: {request.sid}")
     emit('connected', {'data': 'Connected to MQTT Monitor'})
+    
+    # Send initial data to the client
+    try:
+        # Get initial statistics
+        stats = mqtt_monitor.get_statistics()
+        
+        # Get recent MQTT messages from Redis events (for dashboard)
+        recent_mqtt_messages = get_redis_recent_events(limit=20)
+        
+        # Get recent data flow events from database (for data flow pages)
+        collection = mqtt_monitor.db['data_flow_events']
+        recent_flow_events = list(collection.find().sort('timestamp', -1).limit(20))
+        
+        # Convert ObjectIds to strings
+        def convert_objectids(obj):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    if isinstance(value, dict):
+                        convert_objectids(value)
+                    elif isinstance(value, list):
+                        for item in value:
+                            convert_objectids(item)
+                    elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
+                        obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
+            elif isinstance(obj, list):
+                for item in obj:
+                    convert_objectids(item)
+            return obj
+        
+        recent_flow_events = convert_objectids(recent_flow_events)
+        
+        # Get initial data
+        initial_data = {
+            "type": "initial_data",
+            "statistics": stats,
+            "message_history": recent_mqtt_messages,  # Use MQTT messages for dashboard
+            "flow_events": recent_flow_events,  # Use flow events for data flow pages
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        
+        emit('initial_data', initial_data)
+        logger.info(f"📊 Initial data sent to client: {request.sid} with {len(recent_mqtt_messages)} MQTT messages and {len(recent_flow_events)} flow events")
+        
+    except Exception as e:
+        logger.error(f"Error sending initial data: {e}")
+        emit('error', {'error': str(e)})
 
 @socketio.on('disconnect')
 def handle_disconnect():
@@ -868,7 +916,7 @@ def devices_page():
 @login_required
 def patients_page():
     """Patients management page"""
-    return render_template('patients.html')
+    return render_template('patients.html', timestamp=int(time.time()))
 
 @app.route('/messages')
 @login_required
@@ -933,7 +981,7 @@ def get_emergency_alerts():
         
         return jsonify({
             "success": True,
-            "data": alerts,
+            "alerts": alerts,
             "timestamp": datetime.now(timezone.utc).isoformat()
         })
         
@@ -980,7 +1028,7 @@ def get_emergency_stats():
         
         return jsonify({
             "success": True,
-            "data": {
+            "stats": {
                 "total_24h": total_24h,
                 "priorities": priorities,
                 "device_types": device_types,

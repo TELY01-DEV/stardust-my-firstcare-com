@@ -20,10 +20,8 @@ COPY services/mqtt-monitor/web-panel/app.py .
 COPY services/mqtt-monitor/web-panel/templates/ templates/
 COPY services/mqtt-monitor/web-panel/static/ static/
 
-# Copy SSL certificates from project root
-COPY ssl /app/ssl
-COPY ca-latest.pem /app/ssl/ca-latest.pem
-COPY client-combined-latest.pem /app/ssl/client-combined-latest.pem
+# Create SSL directory (for compatibility)
+RUN mkdir -p /app/ssl
 
 # Set MongoDB environment variables
 ENV MONGODB_URI=mongodb://opera_admin:Sim!443355@coruscant.my-firstcare.com:27023/admin?ssl=true&authSource=admin

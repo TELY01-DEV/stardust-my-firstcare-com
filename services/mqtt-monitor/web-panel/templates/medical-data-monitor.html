@@ -7,7 +7,11 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>My FirstCare Opera Panel - Medical Data Monitor</title>
+    <title>Opera-GodEye Panel - Medical Data Monitor</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
+    <link rel="alternate icon" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
     
     <!-- CSS files -->
     <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css" rel="stylesheet"/>
@@ -16,41 +20,208 @@
     <!-- Socket.IO client -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
     
-    <!-- IMMEDIATE CACHE BUSTER AND MEDICAL DATA FIX -->
+    <style>
+        /* MFC Theme Palette */
+        :root {
+            --mfc-blue: #024F96;
+            --mfc-light-blue: #00A1E8;
+            --mfc-accent-blue: #92E3FF;
+            --mfc-red: #EC1C24;
+            --mfc-dark-red: #981F15;
+            --mfc-gray: #D0D2D3;
+            --mfc-white: #fff;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .connection-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .connection-connected { background-color: #28a745; }
+        .connection-connecting { background-color: #ffc107; }
+        .connection-disconnected { background-color: #dc3545; }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        
+        .form-select {
+            border-radius: 8px;
+        }
+        
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        
+        .vital-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .medical-alert {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            animation: emergency-pulse 1s infinite;
+        }
+        
+        @keyframes emergency-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+        
+        .device-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+        }
+        .device-online { background-color: #d1e7dd; color: #0f5132; }
+        .device-offline { background-color: #f8d7da; color: #721c24; }
+        
+        .json-viewer {
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .batch-data-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .batch-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .batch-title {
+            font-weight: 600;
+            color: var(--mfc-blue);
+        }
+        
+        .batch-count {
+            background: var(--mfc-blue);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .batch-readings {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .batch-reading {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .batch-summary {
+            background: white;
+            border-radius: 4px;
+            padding: 1rem;
+        }
+        
+        .batch-summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+        
+        .summary-stat {
+            text-align: center;
+        }
+        
+        .summary-stat-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--mfc-blue);
+        }
+        
+        .summary-stat-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+        
+        .stats-cards {
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--mfc-blue);
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+    </style>
+    
+    <!-- Medical Data Monitor Scripts -->
     <script>
-        console.log('🚀 IMMEDIATE CACHE BUSTER v20250118-4 LOADING...');
-        
-        // Override console.log to show cache buster messages prominently
-        const originalLog = console.log;
-        console.log = function(...args) {
-            if (args[0] && args[0].includes('CACHE BUSTER')) {
-                originalLog('%c' + args.join(' '), 'background: #ff6b35; color: white; padding: 2px 5px; border-radius: 3px;');
-            } else {
-                originalLog.apply(console, args);
-            }
-        };
-        
-        console.log('🚀 IMMEDIATE CACHE BUSTER v20250118-4 - CONSOLE OVERRIDE APPLIED');
-        
-        // Define the fixed getDataValue function immediately
+        // Medical data processing functions
         window.getDataValueFixed = function(event) {
-            console.log('🔧 CACHE BUSTER: Using FIXED getDataValue function');
             if (!event) return 'No Data';
-            console.log('🔧 CACHE BUSTER: Full event object:', JSON.stringify(event, null, 2));
             const source = event.source || 'Unknown';
             const medicalValues = event.medical_values || {};
             const rawData = event.raw_data || {};
-            console.log('🔧 CACHE BUSTER: Processing event - Source:', source, 'Medical Values:', JSON.stringify(medicalValues, null, 2));
-            console.log('🔧 CACHE BUSTER: Raw Data:', JSON.stringify(rawData, null, 2));
+            
             function isValidValue(value) {
-                const valid = value !== null && 
+                return value !== null && 
                        value !== undefined && 
                        value !== "None" && 
                        value !== "" && 
                        value !== "null" &&
                        value !== "undefined";
-                return valid;
             }
+            
             const values = [];
             
             // Check for SOS/emergency data first
@@ -62,9 +233,7 @@
                 if (rawData.location) {
                     values.push('Location Available');
                 }
-                const result = values.join(', ');
-                console.log('🔧 CACHE BUSTER: SOS RESULT:', result);
-                return result;
+                return values.join(', ');
             }
             
             // Check for fall detection
@@ -76,9 +245,7 @@
                 if (rawData.location) {
                     values.push('Location Available');
                 }
-                const result = values.join(', ');
-                console.log('🔧 CACHE BUSTER: FALL RESULT:', result);
-                return result;
+                return values.join(', ');
             }
             
             // Check for batch vital signs data
@@ -96,9 +263,7 @@
                     latestValues.push(`BT: ${parseFloat(latest.bodyTemperature).toFixed(1)}°C`);
                 }
                 
-                const result = `📦 Batch (${batchCount}): ${latestValues.join(', ')}`;
-                console.log('🔧 CACHE BUSTER: BATCH RESULT:', result);
-                return result;
+                return `📦 Batch (${batchCount}): ${latestValues.join(', ')}`;
             }
             
             // Process regular medical values
@@ -139,85 +304,45 @@
                     }
                 }
             }
-            const result = values.length > 0 ? values.join(', ') : 'No Data';
-            console.log('🔧 CACHE BUSTER: FIXED getDataValue result for', source, ':', result);
-            console.log('🔧 CACHE BUSTER: Valid values found:', values.length, 'Values:', values);
-            return result;
+            return values.length > 0 ? values.join(', ') : 'No Data';
         };
-        
-        console.log('🚀 IMMEDIATE CACHE BUSTER v20250118-4 - FIXED FUNCTION DEFINED');
     </script>
 </head>
 <body>
-    <!-- IMMEDIATE FUNCTION OVERRIDE -->
+    <!-- Medical Data Monitor Initialization -->
     <script>
-        console.log('🚀 IMMEDIATE CACHE BUSTER v20250118-4 - BODY SCRIPT LOADING...');
-        
-        // Override getDataValue immediately when DOM starts loading
-        if (window.getDataValueFixed) {
-            window.getDataValue = window.getDataValueFixed;
-            console.log('🔧 CACHE BUSTER: getDataValue function OVERRIDDEN with fixed version');
-        } else {
-            console.log('❌ CACHE BUSTER: getDataValueFixed not found, will retry...');
-        }
-        
-        // Set up a polling mechanism to keep trying to override the function
-        let overrideAttempts = 0;
-        const maxAttempts = 100;
-        
-        const overrideInterval = setInterval(() => {
-            overrideAttempts++;
-            
-            // Try to override the function
-            if (window.getDataValueFixed && (!window.getDataValue || window.getDataValue !== window.getDataValueFixed)) {
+        // Initialize medical data functions when DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.getDataValueFixed) {
                 window.getDataValue = window.getDataValueFixed;
-                console.log('🔧 CACHE BUSTER: getDataValue function OVERRIDDEN (attempt ' + overrideAttempts + ')');
-                
-                // Try to refresh the medical data if the function exists
-                setTimeout(() => {
-                    if (typeof loadMedicalData === 'function') {
-                        console.log('🔧 CACHE BUSTER: Refreshing medical data with fixed function...');
-                        loadMedicalData();
-                    } else {
-                        console.log('🔧 CACHE BUSTER: loadMedicalData not available yet');
-                    }
-                }, 500);
-                
-                clearInterval(overrideInterval);
-                console.log('🚀 CACHE BUSTER v20250118-5 - OVERRIDE SUCCESSFUL!');
             }
-            
-            if (overrideAttempts >= maxAttempts) {
-                clearInterval(overrideInterval);
-                console.log('❌ CACHE BUSTER: Max override attempts reached - forcing page reload');
-                // Force page reload if override fails
-                setTimeout(() => {
-                    window.location.reload(true);
-                }, 2000);
-            }
-        }, 50);
-        
-        console.log('🚀 IMMEDIATE CACHE BUSTER v20250118-4 - OVERRIDE POLLING STARTED');
+        });
     </script>
     
     <div class="page">
-        <!-- Navbar -->
-        <header class="navbar navbar-expand-md navbar-light d-print-none">
+        <!-- Tabler Navbar -->
+        <header class="navbar navbar-expand-md navbar-dark d-print-none" style="background: var(--mfc-blue);">
             <div class="container-xl">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                    <a href="/">
-                        <img src="/static/LOGO_MFC_EN.png" width="110" height="32" alt="My FirstCare" class="navbar-brand-image">
-                    </a>
-                </h1>
+                <a class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" href="/">
+                    <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:40px;vertical-align:middle;margin-right:10px;">
+                    Opera-GodEye Panel
+                </a>
                 <div class="navbar-nav flex-row order-md-last">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
                             <span class="avatar avatar-sm">
-                                <i class="ti ti-user"></i>
+                                <img src="{{ url_for('static', filename='user_profiles/admin.png') }}" alt="Admin">
                             </span>
+                            <div class="d-none d-xl-block ps-2">
+                                <div>Medical Monitor</div>
+                                <div class="mt-n1">
+                                    <span class="connection-indicator connection-connecting" id="connection-status"></span>
+                                    <small id="connection-text">Connecting...</small>
+                                </div>
+                            </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                             <a href="/logout" class="dropdown-item">Logout</a>
@@ -235,34 +360,62 @@
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link" href="/">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-home"></i>
-                                    </span>
-                                    <span class="nav-link-title">Dashboard</span>
+                                    <i class="ti ti-dashboard me-2"></i>
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/messages">
+                                    <i class="ti ti-message-circle me-2"></i>
+                                    Messages
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/emergency">
+                                    <i class="ti ti-alert-triangle me-2"></i>
+                                    Emergency Alerts
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/devices">
+                                    <i class="ti ti-devices me-2"></i>
+                                    Devices
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/patients">
+                                    <i class="ti ti-users me-2"></i>
+                                    Patients
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/data-flow">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-activity"></i>
-                                    </span>
-                                    <span class="nav-link-title">Data Flow</span>
+                                    <i class="ti ti-activity me-2"></i>
+                                    Data Flow Monitor
                                 </a>
                             </li>
                             <li class="nav-item active">
                                 <a class="nav-link" href="/medical-monitor">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-heartbeat"></i>
-                                    </span>
-                                    <span class="nav-link-title">Medical Monitor</span>
+                                    <i class="ti ti-heartbeat me-2"></i>
+                                    Medical Monitor
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/event-log">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="ti ti-list"></i>
-                                    </span>
-                                    <span class="nav-link-title">Event Log</span>
+                                    <i class="ti ti-list me-2"></i>
+                                    Event Log
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/event-streaming">
+                                    <i class="ti ti-broadcast me-2"></i>
+                                    Live Stream
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/kati-transaction">
+                                    <i class="ti ti-device-watch me-2"></i>
+                                    Kati Transaction
                                 </a>
                             </li>
                         </ul>
@@ -286,8 +439,8 @@
                     </div>
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
-                            <span class="connection-indicator connection-connected" id="connection-status"></span>
-                            <span id="connection-text">Connected</span>
+                            <span class="connection-indicator connection-connected" id="header-connection-status"></span>
+                            <span id="header-connection-text">Connected</span>
                             <button class="btn btn-primary" onclick="refreshMedicalData()">
                                 <i class="ti ti-refresh me-1"></i>
                                 Refresh
@@ -323,73 +476,29 @@
                 </div>
                 
                 <!-- Medical Statistics -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="card vital-card">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <span class="bg-primary text-white avatar">
-                                            <i class="ti ti-device-heart-monitor"></i>
-                                        </span>
-                                    </div>
-                                    <div class="col">
-                                        <div class="font-weight-medium" id="activeDevices">0</div>
-                                        <div class="text-muted">Active Devices</div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="row stats-cards">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="stat-number" id="activeDevices">0</div>
+                            <div class="stat-label">Active Devices</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card vital-card">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <span class="bg-success text-white avatar">
-                                            <i class="ti ti-user-check"></i>
-                                        </span>
-                                    </div>
-                                    <div class="col">
-                                        <div class="font-weight-medium" id="monitoredPatients">0</div>
-                                        <div class="text-muted">Monitored Patients</div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="stat-number" id="monitoredPatients">0</div>
+                            <div class="stat-label">Monitored Patients</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card vital-card">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <span class="bg-warning text-white avatar">
-                                            <i class="ti ti-alert-circle"></i>
-                                        </span>
-                                    </div>
-                                    <div class="col">
-                                        <div class="font-weight-medium" id="medicalAlerts">0</div>
-                                        <div class="text-muted">Medical Alerts</div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="stat-number" id="medicalAlerts">0</div>
+                            <div class="stat-label">Medical Alerts</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card vital-card">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <span class="bg-info text-white avatar">
-                                            <i class="ti ti-pulse"></i>
-                                        </span>
-                                    </div>
-                                    <div class="col">
-                                        <div class="font-weight-medium" id="dataPoints">0</div>
-                                        <div class="text-muted">Data Points (24h)</div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="stat-number" id="dataPoints">0</div>
+                            <div class="stat-label">Data Points (24h)</div>
                         </div>
                     </div>
                 </div>
@@ -555,11 +664,15 @@
             socket.on('connect', function() {
                 document.getElementById('connection-status').className = 'connection-indicator connection-connected';
                 document.getElementById('connection-text').textContent = 'Connected';
+                document.getElementById('header-connection-status').className = 'connection-indicator connection-connected';
+                document.getElementById('header-connection-text').textContent = 'Connected';
             });
             
             socket.on('disconnect', function() {
                 document.getElementById('connection-status').className = 'connection-indicator connection-disconnected';
                 document.getElementById('connection-text').textContent = 'Disconnected';
+                document.getElementById('header-connection-status').className = 'connection-indicator connection-disconnected';
+                document.getElementById('header-connection-text').textContent = 'Disconnected';
             });
             
             socket.on('data_flow_update', function(data) {
