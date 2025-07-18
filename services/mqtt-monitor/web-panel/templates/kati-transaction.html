@@ -1644,7 +1644,15 @@
         // Initialize Socket.IO connection
         function initializeSocket() {
             console.log('🔌 Initializing Socket.IO connection...');
-            socket = io();
+            
+            // Configure Socket.IO with connection options
+            socket = io({
+                timeout: 20000,
+                reconnection: true,
+                reconnectionAttempts: 5,
+                reconnectionDelay: 1000,
+                reconnectionDelayMax: 5000
+            });
             
             socket.on('connect', function() {
                 console.log('✅ Connected to WebSocket server');
@@ -1673,15 +1681,22 @@
                 updateStatistics();
             });
             
-            // Add timeout to check connection status
+            // Add timeout to check connection status with retry logic
             setTimeout(function() {
                 if (!socket.connected) {
-                    console.warn('⚠️ Socket.IO connection timeout - still not connected');
+                    console.warn('⚠️ Socket.IO connection timeout - attempting to reconnect...');
                     document.getElementById('connection-status').className = 'connection-indicator connection-disconnected';
-                    document.getElementById('connection-text').textContent = 'Connection Timeout';
-                    document.getElementById('header-connection-status').textContent = 'Connection Timeout';
+                    document.getElementById('connection-text').textContent = 'Reconnecting...';
+                    document.getElementById('header-connection-status').textContent = 'Reconnecting...';
+                    
+                    // Try to reconnect after a short delay
+                    setTimeout(function() {
+                        if (socket) {
+                            socket.connect();
+                        }
+                    }, 2000);
                 }
-            }, 5000);
+            }, 10000);
         }
         
         // Initialize data filter toggle
