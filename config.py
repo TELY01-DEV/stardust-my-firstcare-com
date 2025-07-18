@@ -78,13 +78,20 @@ settings = Settings()
 
 # Configure logging
 logger.remove()
-logger.add(
-    settings.log_file,
-    rotation=settings.log_rotation,
-    retention=settings.log_retention,
-    level=settings.log_level,
-    format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{function}:{line} | {message}"
-)
+
+# Try to add file logging, fallback to console only if it fails
+try:
+    logger.add(
+        settings.log_file,
+        rotation=settings.log_rotation,
+        retention=settings.log_retention,
+        level=settings.log_level,
+        format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{function}:{line} | {message}"
+    )
+except Exception as e:
+    print(f"Warning: Could not configure file logging: {e}")
+
+# Always add console logging
 logger.add(
     lambda msg: print(msg, end=""),
     level=settings.log_level,
