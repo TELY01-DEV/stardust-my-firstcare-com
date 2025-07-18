@@ -111,92 +111,216 @@
             font-size: 1.5rem;
             color: var(--mfc-blue) !important;
         }
+        /* Mobile-First Responsive Design */
+        @media (max-width: 768px) {
+            .container-xl {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            
+            .page-header {
+                padding: 1rem 0;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .btn-list {
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            
+            .btn-list .btn {
+                width: 100%;
+                margin-bottom: 0.25rem;
+            }
+            
+            .btn-group {
+                width: 100%;
+            }
+            
+            .btn-group .btn {
+                flex: 1;
+                font-size: 0.8rem;
+                padding: 0.5rem 0.25rem;
+            }
+            
+            .stats-cards .col-sm-6 {
+                margin-bottom: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .stat-label {
+                font-size: 0.8rem;
+            }
+            
+            .table-responsive {
+                font-size: 0.8rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.75rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header .col-auto {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            .page-header .row {
+                flex-direction: column;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.4rem 0.2rem;
+                font-size: 0.7rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container-xl {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            
+            .page-title {
+                font-size: 1.3rem;
+            }
+            
+            .stat-number {
+                font-size: 1.3rem;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Touch-friendly interactions for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover {
+                transform: none;
+            }
+            
+            .btn:active {
+                transform: scale(0.95);
+            }
+        }
+        
+        /* Mobile table enhancements */
+        @media (max-width: 768px) {
+            .table-responsive {
+                border: none;
+            }
+            
+            .table th {
+                white-space: nowrap;
+                min-width: 80px;
+            }
+            
+            .table td {
+                vertical-align: middle;
+            }
+            
+            .data-value {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .topic-badge {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.3rem;
+            }
+            
+            .status-badge {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+            }
+            
+            .btn-sm {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .data-value {
+                max-width: 80px;
+                font-size: 0.7rem;
+            }
+            
+            .topic-badge {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.25rem;
+            }
+            
+            .status-badge {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.3rem;
+            }
+            
+            .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Mobile modal enhancements */
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+            
+            .modal-body {
+                padding: 1rem;
+            }
+            
+            .modal-footer {
+                padding: 0.75rem 1rem;
+            }
+            
+            .modal-footer .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .modal-footer .btn:last-child {
+                margin-bottom: 0;
+            }
+        }
+
     </style>
-</head>
-<body>
-    <div class="page page-center">
-        <div class="container container-tight py-4">
-            <div class="text-center mb-4">
-                <a href="/" class="navbar-brand navbar-brand-autodark">
-                    <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:60px;vertical-align:middle;margin-right:15px;">
-                    Opera-GodEye Panel
-                </a>
-            </div>
-            
-            <div class="card card-md login-card">
-                <div class="card-body">
-                    <h2 class="h2 text-center mb-4 login-header">
-                        <div class="login-logo">
-                            <i class="ti ti-login"></i>
-                        </div>
-                        Sign in to your account
-                    </h2>
-                    
-                    {% if error %}
-                    <div class="alert alert-danger" role="alert">
-                        <i class="ti ti-alert-triangle me-2"></i>
-                        {{ error }}
-                    </div>
-                    {% endif %}
-                    
-                    <form method="POST" action="/login">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required autocomplete="username">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-check">
-                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                                <span class="form-check-label">Remember me</span>
-                            </label>
-                        </div>
-                        
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="ti ti-login me-2"></i>
-                                Sign In
-                            </button>
-                        </div>
-                    </form>
-
-                    <div class="text-center mt-4">
-                        <small class="text-muted">
-                            <i class="ti ti-shield-check me-1"></i>
-                            Secure authentication via Stardust-V1
-                        </small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript files -->
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
-    
-    <script>
-        // Add loading state to form
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const button = this.querySelector('button[type="submit"]');
-            const originalText = button.innerHTML;
-            
-            button.disabled = true;
-            button.innerHTML = '<i class="ti ti-loader ti-spin me-2"></i>Signing In...';
-            
-            // Re-enable after 5 seconds in case of error
-            setTimeout(() => {
-                button.disabled = false;
-                button.innerHTML = originalText;
-            }, 5000);
-        });
-
-        // Auto-focus username field
-        document.getElementById('username').focus();
-    </script>
-</body>
-</html> 

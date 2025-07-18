@@ -78,354 +78,216 @@
             font-family: monospace;
             font-size: 12px;
         }
+        /* Mobile-First Responsive Design */
+        @media (max-width: 768px) {
+            .container-xl {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            
+            .page-header {
+                padding: 1rem 0;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .btn-list {
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            
+            .btn-list .btn {
+                width: 100%;
+                margin-bottom: 0.25rem;
+            }
+            
+            .btn-group {
+                width: 100%;
+            }
+            
+            .btn-group .btn {
+                flex: 1;
+                font-size: 0.8rem;
+                padding: 0.5rem 0.25rem;
+            }
+            
+            .stats-cards .col-sm-6 {
+                margin-bottom: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .stat-label {
+                font-size: 0.8rem;
+            }
+            
+            .table-responsive {
+                font-size: 0.8rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.75rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header .col-auto {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            .page-header .row {
+                flex-direction: column;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.4rem 0.2rem;
+                font-size: 0.7rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container-xl {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            
+            .page-title {
+                font-size: 1.3rem;
+            }
+            
+            .stat-number {
+                font-size: 1.3rem;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Touch-friendly interactions for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover {
+                transform: none;
+            }
+            
+            .btn:active {
+                transform: scale(0.95);
+            }
+        }
+        
+        /* Mobile table enhancements */
+        @media (max-width: 768px) {
+            .table-responsive {
+                border: none;
+            }
+            
+            .table th {
+                white-space: nowrap;
+                min-width: 80px;
+            }
+            
+            .table td {
+                vertical-align: middle;
+            }
+            
+            .data-value {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .topic-badge {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.3rem;
+            }
+            
+            .status-badge {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+            }
+            
+            .btn-sm {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .data-value {
+                max-width: 80px;
+                font-size: 0.7rem;
+            }
+            
+            .topic-badge {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.25rem;
+            }
+            
+            .status-badge {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.3rem;
+            }
+            
+            .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Mobile modal enhancements */
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+            
+            .modal-body {
+                padding: 1rem;
+            }
+            
+            .modal-footer {
+                padding: 0.75rem 1rem;
+            }
+            
+            .modal-footer .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .modal-footer .btn:last-child {
+                margin-bottom: 0;
+            }
+        }
+
     </style>
-</head>
-<body>
-    <div class="page">
-        <!-- Header -->
-        <header class="navbar navbar-expand-md navbar-light d-print-none">
-            <div class="container-xl">
-                <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                    <a href="/">
-                        <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" width="110" height="32" alt="My FirstCare" class="navbar-brand-image">
-                    </a>
-                </h1>
-                <div class="navbar-nav flex-row order-md-last">
-                    <div class="nav-item">
-                        <a href="/data-flow" class="nav-link">← Back to Data Flow</a>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Page header -->
-        <div class="page-header d-print-none">
-            <div class="container-xl">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        <h2 class="page-title">Data Flow Test Page</h2>
-                        <div class="text-muted mt-1">Simple test page for data flow events</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page body -->
-        <div class="page-body">
-            <div class="container-xl">
-                <!-- Connection Status -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h3 class="card-title">Connection Status</h3>
-                    </div>
-                    <div class="card-body">
-                        <div id="connection-status" class="connection-status disconnected">
-                            <strong>Status:</strong> <span id="status-text">Disconnected</span>
-                        </div>
-                        <div class="mt-2">
-                            <button class="btn btn-primary btn-sm" onclick="testConnection()">Test Connection</button>
-                            <button class="btn btn-secondary btn-sm" onclick="clearEvents()">Clear Events</button>
-                            <button class="btn btn-success btn-sm" onclick="sendTestEvent()">Send Test Event</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Statistics -->
-                <div class="row row-deck row-cards mb-4">
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Total Events</div>
-                                </div>
-                                <div class="h1 mb-3" id="total-events">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Success Events</div>
-                                </div>
-                                <div class="h1 mb-3" id="success-events">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Error Events</div>
-                                </div>
-                                <div class="h1 mb-3" id="error-events">0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="subheader">Last Event</div>
-                                </div>
-                                <div class="h1 mb-3" id="last-event-time">Never</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Event Log -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Event Log</h3>
-                        <div class="card-actions">
-                            <span class="badge bg-primary" id="event-count">0 events</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="event-log" class="log-container">
-                            <div class="text-muted">Waiting for events...</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Real-time Events -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h3 class="card-title">Real-time Events</h3>
-                    </div>
-                    <div class="card-body">
-                        <div id="events-container">
-                            <div class="text-muted">No events received yet...</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tabler Core -->
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
-    
-    <script>
-        // Global variables
-        let socket = null;
-        let eventCount = 0;
-        let successCount = 0;
-        let errorCount = 0;
-        let lastEventTime = 'Never';
-
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Initializing Data Flow Test Page...');
-            connectSocket();
-        });
-
-        function connectSocket() {
-            console.log('🔌 Connecting to Socket.IO...');
-            
-            // Connect to web panel using Socket.IO
-            socket = io('http://localhost:8098');
-            
-            socket.on('connect', () => {
-                console.log('✅ Connected to Socket.IO');
-                updateConnectionStatus('connected', 'Connected');
-                addLogMessage('✅ Connected to Socket.IO server');
-            });
-            
-            socket.on('disconnect', () => {
-                console.log('❌ Disconnected from Socket.IO');
-                updateConnectionStatus('disconnected', 'Disconnected');
-                addLogMessage('❌ Disconnected from Socket.IO server');
-            });
-            
-            socket.on('connect_error', (error) => {
-                console.error('❌ Socket.IO connection error:', error);
-                updateConnectionStatus('disconnected', 'Connection Error');
-                addLogMessage('❌ Socket.IO connection error: ' + error.message);
-            });
-            
-            // Listen for data flow updates
-            socket.on('data_flow_update', (data) => {
-                console.log('🎯 DATA FLOW UPDATE RECEIVED:', data);
-                addLogMessage('🎯 Data flow update received: ' + JSON.stringify(data, null, 2));
-                handleDataFlowEvent(data);
-            });
-            
-            // Listen for MQTT messages
-            socket.on('mqtt_message', (data) => {
-                console.log('📡 MQTT message received:', data);
-                addLogMessage('📡 MQTT message received: ' + JSON.stringify(data, null, 2));
-            });
-            
-            // Listen for any other events
-            socket.onAny((eventName, ...args) => {
-                console.log('📡 Event received:', eventName, args);
-                addLogMessage('📡 Event "' + eventName + '" received: ' + JSON.stringify(args, null, 2));
-            });
-        }
-
-        function updateConnectionStatus(status, text) {
-            const statusDiv = document.getElementById('connection-status');
-            const statusText = document.getElementById('status-text');
-            
-            statusDiv.className = 'connection-status ' + status;
-            statusText.textContent = text;
-        }
-
-        function addLogMessage(message) {
-            const logContainer = document.getElementById('event-log');
-            const timestamp = new Date().toLocaleTimeString();
-            const logEntry = document.createElement('div');
-            logEntry.innerHTML = `<span class="text-muted">[${timestamp}]</span> ${message}`;
-            logContainer.appendChild(logEntry);
-            logContainer.scrollTop = logContainer.scrollHeight;
-        }
-
-        function handleDataFlowEvent(data) {
-            eventCount++;
-            lastEventTime = new Date().toLocaleTimeString();
-            
-            // Update statistics
-            if (data.data && data.data.status === 'success') {
-                successCount++;
-            } else if (data.data && data.data.status === 'error') {
-                errorCount++;
-            }
-            
-            updateStatistics();
-            
-            // Add event to display
-            addEventToDisplay(data);
-        }
-
-        function addEventToDisplay(data) {
-            const container = document.getElementById('events-container');
-            
-            // Remove "No events" message if present
-            const noEventsMsg = container.querySelector('.text-muted');
-            if (noEventsMsg && noEventsMsg.textContent.includes('No events')) {
-                noEventsMsg.remove();
-            }
-            
-            const eventDiv = document.createElement('div');
-            eventDiv.className = 'event-item';
-            
-            if (data.data) {
-                const eventData = data.data;
-                const statusClass = getStatusClass(eventData.status);
-                eventDiv.className = `event-item ${eventData.status}`;
-                
-                const timestamp = new Date(data.timestamp || new Date()).toLocaleTimeString();
-                
-                eventDiv.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <span class="device-badge">${eventData.device_type || 'Unknown'}</span>
-                            <span class="status-badge status-${eventData.status}">${eventData.status}</span>
-                            <strong>${eventData.step || 'Unknown Step'}</strong>
-                        </div>
-                        <small class="text-muted">${timestamp}</small>
-                    </div>
-                    <div class="mt-2">
-                        <small class="text-muted">Topic: ${eventData.topic || 'N/A'}</small>
-                    </div>
-                    ${eventData.error ? `<div class="mt-1 text-danger"><small>Error: ${eventData.error}</small></div>` : ''}
-                `;
-            } else {
-                eventDiv.innerHTML = `
-                    <div class="text-muted">Raw event data: ${JSON.stringify(data, null, 2)}</div>
-                `;
-            }
-            
-            container.insertBefore(eventDiv, container.firstChild);
-            
-            // Limit displayed events
-            const events = container.querySelectorAll('.event-item');
-            if (events.length > 20) {
-                events[events.length - 1].remove();
-            }
-        }
-
-        function getStatusClass(status) {
-            switch (status) {
-                case 'success': return 'success';
-                case 'error': return 'error';
-                case 'processing': return 'processing';
-                default: return 'processing';
-            }
-        }
-
-        function updateStatistics() {
-            document.getElementById('total-events').textContent = eventCount;
-            document.getElementById('success-events').textContent = successCount;
-            document.getElementById('error-events').textContent = errorCount;
-            document.getElementById('last-event-time').textContent = lastEventTime;
-            document.getElementById('event-count').textContent = eventCount + ' events';
-        }
-
-        function testConnection() {
-            addLogMessage('🧪 Testing connection...');
-            if (socket && socket.connected) {
-                addLogMessage('✅ Connection is active');
-            } else {
-                addLogMessage('❌ Connection is not active');
-            }
-        }
-
-        function clearEvents() {
-            eventCount = 0;
-            successCount = 0;
-            errorCount = 0;
-            lastEventTime = 'Never';
-            updateStatistics();
-            
-            document.getElementById('events-container').innerHTML = '<div class="text-muted">No events received yet...</div>';
-            document.getElementById('event-log').innerHTML = '<div class="text-muted">Event log cleared...</div>';
-            
-            addLogMessage('🧹 Events cleared');
-        }
-
-        function sendTestEvent() {
-            addLogMessage('🧪 Sending test event...');
-            
-            const testEvent = {
-                step: 'test_step',
-                status: 'success',
-                device_type: 'TEST',
-                topic: 'test/topic',
-                timestamp: new Date().toISOString(),
-                payload: { test: 'data' },
-                patient_info: { name: 'Test Patient' }
-            };
-            
-            // Send to backend using the existing endpoint
-            fetch('/api/data-flow/emit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({event: testEvent})
-            })
-            .then(response => response.json())
-            .then(data => {
-                addLogMessage('✅ Test event sent: ' + JSON.stringify(data));
-            })
-            .catch(error => {
-                addLogMessage('❌ Error sending test event: ' + error.message);
-            });
-        }
-
-        // Add onAny method to Socket.IO for debugging
-        if (typeof socket !== 'undefined' && socket) {
-            socket.onAny = function(callback) {
-                const originalEmit = socket.emit;
-                socket.emit = function(event, ...args) {
-                    callback(event, ...args);
-                    return originalEmit.apply(this, arguments);
-                };
-            };
-        }
-    </script>
-</body>
-</html> 

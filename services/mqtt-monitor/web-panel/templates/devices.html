@@ -199,249 +199,216 @@
             background: #ffc107;
             color: #212529;
         }
-    </style>
-</head>
-<body>
-    <div class="page">
-        <!-- Tabler Navbar -->
-        <header class="navbar navbar-expand-md navbar-dark d-print-none" style="background: var(--mfc-blue);">
-            <div class="container-xl">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" href="/">
-                    <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:40px;vertical-align:middle;margin-right:10px;">
-                    Opera-GodEye Panel
-                </a>
-                <div class="navbar-nav flex-row order-md-last">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
-                            <span class="avatar avatar-sm">
-                                <i class="ti ti-user"></i>
-                            </span>
-                            <div class="d-none d-xl-block ps-2">
-                                <div>Device Monitor</div>
-                                <div class="mt-n1">
-                                    <span class="connection-indicator connection-connecting" id="connection-status"></span>
-                                    <small id="connection-text">Connecting...</small>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <a href="/" class="dropdown-item">
-                                <i class="ti ti-home me-2"></i>
-                                Main Dashboard
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="/logout" class="dropdown-item">
-                                <i class="ti ti-logout me-2"></i>
-                                Logout
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <div class="navbar-expand-md">
-            <div class="collapse navbar-collapse" id="navbar-menu">
-                <div class="navbar navbar-light">
-                    <div class="container-xl">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">
-                                    <i class="ti ti-dashboard me-2"></i>
-                                    Dashboard
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/messages">
-                                    <i class="ti ti-message-circle me-2"></i>
-                                    Messages
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/emergency">
-                                    <i class="ti ti-alert-triangle me-2"></i>
-                                    Emergency Alerts
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="/devices">
-                                    <i class="ti ti-devices me-2"></i>
-                                    Devices
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/patients">
-                                    <i class="ti ti-users me-2"></i>
-                                    Patients
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/medical-monitor">
-                                    <i class="ti ti-heartbeat me-2"></i>
-                                    Medical Monitor
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/data-flow">
-                                    <i class="ti ti-activity me-2"></i>
-                                    Data Flow Monitor
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/event-log">
-                                    <i class="ti ti-list me-2"></i>
-                                    Event Log
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/event-streaming">
-                                    <i class="ti ti-broadcast me-2"></i>
-                                    Live Stream
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/kati-transaction">
-                                    <i class="ti ti-device-watch me-2"></i>
-                                    Kati Transaction
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="page-wrapper">
-            <!-- Page header -->
-            <div class="page-header d-print-none">
-                <div class="container-xl">
-                    <div class="row g-2 align-items-center">
-                        <div class="col">
-                            <h2 class="page-title">
-                                Devices
-                            </h2>
-                            <div class="text-muted mt-1">
-                                Device management and monitoring
-                            </div>
-                        </div>
-                        <div class="col-auto ms-auto d-print-none">
-                            <div class="btn-list">
-                                <button class="btn btn-primary" onclick="refreshDevices()">
-                                    <i class="ti ti-refresh me-2"></i>
-                                    Refresh
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        /* Mobile-First Responsive Design */
+        @media (max-width: 768px) {
+            .container-xl {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
             
-            <!-- Page body -->
-            <div class="page-body">
-                <div class="container-xl">
-                    <!-- Statistics Cards -->
-                    <div class="row stats-cards">
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="total-devices">0</div>
-                                <div class="stat-label">Total Devices</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="online-devices">0</div>
-                                <div class="stat-label">Online Devices</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="ava4-devices">0</div>
-                                <div class="stat-label">AVA4 Devices</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="kati-devices">0</div>
-                                <div class="stat-label">Kati Devices</div>
-                            </div>
-                        </div>
-                    </div>
+            .page-header {
+                padding: 1rem 0;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .btn-list {
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            
+            .btn-list .btn {
+                width: 100%;
+                margin-bottom: 0.25rem;
+            }
+            
+            .btn-group {
+                width: 100%;
+            }
+            
+            .btn-group .btn {
+                flex: 1;
+                font-size: 0.8rem;
+                padding: 0.5rem 0.25rem;
+            }
+            
+            .stats-cards .col-sm-6 {
+                margin-bottom: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .stat-label {
+                font-size: 0.8rem;
+            }
+            
+            .table-responsive {
+                font-size: 0.8rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.75rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header .col-auto {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            .page-header .row {
+                flex-direction: column;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.4rem 0.2rem;
+                font-size: 0.7rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container-xl {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            
+            .page-title {
+                font-size: 1.3rem;
+            }
+            
+            .stat-number {
+                font-size: 1.3rem;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Touch-friendly interactions for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover {
+                transform: none;
+            }
+            
+            .btn:active {
+                transform: scale(0.95);
+            }
+        }
+        
+        /* Mobile table enhancements */
+        @media (max-width: 768px) {
+            .table-responsive {
+                border: none;
+            }
+            
+            .table th {
+                white-space: nowrap;
+                min-width: 80px;
+            }
+            
+            .table td {
+                vertical-align: middle;
+            }
+            
+            .data-value {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .topic-badge {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.3rem;
+            }
+            
+            .status-badge {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+            }
+            
+            .btn-sm {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .data-value {
+                max-width: 80px;
+                font-size: 0.7rem;
+            }
+            
+            .topic-badge {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.25rem;
+            }
+            
+            .status-badge {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.3rem;
+            }
+            
+            .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Mobile modal enhancements */
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+            
+            .modal-body {
+                padding: 1rem;
+            }
+            
+            .modal-footer {
+                padding: 0.75rem 1rem;
+            }
+            
+            .modal-footer .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .modal-footer .btn:last-child {
+                margin-bottom: 0;
+            }
+        }
 
-                    <!-- Filters -->
-                    <div class="filters-bar">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="device-type-filter" class="form-label">Device Type</label>
-                                <select class="form-select" id="device-type-filter">
-                                    <option value="">All Types</option>
-                                    <option value="ava4">AVA4</option>
-                                    <option value="kati">Kati Watch</option>
-                                    <option value="qube">Qube-Vital</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="status-filter" class="form-label">Status</label>
-                                <select class="form-select" id="status-filter">
-                                    <option value="">All Status</option>
-                                    <option value="online">Online</option>
-                                    <option value="offline">Offline</option>
-                                    <option value="warning">Warning</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="search-filter" class="form-label">Search</label>
-                                <input type="text" class="form-control" id="search-filter" placeholder="Search devices...">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-primary w-100" onclick="applyFilters()">
-                                    <i class="ti ti-search me-2"></i>
-                                    Apply Filters
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Devices List -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                        <i class="ti ti-list me-2"></i>
-                                        Device List
-                                    </h3>
-                                </div>
-                                <div class="card-body">
-                                    <div id="devices-container">
-                                        <div class="text-center text-muted py-4">
-                                            <i class="ti ti-devices fa-3x mb-3"></i>
-                                            <p class="mb-0">No devices found</p>
-                                            <small class="text-muted">Devices will appear here when connected</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript files -->
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
-    <script src="/static/js/app.js"></script>
-    
-    <script>
-        // Initialize the app when the page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Initializing Devices Page...');
-            window.app = new MQTTMonitorApp();
-            window.app.init();
-        });
-    </script>
-</body>
-</html> 
+    </style>

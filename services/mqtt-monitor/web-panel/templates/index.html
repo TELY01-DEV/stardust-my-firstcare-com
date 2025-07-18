@@ -154,6 +154,138 @@
             color: #6c757d;
             font-size: 0.875rem;
         }
+        
+        /* Mobile-First Responsive Design */
+        @media (max-width: 768px) {
+            .container-xl {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            
+            .page-header {
+                padding: 1rem 0;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .btn-list {
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            
+            .btn-list .btn {
+                width: 100%;
+                margin-bottom: 0.25rem;
+            }
+            
+            .stats-cards .col-sm-6 {
+                margin-bottom: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .stat-label {
+                font-size: 0.8rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .message-item {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .message-payload {
+                font-size: 0.75rem;
+                padding: 0.4rem;
+            }
+            
+            .filters-bar {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header .col-auto {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            .page-header .row {
+                flex-direction: column;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
+            .message-item {
+                padding: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .message-payload {
+                font-size: 0.7rem;
+                padding: 0.3rem;
+            }
+            
+            .filters-bar {
+                padding: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container-xl {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            
+            .page-title {
+                font-size: 1.3rem;
+            }
+            
+            .stat-number {
+                font-size: 1.3rem;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Touch-friendly interactions for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover {
+                transform: none;
+            }
+            
+            .btn:active {
+                transform: scale(0.95);
+            }
+        }
     </style>
 </head>
 <body>
@@ -285,11 +417,11 @@
                             <div class="btn-list">
                                 <button class="btn btn-primary" onclick="refreshData()">
                                     <i class="ti ti-refresh me-2"></i>
-                                    Refresh
+                                    <span class="d-none d-sm-inline">Refresh</span>
                                 </button>
                                 <button class="btn btn-outline-secondary" onclick="clearMessages()">
                                     <i class="ti ti-trash me-2"></i>
-                                    Clear
+                                    <span class="d-none d-sm-inline">Clear</span>
                                 </button>
                             </div>
                         </div>
@@ -302,28 +434,40 @@
                 <div class="container-xl">
                     <!-- Statistics Cards -->
                     <div class="row stats-cards">
-                        <div class="col-sm-6 col-lg-3">
+                        <div class="col-6 col-sm-6 col-lg-3">
                             <div class="card stat-card">
                                 <div class="stat-number" id="total-messages">0</div>
-                                <div class="stat-label">Total Messages</div>
+                                <div class="stat-label">
+                                    <span class="d-none d-sm-inline">Total Messages</span>
+                                    <span class="d-inline d-sm-none">Total</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-lg-3">
+                        <div class="col-6 col-sm-6 col-lg-3">
                             <div class="card stat-card">
                                 <div class="stat-number" id="ava4-messages">0</div>
-                                <div class="stat-label">AVA4 Messages</div>
+                                <div class="stat-label">
+                                    <span class="d-none d-sm-inline">AVA4 Messages</span>
+                                    <span class="d-inline d-sm-none">AVA4</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-lg-3">
+                        <div class="col-6 col-sm-6 col-lg-3">
                             <div class="card stat-card">
                                 <div class="stat-number" id="kati-messages">0</div>
-                                <div class="stat-label">Kati Messages</div>
+                                <div class="stat-label">
+                                    <span class="d-none d-sm-inline">Kati Messages</span>
+                                    <span class="d-inline d-sm-none">Kati</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-lg-3">
+                        <div class="col-6 col-sm-6 col-lg-3">
                             <div class="card stat-card">
                                 <div class="stat-number" id="qube-messages">0</div>
-                                <div class="stat-label">Qube Messages</div>
+                                <div class="stat-label">
+                                    <span class="d-none d-sm-inline">Qube Messages</span>
+                                    <span class="d-inline d-sm-none">Qube</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -331,8 +475,11 @@
                     <!-- Filters -->
                     <div class="filters-bar">
                         <div class="row">
-                            <div class="col-md-3">
-                                <label for="device-filter" class="form-label">Device Type</label>
+                            <div class="col-6 col-md-3 mb-2">
+                                <label for="device-filter" class="form-label">
+                                    <span class="d-none d-sm-inline">Device Type</span>
+                                    <span class="d-inline d-sm-none">Device</span>
+                                </label>
                                 <select class="form-select" id="device-filter">
                                     <option value="">All Devices</option>
                                     <option value="ava4">AVA4</option>
@@ -340,7 +487,7 @@
                                     <option value="qube">Qube-Vital</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2">
                                 <label for="topic-filter" class="form-label">Topic</label>
                                 <select class="form-select" id="topic-filter">
                                     <option value="">All Topics</option>
@@ -350,8 +497,11 @@
                                     <option value="CM4_BLE_GW_TX">CM4_BLE_GW_TX</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="time-filter" class="form-label">Time Range</label>
+                            <div class="col-6 col-md-3 mb-2">
+                                <label for="time-filter" class="form-label">
+                                    <span class="d-none d-sm-inline">Time Range</span>
+                                    <span class="d-inline d-sm-none">Time</span>
+                                </label>
                                 <select class="form-select" id="time-filter">
                                     <option value="1">Last Hour</option>
                                     <option value="6">Last 6 Hours</option>
@@ -359,7 +509,7 @@
                                     <option value="168">Last Week</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-6 col-md-3 mb-2">
                                 <label for="search-filter" class="form-label">Search</label>
                                 <input type="text" class="form-control" id="search-filter" placeholder="Search messages...">
                             </div>

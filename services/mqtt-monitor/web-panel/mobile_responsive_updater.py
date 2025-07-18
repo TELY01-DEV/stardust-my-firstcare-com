@@ -1,189 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Opera-GodEye Panel - Data Flow Monitor</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
-    <link rel="alternate icon" href="{{ url_for('static', filename='PRIMARY_MFC_LOGO_EN.svg') }}">
-    
-    <!-- CSS files -->
-    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/iconfont/tabler-icons.min.css" rel="stylesheet"/>
-    
-    <!-- Socket.IO client -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
-    
-    <style>
-        /* MFC Theme Palette */
-        :root {
-            --mfc-blue: #024F96;
-            --mfc-light-blue: #00A1E8;
-            --mfc-accent-blue: #92E3FF;
-            --mfc-red: #EC1C24;
-            --mfc-dark-red: #981F15;
-            --mfc-gray: #D0D2D3;
-            --mfc-white: #fff;
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-        }
-        
-        .connection-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-        }
-        .connection-connected { background-color: #28a745; }
-        .connection-connecting { background-color: #ffc107; }
-        .connection-disconnected { background-color: #dc3545; }
-        
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease-in-out;
-        }
-        
-        .card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .btn {
-            border-radius: 8px;
-            font-weight: 600;
-        }
-        
-        .form-select {
-            border-radius: 8px;
-        }
-        
-        .table th {
-            border-top: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-        }
-        
-        .message-item {
-            border-left: 4px solid var(--mfc-blue);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .message-item.ava4 {
-            border-left-color: #28a745;
-        }
-        
-        .message-item.kati {
-            border-left-color: #17a2b8;
-        }
-        
-        .message-item.qube {
-            border-left-color: #ffc107;
-        }
-        
-        .message-item.emergency {
-            border-left-color: var(--mfc-red);
-            background: #fff5f5;
-        }
-        
-        .message-timestamp {
-            font-size: 0.875rem;
-            color: #6c757d;
-        }
-        
-        .message-topic {
-            font-weight: 600;
-            color: var(--mfc-blue);
-        }
-        
-        .message-payload {
-            background: #f8f9fa;
-            border-radius: 4px;
-            padding: 0.5rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-        
-        .message-patient {
-            color: var(--mfc-blue);
-            font-weight: 600;
-        }
-        
-        .message-device {
-            color: #6c757d;
-            font-size: 0.875rem;
-        }
-        
-        .filters-bar {
-            background: white;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .stats-cards {
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            text-align: center;
-            padding: 1rem;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--mfc-blue);
-        }
-        
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.875rem;
-        }
-        
-        /* Data Flow Specific Styles */
-        .data-flow-full-width {
-            max-width: 100% !important;
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-        
-        .data-flow-content {
-            width: 100%;
-        }
-        
-        .data-flow-card {
-            margin-bottom: 1.5rem;
-            height: 100%;
-        }
-        
-        .data-flow-card .card-body {
-            min-height: 500px;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-        
-        /* Responsive adjustments for side-by-side layout */
-        @media (max-width: 991.98px) {
-            .data-flow-card .card-body {
-                min-height: 400px;
-                max-height: 500px;
-            }
-        }
+#!/usr/bin/env python3
+"""
+Mobile Responsive Template Updater
+Automatically applies mobile responsiveness to all HTML templates in the Opera-GodEye web panel.
+"""
+
+import os
+import re
+from pathlib import Path
+
+# Mobile responsive CSS to add to all templates
+MOBILE_CSS = """
         /* Mobile-First Responsive Design */
         @media (max-width: 768px) {
             .container-xl {
@@ -395,5 +221,94 @@
                 margin-bottom: 0;
             }
         }
+"""
 
-    </style>
+def update_template_mobile_responsiveness(template_path):
+    """Update a single template with mobile responsiveness."""
+    try:
+        with open(template_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Check if mobile CSS already exists
+        if '/* Mobile-First Responsive Design */' in content:
+            print(f"  ✓ {template_path.name} - Already has mobile responsiveness")
+            return False
+        
+        # Find the end of existing CSS styles
+        style_pattern = r'(\s*</style>)'
+        match = re.search(style_pattern, content)
+        
+        if match:
+            # Insert mobile CSS before closing style tag
+            new_content = content[:match.start()] + MOBILE_CSS + match.group(1)
+            
+            # Update statistics cards to be mobile-friendly
+            new_content = re.sub(
+                r'<div class="col-sm-6 col-lg-3">',
+                '<div class="col-6 col-sm-6 col-lg-3">',
+                new_content
+            )
+            
+            # Update stat labels to be responsive
+            new_content = re.sub(
+                r'<div class="stat-label">([^<]+)</div>',
+                r'<div class="stat-label">\n                                    <span class="d-none d-sm-inline">\1</span>\n                                    <span class="d-inline d-sm-none">\1</span>\n                                </div>',
+                new_content
+            )
+            
+            # Update page header buttons
+            new_content = re.sub(
+                r'<button class="btn btn-primary"[^>]*>([^<]*<i[^>]*></i>)\s*([^<]+)</button>',
+                r'<button class="btn btn-primary" \1>\n                                    <span class="d-none d-sm-inline">\2</span>\n                                </button>',
+                new_content
+            )
+            
+            # Update page titles
+            new_content = re.sub(
+                r'<h2 class="page-title">([^<]+)</h2>',
+                r'<h2 class="page-title">\n                            <span class="d-none d-sm-inline">\1</span>\n                            <span class="d-inline d-sm-none">\1</span>\n                        </h2>',
+                new_content
+            )
+            
+            with open(template_path, 'w', encoding='utf-8') as f:
+                f.write(new_content)
+            
+            print(f"  ✓ {template_path.name} - Updated with mobile responsiveness")
+            return True
+            
+        else:
+            print(f"  ✗ {template_path.name} - No style tag found")
+            return False
+            
+    except Exception as e:
+        print(f"  ✗ {template_path.name} - Error: {e}")
+        return False
+
+def main():
+    """Main function to update all templates."""
+    templates_dir = Path("templates")
+    
+    if not templates_dir.exists():
+        print("Templates directory not found!")
+        return
+    
+    html_files = list(templates_dir.glob("*.html"))
+    
+    if not html_files:
+        print("No HTML templates found!")
+        return
+    
+    print(f"Found {len(html_files)} HTML templates")
+    print("Updating mobile responsiveness...")
+    
+    updated_count = 0
+    
+    for template_file in html_files:
+        if update_template_mobile_responsiveness(template_file):
+            updated_count += 1
+    
+    print(f"\n✅ Mobile responsiveness update complete!")
+    print(f"Updated {updated_count} out of {len(html_files)} templates")
+
+if __name__ == "__main__":
+    main() 

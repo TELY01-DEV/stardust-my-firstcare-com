@@ -190,703 +190,216 @@
             color: #6c757d;
             font-size: 0.875rem;
         }
+        /* Mobile-First Responsive Design */
+        @media (max-width: 768px) {
+            .container-xl {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            
+            .page-header {
+                padding: 1rem 0;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .btn-list {
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+            }
+            
+            .btn-list .btn {
+                width: 100%;
+                margin-bottom: 0.25rem;
+            }
+            
+            .btn-group {
+                width: 100%;
+            }
+            
+            .btn-group .btn {
+                flex: 1;
+                font-size: 0.8rem;
+                padding: 0.5rem 0.25rem;
+            }
+            
+            .stats-cards .col-sm-6 {
+                margin-bottom: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .stat-label {
+                font-size: 0.8rem;
+            }
+            
+            .table-responsive {
+                font-size: 0.8rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.75rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header .col-auto {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            .page-header .row {
+                flex-direction: column;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.4rem 0.2rem;
+                font-size: 0.7rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container-xl {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            
+            .page-title {
+                font-size: 1.3rem;
+            }
+            
+            .stat-number {
+                font-size: 1.3rem;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Touch-friendly interactions for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover {
+                transform: none;
+            }
+            
+            .btn:active {
+                transform: scale(0.95);
+            }
+        }
+        
+        /* Mobile table enhancements */
+        @media (max-width: 768px) {
+            .table-responsive {
+                border: none;
+            }
+            
+            .table th {
+                white-space: nowrap;
+                min-width: 80px;
+            }
+            
+            .table td {
+                vertical-align: middle;
+            }
+            
+            .data-value {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .topic-badge {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.3rem;
+            }
+            
+            .status-badge {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+            }
+            
+            .btn-sm {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .data-value {
+                max-width: 80px;
+                font-size: 0.7rem;
+            }
+            
+            .topic-badge {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.25rem;
+            }
+            
+            .status-badge {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.3rem;
+            }
+            
+            .btn-sm {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Mobile modal enhancements */
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+            
+            .modal-body {
+                padding: 1rem;
+            }
+            
+            .modal-footer {
+                padding: 0.75rem 1rem;
+            }
+            
+            .modal-footer .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .modal-footer .btn:last-child {
+                margin-bottom: 0;
+            }
+        }
+
     </style>
-</head>
-<body>
-    <div class="page">
-        <!-- Tabler Navbar -->
-        <header class="navbar navbar-expand-md navbar-dark d-print-none" style="background: var(--mfc-blue);">
-            <div class="container-xl">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" href="/">
-                    <img src="{{ url_for('static', filename='LOGO_MFC_EN.png') }}" alt="MFC Logo" style="height:40px;vertical-align:middle;margin-right:10px;">
-                    Opera-GodEye Panel
-                </a>
-                <div class="navbar-nav flex-row order-md-last">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
-                            <span class="avatar avatar-sm">
-                                <i class="ti ti-user"></i>
-                            </span>
-                            <div class="d-none d-xl-block ps-2">
-                                <div>Dashboard Monitor</div>
-                                <div class="mt-n1">
-                                    <span class="connection-indicator connection-connecting" id="connection-status"></span>
-                                    <small id="connection-text">Connecting...</small>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <a href="/" class="dropdown-item">
-                                <i class="ti ti-home me-2"></i>
-                                Main Dashboard
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="/logout" class="dropdown-item">
-                                <i class="ti ti-logout me-2"></i>
-                                Logout
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <div class="navbar-expand-md">
-            <div class="collapse navbar-collapse" id="navbar-menu">
-                <div class="navbar navbar-light">
-                    <div class="container-xl">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">
-                                    <i class="ti ti-dashboard me-2"></i>
-                                    Dashboard
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/messages">
-                                    <i class="ti ti-message-circle me-2"></i>
-                                    Messages
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/emergency">
-                                    <i class="ti ti-alert-triangle me-2"></i>
-                                    Emergency Alerts
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/devices">
-                                    <i class="ti ti-devices me-2"></i>
-                                    Devices
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/patients">
-                                    <i class="ti ti-users me-2"></i>
-                                    Patients
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/medical-monitor">
-                                    <i class="ti ti-heartbeat me-2"></i>
-                                    Medical Monitor
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/data-flow">
-                                    <i class="ti ti-activity me-2"></i>
-                                    Data Flow Monitor
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="/event-log">
-                                    <i class="ti ti-list me-2"></i>
-                                    Event Log
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/event-streaming">
-                                    <i class="ti ti-broadcast me-2"></i>
-                                    Live Stream
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/kati-transaction">
-                                    <i class="ti ti-device-watch me-2"></i>
-                                    Kati Transaction
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="page-wrapper">
-            <!-- Page header -->
-            <div class="page-header d-print-none">
-                <div class="container-xl">
-                    <div class="row g-2 align-items-center">
-                        <div class="col">
-                            <h2 class="page-title">
-                                Unified Event Log
-                            </h2>
-                            <div class="text-muted mt-1">
-                                Real-time monitoring of all system events from listeners and monitors
-                            </div>
-                        </div>
-                        <div class="col-auto ms-auto d-print-none">
-                            <div class="btn-list">
-                                <button class="btn btn-primary" onclick="refreshEvents()">
-                                    <i class="ti ti-refresh me-2"></i>
-                                    Refresh
-                                </button>
-                                <button class="btn btn-outline-secondary" onclick="exportEvents()">
-                                    <i class="ti ti-download me-2"></i>
-                                    Export CSV
-                                </button>
-                                <button class="btn btn-outline-danger" onclick="clearFilters()">
-                                    <i class="ti ti-filter-off me-2"></i>
-                                    Clear Filters
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Page body -->
-            <div class="page-body">
-                <div class="container-xl">
-                    <!-- Statistics Cards -->
-                    <div class="row stats-cards">
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="total-events-24h">0</div>
-                                <div class="stat-label">Events (24h)</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="success-events">0</div>
-                                <div class="stat-label">Success</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="error-events">0</div>
-                                <div class="stat-label">Errors</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card stat-card">
-                                <div class="stat-number" id="active-sources">0</div>
-                                <div class="stat-label">Active Sources</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Filters -->
-                    <div class="filters-bar">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <label for="source-filter" class="form-label">Source</label>
-                                <select class="form-select" id="source-filter">
-                                    <option value="">All Sources</option>
-                                    <option value="ava4-listener">AVA4 Listener</option>
-                                    <option value="kati-listener">Kati Listener</option>
-                                    <option value="qube-listener">Qube Listener</option>
-                                    <option value="medical-monitor">Medical Monitor</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="status-filter" class="form-label">Status</label>
-                                <select class="form-select" id="status-filter">
-                                    <option value="">All Status</option>
-                                    <option value="success">Success</option>
-                                    <option value="error">Error</option>
-                                    <option value="warning">Warning</option>
-                                    <option value="info">Info</option>
-                                    <option value="processing">Processing</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="event-type-filter" class="form-label">Event Type</label>
-                                <select class="form-select" id="event-type-filter">
-                                    <option value="">All Types</option>
-                                    <option value="DATA_RECEIVED">Data Received</option>
-                                    <option value="DATA_PROCESSED">Data Processed</option>
-                                    <option value="DATA_STORED">Data Stored</option>
-                                    <option value="FHIR_CONVERTED">FHIR Converted</option>
-                                    <option value="ERROR_OCCURRED">Error Occurred</option>
-                                    <option value="ALERT_SENT">Alert Sent</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="time-range-filter" class="form-label">Time Range</label>
-                                <select class="form-select" id="time-range-filter">
-                                    <option value="1">Last Hour</option>
-                                    <option value="6">Last 6 Hours</option>
-                                    <option value="24" selected>Last 24 Hours</option>
-                                    <option value="168">Last Week</option>
-                                    <option value="custom">Custom Range</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="search-filter" class="form-label">Search</label>
-                                <input type="text" class="form-control" id="search-filter" placeholder="Search events...">
-                            </div>
-                            <div class="col-md-2">
-                                <label class="form-label">&nbsp;</label>
-                                <button class="btn btn-primary w-100" onclick="applyFilters()">
-                                    <i class="ti ti-search me-2"></i>
-                                    Apply
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Events Table -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                        <i class="ti ti-list me-2"></i>
-                                        Event Log
-                                    </h3>
-                                    <div class="card-actions">
-                                        <div class="pagination-info">
-                                            Showing <span id="showing-start">0</span> to <span id="showing-end">0</span> of <span id="total-events">0</span> events
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-vcenter card-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Timestamp</th>
-                                                <th>Source</th>
-                                                <th>Device/Patient</th>
-                                                <th>Event Type</th>
-                                                <th>Status</th>
-                                                <th>Details</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="events-table-body">
-                                            <tr>
-                                                <td colspan="6" class="text-center text-muted">
-                                                    <i class="ti ti-loader ti-spin me-2"></i>
-                                                    Loading events...
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="pagination-info">
-                                            Page <span id="current-page">1</span> of <span id="total-pages">1</span>
-                                        </div>
-                                        <div class="btn-group">
-                                            <button class="btn btn-outline-secondary" onclick="previousPage()" id="prev-btn">
-                                                <i class="ti ti-chevron-left"></i>
-                                                Previous
-                                            </button>
-                                            <button class="btn btn-outline-secondary" onclick="nextPage()" id="next-btn">
-                                                Next
-                                                <i class="ti ti-chevron-right"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Event Details Modal -->
-    <div class="modal fade" id="eventDetailsModal" tabindex="-1" aria-labelledby="eventDetailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="eventDetailsModalLabel">Event Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body event-details-modal">
-                    <div id="event-details-content">
-                        <!-- Event details will be populated here -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript files -->
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
-    
-    <script>
-        // Global variables
-        let currentPage = 1;
-        let totalPages = 1;
-        let totalEvents = 0;
-        let socket = null;
-        
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeSocket();
-            loadEventStats();
-            loadEvents();
-            
-            // Auto-refresh every 30 seconds
-            setInterval(loadEventStats, 30000);
-        });
-        
-        // Socket.IO initialization
-        function initializeSocket() {
-            socket = io({ transports: ['websocket'] });
-            
-            socket.on('connect', function() {
-                document.getElementById('connection-status').className = 'connection-indicator connection-connected';
-                document.getElementById('connection-text').textContent = 'Connected';
-            });
-            
-            socket.on('disconnect', function() {
-                document.getElementById('connection-status').className = 'connection-indicator connection-disconnected';
-                document.getElementById('connection-text').textContent = 'Disconnected';
-            });
-            
-            socket.on('data_flow_update', function(data) {
-                // Map backend event structure to frontend expected format
-                const mappedEvent = {
-                    source: data.data.device_type || 'unknown',
-                    event_type: data.data.step || 'unknown',
-                    status: data.data.status || 'info',
-                    message: data.data.topic || 'No message available',
-                    device_id: data.data.payload?.IMEI || data.data.payload?.mac || 'N/A',
-                    patient_id: data.data.patient_info?.patient_id || 'N/A',
-                    timestamp: data.data.timestamp || data.timestamp,
-                    data: data.data.payload || {},
-                    topic: data.data.topic || 'unknown'
-                };
-                
-                // Add new event to the top of the table if we're on the first page
-                if (currentPage === 1) {
-                    addEventToTable(mappedEvent, true);
-                    totalEvents++;
-                    updatePaginationInfo();
-                }
-                
-                // Fetch fresh database statistics
-                loadEventStats();
-            });
-            
-            // Listen for step-specific events
-            socket.on('1_mqtt_received', function(data) {
-                if (currentPage === 1) {
-                    addEventToTable(data, true);
-                    totalEvents++;
-                    updatePaginationInfo();
-                }
-                loadEventStats();
-            });
-            
-            socket.on('2_payload_parsed', function(data) {
-                if (currentPage === 1) {
-                    addEventToTable(data, true);
-                    totalEvents++;
-                    updatePaginationInfo();
-                }
-                loadEventStats();
-            });
-            
-            socket.on('2.5_fhir_validation', function(data) {
-                if (currentPage === 1) {
-                    addEventToTable(data, true);
-                    totalEvents++;
-                    updatePaginationInfo();
-                }
-                loadEventStats();
-            });
-            
-            socket.on('3_patient_lookup', function(data) {
-                if (currentPage === 1) {
-                    addEventToTable(data, true);
-                    totalEvents++;
-                    updatePaginationInfo();
-                }
-                loadEventStats();
-            });
-        }
-        
-        // Load event statistics
-        function loadEventStats() {
-            fetch('/api/event-log/stats')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('total-events-24h').textContent = data.data.total_24h;
-                        
-                        // Count statuses
-                        let successCount = 0;
-                        let errorCount = 0;
-                        data.data.statuses.forEach(status => {
-                            if (status._id === 'success') successCount = status.count;
-                            if (status._id === 'error') errorCount = status.count;
-                        });
-                        
-                        document.getElementById('success-events').textContent = successCount;
-                        document.getElementById('error-events').textContent = errorCount;
-                        document.getElementById('active-sources').textContent = data.data.sources.length;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading event stats:', error);
-                });
-        }
-        
-        // Load events with current filters
-        function loadEvents() {
-            const params = new URLSearchParams({
-                page: currentPage,
-                limit: 50
-            });
-            
-            // Add filters
-            const source = document.getElementById('source-filter').value;
-            const status = document.getElementById('status-filter').value;
-            const eventType = document.getElementById('event-type-filter').value;
-            const search = document.getElementById('search-filter').value;
-            
-            if (source) params.append('source', source);
-            if (status) params.append('status', status);
-            if (eventType) params.append('event_type', eventType);
-            if (search) params.append('search', search);
-            
-            // Add time range
-            const timeRange = document.getElementById('time-range-filter').value;
-            if (timeRange === 'custom') {
-                // TODO: Add custom date picker
-            } else if (timeRange !== '24') {
-                const hours = parseInt(timeRange);
-                const startTime = new Date(Date.now() - hours * 60 * 60 * 1000);
-                params.append('start_time', startTime.toISOString());
-            }
-            
-            fetch(`/api/event-log?${params}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        displayEvents(data.data.events);
-                        updatePagination(data.data.pagination);
-                    } else {
-                        console.error('Error loading events:', data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading events:', error);
-                });
-        }
-        
-        // Display events in table
-        function displayEvents(events) {
-            const tbody = document.getElementById('events-table-body');
-            tbody.innerHTML = '';
-            
-            if (events.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center text-muted">
-                            <i class="ti ti-inbox me-2"></i>
-                            No events found
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            events.forEach(event => {
-                addEventToTable(event, false);
-            });
-        }
-        
-        // Add single event to table
-        function addEventToTable(event, prepend = false) {
-            const tbody = document.getElementById('events-table-body');
-            const row = document.createElement('tr');
-            row.className = 'event-row';
-            row.onclick = () => showEventDetails(event);
-            
-            const timestamp = new Date(event.timestamp).toLocaleString();
-            const sourceClass = getSourceClass(event.source);
-            const statusClass = getStatusClass(event.status);
-            
-            row.innerHTML = `
-                <td>
-                    <div class="text-muted">${timestamp}</div>
-                </td>
-                <td>
-                    <span class="source-badge ${sourceClass}">${event.source}</span>
-                </td>
-                <td>
-                    <div class="text-muted">${event.device_id || 'N/A'}</div>
-                    <div class="text-muted">${event.patient_id || 'N/A'}</div>
-                </td>
-                <td>
-                    <div class="text-muted">${event.event_type}</div>
-                </td>
-                <td>
-                    <span class="event-status ${statusClass}">${event.status}</span>
-                </td>
-                <td>
-                    <button class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation(); showEventDetails(${JSON.stringify(event).replace(/"/g, '&quot;')})">
-                        <i class="ti ti-eye me-1"></i>
-                        View
-                    </button>
-                </td>
-            `;
-            
-            if (prepend) {
-                tbody.insertBefore(row, tbody.firstChild);
-            } else {
-                tbody.appendChild(row);
-            }
-        }
-        
-        // Get CSS class for source
-        function getSourceClass(source) {
-            if (source.includes('ava4')) return 'source-ava4';
-            if (source.includes('kati')) return 'source-kati';
-            if (source.includes('qube')) return 'source-qube';
-            if (source.includes('monitor')) return 'source-monitor';
-            return '';
-        }
-        
-        // Get CSS class for status
-        function getStatusClass(status) {
-            switch (status.toLowerCase()) {
-                case 'success': return 'status-success';
-                case 'error': return 'status-error';
-                case 'warning': return 'status-warning';
-                case 'info': return 'status-info';
-                case 'processing': return 'status-processing';
-                default: return 'status-info';
-            }
-        }
-        
-        // Show event details modal
-        function showEventDetails(event) {
-            const modal = new bootstrap.Modal(document.getElementById('eventDetailsModal'));
-            const content = document.getElementById('event-details-content');
-            
-            content.innerHTML = `
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6>Basic Information</h6>
-                        <table class="table table-sm">
-                            <tr><td><strong>Timestamp:</strong></td><td>${new Date(event.timestamp).toLocaleString()}</td></tr>
-                            <tr><td><strong>Source:</strong></td><td>${event.source}</td></tr>
-                            <tr><td><strong>Event Type:</strong></td><td>${event.event_type}</td></tr>
-                            <tr><td><strong>Status:</strong></td><td><span class="event-status ${getStatusClass(event.status)}">${event.status}</span></td></tr>
-                            <tr><td><strong>Device ID:</strong></td><td>${event.device_id || 'N/A'}</td></tr>
-                            <tr><td><strong>Patient ID:</strong></td><td>${event.patient_id || 'N/A'}</td></tr>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        <h6>Additional Information</h6>
-                        <table class="table table-sm">
-                            <tr><td><strong>Server Timestamp:</strong></td><td>${event.server_timestamp ? new Date(event.server_timestamp).toLocaleString() : 'N/A'}</td></tr>
-                            <tr><td><strong>Topic:</strong></td><td>${event.topic || 'N/A'}</td></tr>
-                            <tr><td><strong>Medical Data:</strong></td><td>${event.data || 'N/A'}</td></tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <h6>Details</h6>
-                        <div class="json-viewer">${JSON.stringify(event.details || event, null, 2)}</div>
-                    </div>
-                </div>
-            `;
-            
-            modal.show();
-        }
-        
-        // Update pagination
-        function updatePagination(pagination) {
-            currentPage = pagination.page;
-            totalPages = pagination.pages;
-            totalEvents = pagination.total;
-            
-            document.getElementById('current-page').textContent = currentPage;
-            document.getElementById('total-pages').textContent = totalPages;
-            document.getElementById('total-events').textContent = totalEvents;
-            
-            const start = (currentPage - 1) * pagination.limit + 1;
-            const end = Math.min(currentPage * pagination.limit, totalEvents);
-            
-            document.getElementById('showing-start').textContent = totalEvents > 0 ? start : 0;
-            document.getElementById('showing-end').textContent = end;
-            
-            // Update button states
-            document.getElementById('prev-btn').disabled = currentPage <= 1;
-            document.getElementById('next-btn').disabled = currentPage >= totalPages;
-        }
-        
-        // Update pagination info
-        function updatePaginationInfo() {
-            document.getElementById('total-events').textContent = totalEvents;
-        }
-        
-        // Navigation functions
-        function previousPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                loadEvents();
-            }
-        }
-        
-        function nextPage() {
-            if (currentPage < totalPages) {
-                currentPage++;
-                loadEvents();
-            }
-        }
-        
-        // Filter functions
-        function applyFilters() {
-            currentPage = 1;
-            loadEvents();
-        }
-        
-        function clearFilters() {
-            document.getElementById('source-filter').value = '';
-            document.getElementById('status-filter').value = '';
-            document.getElementById('event-type-filter').value = '';
-            document.getElementById('time-range-filter').value = '24';
-            document.getElementById('search-filter').value = '';
-            applyFilters();
-        }
-        
-        function refreshEvents() {
-            loadEventStats();
-            loadEvents();
-        }
-        
-        function exportEvents() {
-            const params = new URLSearchParams();
-            
-            // Add current filters
-            const source = document.getElementById('source-filter').value;
-            const status = document.getElementById('status-filter').value;
-            const eventType = document.getElementById('event-type-filter').value;
-            const search = document.getElementById('search-filter').value;
-            
-            if (source) params.append('source', source);
-            if (status) params.append('status', status);
-            if (eventType) params.append('event_type', eventType);
-            if (search) params.append('search', search);
-            
-            // Add time range
-            const timeRange = document.getElementById('time-range-filter').value;
-            if (timeRange === 'custom') {
-                // TODO: Add custom date picker
-            } else if (timeRange !== '24') {
-                const hours = parseInt(timeRange);
-                const startTime = new Date(Date.now() - hours * 60 * 60 * 1000);
-                params.append('start_time', startTime.toISOString());
-            }
-            
-            window.open(`/api/event-log/export?${params}`, '_blank');
-        }
-    </script>
-</body>
-</html> 
