@@ -5451,8 +5451,8 @@
                 const response = await fetch('/api/kati-transactions?topic_filter=SOS,fallDown&limit=50');
                 const data = await response.json();
                 
-                if (data.success && data.transactions && Array.isArray(data.transactions)) {
-                    const emergencyAlerts = data.transactions.filter(t => 
+                if (data.success && data.data && data.data.transactions && Array.isArray(data.data.transactions)) {
+                    const emergencyAlerts = data.data.transactions.filter(t => 
                         t.topic === 'iMEDE_watch/SOS' || t.topic === 'iMEDE_watch/fallDown'
                     );
                     
