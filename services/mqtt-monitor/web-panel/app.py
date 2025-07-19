@@ -2249,6 +2249,9 @@ def get_recent_medical_data():
                             medical_values['signal_gsm'] = raw_data['signal_gsm']
                         if 'step_count' in raw_data:
                             medical_values['steps'] = raw_data['step_count']
+                        # Check for heart rate in heartbeat data
+                        if 'heart_rate' in raw_data:
+                            medical_values['heart_rate'] = raw_data['heart_rate']
                     # Also check nested data structure
                     if 'raw_data' in record and isinstance(record['raw_data'], dict):
                         raw_data = record['raw_data']
@@ -2260,6 +2263,19 @@ def get_recent_medical_data():
                                 medical_values['signal_gsm'] = data['signalGSM']
                             if 'step' in data and 'steps' not in medical_values:
                                 medical_values['steps'] = data['step']
+                            if 'heart_rate' in data and 'heart_rate' not in medical_values:
+                                medical_values['heart_rate'] = data['heart_rate']
+                    # Also check the main data field
+                    elif 'data' in record and isinstance(record['data'], dict):
+                        data = record['data']
+                        if 'battery' in data and 'battery' not in medical_values:
+                            medical_values['battery'] = data['battery']
+                        if 'signalGSM' in data and 'signal_gsm' not in medical_values:
+                            medical_values['signal_gsm'] = data['signalGSM']
+                        if 'step' in data and 'steps' not in medical_values:
+                            medical_values['steps'] = data['step']
+                        if 'heart_rate' in data and 'heart_rate' not in medical_values:
+                            medical_values['heart_rate'] = data['heart_rate']
                     medical_values['data_type'] = 'Heartbeat'
                     
                 elif topic == 'iMEDE_watch/VitalSign' or event_type == 'vital_signs':
@@ -2278,6 +2294,21 @@ def get_recent_medical_data():
                             medical_values['battery'] = raw_data['battery']
                         if 'signal_gsm' in raw_data:
                             medical_values['signal_gsm'] = raw_data['signal_gsm']
+                    # Also check the main data field for vital signs
+                    elif 'data' in record and isinstance(record['data'], dict):
+                        data = record['data']
+                        if 'heart_rate' in data:
+                            medical_values['heart_rate'] = data['heart_rate']
+                        if 'blood_pressure' in data:
+                            medical_values['blood_pressure'] = data['blood_pressure']
+                        if 'body_temperature' in data:
+                            medical_values['temperature'] = data['body_temperature']
+                        if 'spo2' in data:
+                            medical_values['spO2'] = data['spo2']
+                        if 'battery' in data:
+                            medical_values['battery'] = data['battery']
+                        if 'signal_gsm' in data:
+                            medical_values['signal_gsm'] = data['signal_gsm']
                     medical_values['data_type'] = 'Vital Signs'
                     
                 elif topic == 'iMEDE_watch/AP55' or event_type == 'batch_vital_signs':
