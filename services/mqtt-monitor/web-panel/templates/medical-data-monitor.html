@@ -563,10 +563,10 @@
                                     <thead>
                                         <tr>
                                             <th>Timestamp</th>
-                                            <th>Device Type</th>
+                                            <th>Device Type<br><small class="text-muted">(Source Device)</small></th>
                                             <th>Device ID</th>
                                             <th>Patient</th>
-                                            <th>Data Type</th>
+                                            <th>Data Type<br><small class="text-muted">(Vital Sign Type)</small></th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
@@ -673,7 +673,7 @@
             
             const filteredData = currentDeviceFilter === 'all' 
                 ? medicalData 
-                : medicalData.filter(item => item.device_type === currentDeviceFilter);
+                : medicalData.filter(item => item.raw_data?.device_type === currentDeviceFilter);
             
             console.log('📊 Filtered data:', filteredData.length, 'records');
             
@@ -693,10 +693,10 @@
             const row = document.createElement('tr');
             
             const timestamp = new Date(item.timestamp).toLocaleString();
-            const deviceType = item.device_type || 'Unknown';
+            const deviceType = item.raw_data?.device_type || 'Unknown';
             const deviceId = item.device_id || 'N/A';
             const patientName = item.patient_name || 'Unknown';
-            const dataType = item.data_type || 'General';
+            const dataType = item.medical_values?.data_type || 'General';
             const status = item.status || 'processed';
             
             const statusBadge = getStatusBadge(status);
@@ -712,10 +712,12 @@
                     <code>${deviceId}</code>
                 </td>
                 <td>${patientName}</td>
-                <td>${dataType}</td>
+                <td>
+                    <span class="badge bg-primary">${dataType}</span>
+                </td>
                 <td>${statusBadge}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-primary" onclick="viewMedicalDetails('${item._id}')">
+                    <button class="btn btn-sm btn-outline-primary" onclick="viewMedicalDetails('${item.id}')">
                         <i class="ti ti-eye"></i>
                         View
                     </button>
@@ -750,9 +752,13 @@
 
         // Update statistics
         function updateStatistics() {
-            const totalDevices = new Set(medicalData.map(item => item.device_id)).size;
-            const totalPatients = new Set(medicalData.map(item => item.patient_id)).size;
-            const alerts = medicalData.filter(item => item.status === 'error').length;
+            const uniqueDeviceTypes = new Set(medicalData.map(item => item.raw_data?.device_type).filter(Boolean));
+            const totalDevices = uniqueDeviceTypes.size;
+            const totalPatients = new Set(medicalData.map(item => item.patient_id).filter(id => id !== 'Unknown')).size;
+            const alerts = medicalData.filter(item => 
+                item.medical_values?.data_type === 'SOS Emergency' || 
+                item.medical_values?.data_type === 'Fall Detection'
+            ).length;
             const successRate = medicalData.length > 0 
                 ? Math.round((medicalData.filter(item => item.status === 'processed').length / medicalData.length) * 100)
                 : 0;
@@ -761,6 +767,14 @@
             document.getElementById('total-patients').textContent = totalPatients;
             document.getElementById('medical-alerts').textContent = alerts;
             document.getElementById('data-success-rate').textContent = successRate + '%';
+            
+            console.log('📊 Statistics updated:', {
+                totalDevices,
+                totalPatients,
+                alerts,
+                successRate,
+                uniqueDeviceTypes: Array.from(uniqueDeviceTypes)
+            });
         }
 
         // Filter by device type
@@ -787,10 +801,10 @@
                 headers.join(','),
                 ...data.map(item => [
                     new Date(item.timestamp).toISOString(),
-                    item.device_type || '',
+                    item.raw_data?.device_type || '',
                     item.device_id || '',
                     item.patient_name || '',
-                    item.data_type || '',
+                    item.medical_values?.data_type || '',
                     item.status || ''
                 ].join(','))
             ].join('\n');
