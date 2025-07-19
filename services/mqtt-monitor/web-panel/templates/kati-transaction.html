@@ -3587,7 +3587,8 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        katiData = data.data.transactions || [];
+                        window.katiData = data.data.transactions || [];
+                        katiData = window.katiData;
                         displayKatiTransactions();
                         updateStatistics(data.data.statistics);
                         updateTopicDistribution(data.data.statistics.topic_distribution);
@@ -5448,19 +5449,17 @@
         // Load emergency alerts for the modal
         async function loadEmergencyAlerts() {
             try {
-                const response = await fetch('/api/kati-transactions?topic_filter=SOS,fallDown&limit=50');
-                const data = await response.json();
-                
-                if (data.success && data.data && data.data.transactions && Array.isArray(data.data.transactions)) {
-                    const emergencyAlerts = data.data.transactions.filter(t => 
+                // Use the existing katiData instead of making a separate API call
+                if (window.katiData && Array.isArray(window.katiData)) {
+                    const emergencyAlerts = window.katiData.filter(t => 
                         t.topic === 'iMEDE_watch/SOS' || t.topic === 'iMEDE_watch/fallDown'
                     );
                     
                     updateEmergencyModalStats(emergencyAlerts);
                     displayEmergencyAlerts(emergencyAlerts);
                 } else {
-                    // Handle case where transactions is undefined or not an array
-                    console.warn('No transactions data available or invalid format:', data);
+                    // If no data available, show empty state
+                    console.warn('No Kati data available for emergency alerts');
                     updateEmergencyModalStats([]);
                     displayEmergencyAlerts([]);
                 }
@@ -6297,7 +6296,7 @@
                         const timeLabel = `${displayHour.toString().padStart(2, '0')}:${displayMinute.toString().padStart(2, '0')}`;
                         
                         visualization += `<div class="sleep-block-modern ${colorClass}" title="${title} at ${timeLabel}"></div>`;
-                    } else {
+                } else {
                         visualization += '<div class="sleep-block-modern sleep-empty-modern"></div>';
                     }
                 }
