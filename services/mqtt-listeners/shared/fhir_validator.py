@@ -162,10 +162,9 @@ class FHIRDataValidator:
                 transformed_data['category'] = 'survey'
                 
             elif topic == 'iMEDE_watch/sleepdata':
-                # Sleep data
-                if 'sleep' not in data:
-                    errors.append("Missing 'sleep' field")
-                else:
+                # Sleep data - currently has same structure as heartbeat
+                # Check if it has the expected sleep structure first
+                if 'sleep' in data:
                     sleep = data['sleep']
                     if not isinstance(sleep, dict):
                         errors.append("'sleep' field must be an object")
@@ -174,6 +173,37 @@ class FHIRDataValidator:
                             sleep_data = sleep['data']
                             if not isinstance(sleep_data, str):
                                 errors.append("Sleep data must be a string")
+                else:
+                    # Handle sleep data with heartbeat-like structure
+                    if 'step' not in data:
+                        warnings.append("Missing 'step' field")
+                    else:
+                        step = data['step']
+                        if not isinstance(step, (int, float)):
+                            errors.append("'step' field must be numeric")
+                        elif step < 0:
+                            warnings.append("Step count cannot be negative")
+                    
+                    if 'battery' in data:
+                        battery = data['battery']
+                        if not isinstance(battery, (int, float)):
+                            errors.append("'battery' field must be numeric")
+                        elif not (0 <= battery <= 100):
+                            warnings.append("Battery level outside valid range (0-100%)")
+                    
+                    if 'signalGSM' in data:
+                        signal = data['signalGSM']
+                        if not isinstance(signal, (int, float)):
+                            errors.append("'signalGSM' field must be numeric")
+                        elif not (0 <= signal <= 100):
+                            warnings.append("GSM signal outside valid range (0-100%)")
+                    
+                    if 'workingMode' in data:
+                        mode = data['workingMode']
+                        if not isinstance(mode, (int, float)):
+                            errors.append("'workingMode' field must be numeric")
+                        elif mode not in [1, 2, 3, 8]:
+                            warnings.append(f"Unknown working mode: {mode}")
                 
                 # Transform for FHIR
                 transformed_data['resource_type'] = 'Observation'
