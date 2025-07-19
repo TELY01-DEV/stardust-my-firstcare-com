@@ -693,7 +693,7 @@
             const row = document.createElement('tr');
             
             const timestamp = new Date(item.timestamp).toLocaleString();
-            const deviceType = item.raw_data?.device_type || 'Unknown';
+            const deviceType = item.device_type || item.raw_data?.device_type || 'Unknown';
             const deviceId = item.device_id || 'N/A';
             
             // Enhanced patient information display
@@ -718,9 +718,50 @@
                 patientDisplay = item.patient_name || 'Unknown Patient';
             }
             
-            const dataType = item.medical_values?.data_type || 'General';
-            const status = item.status || 'processed';
+            // Enhanced data type display with medical values
+            let dataTypeDisplay = 'General';
+            let medicalDetails = '';
             
+            if (item.medical_values && Object.keys(item.medical_values).length > 0) {
+                const dataType = item.medical_values.data_type || '';
+                const medicalValues = [];
+                
+                // Extract key medical values for display
+                if (item.medical_values.battery !== undefined) {
+                    medicalValues.push(`Battery: ${item.medical_values.battery}%`);
+                }
+                if (item.medical_values.signal_gsm !== undefined) {
+                    medicalValues.push(`Signal: ${item.medical_values.signal_gsm}%`);
+                }
+                if (item.medical_values.steps !== undefined) {
+                    medicalValues.push(`Steps: ${item.medical_values.steps}`);
+                }
+                if (item.medical_values.heart_rate !== undefined) {
+                    medicalValues.push(`HR: ${item.medical_values.heart_rate} bpm`);
+                }
+                if (item.medical_values.systolic !== undefined) {
+                    medicalValues.push(`BP: ${item.medical_values.systolic}/${item.medical_values.diastolic || '--'} mmHg`);
+                }
+                if (item.medical_values.temperature !== undefined) {
+                    medicalValues.push(`Temp: ${item.medical_values.temperature}°C`);
+                }
+                if (item.medical_values.spO2 !== undefined) {
+                    medicalValues.push(`SpO2: ${item.medical_values.spO2}%`);
+                }
+                if (item.medical_values.blood_glucose !== undefined) {
+                    medicalValues.push(`Glucose: ${item.medical_values.blood_glucose} mg/dL`);
+                }
+                if (item.medical_values.weight !== undefined) {
+                    medicalValues.push(`Weight: ${item.medical_values.weight} kg`);
+                }
+                
+                dataTypeDisplay = dataType || 'Medical Data';
+                if (medicalValues.length > 0) {
+                    medicalDetails = medicalValues.join(', ');
+                }
+            }
+            
+            const status = item.status || 'processed';
             const statusBadge = getStatusBadge(status);
             
             row.innerHTML = `
@@ -738,7 +779,10 @@
                     ${patientDetails ? `<small class="text-muted">${patientDetails}</small>` : ''}
                 </td>
                 <td>
-                    <span class="badge bg-primary">${dataType}</span>
+                    <div>
+                        <span class="badge bg-primary">${dataTypeDisplay}</span>
+                        ${medicalDetails ? `<br><small class="text-muted">${medicalDetails}</small>` : ''}
+                    </div>
                 </td>
                 <td>${statusBadge}</td>
                 <td>

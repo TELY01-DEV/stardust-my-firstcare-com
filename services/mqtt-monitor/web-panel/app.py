@@ -2118,6 +2118,245 @@ def get_recent_medical_data():
             enhanced_record['source'] = source
             enhanced_record['timestamp'] = timestamp.isoformat() if hasattr(timestamp, 'isoformat') else str(timestamp)
             
+            # PROCESS MEDICAL DATA BASED ON DEVICE TYPE
+            if source == 'AVA4' or source == 'AVA4_Gateway':
+                print(f"🔍 ENTERING AVA4 PROCESSING - Device: {device_id}, Source: {source}")
+                
+                # Check if we have processed_data from the new storage format
+                processed_data = None
+                if 'processed_data' in record and record['processed_data']:
+                    processed_data = record['processed_data']
+                    print(f"✅ Found processed_data at top level for AVA4: {processed_data}")
+                elif 'raw_data' in record and record['raw_data'] and 'processed_data' in record['raw_data']:
+                    processed_data = record['raw_data']['processed_data']
+                    print(f"✅ Found processed_data in raw_data for AVA4: {processed_data}")
+                
+                if processed_data:
+                    # Extract medical values from processed_data
+                    if 'systolic' in processed_data:
+                        medical_values['systolic'] = processed_data['systolic']
+                    if 'diastolic' in processed_data:
+                        medical_values['diastolic'] = processed_data['diastolic']
+                    if 'pulse' in processed_data:
+                        medical_values['pulse_rate'] = processed_data['pulse']
+                    if 'value' in processed_data:
+                        # This could be blood glucose, SpO2, temperature, etc.
+                        # Check both record attribute and raw_data attribute
+                        attribute = record.get('attribute') or record.get('raw_data', {}).get('attribute')
+                        if attribute in ['Contour_Elite', 'AccuChek_Instant']:
+                            medical_values['blood_glucose'] = processed_data['value']
+                        elif attribute == 'Oximeter JUMPER':
+                            medical_values['spO2'] = processed_data['value']
+                        elif attribute == 'IR_TEMO_JUMPER':
+                            medical_values['temperature'] = processed_data['value']
+                        elif attribute == 'BodyScale_JUMPER':
+                            medical_values['weight'] = processed_data['value']
+                        elif attribute == 'MGSS_REF_UA':
+                            medical_values['uric_acid'] = processed_data['value']
+                        elif attribute == 'MGSS_REF_CHOL':
+                            medical_values['cholesterol'] = processed_data['value']
+                        else:
+                            medical_values['value'] = processed_data['value']
+                    
+                    # Extract additional fields
+                    if 'marker' in processed_data:
+                        medical_values['marker'] = processed_data['marker']
+                    if 'pi' in processed_data:
+                        medical_values['pi'] = processed_data['pi']
+                    if 'scan_time' in processed_data:
+                        medical_values['scan_time'] = processed_data['scan_time']
+                    if 'mode' in processed_data:
+                        medical_values['mode'] = processed_data['mode']
+                    if 'pulse' in processed_data:
+                        medical_values['pulse_rate'] = processed_data['pulse']
+                    
+                    print(f"🔧 DEBUG: processed_data keys: {list(processed_data.keys())}")
+                    print(f"🔧 DEBUG: checking for resistance field...")
+                    if 'resistance' in processed_data:
+                        medical_values['resistance'] = processed_data['resistance']
+                        print(f"🔧 DEBUG: ✅ Extracted resistance: {processed_data['resistance']}")
+                    else:
+                        print(f"🔧 DEBUG: ❌ No resistance field found")
+                    
+                    print(f"✅ Extracted AVA4 medical values: {medical_values}")
+                
+                # Fallback to old format for backward compatibility
+                else:
+                    print(f"🔍 Using legacy AVA4 format")
+                    attribute = record.get('attribute', '')
+                    value = record.get('value', {})
+                    
+                    # Helper function to only add valid values (not None, empty string, or 'N/A')
+                    def add_if_valid(values_dict, key, value):
+                        if value is not None and value != '' and value != 'N/A' and value != 'null':
+                            values_dict[key] = value
+                    
+                    if attribute == 'Contour_Elite' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'blood_glucose', device_data.get('blood_glucose'))
+                        add_if_valid(medical_values, 'marker', device_data.get('marker'))
+                    elif attribute == 'BP_BIOLIGTH' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'systolic', device_data.get('bp_high'))
+                        add_if_valid(medical_values, 'diastolic', device_data.get('bp_low'))
+                        add_if_valid(medical_values, 'pulse_rate', device_data.get('PR'))
+                    elif attribute == 'WBP BIOLIGHT' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'systolic', device_data.get('bp_high'))
+                        add_if_valid(medical_values, 'diastolic', device_data.get('bp_low'))
+                        add_if_valid(medical_values, 'pulse_rate', device_data.get('PR'))
+                    elif attribute == 'Oximeter JUMPER' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'spO2', device_data.get('spo2'))
+                        add_if_valid(medical_values, 'pulse', device_data.get('pulse'))
+                        add_if_valid(medical_values, 'pi', device_data.get('pi'))
+                    elif attribute == 'IR_TEMO_JUMPER' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'temperature', device_data.get('temp'))
+                        add_if_valid(medical_values, 'mode', device_data.get('mode'))
+                    elif attribute == 'BodyScale_JUMPER' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'weight', device_data.get('weight'))
+                        add_if_valid(medical_values, 'resistance', device_data.get('resistance'))
+                    elif attribute == 'MGSS_REF_UA' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'uric_acid', device_data.get('uric_acid'))
+                    elif attribute == 'MGSS_REF_CHOL' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'cholesterol', device_data.get('cholesterol'))
+                    elif attribute == 'AccuChek_Instant' and 'device_list' in value:
+                        device_data = value['device_list'][0] if value['device_list'] else {}
+                        add_if_valid(medical_values, 'blood_glucose', device_data.get('blood_glucose'))
+                        add_if_valid(medical_values, 'marker', device_data.get('marker'))
+                        
+            elif source == 'Kati' or source == 'Kati_Watch':
+                print(f"🔍 ENTERING KATI PROCESSING - Device: {device_id}, Source: {source}")
+                
+                # Get the topic and event type to determine data type
+                topic = record.get('topic', '')
+                event_type = record.get('event_type', '')
+                
+                print(f"📊 Kati Topic: {topic}, Event Type: {event_type}")
+                
+                # Extract data based on topic/event type
+                if topic == 'iMEDE_watch/hb' or event_type == 'heartbeat':
+                    # Heartbeat data - extract battery, signal, steps
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'battery' in raw_data:
+                            medical_values['battery'] = raw_data['battery']
+                        if 'signal_gsm' in raw_data:
+                            medical_values['signal_gsm'] = raw_data['signal_gsm']
+                        if 'step_count' in raw_data:
+                            medical_values['steps'] = raw_data['step_count']
+                    # Also check nested data structure
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'data' in raw_data and isinstance(raw_data['data'], dict):
+                            data = raw_data['data']
+                            if 'battery' in data and 'battery' not in medical_values:
+                                medical_values['battery'] = data['battery']
+                            if 'signalGSM' in data and 'signal_gsm' not in medical_values:
+                                medical_values['signal_gsm'] = data['signalGSM']
+                            if 'step' in data and 'steps' not in medical_values:
+                                medical_values['steps'] = data['step']
+                    medical_values['data_type'] = 'Heartbeat'
+                    
+                elif topic == 'iMEDE_watch/VitalSign' or event_type == 'vital_signs':
+                    # Vital signs data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'heart_rate' in raw_data:
+                            medical_values['heart_rate'] = raw_data['heart_rate']
+                        if 'blood_pressure' in raw_data:
+                            medical_values['blood_pressure'] = raw_data['blood_pressure']
+                        if 'body_temperature' in raw_data:
+                            medical_values['temperature'] = raw_data['body_temperature']
+                        if 'spo2' in raw_data:
+                            medical_values['spO2'] = raw_data['spo2']
+                        if 'battery' in raw_data:
+                            medical_values['battery'] = raw_data['battery']
+                        if 'signal_gsm' in raw_data:
+                            medical_values['signal_gsm'] = raw_data['signal_gsm']
+                    medical_values['data_type'] = 'Vital Signs'
+                    
+                elif topic == 'iMEDE_watch/AP55' or event_type == 'batch_vital_signs':
+                    # Batch vital signs data
+                    vital_signs = record.get('vital_signs_data', [])
+                    if vital_signs and len(vital_signs) > 0:
+                        medical_values['vital_signs_count'] = len(vital_signs)
+                        medical_values['data_type'] = f'Batch Vital Signs ({len(vital_signs)} readings)'
+                    else:
+                        medical_values['data_type'] = 'Batch Vital Signs'
+                        
+                elif topic == 'iMEDE_watch/location' or event_type == 'location':
+                    # Location data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'location' in raw_data:
+                            location = raw_data['location']
+                            if 'GPS' in location:
+                                gps = location['GPS']
+                                if gps.get('latitude') and gps.get('longitude'):
+                                    medical_values['gps_coords'] = f"{gps['latitude']}, {gps['longitude']}"
+                                else:
+                                    medical_values['gps_status'] = 'No GPS signal'
+                            if 'LBS' in location:
+                                lbs = location['LBS']
+                                medical_values['cell_tower'] = f"{lbs.get('MCC', '')}-{lbs.get('MNC', '')}-{lbs.get('LAC', '')}-{lbs.get('CID', '')}"
+                    medical_values['data_type'] = 'Location'
+                    
+                elif topic == 'iMEDE_watch/sos' or event_type == 'emergency_sos':
+                    # SOS emergency data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'status' in raw_data:
+                            medical_values['sos_status'] = raw_data['status']
+                        if 'location' in raw_data:
+                            medical_values['emergency_location'] = 'Available'
+                    medical_values['data_type'] = 'SOS Emergency'
+                    
+                elif topic == 'iMEDE_watch/fallDown' or event_type == 'fall_detection':
+                    # Fall detection data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'status' in raw_data:
+                            medical_values['fall_status'] = raw_data['status']
+                        if 'location' in raw_data:
+                            medical_values['emergency_location'] = 'Available'
+                    medical_values['data_type'] = 'Fall Detection'
+                    
+                elif topic == 'iMEDE_watch/sleepdata' or event_type == 'sleep_data':
+                    # Sleep data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'sleep_data' in raw_data:
+                            medical_values['sleep_data'] = 'Available'
+                    medical_values['data_type'] = 'Sleep Data'
+                    
+                elif topic == 'iMEDE_watch/onlineTrigger' or event_type == 'device_status':
+                    # Device status data
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        if 'status' in raw_data:
+                            medical_values['device_status'] = raw_data['status']
+                    medical_values['data_type'] = 'Device Status'
+                    
+                else:
+                    # Generic data extraction for unknown topics
+                    if 'raw_data' in record and isinstance(record['raw_data'], dict):
+                        raw_data = record['raw_data']
+                        # Extract common fields
+                        for key in ['battery', 'signal_gsm', 'step_count', 'heart_rate', 'temperature', 'spO2']:
+                            if key in raw_data:
+                                medical_values[key] = raw_data[key]
+                    medical_values['data_type'] = f'Unknown Topic: {topic}'
+                
+                print(f"✅ Extracted Kati values: {medical_values}")
+            
+            # Update the enhanced record with processed medical values
+            enhanced_record['medical_values'] = medical_values
+            
             # Add hospital and ward information if patient_id exists
             if record.get('patient_id') and record['patient_id'] != 'Unknown':
                 try:
