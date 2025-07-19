@@ -2400,68 +2400,35 @@ def get_recent_medical_data():
             # Update the enhanced record with processed medical values
             enhanced_record['medical_values'] = medical_values
             
-            # Add hospital and ward information if patient_id exists
-            if record.get('patient_id') and record['patient_id'] != 'Unknown':
+            # Add hospital and ward information if patient_id exists and is valid
+            if record.get('patient_id') and record['patient_id'] != 'Unknown' and record['patient_id'] != 'unknown':
                 try:
-                    # Get patient information from patients collection
-                    patient = mqtt_monitor.db.patients.find_one({'_id': ObjectId(record['patient_id'])})
-                    if patient:
+                    # Validate that patient_id is a valid ObjectId format
+                    if not ObjectId.is_valid(record['patient_id']):
+                        logger.warning(f"Invalid ObjectId format for patient_id: {record['patient_id']}")
                         enhanced_record['patient_info'] = {
-                            'first_name': patient.get('first_name', ''),
-                            'last_name': patient.get('last_name', ''),
-                            'profile_image': patient.get('profile_image', ''),
+                            'first_name': 'Unknown',
+                            'last_name': 'Patient',
+                            'profile_image': '',
                             'hospital_info': {}
                         }
-                        
-                        # Get hospital and ward information
-                        hospital_ward_data = patient.get('hospital_ward_data', {})
-                        if hospital_ward_data:
-                            # Handle different data structures
-                            if isinstance(hospital_ward_data, dict):
-                                hospital_id = hospital_ward_data.get('hospitalId')
-                                if hospital_id:
-                                    # Get hospital information from AMY.hospitals collection
-                                    hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
-                                    if hospital:
-                                        # Extract Thai hospital name from multi-language object
-                                        hospital_name_obj = hospital.get('name', {})
-                                        if isinstance(hospital_name_obj, list):
-                                            # Find Thai name in the list
-                                            thai_name = next((item.get('name', 'Unknown Hospital') for item in hospital_name_obj if item.get('code') == 'th'), 'Unknown Hospital')
-                                            enhanced_record['patient_info']['hospital_info']['hospital_name'] = thai_name
-                                        else:
-                                            enhanced_record['patient_info']['hospital_info']['hospital_name'] = hospital.get('name', 'Unknown Hospital')
-                                        enhanced_record['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
-                                        
-                                        # Get ward information from AMY.ward_lists collection
-                                        ward_list = hospital_ward_data.get('wardList', [])
-                                        if ward_list:
-                                            # Find the ward for this hospital
-                                            for ward in ward_list:
-                                                if ward.get('hospital_id') == hospital_id:
-                                                    ward_id = ward.get('ward_id')
-                                                    if ward_id:
-                                                        # Lookup ward name from AMY.ward_lists collection
-                                                        ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
-                                                        if ward_info:
-                                                            # Extract Thai ward name from multi-language object
-                                                            ward_name_obj = ward_info.get('name', {})
-                                                            if isinstance(ward_name_obj, list):
-                                                                # Find Thai name in the list
-                                                                thai_name = next((item.get('name', 'Unknown Ward') for item in ward_name_obj if item.get('code') == 'th'), 'Unknown Ward')
-                                                                enhanced_record['patient_info']['hospital_info']['ward_name'] = thai_name
-                                                            else:
-                                                                enhanced_record['patient_info']['hospital_info']['ward_name'] = ward_info.get('name', 'Unknown Ward')
-                                                            enhanced_record['patient_info']['hospital_info']['ward_id'] = str(ward_id)
-                                                        else:
-                                                            enhanced_record['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
-                                                            enhanced_record['patient_info']['hospital_info']['ward_id'] = str(ward_id)
-                                                    break
-                            elif isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
-                                # Handle case where hospital_ward_data is a list
-                                first_hospital = hospital_ward_data[0]
-                                if isinstance(first_hospital, dict):
-                                    hospital_id = first_hospital.get('hospitalId')
+                    else:
+                        # Get patient information from patients collection
+                        patient = mqtt_monitor.db.patients.find_one({'_id': ObjectId(record['patient_id'])})
+                        if patient:
+                            enhanced_record['patient_info'] = {
+                                'first_name': patient.get('first_name', ''),
+                                'last_name': patient.get('last_name', ''),
+                                'profile_image': patient.get('profile_image', ''),
+                                'hospital_info': {}
+                            }
+                            
+                            # Get hospital and ward information
+                            hospital_ward_data = patient.get('hospital_ward_data', {})
+                            if hospital_ward_data:
+                                # Handle different data structures
+                                if isinstance(hospital_ward_data, dict):
+                                    hospital_id = hospital_ward_data.get('hospitalId')
                                     if hospital_id:
                                         # Get hospital information from AMY.hospitals collection
                                         hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
@@ -2477,7 +2444,7 @@ def get_recent_medical_data():
                                             enhanced_record['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
                                             
                                             # Get ward information from AMY.ward_lists collection
-                                            ward_list = first_hospital.get('wardList', [])
+                                            ward_list = hospital_ward_data.get('wardList', [])
                                             if ward_list:
                                                 # Find the ward for this hospital
                                                 for ward in ward_list:
@@ -2500,6 +2467,49 @@ def get_recent_medical_data():
                                                                 enhanced_record['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
                                                                 enhanced_record['patient_info']['hospital_info']['ward_id'] = str(ward_id)
                                                         break
+                                elif isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
+                                    # Handle case where hospital_ward_data is a list
+                                    first_hospital = hospital_ward_data[0]
+                                    if isinstance(first_hospital, dict):
+                                        hospital_id = first_hospital.get('hospitalId')
+                                        if hospital_id:
+                                            # Get hospital information from AMY.hospitals collection
+                                            hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
+                                            if hospital:
+                                                # Extract Thai hospital name from multi-language object
+                                                hospital_name_obj = hospital.get('name', {})
+                                                if isinstance(hospital_name_obj, list):
+                                                    # Find Thai name in the list
+                                                    thai_name = next((item.get('name', 'Unknown Hospital') for item in hospital_name_obj if item.get('code') == 'th'), 'Unknown Hospital')
+                                                    enhanced_record['patient_info']['hospital_info']['hospital_name'] = thai_name
+                                                else:
+                                                    enhanced_record['patient_info']['hospital_info']['hospital_name'] = hospital.get('name', 'Unknown Hospital')
+                                                enhanced_record['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
+                                                
+                                                # Get ward information from AMY.ward_lists collection
+                                                ward_list = first_hospital.get('wardList', [])
+                                                if ward_list:
+                                                    # Find the ward for this hospital
+                                                    for ward in ward_list:
+                                                        if ward.get('hospital_id') == hospital_id:
+                                                            ward_id = ward.get('ward_id')
+                                                            if ward_id:
+                                                                # Lookup ward name from AMY.ward_lists collection
+                                                                ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
+                                                                if ward_info:
+                                                                    # Extract Thai ward name from multi-language object
+                                                                    ward_name_obj = ward_info.get('name', {})
+                                                                    if isinstance(ward_name_obj, list):
+                                                                        # Find Thai name in the list
+                                                                        thai_name = next((item.get('name', 'Unknown Ward') for item in ward_name_obj if item.get('code') == 'th'), 'Unknown Ward')
+                                                                        enhanced_record['patient_info']['hospital_info']['ward_name'] = thai_name
+                                                                    else:
+                                                                        enhanced_record['patient_info']['hospital_info']['ward_name'] = ward_info.get('name', 'Unknown Ward')
+                                                                    enhanced_record['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                                else:
+                                                                    enhanced_record['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
+                                                                    enhanced_record['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                            break
                 except Exception as e:
                     logger.warning(f"Error enhancing patient info for medical record {record.get('_id')}: {e}")
             
