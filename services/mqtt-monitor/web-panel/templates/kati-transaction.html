@@ -3116,10 +3116,10 @@
                                                 <span>Active</span>
                                             </div>
                                         </div>
-                                        <div class="emergency-trend" id="emergency-trend">
+                                        <div class="emergency-trend" id="emergency-trend" style="display: none;">
                                             <div class="trend-indicator">
                                                 <i class="ti ti-trending-up"></i>
-                                                <span>+3 new</span>
+                                                <span>+0 new</span>
                                             </div>
                                         </div>
                                     </div>
@@ -3594,6 +3594,9 @@
                         updateTopicDistribution(data.data.statistics.topic_distribution);
                         updateDataFilterDisplay();
                         updatePagination(data.data.statistics.pagination);
+                        
+                        // Update emergency card with real data
+                        updateEmergencyCardWithRealData();
                     } else {
                         console.error('Failed to load Kati data:', data.error);
                     }
@@ -3625,6 +3628,30 @@
             
             // Update per page select
             document.getElementById('per-page-select').value = perPage;
+        }
+        
+        // Update emergency card with real data from loaded transactions
+        function updateEmergencyCardWithRealData() {
+            if (!window.katiData || !Array.isArray(window.katiData)) {
+                updateEmergencyCard(0);
+                return;
+            }
+            
+            // Filter emergency alerts from the loaded data
+            const emergencyAlerts = window.katiData.filter(t => 
+                t.topic === 'iMEDE_watch/SOS' || t.topic === 'iMEDE_watch/sos' || t.topic === 'iMEDE_watch/fallDown'
+            );
+            
+            const sosCount = emergencyAlerts.filter(a => 
+                a.topic === 'iMEDE_watch/SOS' || a.topic === 'iMEDE_watch/sos'
+            ).length;
+            
+            const fallCount = emergencyAlerts.filter(a => 
+                a.topic === 'iMEDE_watch/fallDown'
+            ).length;
+            
+            // Update the emergency card with real counts
+            updateEmergencyCard(emergencyAlerts.length, sosCount, fallCount, 0);
         }
         
         // Change page
@@ -6757,9 +6784,9 @@
                             Error loading sleep data: ${result.error}
                         </div>
                     `;
-                    return;
-                }
-                
+                return;
+            }
+            
                 const sleepData = result.data;
                 
                 // Fetch weekly sleep data
