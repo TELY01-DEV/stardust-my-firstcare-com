@@ -5452,7 +5452,7 @@
                 // Use the existing katiData instead of making a separate API call
                 if (window.katiData && Array.isArray(window.katiData)) {
                     const emergencyAlerts = window.katiData.filter(t => 
-                        t.topic === 'iMEDE_watch/SOS' || t.topic === 'iMEDE_watch/fallDown'
+                        t.topic === 'iMEDE_watch/SOS' || t.topic === 'iMEDE_watch/sos' || t.topic === 'iMEDE_watch/fallDown'
                     );
                     
                     updateEmergencyModalStats(emergencyAlerts);
@@ -5480,7 +5480,7 @@
                 alerts = [];
             }
             
-            const sosCount = alerts.filter(a => a.topic === 'iMEDE_watch/SOS').length;
+            const sosCount = alerts.filter(a => a.topic === 'iMEDE_watch/SOS' || a.topic === 'iMEDE_watch/sos').length;
             const fallCount = alerts.filter(a => a.topic === 'iMEDE_watch/fallDown').length;
             
             const emergencyCountElement = document.getElementById('modal-emergency-count');
@@ -5514,9 +5514,9 @@
             
             let content = '';
             alerts.forEach(alert => {
-                const alertType = alert.topic === 'iMEDE_watch/SOS' ? 'SOS Signal' : 'Fall Detection';
-                const alertIcon = alert.topic === 'iMEDE_watch/SOS' ? 'ti-alert-triangle' : 'ti-user-exclamation';
-                const alertColor = alert.topic === 'iMEDE_watch/SOS' ? 'danger' : 'warning';
+                const alertType = (alert.topic === 'iMEDE_watch/SOS' || alert.topic === 'iMEDE_watch/sos') ? 'SOS Signal' : 'Fall Detection';
+                const alertIcon = (alert.topic === 'iMEDE_watch/SOS' || alert.topic === 'iMEDE_watch/sos') ? 'ti-alert-triangle' : 'ti-user-exclamation';
+                const alertColor = (alert.topic === 'iMEDE_watch/SOS' || alert.topic === 'iMEDE_watch/sos') ? 'danger' : 'warning';
                 
                 content += `
                     <div class="emergency-alert-item">
@@ -5556,7 +5556,7 @@
         
         // Get alert description based on alert type and data
         function getAlertDescription(alert) {
-            if (alert.topic === 'iMEDE_watch/SOS') {
+            if (alert.topic === 'iMEDE_watch/SOS' || alert.topic === 'iMEDE_watch/sos') {
                 return 'Emergency SOS signal detected. Patient may require immediate medical attention.';
             } else if (alert.topic === 'iMEDE_watch/fallDown') {
                 return 'Fall detection alert triggered. Patient may have fallen and needs assistance.';
@@ -5581,8 +5581,8 @@
         
         // Show basic alert details
         function showBasicAlertDetails(alert) {
-            const alertType = alert.topic === 'iMEDE_watch/SOS' ? 'SOS Signal' : 'Fall Detection';
-            const alertIcon = alert.topic === 'iMEDE_watch/SOS' ? 'ti-alert-triangle' : 'ti-user-exclamation';
+            const alertType = (alert.topic === 'iMEDE_watch/SOS' || alert.topic === 'iMEDE_watch/sos') ? 'SOS Signal' : 'Fall Detection';
+            const alertIcon = (alert.topic === 'iMEDE_watch/SOS' || alert.topic === 'iMEDE_watch/sos') ? 'ti-alert-triangle' : 'ti-user-exclamation';
             
             const content = `
                 <div class="alert alert-info">
