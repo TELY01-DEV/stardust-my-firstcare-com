@@ -3264,6 +3264,10 @@
                                     <li><a class="dropdown-item" href="#" onclick="filterByTopic('iMEDE_watch/fallDown')">Fall Detection</a></li>
                                 </ul>
                             </div>
+                            <button class="btn btn-sm btn-outline-danger" onclick="testEmergencyCard()">
+                                <i class="ti ti-alert-triangle"></i>
+                                Test Emergency
+                            </button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -3632,7 +3636,11 @@
         
         // Update emergency card with real data from loaded transactions
         function updateEmergencyCardWithRealData() {
+            console.log('🔍 updateEmergencyCardWithRealData called');
+            console.log('📊 window.katiData:', window.katiData);
+            
             if (!window.katiData || !Array.isArray(window.katiData)) {
+                console.log('❌ No katiData available, hiding emergency card');
                 updateEmergencyCard(0);
                 return;
             }
@@ -3642,6 +3650,9 @@
                 t.topic === 'iMEDE_watch/SOS' || t.topic === 'iMEDE_watch/sos' || t.topic === 'iMEDE_watch/fallDown'
             );
             
+            console.log('🚨 Emergency alerts found:', emergencyAlerts.length);
+            console.log('🚨 Emergency alerts data:', emergencyAlerts);
+            
             const sosCount = emergencyAlerts.filter(a => 
                 a.topic === 'iMEDE_watch/SOS' || a.topic === 'iMEDE_watch/sos'
             ).length;
@@ -3649,6 +3660,8 @@
             const fallCount = emergencyAlerts.filter(a => 
                 a.topic === 'iMEDE_watch/fallDown'
             ).length;
+            
+            console.log('📈 Counts - Total:', emergencyAlerts.length, 'SOS:', sosCount, 'Fall:', fallCount);
             
             // Update the emergency card with real counts
             updateEmergencyCard(emergencyAlerts.length, sosCount, fallCount, 0);
@@ -5673,6 +5686,8 @@
         
         // Update emergency card with ultra-enhanced styling
         function updateEmergencyCard(count, sosCount = 0, fallCount = 0, newAlerts = 0) {
+            console.log('🎯 updateEmergencyCard called with:', { count, sosCount, fallCount, newAlerts });
+            
             const emergencyCard = document.getElementById('emergency-card');
             const emergencyCount = document.getElementById('emergency-count');
             const emergencyCountShadow = document.querySelector('.emergency-number-shadow');
@@ -5681,6 +5696,9 @@
             const sosCountElement = document.getElementById('sos-count');
             const fallCountElement = document.getElementById('fall-count');
             const severityBadge = document.getElementById('emergency-severity-badge');
+            
+            console.log('🎯 Emergency card element:', emergencyCard);
+            console.log('🎯 Emergency count element:', emergencyCount);
             
             if (count > 0) {
                 emergencyCard.style.display = 'block';
@@ -5835,6 +5853,13 @@
             // Uncomment the line below to test the enhanced SOS UX
             // testEnhancedSOS();
         });
+        
+        // Test emergency card function
+        function testEmergencyCard() {
+            console.log('🧪 Testing emergency card...');
+            updateEmergencyCard(5, 3, 2, 1);
+            showToast('Emergency card test activated', 'warning');
+        }
 
         // Sleep Data Analysis Functions
         function viewSleepData(transactionId) {
