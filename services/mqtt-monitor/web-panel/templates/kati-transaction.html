@@ -5521,7 +5521,7 @@
                 content += `
                     <div class="emergency-alert-item">
                         <div class="emergency-alert-header">
-                            <span class="emergency-alert-time">${formatTimestamp(alert.timestamp)}</span>
+                            <span class="emergency-alert-time">${formatLocalTimestamp(new Date(alert.timestamp))}</span>
                             <span class="emergency-alert-type bg-${alertColor}">${alertType}</span>
                         </div>
                         <div class="emergency-alert-patient">
@@ -5589,7 +5589,7 @@
                     <h6><i class="ti ${alertIcon} me-2"></i>${alertType} Details</h6>
                     <p><strong>Patient:</strong> ${alert.patient_name || 'Unknown'}</p>
                     <p><strong>Device:</strong> ${alert.device_id || 'Unknown'}</p>
-                    <p><strong>Time:</strong> ${formatTimestamp(alert.timestamp)}</p>
+                    <p><strong>Time:</strong> ${formatLocalTimestamp(new Date(alert.timestamp))}</p>
                     <p><strong>Status:</strong> <span class="badge bg-warning">Active</span></p>
                     ${alert.raw_data ? `
                         <details class="mt-2">
