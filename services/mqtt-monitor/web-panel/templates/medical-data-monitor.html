@@ -755,6 +755,28 @@
                     medicalValues.push(`Weight: ${item.medical_values.weight} kg`);
                 }
                 
+                // Location data display
+                if (item.medical_values.gps_coords) {
+                    medicalValues.push(`GPS: ${item.medical_values.gps_coords}`);
+                }
+                if (item.medical_values.cell_tower) {
+                    medicalValues.push(`Cell: ${item.medical_values.cell_tower}`);
+                }
+                if (item.medical_values.gps_status) {
+                    medicalValues.push(`GPS: ${item.medical_values.gps_status}`);
+                }
+                
+                // Emergency data display
+                if (item.medical_values.sos_status) {
+                    medicalValues.push(`SOS: ${item.medical_values.sos_status}`);
+                }
+                if (item.medical_values.fall_status) {
+                    medicalValues.push(`Fall: ${item.medical_values.fall_status}`);
+                }
+                if (item.medical_values.emergency_location) {
+                    medicalValues.push(`Location: ${item.medical_values.emergency_location}`);
+                }
+                
                 dataTypeDisplay = dataType || 'Medical Data';
                 if (medicalValues.length > 0) {
                     medicalDetails = medicalValues.join(', ');
@@ -763,6 +785,9 @@
             
             const status = item.status || 'processed';
             const statusBadge = getStatusBadge(status);
+            
+            // Use _id instead of id for the detail view
+            const recordId = item._id || item.id || 'unknown';
             
             row.innerHTML = `
                 <td>
@@ -786,7 +811,7 @@
                 </td>
                 <td>${statusBadge}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-primary" onclick="viewMedicalDetails('${item.id}')">
+                    <button class="btn btn-sm btn-outline-primary" onclick="viewMedicalDetails('${recordId}')">
                         <i class="ti ti-eye"></i>
                         View
                     </button>
@@ -893,8 +918,239 @@
 
         // View medical details
         function viewMedicalDetails(id) {
-            // TODO: Implement medical details modal
-            console.log('View medical details for:', id);
+            console.log('🔍 View medical details for:', id);
+            
+            // Find the record by ID
+            const record = medicalData.find(item => (item._id || item.id) === id);
+            if (!record) {
+                console.error('❌ Record not found:', id);
+                alert('Record not found');
+                return;
+            }
+            
+            console.log('📊 Record found:', record);
+            
+            // Check if it's batch vital signs data
+            if (record.medical_values?.data_type && record.medical_values.data_type.includes('Batch Vital Signs')) {
+                showBatchVitalSignsModal(record);
+            } else {
+                showMedicalDetailsModal(record);
+            }
+        }
+        
+        // Show batch vital signs modal
+        function showBatchVitalSignsModal(record) {
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.id = 'batchVitalSignsModal';
+            modal.setAttribute('tabindex', '-1');
+            
+            const vitalSignsData = record.vital_signs_data || [];
+            const readingsCount = vitalSignsData.length;
+            
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <i class="ti ti-activity text-primary"></i>
+                                Batch Vital Signs Data
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Device:</strong> ${record.device_type || 'Unknown'}
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Patient:</strong> ${record.patient_name || 'Unknown'}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Timestamp:</strong> ${new Date(record.timestamp).toLocaleString()}
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Readings:</strong> ${readingsCount} vital signs
+                                </div>
+                            </div>
+                            
+                            ${readingsCount > 0 ? `
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Timestamp</th>
+                                                <th>Heart Rate</th>
+                                                <th>Blood Pressure</th>
+                                                <th>Temperature</th>
+                                                <th>SpO2</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${vitalSignsData.map((reading, index) => `
+                                                <tr>
+                                                    <td>${index + 1}</td>
+                                                    <td>${reading.timestamp ? new Date(reading.timestamp).toLocaleString() : 'N/A'}</td>
+                                                    <td>${reading.heart_rate || 'N/A'} bpm</td>
+                                                    <td>${reading.systolic && reading.diastolic ? `${reading.systolic}/${reading.diastolic} mmHg` : 'N/A'}</td>
+                                                    <td>${reading.temperature || 'N/A'}°C</td>
+                                                    <td>${reading.spO2 || 'N/A'}%</td>
+                                                    <td><span class="badge bg-success">Normal</span></td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ` : `
+                                <div class="alert alert-info">
+                                    <i class="ti ti-info-circle"></i>
+                                    No vital signs data available for this batch.
+                                </div>
+                            `}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="exportBatchData('${record._id || record.id}')">
+                                <i class="ti ti-download"></i>
+                                Export Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            const modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+            
+            // Clean up modal when hidden
+            modal.addEventListener('hidden.bs.modal', function() {
+                document.body.removeChild(modal);
+            });
+        }
+        
+        // Show general medical details modal
+        function showMedicalDetailsModal(record) {
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.id = 'medicalDetailsModal';
+            modal.setAttribute('tabindex', '-1');
+            
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <i class="ti ti-heartbeat text-primary"></i>
+                                Medical Data Details
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Device Type:</strong> ${record.device_type || 'Unknown'}
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Device ID:</strong> ${record.device_id || 'N/A'}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Patient:</strong> ${record.patient_name || 'Unknown'}
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Timestamp:</strong> ${new Date(record.timestamp).toLocaleString()}
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-activity"></i>
+                                        Medical Values
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    ${record.medical_values && Object.keys(record.medical_values).length > 0 ? `
+                                        <div class="row">
+                                            ${Object.entries(record.medical_values).map(([key, value]) => `
+                                                <div class="col-md-6 mb-2">
+                                                    <strong>${key.replace(/_/g, ' ').toUpperCase()}:</strong> ${value}
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : `
+                                        <div class="text-muted">No medical values available</div>
+                                    `}
+                                </div>
+                            </div>
+                            
+                            ${record.raw_data ? `
+                                <div class="card mt-3">
+                                    <div class="card-header">
+                                        <h6 class="card-title mb-0">
+                                            <i class="ti ti-code"></i>
+                                            Raw Data
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre class="json-viewer">${JSON.stringify(record.raw_data, null, 2)}</pre>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            const modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+            
+            // Clean up modal when hidden
+            modal.addEventListener('hidden.bs.modal', function() {
+                document.body.removeChild(modal);
+            });
+        }
+        
+        // Export batch data
+        function exportBatchData(recordId) {
+            const record = medicalData.find(item => (item._id || item.id) === recordId);
+            if (!record) {
+                alert('Record not found');
+                return;
+            }
+            
+            const vitalSignsData = record.vital_signs_data || [];
+            const csv = convertBatchDataToCSV(vitalSignsData, record);
+            downloadCSV(csv, `batch_vital_signs_${record.device_id}_${new Date().toISOString().split('T')[0]}.csv`);
+        }
+        
+        // Convert batch data to CSV
+        function convertBatchDataToCSV(vitalSignsData, record) {
+            const headers = ['Reading #', 'Timestamp', 'Heart Rate (bpm)', 'Systolic (mmHg)', 'Diastolic (mmHg)', 'Temperature (°C)', 'SpO2 (%)', 'Status'];
+            const csvContent = [
+                headers.join(','),
+                ...vitalSignsData.map((reading, index) => [
+                    index + 1,
+                    reading.timestamp ? new Date(reading.timestamp).toISOString() : '',
+                    reading.heart_rate || '',
+                    reading.systolic || '',
+                    reading.diastolic || '',
+                    reading.temperature || '',
+                    reading.spO2 || '',
+                    'Normal'
+                ].join(','))
+            ].join('\n');
+            return csvContent;
         }
 
         // Initialize page

@@ -2304,6 +2304,18 @@ def get_recent_medical_data():
                             if 'LBS' in location:
                                 lbs = location['LBS']
                                 medical_values['cell_tower'] = f"{lbs.get('MCC', '')}-{lbs.get('MNC', '')}-{lbs.get('LAC', '')}-{lbs.get('CID', '')}"
+                    # Also check for location data in the main record structure
+                    elif 'location' in record:
+                        location = record['location']
+                        if 'GPS' in location:
+                            gps = location['GPS']
+                            if gps.get('latitude') and gps.get('longitude'):
+                                medical_values['gps_coords'] = f"{gps['latitude']}, {gps['longitude']}"
+                            else:
+                                medical_values['gps_status'] = 'No GPS signal'
+                        if 'LBS' in location:
+                            lbs = location['LBS']
+                            medical_values['cell_tower'] = f"{lbs.get('MCC', '')}-{lbs.get('MNC', '')}-{lbs.get('LAC', '')}-{lbs.get('CID', '')}"
                     medical_values['data_type'] = 'Location'
                     
                 elif topic == 'iMEDE_watch/sos' or event_type == 'emergency_sos':
