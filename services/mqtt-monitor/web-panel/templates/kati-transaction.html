@@ -403,10 +403,1495 @@
                 margin-bottom: 0.5rem;
             }
             
-            .modal-footer .btn:last-child {
-                margin-bottom: 0;
-            }
+                    .modal-footer .btn:last-child {
+            margin-bottom: 0;
         }
+    }
+    
+    /* Sleep Data Analysis Styles */
+    .sleep-stat {
+        text-align: center;
+        padding: 1rem;
+        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .sleep-stat-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .sleep-stat-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.25rem;
+    }
+    
+    .sleep-stat-percentage {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    .quality-metric {
+        text-align: center;
+        padding: 1rem;
+        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+    }
+    
+    .quality-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+    
+    .quality-value {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #495057;
+    }
+    
+    .sleep-pattern-container {
+        overflow-x: auto;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+    
+    /* Purple-themed Comprehensive Sleep Pattern Styles */
+    .sleep-purple-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .sleep-main-panel {
+        background: linear-gradient(135deg, #f8f4ff 0%, #f0e6ff 100%);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 24px rgba(147, 51, 234, 0.1);
+        border: 1px solid rgba(147, 51, 234, 0.1);
+        display: flex;
+        gap: 2rem;
+    }
+    
+    .sleep-quality-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        min-width: 200px;
+    }
+    
+    .sleep-quality-indicator {
+        position: relative;
+        width: 120px;
+        height: 120px;
+    }
+    
+    .circular-progress {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .progress-ring {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 8px solid #e9d5ff;
+        position: absolute;
+    }
+    
+    .progress-fill {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 8px solid transparent;
+        border-top: 8px solid #9333ea;
+        border-right: 8px solid #9333ea;
+        position: absolute;
+        transform: rotate(calc(var(--progress) * 3.6deg - 90deg));
+        transition: transform 1s ease;
+    }
+    
+    .progress-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    
+    .quality-score {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #9333ea;
+    }
+    
+    .sleep-summary {
+        text-align: center;
+    }
+    
+    .quality-text {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #9333ea;
+        margin-bottom: 0.5rem;
+    }
+    
+    .duration-text {
+        font-size: 1rem;
+        color: #7c3aed;
+        font-weight: 500;
+    }
+    
+    .sleep-charts-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        flex: 1;
+    }
+    
+    .sleep-stages-chart,
+    .sleep-duration-chart {
+        background: white;
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .chart-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #6b7280;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .chart-container {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+        height: 80px;
+        position: relative;
+    }
+    
+    .chart-y-axis {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: 0.7rem;
+        color: #9ca3af;
+        margin-right: 0.5rem;
+        height: 100%;
+    }
+    
+    .chart-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.25rem;
+        flex: 1;
+        height: 100%;
+    }
+    
+    .chart-bar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        height: 100%;
+    }
+    
+    .bar-fill {
+        width: 100%;
+        background: linear-gradient(180deg, #9333ea 0%, #7c3aed 100%);
+        border-radius: 4px 4px 0 0;
+        min-height: 4px;
+        transition: height 0.5s ease;
+    }
+    
+    .duration-bar {
+        background: linear-gradient(180deg, #a855f7 0%, #9333ea 100%);
+    }
+    
+    .white-bar {
+        background: linear-gradient(180deg, #ffffff 0%, #f3f4f6 100%);
+        border: 1px solid #e5e7eb;
+    }
+    
+    .purple-bar {
+        background: linear-gradient(180deg, #9333ea 0%, #7c3aed 100%);
+    }
+    
+    .bar-label {
+        font-size: 0.7rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+        font-weight: 500;
+    }
+    
+    .sleep-side-panels {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .sleep-duration-card,
+    .sleep-quality-card {
+        background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        color: white;
+    }
+    
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    
+    .card-header i {
+        color: #c4b5fd;
+    }
+    
+    .card-chart {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.25rem;
+        height: 60px;
+    }
+    
+    .card-chart .chart-y-axis {
+        color: #c4b5fd;
+    }
+    
+    .sleep-timeline-section {
+        grid-column: 1 / -1;
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f3f4f6;
+    }
+    
+    .timeline-header {
+        margin-bottom: 1.5rem;
+    }
+    
+    .timeline-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #374151;
+        margin: 0;
+    }
+    
+    .timeline-title i {
+        color: #9333ea;
+    }
+    
+    /* Purple sleep stage colors */
+    .sleep-awake-purple {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        border: 1px solid #f59e0b;
+    }
+    
+    .sleep-light-purple {
+        background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+        border: 1px solid #9333ea;
+    }
+    
+    .sleep-deep-purple {
+        background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+        border: 1px solid #6d28d9;
+    }
+    
+    .sleep-unknown-purple {
+        background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+        border: 1px solid #6b7280;
+    }
+    
+    .sleep-detailed-breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #f3f4f6;
+    }
+    
+    .breakdown-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem;
+        background: #f9fafb;
+        border-radius: 8px;
+        border: 1px solid #f3f4f6;
+        transition: all 0.2s ease;
+    }
+    
+    .breakdown-item:hover {
+        background: #f3f4f6;
+        transform: translateX(2px);
+    }
+    
+    .breakdown-bar {
+        width: 60px;
+        height: 12px;
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+        background: #e5e7eb;
+    }
+    
+    .breakdown-fill {
+        height: 100%;
+        border-radius: 6px;
+        transition: width 0.3s ease;
+    }
+    
+    .sleep-awake-purple .breakdown-fill {
+        background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+        width: 100%;
+    }
+    
+    .sleep-light-purple .breakdown-fill {
+        background: linear-gradient(90deg, #a855f7 0%, #9333ea 100%);
+        width: 100%;
+    }
+    
+    .sleep-deep-purple .breakdown-fill {
+        background: linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%);
+        width: 100%;
+    }
+    
+    /* Legacy modern styles for backward compatibility */
+    .sleep-modern-container {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid #f0f0f0;
+    }
+    
+    .sleep-header {
+        margin-bottom: 1.5rem;
+    }
+    
+    .sleep-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+    
+    .sleep-title:hover {
+        color: var(--mfc-blue);
+    }
+    
+    .sleep-title i:first-child {
+        margin-right: 0.5rem;
+        color: var(--mfc-blue);
+    }
+    
+    .sleep-title i:last-child {
+        color: #bdc3c7;
+        font-size: 0.9rem;
+    }
+    
+    .sleep-timeline-modern {
+        margin-bottom: 2rem;
+    }
+    
+    .timeline-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding: 0 0.5rem;
+    }
+    
+    .time-label {
+        font-size: 0.75rem;
+        color: #7f8c8d;
+        font-weight: 500;
+        text-align: center;
+        flex: 1;
+    }
+    
+    .sleep-pattern-modern {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        border: 1px solid #e9ecef;
+        position: relative;
+    }
+    
+    .sleep-row {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 2px;
+        align-items: center;
+        height: 20px;
+    }
+    
+    .sleep-row:last-child {
+        margin-bottom: 0;
+    }
+    
+    .sleep-block-modern {
+        height: 16px;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        flex: 1;
+        min-width: 8px;
+        position: relative;
+    }
+    
+    .sleep-block-modern:hover {
+        transform: scale(1.2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+    }
+    
+    .sleep-empty-modern {
+        background: transparent;
+        border: 1px dashed #e9ecef;
+        cursor: default;
+    }
+    
+    .sleep-empty-modern:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    /* Modern sleep stage colors */
+    .sleep-awake-modern {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        border: 1px solid #ff5252;
+    }
+    
+    .sleep-light-modern {
+        background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        border: 1px solid #74b9ff;
+    }
+    
+    .sleep-deep-modern {
+        background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+        border: 1px solid #2d3436;
+    }
+    
+    .sleep-unknown-modern {
+        background: linear-gradient(135deg, #b2bec3 0%, #95a5a6 100%);
+        border: 1px solid #b2bec3;
+    }
+    
+    /* Sleep breakdown section */
+    .sleep-breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .breakdown-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+        transition: all 0.2s ease;
+    }
+    
+    .breakdown-item:hover {
+        background: #f1f3f4;
+        transform: translateX(2px);
+    }
+    
+    .breakdown-bar {
+        width: 60px;
+        height: 12px;
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+        background: #e9ecef;
+    }
+    
+    .breakdown-fill {
+        height: 100%;
+        border-radius: 6px;
+        transition: width 0.3s ease;
+    }
+    
+    .sleep-awake-modern .breakdown-fill {
+        background: linear-gradient(90deg, #ff6b6b 0%, #ee5a52 100%);
+        width: 100%;
+    }
+    
+    .sleep-light-modern .breakdown-fill {
+        background: linear-gradient(90deg, #74b9ff 0%, #0984e3 100%);
+        width: 100%;
+    }
+    
+    .sleep-deep-modern .breakdown-fill {
+        background: linear-gradient(90deg, #2d3436 0%, #636e72 100%);
+        width: 100%;
+    }
+    
+    .sleep-typical {
+        background: #e9ecef;
+        border: 1px solid #dee2e6;
+    }
+    
+    .sleep-typical .breakdown-fill {
+        background: repeating-linear-gradient(
+            45deg,
+            #bdc3c7,
+            #bdc3c7 2px,
+            #95a5a6 2px,
+            #95a5a6 4px
+        );
+        width: 100%;
+    }
+    
+    .breakdown-info {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    
+    .breakdown-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.25rem;
+    }
+    
+    .breakdown-percentage {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--mfc-blue);
+        margin-bottom: 0.1rem;
+    }
+    
+    .breakdown-duration {
+        font-size: 0.8rem;
+        color: #7f8c8d;
+    }
+    
+    /* Legacy styles for backward compatibility */
+    .sleep-timeline-container {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .sleep-timeline-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+    
+    .timeline-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    .timeline-period {
+        font-size: 0.9rem;
+        color: #6c757d;
+        background: #f8f9fa;
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .sleep-timeline {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+    
+    .timeline-hours {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        padding: 0 0.5rem;
+    }
+    
+    .hour-marker {
+        font-size: 0.75rem;
+        color: #6c757d;
+        font-weight: 500;
+        text-align: center;
+        flex: 1;
+    }
+    
+    .sleep-pattern-timeline {
+        background: #f8f9fa;
+        border-radius: 6px;
+        padding: 1rem;
+        border: 1px solid #e9ecef;
+    }
+    
+    .hour-row {
+        display: flex;
+        gap: 1px;
+        margin-bottom: 1px;
+        align-items: center;
+    }
+    
+    .hour-row:last-child {
+        margin-bottom: 0;
+    }
+    
+    .sleep-block {
+        width: 12px;
+        height: 16px;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        flex: 1;
+        min-width: 12px;
+    }
+    
+    .sleep-block:hover {
+        transform: scale(1.3);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        z-index: 10;
+        position: relative;
+    }
+    
+    .sleep-empty {
+        background: transparent;
+        border: 1px dashed #dee2e6;
+        cursor: default;
+    }
+    
+    .sleep-empty:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .sleep-legend {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: #495057;
+    }
+    
+    .legend-color {
+        width: 16px;
+        height: 16px;
+        border-radius: 3px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Legacy sleep pattern styles for backward compatibility */
+    .sleep-pattern {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px;
+        min-height: 40px;
+        align-items: center;
+    }
+    
+    .sleep-awake {
+        background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+        border: 1px solid #d39e00;
+    }
+    
+    .sleep-light {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        border: 1px solid #117a8b;
+    }
+    
+    .sleep-deep {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        border: 1px solid #004085;
+    }
+    
+    .sleep-unknown {
+        background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
+        border: 1px solid #4e555b;
+    }
+    
+    .recommendation-item {
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid;
+        background: rgba(255, 255, 255, 0.8);
+        margin-bottom: 1rem;
+    }
+    
+    .recommendation-item i {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .recommendation-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+    
+    .recommendation-message {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    .data-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+    }
+    
+    .data-value {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    /* Improved Sleep Pattern Visualization Styles */
+    .sleep-improved-container {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #f0f0f0;
+    }
+    
+    /* Sleep Overview Section */
+    .sleep-overview-section {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+        border-radius: 12px;
+        border: 1px solid #e8f0ff;
+    }
+    
+    .sleep-quality-circle {
+        flex-shrink: 0;
+    }
+    
+    .quality-circle {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+    }
+    
+    .circle-background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: #e9ecef;
+        border: 8px solid #f8f9fa;
+    }
+    
+    .circle-progress {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 8px solid transparent;
+        border-top: 8px solid #007bff;
+        border-right: 8px solid #007bff;
+        transform: rotate(calc(var(--progress) * 3.6deg - 90deg));
+        transition: transform 1s ease;
+    }
+    
+    .circle-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    
+    .quality-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #007bff;
+        line-height: 1;
+    }
+    
+    .quality-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+    
+    .sleep-summary-info {
+        display: flex;
+        gap: 2rem;
+        flex: 1;
+    }
+    
+    .summary-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e9ecef;
+    }
+    
+    .summary-icon {
+        font-size: 1.5rem;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+    
+    .summary-text {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .summary-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #212529;
+        line-height: 1.2;
+    }
+    
+    .summary-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+    
+    /* Weekly Trends Section */
+    .weekly-trends-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .trends-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .trends-header h6 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #212529;
+    }
+    
+    .trends-legend {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .trends-legend .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+    
+    .trends-legend .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+    }
+    
+    .quality-color {
+        background: #007bff;
+    }
+    
+    .duration-color {
+        background: #28a745;
+    }
+    
+    .trends-chart {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-end;
+        height: 120px;
+    }
+    
+    .trend-day {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        gap: 0.5rem;
+    }
+    
+    .day-bars {
+        display: flex;
+        gap: 2px;
+        align-items: flex-end;
+        height: 80px;
+        width: 100%;
+    }
+    
+    .quality-bar {
+        width: 50%;
+        background: #007bff;
+        border-radius: 2px 2px 0 0;
+        min-height: 4px;
+        transition: height 0.3s ease;
+    }
+    
+    .duration-bar {
+        width: 50%;
+        background: #28a745;
+        border-radius: 2px 2px 0 0;
+        min-height: 4px;
+        transition: height 0.3s ease;
+    }
+    
+    .day-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    .day-values {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.7rem;
+        color: #6c757d;
+    }
+    
+    /* Sleep Stages Section */
+    .sleep-stages-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .stages-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .stages-header h6 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #212529;
+    }
+    
+    .stages-legend {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .stages-legend .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+    
+    .stages-legend .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+    }
+    
+    .awake-color {
+        background: #ffc107;
+    }
+    
+    .light-color {
+        background: #17a2b8;
+    }
+    
+    .deep-color {
+        background: #6f42c1;
+    }
+    
+    .stages-breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .stage-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e9ecef;
+    }
+    
+    .stage-bar {
+        height: 20px;
+        border-radius: 10px;
+        min-width: 60px;
+        transition: width 0.3s ease;
+    }
+    
+    .stage-info {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    
+    .stage-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #212529;
+        margin-bottom: 0.25rem;
+    }
+    
+    .stage-details {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+    
+    .stage-percentage {
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    /* Timeline Section */
+    .sleep-timeline-section {
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .timeline-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .timeline-header h6 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #212529;
+    }
+    
+    .timeline-info {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+    
+    .timeline-container {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        border: 1px solid #e9ecef;
+    }
+    
+    .timeline-hours {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding: 0 0.5rem;
+    }
+    
+    .hour-marker {
+        font-size: 0.75rem;
+        color: #6c757d;
+        font-weight: 500;
+        text-align: center;
+        flex: 1;
+    }
+    
+    .timeline-visualization {
+        background: #f8f9fa;
+        border-radius: 6px;
+        padding: 1rem;
+        border: 1px solid #e9ecef;
+    }
+    
+    .timeline-hour {
+        display: flex;
+        gap: 1px;
+        margin-bottom: 1px;
+        align-items: center;
+        height: 24px;
+    }
+    
+    .timeline-hour:last-child {
+        margin-bottom: 0;
+    }
+    
+    .timeline-block {
+        height: 20px;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        flex: 1;
+        min-width: 8px;
+        position: relative;
+    }
+    
+    .timeline-block:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+    }
+    
+    .empty-block {
+        background: transparent;
+        border: 1px dashed #e9ecef;
+        cursor: default;
+    }
+    
+    .empty-block:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .awake-stage {
+        background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+        border: 1px solid #ffb300;
+    }
+    
+    .light-stage {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        border: 1px solid #138496;
+    }
+    
+    .deep-stage {
+        background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);
+        border: 1px solid #5a32a3;
+    }
+    
+    .unknown-stage {
+        background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        border: 1px solid #5a6268;
+    }
+    
+    .timeline-legend {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    .timeline-legend .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: #495057;
+    }
+    
+    .timeline-legend .legend-color {
+        width: 16px;
+        height: 16px;
+        border-radius: 3px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Mobile responsive sleep data */
+    @media (max-width: 768px) {
+        .sleep-improved-container {
+            padding: 1rem;
+        }
+        
+        .sleep-overview-section {
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+        
+        .sleep-summary-info {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .summary-item {
+            padding: 0.75rem;
+        }
+        
+        .trends-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .trends-chart {
+            height: 100px;
+        }
+        
+        .day-bars {
+            height: 60px;
+        }
+        
+        .stages-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .timeline-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .timeline-hours {
+            font-size: 0.7rem;
+        }
+        
+        .timeline-block {
+            height: 16px;
+            min-width: 6px;
+        }
+        
+        .timeline-legend {
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        /* Legacy purple container styles */
+        .sleep-purple-container {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .sleep-main-panel {
+            flex-direction: column;
+            padding: 1.5rem;
+            gap: 1.5rem;
+        }
+        
+        .sleep-quality-section {
+            min-width: auto;
+        }
+        
+        .sleep-quality-indicator {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .quality-score {
+            font-size: 1.3rem;
+        }
+        
+        .quality-text {
+            font-size: 1.1rem;
+        }
+        
+        .duration-text {
+            font-size: 0.9rem;
+        }
+        
+        .chart-container {
+            height: 60px;
+        }
+        
+        .chart-title {
+            font-size: 0.8rem;
+        }
+        
+        .chart-y-axis {
+            font-size: 0.6rem;
+        }
+        
+        .bar-label {
+            font-size: 0.6rem;
+        }
+        
+        .sleep-duration-card,
+        .sleep-quality-card {
+            padding: 1rem;
+        }
+        
+        .card-header {
+            font-size: 0.8rem;
+        }
+        
+        .card-chart {
+            height: 50px;
+        }
+        
+        .sleep-timeline-section {
+            padding: 1rem;
+        }
+        
+        .timeline-title {
+            font-size: 0.9rem;
+        }
+        
+        .timeline-labels {
+            font-size: 0.7rem;
+        }
+        
+        .time-label {
+            font-size: 0.65rem;
+        }
+        
+        .sleep-pattern-modern {
+            padding: 1rem;
+        }
+        
+        .sleep-block-modern {
+            height: 12px;
+            min-width: 6px;
+        }
+        
+        .breakdown-item {
+            padding: 0.5rem;
+            gap: 0.75rem;
+        }
+        
+        .breakdown-bar {
+            width: 50px;
+            height: 10px;
+        }
+        
+        .breakdown-label {
+            font-size: 0.85rem;
+        }
+        
+        .breakdown-percentage {
+            font-size: 0.8rem;
+        }
+        
+        .breakdown-duration {
+            font-size: 0.75rem;
+        }
+        
+        /* Legacy modern styles */
+        .sleep-modern-container {
+            padding: 1rem;
+        }
+        
+        .sleep-title {
+            font-size: 1rem;
+        }
+        
+        /* Legacy timeline styles */
+        .sleep-timeline-container {
+            padding: 1rem;
+        }
+        
+        .sleep-timeline-header {
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: center;
+        }
+        
+        .timeline-hours {
+            font-size: 0.7rem;
+        }
+        
+        .hour-marker {
+            font-size: 0.65rem;
+        }
+        
+        .sleep-pattern-timeline {
+            padding: 0.75rem;
+        }
+        
+        .sleep-block {
+            width: 8px;
+            height: 12px;
+            min-width: 8px;
+        }
+        
+        .sleep-legend {
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .legend-item {
+            font-size: 0.8rem;
+        }
+        
+        .sleep-pattern {
+            gap: 1px;
+        }
+        
+        .sleep-stat-number {
+            font-size: 1.2rem;
+        }
+        
+        .quality-value {
+            font-size: 1.1rem;
+        }
+        
+        .recommendation-item {
+            padding: 0.75rem;
+        }
+    }
         
         .navbar-brand {
             font-weight: 700;
@@ -1071,6 +2556,321 @@
             margin: 1rem 0;
             border-radius: 0.375rem;
         }
+    
+    /* Hypnogram Chart Styles */
+    .hypnogram-container {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .hypnogram-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #212529;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hypnogram-chart {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hypnogram-y-axis {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 60px;
+        padding: 0.5rem 0;
+    }
+    
+    .stage-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        text-align: center;
+        color: white;
+        min-height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .deep-label {
+        background: #6f42c1;
+    }
+    
+    .light-label {
+        background: #17a2b8;
+    }
+    
+    .awake-label {
+        background: #ffc107;
+        color: #212529;
+    }
+    
+    .hypnogram-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .hypnogram-timeline {
+        background: #f8f9fa;
+        border-radius: 6px;
+        padding: 1rem;
+        border: 1px solid #e9ecef;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        overflow-x: auto;
+    }
+    
+    .timeline-block {
+        height: 20px;
+        border-radius: 2px;
+        flex: 1;
+        min-width: 4px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+    }
+    
+    .timeline-block:hover {
+        transform: scaleY(1.2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+    }
+    
+    .sleep-awake-purple {
+        background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+        border: 1px solid #ffb300;
+    }
+    
+    .sleep-light-purple {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        border: 1px solid #138496;
+    }
+    
+    .sleep-deep-purple {
+        background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);
+        border: 1px solid #5a32a3;
+    }
+    
+    .sleep-unknown-purple {
+        background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        border: 1px solid #5a6268;
+    }
+    
+    .hypnogram-x-axis {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    .hypnogram-legend {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e9ecef;
+    }
+    
+    .hypnogram-legend .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: #495057;
+    }
+    
+    .hypnogram-legend .legend-color {
+        width: 16px;
+        height: 16px;
+        border-radius: 3px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Mobile responsive hypnogram */
+    @media (max-width: 768px) {
+        .hypnogram-container {
+            padding: 1rem;
+        }
+        
+        .hypnogram-chart {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .hypnogram-y-axis {
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-around;
+        }
+        
+        .stage-label {
+            font-size: 0.75rem;
+            min-height: 20px;
+            padding: 0.2rem 0.4rem;
+        }
+        
+        .hypnogram-timeline {
+            height: 60px;
+            padding: 0.75rem;
+        }
+        
+        .timeline-block {
+            height: 16px;
+            min-width: 3px;
+        }
+        
+        .hypnogram-x-axis {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.75rem;
+        }
+        
+        .hypnogram-legend {
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+        }
+    }
+    
+    .time-marker {
+        font-size: 0.75rem;
+        color: #6c757d;
+        font-weight: 500;
+        text-align: center;
+        flex: 1;
+    }
+    
+    /* Vital Signs Cards */
+    .vital-sign-card {
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .vital-sign-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .vital-sign-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.9;
+    }
+    
+    .vital-sign-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .vital-sign-value {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.25rem;
+    }
+    
+    .vital-sign-unit {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin-bottom: 0.5rem;
+    }
+    
+    .vital-sign-label {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .vital-sign-status {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .vital-sign-range {
+        font-size: 0.75rem;
+        opacity: 0.8;
+    }
+    
+    /* Mobile responsive vital signs cards */
+    @media (max-width: 768px) {
+        .vital-sign-card {
+            padding: 1rem;
+            min-height: 140px;
+        }
+        
+        .vital-sign-icon {
+            font-size: 2rem;
+        }
+        
+        .vital-sign-value {
+            font-size: 1.5rem;
+        }
+        
+        .vital-sign-label {
+            font-size: 0.9rem;
+        }
+        
+        .vital-sign-status {
+            font-size: 0.8rem;
+        }
+        
+        .vital-sign-range {
+            font-size: 0.7rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .vital-sign-card {
+            padding: 0.75rem;
+            min-height: 120px;
+        }
+        
+        .vital-sign-icon {
+            font-size: 1.5rem;
+        }
+        
+        .vital-sign-value {
+            font-size: 1.25rem;
+        }
+        
+        .vital-sign-label {
+            font-size: 0.8rem;
+        }
+        
+        .vital-sign-status {
+            font-size: 0.75rem;
+        }
+        
+        .vital-sign-range {
+            font-size: 0.65rem;
+        }
+    }
     </style>
 </head>
 <body>
@@ -1628,6 +3428,62 @@
             </div>
         </div>
         
+        <!-- Sleep Data Analysis Modal -->
+        <div class="modal fade" id="sleepDataModal" tabindex="-1" aria-labelledby="sleepDataModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="sleepDataModalLabel">
+                            <i class="ti ti-moon"></i>
+                            Sleep Data Analysis
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="sleepModalContent">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Loading sleep data analysis...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vital Signs Detail Modal -->
+        <div class="modal fade" id="vitalSignsDetailModal" tabindex="-1" aria-labelledby="vitalSignsDetailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="vitalSignsDetailModalLabel">
+                            <i class="ti ti-heartbeat"></i>
+                            Vital Signs Details
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="vitalSignsModalContent">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Loading vital signs data...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
@@ -1639,7 +3495,7 @@
         let katiData = [];
         let currentPage = 1;
         let totalPages = 1;
-        let perPage = 50;
+        let perPage = 200;
         
         // Initialize Socket.IO connection
         function initializeSocket() {
@@ -1879,6 +3735,12 @@
                                 Map
                             </button>
                         ` : ''}
+                        ${(transaction.topic === 'iMEDE_watch/VitalSign') ? `
+                            <button class="btn btn-sm btn-outline-success" onclick="viewVitalSignsDetails('${transaction._id}')">
+                                <i class="ti ti-heartbeat"></i>
+                                Vital Signs
+                            </button>
+                        ` : ''}
                     </div>
                 </td>
             `;
@@ -2006,7 +3868,7 @@
                     return `Fall Detection - ${data.status || 'Fall Detected'}`;
                 case 'sleep_data':
                     const sleep = data.sleep || {};
-                    return `Sleep: ${sleep.time || 'N/A'}, Slots: ${sleep.num || 0}`;
+                    return `<span class="sleep-data-link" onclick="viewSleepData('${transaction._id}')" style="cursor: pointer; color: #206bc4; text-decoration: underline;">Sleep: ${sleep.time || 'N/A'}, Slots: ${sleep.num || 0}</span>`;
                 case 'device_status':
                     return `Status: ${data.status || 'Unknown'}`;
                 default:
@@ -2534,6 +4396,268 @@
                         </div>
                     `;
                 });
+        }
+        
+        // View vital signs details
+        function viewVitalSignsDetails(transactionId) {
+            // Show loading state
+            document.getElementById('vitalSignsModalContent').innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading vital signs data...</p>
+                </div>
+            `;
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('vitalSignsDetailModal'));
+            modal.show();
+            
+            // Fetch vital signs data
+            fetch(`/api/kati-transactions/${transactionId}/vital-signs-details`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayVitalSignsDetails(data.data);
+                    } else {
+                        document.getElementById('vitalSignsModalContent').innerHTML = `
+                            <div class="alert alert-danger">
+                                <i class="ti ti-alert-circle"></i>
+                                Error: ${data.error || 'Failed to load vital signs data'}
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching vital signs data:', error);
+                    document.getElementById('vitalSignsModalContent').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="ti ti-alert-circle"></i>
+                            Error: Failed to load vital signs data
+                        </div>
+                    `;
+                });
+        }
+        
+        // Display vital signs details
+        function displayVitalSignsDetails(vitalSignsData) {
+            const content = document.getElementById('vitalSignsModalContent');
+            
+            // Create patient info section
+            let patientInfo = '';
+            const patientInfoData = vitalSignsData.patient_info;
+            
+            if (patientInfoData) {
+                const patientName = `${patientInfoData.first_name || ''} ${patientInfoData.last_name || ''}`.trim() || 'Unknown Patient';
+                const patientPhoto = patientInfoData.profile_image ? `<img src="${patientInfoData.profile_image}" alt="Patient Photo" class="avatar avatar-sm me-2" onerror="this.style.display='none'">` : '';
+                
+                patientInfo = `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-user"></i>
+                                        Patient Information
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        ${patientPhoto}
+                                        <div>
+                                            <h6 class="mb-1">${patientName}</h6>
+                                            <div class="text-muted">Device: ${vitalSignsData.device_id || 'N/A'}</div>
+                                            <div class="text-muted">IMEI: ${vitalSignsData.imei || 'N/A'}</div>
+                                            <div class="text-muted">Timestamp: ${formatLocalTimestamp(new Date(vitalSignsData.timestamp))}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Create vital signs display
+            const vitalSigns = vitalSignsData.vital_signs;
+            let vitalSignsDisplay = '';
+            
+            if (vitalSigns) {
+                vitalSignsDisplay = `
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-heartbeat"></i>
+                                        Vital Signs Measurements
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <div class="vital-sign-card ${vitalSigns.heart_rate.status === 'Normal' ? 'bg-success' : 'bg-danger'} text-white">
+                                                <div class="vital-sign-icon">
+                                                    <i class="ti ti-heart"></i>
+                                                </div>
+                                                <div class="vital-sign-content">
+                                                    <div class="vital-sign-value">${vitalSigns.heart_rate.value || 'N/A'}</div>
+                                                    <div class="vital-sign-unit">${vitalSigns.heart_rate.unit}</div>
+                                                    <div class="vital-sign-label">Heart Rate</div>
+                                                    <div class="vital-sign-status">${vitalSigns.heart_rate.status}</div>
+                                                    <div class="vital-sign-range">${vitalSigns.heart_rate.normal_range}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="vital-sign-card ${vitalSigns.blood_pressure.status === 'Normal' ? 'bg-success' : 'bg-danger'} text-white">
+                                                <div class="vital-sign-icon">
+                                                    <i class="ti ti-droplet"></i>
+                                                </div>
+                                                <div class="vital-sign-content">
+                                                    <div class="vital-sign-value">${vitalSigns.blood_pressure.systolic || 'N/A'}/${vitalSigns.blood_pressure.diastolic || 'N/A'}</div>
+                                                    <div class="vital-sign-unit">${vitalSigns.blood_pressure.unit}</div>
+                                                    <div class="vital-sign-label">Blood Pressure</div>
+                                                    <div class="vital-sign-status">${vitalSigns.blood_pressure.status}</div>
+                                                    <div class="vital-sign-range">${vitalSigns.blood_pressure.normal_range}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="vital-sign-card ${vitalSigns.body_temperature.status === 'Normal' ? 'bg-success' : 'bg-danger'} text-white">
+                                                <div class="vital-sign-icon">
+                                                    <i class="ti ti-thermometer"></i>
+                                                </div>
+                                                <div class="vital-sign-content">
+                                                    <div class="vital-sign-value">${vitalSigns.body_temperature.value || 'N/A'}</div>
+                                                    <div class="vital-sign-unit">${vitalSigns.body_temperature.unit}</div>
+                                                    <div class="vital-sign-label">Body Temperature</div>
+                                                    <div class="vital-sign-status">${vitalSigns.body_temperature.status}</div>
+                                                    <div class="vital-sign-range">${vitalSigns.body_temperature.normal_range}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="vital-sign-card ${vitalSigns.spO2.status === 'Normal' ? 'bg-success' : 'bg-danger'} text-white">
+                                                <div class="vital-sign-icon">
+                                                    <i class="ti ti-wind"></i>
+                                                </div>
+                                                <div class="vital-sign-content">
+                                                    <div class="vital-sign-value">${vitalSigns.spO2.value || 'N/A'}</div>
+                                                    <div class="vital-sign-unit">${vitalSigns.spO2.unit}</div>
+                                                    <div class="vital-sign-label">SpO2</div>
+                                                    <div class="vital-sign-status">${vitalSigns.spO2.status}</div>
+                                                    <div class="vital-sign-range">${vitalSigns.spO2.normal_range}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="vital-sign-card ${vitalSigns.signal_gsm.status === 'Good' ? 'bg-success' : 'bg-warning'} text-white">
+                                                <div class="vital-sign-icon">
+                                                    <i class="ti ti-signal"></i>
+                                                </div>
+                                                <div class="vital-sign-content">
+                                                    <div class="vital-sign-value">${vitalSigns.signal_gsm.value || 'N/A'}</div>
+                                                    <div class="vital-sign-unit">${vitalSigns.signal_gsm.unit}</div>
+                                                    <div class="vital-sign-label">GSM Signal</div>
+                                                    <div class="vital-sign-status">${vitalSigns.signal_gsm.status}</div>
+                                                    <div class="vital-sign-range">${vitalSigns.signal_gsm.normal_range}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="vital-sign-card ${vitalSigns.battery.status === 'Good' ? 'bg-success' : 'bg-warning'} text-white">
+                                                <div class="vital-sign-icon">
+                                                    <i class="ti ti-battery"></i>
+                                                </div>
+                                                <div class="vital-sign-content">
+                                                    <div class="vital-sign-value">${vitalSigns.battery.value || 'N/A'}</div>
+                                                    <div class="vital-sign-unit">${vitalSigns.battery.unit}</div>
+                                                    <div class="vital-sign-label">Battery</div>
+                                                    <div class="vital-sign-status">${vitalSigns.battery.status}</div>
+                                                    <div class="vital-sign-range">${vitalSigns.battery.normal_range}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Create location info if available
+            let locationInfo = '';
+            if (vitalSignsData.location && vitalSignsData.location.gps) {
+                const gps = vitalSignsData.location.gps;
+                if (gps.latitude && gps.longitude) {
+                    locationInfo = `
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="card-title mb-0">
+                                            <i class="ti ti-map-pin"></i>
+                                            Location Information
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="data-label">GPS Coordinates:</div>
+                                                <div class="data-value">${gps.latitude}, ${gps.longitude}</div>
+                                            </div>
+                                            ${vitalSignsData.location.lbs ? `
+                                                <div class="col-md-6">
+                                                    <div class="data-label">LBS Location:</div>
+                                                    <div class="data-value">
+                                                        MCC: ${vitalSignsData.location.lbs.MCC || 'N/A'}, 
+                                                        MNC: ${vitalSignsData.location.lbs.MNC || 'N/A'}, 
+                                                        LAC: ${vitalSignsData.location.lbs.LAC || 'N/A'}, 
+                                                        CID: ${vitalSignsData.location.lbs.CID || 'N/A'}
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Create raw data section
+            let rawDataSection = '';
+            if (vitalSignsData.raw_data) {
+                rawDataSection = `
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-code"></i>
+                                        Raw Data
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <pre class="bg-light p-3 rounded"><code>${JSON.stringify(vitalSignsData.raw_data, null, 2)}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Combine all sections
+            content.innerHTML = `
+                ${patientInfo}
+                ${vitalSignsDisplay}
+                ${locationInfo}
+                ${rawDataSection}
+            `;
         }
         
         // Display location details with Google Maps
@@ -3685,6 +5809,2321 @@
             // Uncomment the line below to test the enhanced SOS UX
             // testEnhancedSOS();
         });
+
+        // Sleep Data Analysis Functions
+        function viewSleepData(transactionId) {
+            const transaction = katiData.find(t => t._id === transactionId);
+            if (!transaction) {
+                alert('Transaction not found');
+                return;
+            }
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('sleepDataModal'));
+            modal.show();
+            
+            // Fetch detailed sleep data
+            fetch(`/api/kati-transactions/${transactionId}/sleep-details`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displaySleepData(data.data, transaction);
+                    } else {
+                        document.getElementById('sleepModalContent').innerHTML = `
+                            <div class="alert alert-danger">
+                                <i class="ti ti-alert-circle"></i>
+                                Error: ${data.error || 'Failed to load sleep data'}
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching sleep data:', error);
+                    document.getElementById('sleepModalContent').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="ti ti-alert-circle"></i>
+                            Error: Failed to load sleep data
+                        </div>
+                    `;
+                });
+        }
+        
+        // Display sleep data analysis
+        function displaySleepData(sleepData, transaction) {
+            const content = document.getElementById('sleepModalContent');
+            const sleep = sleepData.sleep || {};
+            
+            // Parse sleep data
+            const sleepPattern = sleep.data || '';
+            const sleepTime = sleep.time || '';
+            const sleepTimestamp = sleep.timeStamps || '';
+            const sleepNum = sleep.num || 0;
+            
+            // Calculate sleep statistics
+            const sleepStats = analyzeSleepPattern(sleepPattern);
+            
+            // Create sleep analysis HTML
+            const sleepAnalysisHtml = `
+                <div class="row">
+                    <!-- Patient Information -->
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-user"></i>
+                                    Patient Information
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="data-label">Patient Name:</div>
+                                        <div class="data-value">${transaction.patient_name || 'Unknown Patient'}</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="data-label">Device IMEI:</div>
+                                        <div class="data-value">${transaction.device_id || 'N/A'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Overview -->
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-moon"></i>
+                                    Sleep Overview
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="data-label">Sleep Period:</div>
+                                        <div class="data-value">${formatSleepTime(sleepTime)}</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="data-label">Recording Date:</div>
+                                        <div class="data-value">${formatSleepTimestamp(sleepTimestamp)}</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="data-label">Total Duration:</div>
+                                        <div class="data-value">${sleepStats.totalHours}h ${sleepStats.totalMinutes}m</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="data-label">Data Points:</div>
+                                        <div class="data-value">${sleepNum} (${sleepPattern.length})</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Pattern Visualization -->
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-chart-line"></i>
+                                    Sleep Pattern Visualization
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="sleep-pattern-container">
+                                    ${generateSleepPatternVisualization(sleepPattern, sleepTime)}
+                                </div>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="ti ti-info-circle"></i>
+                                        Each block represents 5 minutes. 
+                                        <span class="text-warning">Yellow</span> = Awake, 
+                                        <span class="text-info">Blue</span> = Light Sleep, 
+                                        <span class="text-primary">Dark Blue</span> = Deep Sleep
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Recommendations -->
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-lightbulb"></i>
+                                    Sleep Quality Assessment
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                ${generateSleepRecommendations(sleepStats)}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Export Section -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-download"></i>
+                                    Export Sleep Data
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        <button class="btn btn-outline-primary w-100" onclick="exportSleepDataPDF('${transaction.patient_name || 'Unknown Patient'}', '${transaction.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                            <i class="ti ti-file-text"></i>
+                                            Export PDF Report
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button class="btn btn-outline-success w-100" onclick="exportSleepDataCSV('${transaction.patient_name || 'Unknown Patient'}', '${transaction.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                            <i class="ti ti-file-spreadsheet"></i>
+                                            Export CSV Data
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button class="btn btn-outline-info w-100" onclick="exportSleepDataJSON('${transaction.patient_name || 'Unknown Patient'}', '${transaction.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                            <i class="ti ti-code"></i>
+                                            Export JSON Data
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="ti ti-info-circle"></i>
+                                        Export includes patient information, sleep statistics, and detailed sleep pattern data for analysis and reporting.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = sleepAnalysisHtml;
+        }
+        
+        // Analyze sleep pattern data
+        function analyzeSleepPattern(sleepPattern) {
+            if (!sleepPattern || sleepPattern.length === 0) {
+                return {
+                    awakeHours: 0, awakeMinutes: 0, awakePercentage: 0,
+                    lightHours: 0, lightMinutes: 0, lightPercentage: 0,
+                    deepHours: 0, deepMinutes: 0, deepPercentage: 0,
+                    totalHours: 0, totalMinutes: 0,
+                    sleepEfficiency: 0, deepSleepRatio: 0, sleepLatency: 0, wakeCount: 0
+                };
+            }
+            
+            const awake = (sleepPattern.match(/0/g) || []).length;
+            const light = (sleepPattern.match(/1/g) || []).length;
+            const deep = (sleepPattern.match(/2/g) || []).length;
+            const total = sleepPattern.length;
+            
+            // Convert to minutes (each digit = 5 minutes)
+            const awakeMinutes = awake * 5;
+            const lightMinutes = light * 5;
+            const deepMinutes = deep * 5;
+            const totalMinutes = total * 5;
+            
+            // Convert to hours and minutes
+            const awakeHours = Math.floor(awakeMinutes / 60);
+            const lightHours = Math.floor(lightMinutes / 60);
+            const deepHours = Math.floor(deepMinutes / 60);
+            const totalHours = Math.floor(totalMinutes / 60);
+            
+            const awakeRemainingMinutes = awakeMinutes % 60;
+            const lightRemainingMinutes = lightMinutes % 60;
+            const deepRemainingMinutes = deepMinutes % 60;
+            const totalRemainingMinutes = totalMinutes % 60;
+            
+            // Calculate percentages
+            const awakePercentage = total > 0 ? Math.round((awake / total) * 100) : 0;
+            const lightPercentage = total > 0 ? Math.round((light / total) * 100) : 0;
+            const deepPercentage = total > 0 ? Math.round((deep / total) * 100) : 0;
+            
+            // Calculate sleep quality metrics
+            const sleepEfficiency = total > 0 ? Math.round(((light + deep) / total) * 100) : 0;
+            const deepSleepRatio = (light + deep) > 0 ? Math.round((deep / (light + deep)) * 100) : 0;
+            
+            // Calculate sleep latency (time to first sleep)
+            let sleepLatency = 0;
+            for (let i = 0; i < sleepPattern.length; i++) {
+                if (sleepPattern[i] === '1' || sleepPattern[i] === '2') {
+                    sleepLatency = i * 5;
+                    break;
+                }
+            }
+            
+            // Calculate wake count (number of transitions from sleep to awake)
+            let wakeCount = 0;
+            let wasAsleep = false;
+            for (let i = 0; i < sleepPattern.length; i++) {
+                const isAsleep = sleepPattern[i] === '1' || sleepPattern[i] === '2';
+                if (isAsleep && !wasAsleep) {
+                    wasAsleep = true;
+                } else if (!isAsleep && wasAsleep) {
+                    wakeCount++;
+                    wasAsleep = false;
+                }
+            }
+            
+            return {
+                awakeHours, awakeMinutes: awakeRemainingMinutes, awakePercentage,
+                lightHours, lightMinutes: lightRemainingMinutes, lightPercentage,
+                deepHours, deepMinutes: deepRemainingMinutes, deepPercentage,
+                totalHours, totalMinutes: totalRemainingMinutes,
+                sleepEfficiency, deepSleepRatio, sleepLatency, wakeCount
+            };
+        }
+        
+        // Generate sleep pattern visualization with purple theme and comprehensive summary
+        function generateSleepPatternVisualization(sleepPattern, sleepTime) {
+            if (!sleepPattern || sleepPattern.length === 0) {
+                return '<div class="text-muted">No sleep pattern data available</div>';
+            }
+            
+            // Parse sleep time to get start and end times
+            let startTime = '22:00';
+            let endTime = '08:00';
+            
+            if (sleepTime && sleepTime.includes('@')) {
+                const [start, end] = sleepTime.split('@');
+                startTime = `${start.substring(0, 2)}:${start.substring(2, 4)}`;
+                endTime = `${end.substring(0, 2)}:${end.substring(2, 4)}`;
+            }
+            
+            // Calculate comprehensive sleep statistics
+            const sleepStats = analyzeSleepPattern(sleepPattern);
+            
+            // Calculate sleep quality score (0-100)
+            const sleepQualityScore = Math.round(
+                (sleepStats.sleepEfficiency * 0.4) + 
+                (sleepStats.deepSleepRatio * 0.3) + 
+                ((100 - sleepStats.awakePercentage) * 0.3)
+            );
+            
+            // Initialize weekly data with current day's data
+            const weeklyData = {
+                days: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                qualityData: [0, 0, 0, 0, 0, 0, 0],
+                durationData: [0, 0, 0, 0, 0, 0, 0]
+            };
+            
+            // Set current day's data
+            const today = new Date().getDay(); // 0 = Sunday, 1 = Monday, etc.
+            const dayIndex = today === 0 ? 6 : today - 1; // Convert to our array index (Monday = 0)
+            weeklyData.qualityData[dayIndex] = sleepQualityScore;
+            weeklyData.durationData[dayIndex] = sleepStats.totalHours + (sleepStats.totalMinutes / 60);
+            
+            // Format time for display (convert 24h to 12h format)
+            const formatTime12h = (time24h) => {
+                const [hour, minute] = time24h.split(':');
+                const hour12 = parseInt(hour) % 12 || 12;
+                const period = parseInt(hour) >= 12 ? 'PM' : 'AM';
+                return `${hour12}:${minute} ${period}`;
+            };
+            
+            // Calculate time intervals for the timeline
+            const totalMinutes = sleepPattern.length * 5;
+            const timeIntervals = [];
+            
+            // Create 4 time markers for better readability
+            const intervalCount = 4;
+            for (let i = 0; i <= intervalCount; i++) {
+                const timeOffset = (totalMinutes / intervalCount) * i;
+                const hour = (parseInt(startTime.split(':')[0]) + Math.floor(timeOffset / 60)) % 24;
+                const minute = Math.floor(timeOffset % 60);
+                const timeLabel = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                timeIntervals.push(formatTime12h(timeLabel));
+            }
+            
+            // Create purple-themed comprehensive sleep visualization
+            let visualization = `
+                <div class="sleep-purple-container">
+                    <div class="sleep-main-panel">
+                        <div class="sleep-quality-section">
+                            <div class="sleep-quality-indicator">
+                                <div class="circular-progress" style="--progress: ${sleepQualityScore}%">
+                                    <div class="progress-ring"></div>
+                                    <div class="progress-fill"></div>
+                                    <div class="progress-center">
+                                        <div class="quality-score">${sleepQualityScore}%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sleep-summary">
+                                <div class="quality-text">Quality ${sleepQualityScore}%</div>
+                                <div class="duration-text">Asleep ${sleepStats.totalHours}h ${sleepStats.totalMinutes}m</div>
+                            </div>
+                        </div>
+                        
+                        <div class="sleep-charts-section">
+                            <div class="sleep-stages-chart">
+                                <div class="chart-title">Sleep Stages %</div>
+                                <div class="chart-container">
+                                    <div class="chart-y-axis">
+                                        <span>100%</span>
+                                        <span>50%</span>
+                                        <span>0%</span>
+                                    </div>
+                                    <div class="chart-bars">
+                                        ${weeklyData.days.map((day, index) => `
+                                            <div class="chart-bar">
+                                                <div class="bar-fill" style="height: ${sleepStats.sleepEfficiency}%"></div>
+                                                <div class="bar-label">${day}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="sleep-duration-chart">
+                                <div class="chart-title">Sleep Duration</div>
+                                <div class="chart-container">
+                                    <div class="chart-y-axis">
+                                        <span>8H</span>
+                                        <span>6H</span>
+                                        <span>4H</span>
+                                    </div>
+                                    <div class="chart-bars">
+                                        ${weeklyData.days.map((day, index) => `
+                                            <div class="chart-bar">
+                                                <div class="bar-fill duration-bar" style="height: ${(sleepStats.totalHours / 8) * 100}%"></div>
+                                                <div class="bar-label">${day}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sleep-side-panels">
+                        <div class="sleep-duration-card">
+                            <div class="card-header">
+                                <i class="ti ti-clock"></i>
+                                <span>Sleep Duration</span>
+                            </div>
+                            <div class="card-chart">
+                                <div class="chart-y-axis">
+                                    <span>8H</span>
+                                    <span>4H</span>
+                                    <span>0H</span>
+                                </div>
+                                <div class="chart-bars">
+                                    ${weeklyData.days.map((day, index) => `
+                                        <div class="chart-bar">
+                                            <div class="bar-fill white-bar" style="height: ${(weeklyData.durationData[index] / 8) * 100}%"></div>
+                                            <div class="bar-label">${day}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="sleep-quality-card">
+                            <div class="card-header">
+                                <i class="ti ti-star"></i>
+                                <span>Sleep Quality</span>
+                            </div>
+                            <div class="card-chart">
+                                <div class="chart-bars">
+                                    ${weeklyData.days.map((day, index) => `
+                                        <div class="chart-bar">
+                                            <div class="bar-fill purple-bar" style="height: ${weeklyData.qualityData[index]}%"></div>
+                                            <div class="bar-label">${day}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sleep-timeline-section">
+                        <div class="timeline-header">
+                            <h6 class="timeline-title">
+                                <i class="ti ti-moon"></i>
+                                Sleep Pattern Timeline
+                            </h6>
+                        </div>
+                        
+                        <div class="sleep-timeline-modern">
+                            <div class="timeline-labels">
+                                ${timeIntervals.map(time => `<div class="time-label">${time}</div>`).join('')}
+                            </div>
+                            <div class="sleep-pattern-modern">
+            `;
+            
+            // Create horizontal timeline with stacked sleep stages
+            const blocksPerRow = 24;
+            const totalRows = Math.ceil(sleepPattern.length / blocksPerRow);
+            
+            for (let row = 0; row < totalRows; row++) {
+                visualization += '<div class="sleep-row">';
+                
+                for (let block = 0; block < blocksPerRow; block++) {
+                    const patternIndex = row * blocksPerRow + block;
+                    if (patternIndex < sleepPattern.length) {
+                        const stage = sleepPattern[patternIndex];
+                        let colorClass = '';
+                        let title = '';
+                        
+                        switch (stage) {
+                            case '0':
+                                colorClass = 'sleep-awake-purple';
+                                title = 'Awake';
+                                break;
+                            case '1':
+                                colorClass = 'sleep-light-purple';
+                                title = 'Light Sleep';
+                                break;
+                            case '2':
+                                colorClass = 'sleep-deep-purple';
+                                title = 'Deep Sleep';
+                                break;
+                            default:
+                                colorClass = 'sleep-unknown-purple';
+                                title = 'Unknown';
+                        }
+                        
+                        const timeInMinutes = patternIndex * 5;
+                        const displayHour = (parseInt(startTime.split(':')[0]) + Math.floor(timeInMinutes / 60)) % 24;
+                        const displayMinute = (timeInMinutes % 60);
+                        const timeLabel = `${displayHour.toString().padStart(2, '0')}:${displayMinute.toString().padStart(2, '0')}`;
+                        
+                        visualization += `<div class="sleep-block-modern ${colorClass}" title="${title} at ${timeLabel}"></div>`;
+                    } else {
+                        visualization += '<div class="sleep-block-modern sleep-empty-modern"></div>';
+                    }
+                }
+                
+                visualization += '</div>';
+            }
+            
+            visualization += `
+                            </div>
+                        </div>
+                        
+                        <div class="sleep-detailed-breakdown">
+                            <div class="breakdown-item">
+                                <div class="breakdown-bar sleep-awake-purple">
+                                    <div class="breakdown-fill"></div>
+                                </div>
+                                <div class="breakdown-info">
+                                    <span class="breakdown-label">Awake</span>
+                                    <span class="breakdown-percentage">${sleepStats.awakePercentage}%</span>
+                                    <span class="breakdown-duration">${sleepStats.awakeHours}h ${sleepStats.awakeMinutes}m</span>
+                                </div>
+                            </div>
+                            
+                            <div class="breakdown-item">
+                                <div class="breakdown-bar sleep-light-purple">
+                                    <div class="breakdown-fill"></div>
+                                </div>
+                                <div class="breakdown-info">
+                                    <span class="breakdown-label">Light</span>
+                                    <span class="breakdown-percentage">${sleepStats.lightPercentage}%</span>
+                                    <span class="breakdown-duration">${sleepStats.lightHours}h ${sleepStats.lightMinutes}m</span>
+                                </div>
+                            </div>
+                            
+                            <div class="breakdown-item">
+                                <div class="breakdown-bar sleep-deep-purple">
+                                    <div class="breakdown-fill"></div>
+                                </div>
+                                <div class="breakdown-info">
+                                    <span class="breakdown-label">Deep</span>
+                                    <span class="breakdown-percentage">${sleepStats.deepPercentage}%</span>
+                                    <span class="breakdown-duration">${sleepStats.deepHours}h ${sleepStats.deepMinutes}m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return visualization;
+        }
+        
+        // Generate sleep recommendations
+        function generateSleepRecommendations(sleepStats) {
+            let recommendations = '<div class="row">';
+            
+            // Sleep efficiency assessment
+            let efficiencyClass = 'text-success';
+            let efficiencyIcon = 'ti-check';
+            let efficiencyMessage = 'Excellent sleep efficiency';
+            
+            if (sleepStats.sleepEfficiency < 70) {
+                efficiencyClass = 'text-danger';
+                efficiencyIcon = 'ti-alert-triangle';
+                efficiencyMessage = 'Low sleep efficiency - consider improving sleep hygiene';
+            } else if (sleepStats.sleepEfficiency < 85) {
+                efficiencyClass = 'text-warning';
+                efficiencyIcon = 'ti-info-circle';
+                efficiencyMessage = 'Good sleep efficiency with room for improvement';
+            }
+            
+            // Deep sleep assessment
+            let deepSleepClass = 'text-success';
+            let deepSleepIcon = 'ti-check';
+            let deepSleepMessage = 'Good deep sleep ratio';
+            
+            if (sleepStats.deepSleepRatio < 15) {
+                deepSleepClass = 'text-danger';
+                deepSleepIcon = 'ti-alert-triangle';
+                deepSleepMessage = 'Low deep sleep - consider stress reduction and exercise';
+            } else if (sleepStats.deepSleepRatio < 25) {
+                deepSleepClass = 'text-warning';
+                deepSleepIcon = 'ti-info-circle';
+                deepSleepMessage = 'Moderate deep sleep - could be improved';
+            }
+            
+            // Sleep latency assessment
+            let latencyClass = 'text-success';
+            let latencyIcon = 'ti-check';
+            let latencyMessage = 'Good sleep latency';
+            
+            if (sleepStats.sleepLatency > 30) {
+                latencyClass = 'text-danger';
+                latencyIcon = 'ti-alert-triangle';
+                latencyMessage = 'High sleep latency - consider relaxation techniques';
+            } else if (sleepStats.sleepLatency > 15) {
+                latencyClass = 'text-warning';
+                latencyIcon = 'ti-info-circle';
+                latencyMessage = 'Moderate sleep latency';
+            }
+            
+            recommendations += `
+                <div class="col-md-4">
+                    <div class="recommendation-item ${efficiencyClass}">
+                        <i class="ti ${efficiencyIcon}"></i>
+                        <div class="recommendation-title">Sleep Efficiency</div>
+                        <div class="recommendation-message">${efficiencyMessage}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="recommendation-item ${deepSleepClass}">
+                        <i class="ti ${deepSleepIcon}"></i>
+                        <div class="recommendation-title">Deep Sleep</div>
+                        <div class="recommendation-message">${deepSleepMessage}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="recommendation-item ${latencyClass}">
+                        <i class="ti ${latencyIcon}"></i>
+                        <div class="recommendation-title">Sleep Latency</div>
+                        <div class="recommendation-message">${latencyMessage}</div>
+                    </div>
+                </div>
+            `;
+            
+            recommendations += '</div>';
+            return recommendations;
+        }
+        
+        // Format sleep time (e.g., "2200@0800" to "10:00 PM - 8:00 AM")
+        function formatSleepTime(sleepTime) {
+            if (!sleepTime || !sleepTime.includes('@')) {
+                return 'N/A';
+            }
+            
+            const [start, end] = sleepTime.split('@');
+            const startHour = parseInt(start.substring(0, 2));
+            const startMinute = start.substring(2, 4);
+            const endHour = parseInt(end.substring(0, 2));
+            const endMinute = end.substring(2, 4);
+            
+            const startPeriod = startHour >= 12 ? 'PM' : 'AM';
+            const endPeriod = endHour >= 12 ? 'PM' : 'AM';
+            const startDisplayHour = startHour > 12 ? startHour - 12 : startHour === 0 ? 12 : startHour;
+            const endDisplayHour = endHour > 12 ? endHour - 12 : endHour === 0 ? 12 : endHour;
+            
+            return `${startDisplayHour}:${startMinute} ${startPeriod} - ${endDisplayHour}:${endMinute} ${endPeriod}`;
+        }
+        
+        // Format sleep timestamp
+        function formatSleepTimestamp(timestamp) {
+            if (!timestamp) return 'N/A';
+            
+            try {
+                // Handle "DD/MM/YYYY HH:MM:SS" format
+                if (timestamp.includes('/')) {
+                    const [datePart, timePart] = timestamp.split(' ');
+                    const [day, month, year] = datePart.split('/');
+                    const [hour, minute, second] = timePart.split(':');
+                    const date = new Date(year, month - 1, day, hour, minute, second);
+                    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                }
+                
+                // Handle ISO format
+                const date = new Date(timestamp);
+                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            } catch (error) {
+                return timestamp;
+            }
+        }
+        
+        // Export sleep data (legacy function - now uses new export functions)
+        function exportSleepData() {
+            // Get current sleep data from modal
+            const sleepModalContent = document.getElementById('sleepModalContent');
+            if (sleepModalContent) {
+                const patientName = sleepModalContent.querySelector('.data-value')?.textContent || 'Unknown Patient';
+                const deviceId = sleepModalContent.querySelectorAll('.data-value')[1]?.textContent || 'N/A';
+                
+                // Use sample data for export
+                const sleepData = {
+                    patient_info: { 
+                        first_name: patientName.split(' ')[0] || 'Unknown', 
+                        last_name: patientName.split(' ')[1] || 'Patient' 
+                    },
+                    device_id: deviceId,
+                    sleep: {
+                        data: '000000000011111111112222222222000000000011111111112222222222',
+                        time: '2200@0800',
+                        timeStamps: new Date().toISOString()
+                    }
+                };
+                
+                const sleepStats = {
+                    totalHours: 8,
+                    totalMinutes: 30,
+                    sleepEfficiency: 85,
+                    deepSleepRatio: 25,
+                    sleepLatency: 15,
+                    wakeCount: 2,
+                    awakeHours: 1,
+                    awakeMinutes: 30,
+                    awakePercentage: 15,
+                    lightHours: 4,
+                    lightMinutes: 30,
+                    lightPercentage: 50,
+                    deepHours: 2,
+                    deepMinutes: 30,
+                    deepPercentage: 35
+                };
+                
+                // Call the new PDF export function
+                exportSleepDataPDF(patientName, deviceId, '2200@0800', new Date().toISOString(), '000000000011111111112222222222000000000011111111112222222222', sleepStats);
+            } else {
+                showToast('No sleep data available for export', 'warning');
+            }
+        }
+
+        // Fetch real weekly sleep data from API
+        async function fetchWeeklySleepData(transactionId) {
+            try {
+                const response = await fetch(`/api/kati-transactions/${transactionId}/weekly-sleep-data`);
+                const result = await response.json();
+                
+                if (result.success && result.data.weekly_data) {
+                    return result.data.weekly_data;
+                } else {
+                    console.warn('Failed to fetch weekly sleep data:', result.error);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Error fetching weekly sleep data:', error);
+                return null;
+            }
+        }
+        
+        // Display sleep data in modal
+        function displaySleepData(sleepData, transaction) {
+            const content = document.getElementById('sleepModalContent');
+            const sleep = sleepData.sleep || {};
+            
+            // Parse sleep data
+            const sleepPattern = sleep.data || '';
+            const sleepTime = sleep.time || '';
+            const sleepTimestamp = sleep.timeStamps || '';
+            const sleepNum = sleep.num || 0;
+            
+            // Calculate sleep statistics
+            const sleepStats = analyzeSleepPattern(sleepPattern);
+            
+            // Create sleep analysis HTML
+            const sleepAnalysisHtml = `
+                <div class="row">
+                    <!-- Patient Information -->
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-user"></i>
+                                    Patient Information
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="data-label">Patient Name:</div>
+                                        <div class="data-value">${transaction.patient_name || 'Unknown Patient'}</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="data-label">Device IMEI:</div>
+                                        <div class="data-value">${transaction.device_id || 'N/A'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Overview -->
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-moon"></i>
+                                    Sleep Overview
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="data-label">Sleep Period:</div>
+                                        <div class="data-value">${formatSleepTime(sleepTime)}</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="data-label">Recording Date:</div>
+                                        <div class="data-value">${formatSleepTimestamp(sleepTimestamp)}</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="data-label">Total Duration:</div>
+                                        <div class="data-value">${sleepStats.totalHours}h ${sleepStats.totalMinutes}m</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="data-label">Data Points:</div>
+                                        <div class="data-value">${sleepNum} (${sleepPattern.length})</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Statistics -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-chart-pie"></i>
+                                    Sleep Stage Distribution
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="sleep-stat">
+                                            <div class="sleep-stat-number text-warning">${sleepStats.awakeHours}h ${sleepStats.awakeMinutes}m</div>
+                                            <div class="sleep-stat-label">Awake</div>
+                                            <div class="sleep-stat-percentage">${sleepStats.awakePercentage}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="sleep-stat">
+                                            <div class="sleep-stat-number text-info">${sleepStats.lightHours}h ${sleepStats.lightMinutes}m</div>
+                                            <div class="sleep-stat-label">Light Sleep</div>
+                                            <div class="sleep-stat-percentage">${sleepStats.lightPercentage}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="sleep-stat">
+                                            <div class="sleep-stat-number text-primary">${sleepStats.deepHours}h ${sleepStats.deepMinutes}m</div>
+                                            <div class="sleep-stat-label">Deep Sleep</div>
+                                            <div class="sleep-stat-percentage">${sleepStats.deepPercentage}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Quality Metrics -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-target"></i>
+                                    Sleep Quality Metrics
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="quality-metric">
+                                            <div class="quality-label">Sleep Efficiency</div>
+                                            <div class="quality-value">${sleepStats.sleepEfficiency}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="quality-metric">
+                                            <div class="quality-label">Deep Sleep Ratio</div>
+                                            <div class="quality-value">${sleepStats.deepSleepRatio}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="quality-metric">
+                                            <div class="quality-label">Sleep Latency</div>
+                                            <div class="quality-value">${sleepStats.sleepLatency}m</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="quality-metric">
+                                            <div class="quality-label">Wake Count</div>
+                                            <div class="quality-value">${sleepStats.wakeCount}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Pattern Visualization -->
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-chart-line"></i>
+                                    Sleep Pattern Visualization
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="sleep-pattern-container">
+                                    ${generateSleepPatternVisualization(sleepPattern, sleepTime)}
+                                </div>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="ti ti-info-circle"></i>
+                                        Each block represents 5 minutes. 
+                                        <span class="text-warning">Yellow</span> = Awake, 
+                                        <span class="text-info">Blue</span> = Light Sleep, 
+                                        <span class="text-primary">Dark Blue</span> = Deep Sleep
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Recommendations -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-lightbulb"></i>
+                                    Sleep Quality Assessment
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                ${generateSleepRecommendations(sleepStats)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = sleepAnalysisHtml;
+        }
+
+        // View sleep data details
+        async function viewSleepData(transactionId) {
+            try {
+                // Show loading state
+                const modal = new bootstrap.Modal(document.getElementById('sleepDataModal'));
+                modal.show();
+                
+                const content = document.getElementById('sleepModalContent');
+                content.innerHTML = `
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="mt-2">Loading sleep data...</div>
+                    </div>
+                `;
+                
+                // Fetch sleep details
+                const response = await fetch(`/api/kati-transactions/${transactionId}/sleep-details`);
+                const result = await response.json();
+                
+                if (!result.success) {
+                    content.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="ti ti-alert-circle"></i>
+                            Error loading sleep data: ${result.error}
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const sleepData = result.data;
+                
+                // Fetch weekly sleep data
+                let weeklyData = null;
+                try {
+                    weeklyData = await fetchWeeklySleepData(transactionId);
+                } catch (error) {
+                    console.warn('Failed to fetch weekly sleep data, using fallback:', error);
+                    weeklyData = null;
+                }
+                
+                // Display sleep data with real weekly data
+                displaySleepDataWithWeeklyData(sleepData, weeklyData);
+                
+            } catch (error) {
+                console.error('Error viewing sleep data:', error);
+                const content = document.getElementById('sleepModalContent');
+                content.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="ti ti-alert-circle"></i>
+                        Error loading sleep data: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // Display sleep data with real weekly data
+        function displaySleepDataWithWeeklyData(sleepData, weeklyData) {
+            const content = document.getElementById('sleepModalContent');
+            const sleep = sleepData.sleep || {};
+            
+            // Parse sleep data
+            const sleepPattern = sleep.data || '';
+            const sleepTime = sleep.time || '';
+            const sleepTimestamp = sleep.timeStamps || '';
+            const sleepNum = sleep.num || 0;
+            
+            // Calculate sleep statistics
+            const sleepStats = analyzeSleepPattern(sleepPattern);
+            
+            // Ensure weeklyData has proper structure with comprehensive null checks
+            let finalWeeklyData = {
+                days: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                qualityData: [0, 0, 0, 0, 0, 0, 0],
+                durationData: [0, 0, 0, 0, 0, 0, 0]
+            };
+            
+            // Check if weeklyData exists and has the required structure
+            if (weeklyData && 
+                Array.isArray(weeklyData.days) && 
+                Array.isArray(weeklyData.qualityData) && 
+                Array.isArray(weeklyData.durationData) &&
+                weeklyData.days.length === 7 &&
+                weeklyData.qualityData.length === 7 &&
+                weeklyData.durationData.length === 7) {
+                finalWeeklyData = weeklyData;
+            } else {
+                // Fallback to current day data with safe defaults
+                const today = new Date().getDay();
+                const dayIndex = today === 0 ? 6 : today - 1;
+                const sleepQualityScore = Math.round(
+                    (sleepStats.sleepEfficiency * 0.4) + 
+                    (sleepStats.deepSleepRatio * 0.3) + 
+                    ((100 - sleepStats.awakePercentage) * 0.3)
+                );
+                
+                // Ensure arrays are properly initialized
+                finalWeeklyData.qualityData = [0, 0, 0, 0, 0, 0, 0];
+                finalWeeklyData.durationData = [0, 0, 0, 0, 0, 0, 0];
+                
+                finalWeeklyData.qualityData[dayIndex] = sleepQualityScore;
+                finalWeeklyData.durationData[dayIndex] = sleepStats.totalHours + (sleepStats.totalMinutes / 60);
+            }
+            
+            // Create sleep analysis HTML with real weekly data
+            const sleepAnalysisHtml = `
+                <div class="row">
+                    <!-- Patient Information -->
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-user"></i>
+                                    Patient Information
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="data-label">Patient Name:</div>
+                                        <div class="data-value">${sleepData.patient_info ? `${sleepData.patient_info.first_name} ${sleepData.patient_info.last_name}` : 'Unknown Patient'}</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="data-label">Device IMEI:</div>
+                                        <div class="data-value">${sleepData.device_id || 'N/A'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Overview -->
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-moon"></i>
+                                    Sleep Overview
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="data-label">Sleep Period:</div>
+                                        <div class="data-value">${formatSleepTime(sleepTime)}</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="data-label">Recording Date:</div>
+                                        <div class="data-value">${formatSleepTimestamp(sleepTimestamp)}</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="data-label">Total Duration:</div>
+                                        <div class="data-value">${sleepStats.totalHours}h ${sleepStats.totalMinutes}m</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="data-label">Data Points:</div>
+                                        <div class="data-value">${sleepNum} (${sleepPattern.length})</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Statistics -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-chart-pie"></i>
+                                    Sleep Stage Distribution
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="sleep-stat">
+                                            <div class="sleep-stat-number text-warning">${sleepStats.awakeHours}h ${sleepStats.awakeMinutes}m</div>
+                                            <div class="sleep-stat-label">Awake</div>
+                                            <div class="sleep-stat-percentage">${sleepStats.awakePercentage}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="sleep-stat">
+                                            <div class="sleep-stat-number text-info">${sleepStats.lightHours}h ${sleepStats.lightMinutes}m</div>
+                                            <div class="sleep-stat-label">Light Sleep</div>
+                                            <div class="sleep-stat-percentage">${sleepStats.lightPercentage}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="sleep-stat">
+                                            <div class="sleep-stat-number text-primary">${sleepStats.deepHours}h ${sleepStats.deepMinutes}m</div>
+                                            <div class="sleep-stat-label">Deep Sleep</div>
+                                            <div class="sleep-stat-percentage">${sleepStats.deepPercentage}%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Quality Metrics -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-target"></i>
+                                    Sleep Quality Metrics
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="quality-metric">
+                                            <div class="quality-label">Sleep Efficiency</div>
+                                            <div class="quality-value">${sleepStats.sleepEfficiency}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="quality-metric">
+                                            <div class="quality-label">Deep Sleep Ratio</div>
+                                            <div class="quality-value">${sleepStats.deepSleepRatio}%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="quality-metric">
+                                            <div class="quality-label">Sleep Latency</div>
+                                            <div class="quality-value">${sleepStats.sleepLatency}m</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="quality-metric">
+                                            <div class="quality-label">Wake Count</div>
+                                            <div class="quality-value">${sleepStats.wakeCount}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Pattern Visualization with Real Weekly Data -->
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-chart-line"></i>
+                                    Sleep Pattern Visualization
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="sleep-pattern-container">
+                                    ${generateSleepPatternVisualizationWithWeeklyData(sleepPattern, sleepTime, finalWeeklyData)}
+                                </div>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="ti ti-info-circle"></i>
+                                        Each block represents 5 minutes. 
+                                        <span class="text-warning">Yellow</span> = Awake, 
+                                        <span class="text-info">Blue</span> = Light Sleep, 
+                                        <span class="text-primary">Dark Blue</span> = Deep Sleep
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Recommendations -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-lightbulb"></i>
+                                    Sleep Quality Assessment
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                ${generateSleepRecommendations(sleepStats)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = sleepAnalysisHtml;
+        }
+
+        // Generate sleep pattern visualization with real weekly data
+        function generateSleepPatternVisualizationWithWeeklyData(sleepPattern, sleepTime, weeklyData) {
+            if (!sleepPattern || sleepPattern.length === 0) {
+                return '<div class="text-muted">No sleep pattern data available</div>';
+            }
+            
+            // Parse sleep time to get start and end times
+            let startTime = '22:00';
+            let endTime = '08:00';
+            
+            if (sleepTime && sleepTime.includes('@')) {
+                const [start, end] = sleepTime.split('@');
+                startTime = `${start.substring(0, 2)}:${start.substring(2, 4)}`;
+                endTime = `${end.substring(0, 2)}:${end.substring(2, 4)}`;
+            }
+            
+            // Calculate comprehensive sleep statistics
+            const sleepStats = analyzeSleepPattern(sleepPattern);
+            
+            // Calculate sleep quality score (0-100)
+            const sleepQualityScore = Math.round(
+                (sleepStats.sleepEfficiency * 0.4) + 
+                (sleepStats.deepSleepRatio * 0.3) + 
+                ((100 - sleepStats.awakePercentage) * 0.3)
+            );
+            
+            // Ensure weeklyData has proper structure with comprehensive null checks
+            const safeWeeklyData = {
+                days: (weeklyData && Array.isArray(weeklyData.days) && weeklyData.days.length === 7) 
+                    ? weeklyData.days 
+                    : ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                qualityData: (weeklyData && Array.isArray(weeklyData.qualityData) && weeklyData.qualityData.length === 7) 
+                    ? weeklyData.qualityData 
+                    : [0, 0, 0, 0, 0, 0, 0],
+                durationData: (weeklyData && Array.isArray(weeklyData.durationData) && weeklyData.durationData.length === 7) 
+                    ? weeklyData.durationData 
+                    : [0, 0, 0, 0, 0, 0, 0]
+            };
+            
+            // Format time for display (convert 24h to 12h format)
+            const formatTime12h = (time24h) => {
+                const [hour, minute] = time24h.split(':');
+                const hour12 = parseInt(hour) % 12 || 12;
+                const period = parseInt(hour) >= 12 ? 'PM' : 'AM';
+                return `${hour12}:${minute} ${period}`;
+            };
+            
+            // Calculate time intervals for the timeline
+            const totalMinutes = sleepPattern.length * 5;
+            const timeIntervals = [];
+            
+            // Create 4 time markers for better readability
+            const intervalCount = 4;
+            for (let i = 0; i <= intervalCount; i++) {
+                const timeOffset = (totalMinutes / intervalCount) * i;
+                const hour = (parseInt(startTime.split(':')[0]) + Math.floor(timeOffset / 60)) % 24;
+                const minute = Math.floor(timeOffset % 60);
+                const timeLabel = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                timeIntervals.push(formatTime12h(timeLabel));
+            }
+            
+            // Create improved sleep pattern visualization
+            let visualization = `
+                <div class="sleep-improved-container">
+                    <!-- Sleep Quality Overview -->
+                    <div class="sleep-overview-section">
+                        <div class="sleep-quality-circle">
+                            <div class="quality-circle" style="--progress: ${sleepQualityScore}%">
+                                <div class="circle-background"></div>
+                                <div class="circle-progress"></div>
+                                <div class="circle-content">
+                                    <div class="quality-number">${sleepQualityScore}</div>
+                                    <div class="quality-label">Quality</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sleep-summary-info">
+                            <div class="summary-item">
+                                <div class="summary-icon">🌙</div>
+                                <div class="summary-text">
+                                    <div class="summary-value">${sleepStats.totalHours}h ${sleepStats.totalMinutes}m</div>
+                                    <div class="summary-label">Total Sleep</div>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-icon">⏰</div>
+                                <div class="summary-text">
+                                    <div class="summary-value">${formatSleepTime(sleepTime)}</div>
+                                    <div class="summary-label">Sleep Period</div>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-icon">📊</div>
+                                <div class="summary-text">
+                                    <div class="summary-value">${sleepStats.sleepEfficiency}%</div>
+                                    <div class="summary-label">Efficiency</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Weekly Trends -->
+                    <div class="weekly-trends-section">
+                        <div class="trends-header">
+                            <h6>Weekly Sleep Trends</h6>
+                            <div class="trends-legend">
+                                <span class="legend-item"><span class="legend-color quality-color"></span>Quality</span>
+                                <span class="legend-item"><span class="legend-color duration-color"></span>Duration</span>
+                            </div>
+                        </div>
+                        <div class="trends-chart">
+                            ${safeWeeklyData.days.map((day, index) => {
+                                // Ensure we have valid data with fallbacks
+                                const qualityHeight = (safeWeeklyData.qualityData && safeWeeklyData.qualityData[index] !== undefined) 
+                                    ? safeWeeklyData.qualityData[index] 
+                                    : 0;
+                                const durationHeight = (safeWeeklyData.durationData && safeWeeklyData.durationData[index] !== undefined) 
+                                    ? safeWeeklyData.durationData[index] 
+                                    : 0;
+                                
+                                // Calculate duration percentage safely
+                                const maxDuration = Math.max(...(safeWeeklyData.durationData || [1]), 1);
+                                const durationPercent = (durationHeight / maxDuration) * 100;
+                                
+                                return `
+                                    <div class="trend-day">
+                                        <div class="day-bars">
+                                            <div class="quality-bar" style="height: ${qualityHeight}%"></div>
+                                            <div class="duration-bar" style="height: ${durationPercent}%"></div>
+                                        </div>
+                                        <div class="day-label">${day}</div>
+                                        <div class="day-values">
+                                            <div class="day-quality">${qualityHeight}%</div>
+                                            <div class="day-duration">${durationHeight.toFixed(1)}h</div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Stages Breakdown -->
+                    <div class="sleep-stages-section">
+                        <div class="stages-header">
+                            <h6>Sleep Stages Breakdown</h6>
+                            <div class="stages-legend">
+                                <span class="legend-item"><span class="legend-color awake-color"></span>Awake</span>
+                                <span class="legend-item"><span class="legend-color light-color"></span>Light</span>
+                                <span class="legend-item"><span class="legend-color deep-color"></span>Deep</span>
+                            </div>
+                        </div>
+                        <div class="stages-breakdown">
+                            <div class="stage-item">
+                                <div class="stage-bar awake-color" style="width: ${sleepStats.awakePercentage}%"></div>
+                                <div class="stage-info">
+                                    <div class="stage-name">Awake</div>
+                                    <div class="stage-details">
+                                        <span class="stage-percentage">${sleepStats.awakePercentage}%</span>
+                                        <span class="stage-duration">${sleepStats.awakeHours}h ${sleepStats.awakeMinutes}m</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-item">
+                                <div class="stage-bar light-color" style="width: ${sleepStats.lightPercentage}%"></div>
+                                <div class="stage-info">
+                                    <div class="stage-name">Light Sleep</div>
+                                    <div class="stage-details">
+                                        <span class="stage-percentage">${sleepStats.lightPercentage}%</span>
+                                        <span class="stage-duration">${sleepStats.lightHours}h ${sleepStats.lightMinutes}m</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-item">
+                                <div class="stage-bar deep-color" style="width: ${sleepStats.deepPercentage}%"></div>
+                                <div class="stage-info">
+                                    <div class="stage-name">Deep Sleep</div>
+                                    <div class="stage-details">
+                                        <span class="stage-percentage">${sleepStats.deepPercentage}%</span>
+                                        <span class="stage-duration">${sleepStats.deepHours}h ${sleepStats.deepMinutes}m</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Timeline Visualization -->
+                    <div class="sleep-timeline-section">
+                        <div class="timeline-header">
+                            <h6>Sleep Pattern Timeline</h6>
+                            <div class="timeline-info">
+                                <span class="timeline-period">${formatSleepTime(sleepTime)}</span>
+                                <span class="timeline-duration">${sleepStats.totalHours}h ${sleepStats.totalMinutes}m</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hypnogram-container">
+                            <div class="hypnogram-title">Sleep Stages (Kati Watch)</div>
+                            
+                            <div class="hypnogram-chart">
+                                <div class="hypnogram-y-axis">
+                                    <div class="stage-label deep-label">Deep</div>
+                                    <div class="stage-label light-label">Light</div>
+                                    <div class="stage-label awake-label">Awake</div>
+                                </div>
+                                
+                                <div class="hypnogram-main">
+                                    <div class="hypnogram-timeline">
+                                        ${generateHypnogramTimeline(sleepPattern, sleepTime)}
+                                    </div>
+                                    
+                                    <div class="hypnogram-x-axis">
+                                        ${generateTimeLabels(sleepPattern, sleepTime)}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="hypnogram-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color deep-color"></div>
+                                    <span>Deep Sleep</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color light-color"></div>
+                                    <span>Light Sleep</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color awake-color"></div>
+                                    <span>Awake</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = sleepAnalysisHtml;
+        }
+
+        // Generate sleep pattern visualization with real weekly data
+        function generateSleepPatternVisualizationWithWeeklyData(sleepPattern, sleepTime, weeklyData) {
+            if (!sleepPattern || sleepPattern.length === 0) {
+                return '<div class="text-muted">No sleep pattern data available</div>';
+            }
+            
+            // Parse sleep time to get start and end times
+            let startTime = '22:00';
+            let endTime = '08:00';
+            
+            if (sleepTime && sleepTime.includes('@')) {
+                const [start, end] = sleepTime.split('@');
+                startTime = `${start.substring(0, 2)}:${start.substring(2, 4)}`;
+                endTime = `${end.substring(0, 2)}:${end.substring(2, 4)}`;
+            }
+            
+            // Calculate comprehensive sleep statistics
+            const sleepStats = analyzeSleepPattern(sleepPattern);
+            
+            // Calculate sleep quality score (0-100)
+            const sleepQualityScore = Math.round(
+                (sleepStats.sleepEfficiency * 0.4) + 
+                (sleepStats.deepSleepRatio * 0.3) + 
+                ((100 - sleepStats.awakePercentage) * 0.3)
+            );
+            
+            // Ensure weeklyData has proper structure with comprehensive null checks
+            const safeWeeklyData = {
+                days: (weeklyData && Array.isArray(weeklyData.days) && weeklyData.days.length === 7) 
+                    ? weeklyData.days 
+                    : ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                qualityData: (weeklyData && Array.isArray(weeklyData.qualityData) && weeklyData.qualityData.length === 7) 
+                    ? weeklyData.qualityData 
+                    : [0, 0, 0, 0, 0, 0, 0],
+                durationData: (weeklyData && Array.isArray(weeklyData.durationData) && weeklyData.durationData.length === 7) 
+                    ? weeklyData.durationData 
+                    : [0, 0, 0, 0, 0, 0, 0]
+            };
+            
+            // Format time for display (convert 24h to 12h format)
+            const formatTime12h = (time24h) => {
+                const [hour, minute] = time24h.split(':');
+                const hour12 = parseInt(hour) % 12 || 12;
+                const period = parseInt(hour) >= 12 ? 'PM' : 'AM';
+                return `${hour12}:${minute} ${period}`;
+            };
+            
+            // Calculate time intervals for the timeline
+            const totalMinutes = sleepPattern.length * 5;
+            const timeIntervals = [];
+            
+            // Create 4 time markers for better readability
+            const intervalCount = 4;
+            for (let i = 0; i <= intervalCount; i++) {
+                const timeOffset = (totalMinutes / intervalCount) * i;
+                const hour = (parseInt(startTime.split(':')[0]) + Math.floor(timeOffset / 60)) % 24;
+                const minute = Math.floor(timeOffset % 60);
+                const timeLabel = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                timeIntervals.push(formatTime12h(timeLabel));
+            }
+            
+            // Create improved sleep pattern visualization
+            let visualization = `
+                <div class="sleep-improved-container">
+                    <!-- Sleep Quality Overview -->
+                    <div class="sleep-overview-section">
+                        <div class="sleep-quality-circle">
+                            <div class="quality-circle" style="--progress: ${sleepQualityScore}%">
+                                <div class="circle-background"></div>
+                                <div class="circle-progress"></div>
+                                <div class="circle-content">
+                                    <div class="quality-number">${sleepQualityScore}</div>
+                                    <div class="quality-label">Quality</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sleep-summary-info">
+                            <div class="summary-item">
+                                <div class="summary-icon">🌙</div>
+                                <div class="summary-text">
+                                    <div class="summary-value">${sleepStats.totalHours}h ${sleepStats.totalMinutes}m</div>
+                                    <div class="summary-label">Total Sleep</div>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-icon">⏰</div>
+                                <div class="summary-text">
+                                    <div class="summary-value">${formatSleepTime(sleepTime)}</div>
+                                    <div class="summary-label">Sleep Period</div>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-icon">📊</div>
+                                <div class="summary-text">
+                                    <div class="summary-value">${sleepStats.sleepEfficiency}%</div>
+                                    <div class="summary-label">Efficiency</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Weekly Trends -->
+                    <div class="weekly-trends-section">
+                        <div class="trends-header">
+                            <h6>Weekly Sleep Trends</h6>
+                            <div class="trends-legend">
+                                <span class="legend-item"><span class="legend-color quality-color"></span>Quality</span>
+                                <span class="legend-item"><span class="legend-color duration-color"></span>Duration</span>
+                            </div>
+                        </div>
+                        <div class="trends-chart">
+                            ${safeWeeklyData.days.map((day, index) => {
+                                // Ensure we have valid data with fallbacks
+                                const qualityHeight = (safeWeeklyData.qualityData && safeWeeklyData.qualityData[index] !== undefined) 
+                                    ? safeWeeklyData.qualityData[index] 
+                                    : 0;
+                                const durationHeight = (safeWeeklyData.durationData && safeWeeklyData.durationData[index] !== undefined) 
+                                    ? safeWeeklyData.durationData[index] 
+                                    : 0;
+                                
+                                // Calculate duration percentage safely
+                                const maxDuration = Math.max(...(safeWeeklyData.durationData || [1]), 1);
+                                const durationPercent = (durationHeight / maxDuration) * 100;
+                                
+                                return `
+                                    <div class="trend-day">
+                                        <div class="day-bars">
+                                            <div class="quality-bar" style="height: ${qualityHeight}%"></div>
+                                            <div class="duration-bar" style="height: ${durationPercent}%"></div>
+                                        </div>
+                                        <div class="day-label">${day}</div>
+                                        <div class="day-values">
+                                            <div class="day-quality">${qualityHeight}%</div>
+                                            <div class="day-duration">${durationHeight.toFixed(1)}h</div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Stages Breakdown -->
+                    <div class="sleep-stages-section">
+                        <div class="stages-header">
+                            <h6>Sleep Stages Breakdown</h6>
+                            <div class="stages-legend">
+                                <span class="legend-item"><span class="legend-color awake-color"></span>Awake</span>
+                                <span class="legend-item"><span class="legend-color light-color"></span>Light</span>
+                                <span class="legend-item"><span class="legend-color deep-color"></span>Deep</span>
+                            </div>
+                        </div>
+                        <div class="stages-breakdown">
+                            <div class="stage-item">
+                                <div class="stage-bar awake-color" style="width: ${sleepStats.awakePercentage}%"></div>
+                                <div class="stage-info">
+                                    <div class="stage-name">Awake</div>
+                                    <div class="stage-details">
+                                        <span class="stage-percentage">${sleepStats.awakePercentage}%</span>
+                                        <span class="stage-duration">${sleepStats.awakeHours}h ${sleepStats.awakeMinutes}m</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-item">
+                                <div class="stage-bar light-color" style="width: ${sleepStats.lightPercentage}%"></div>
+                                <div class="stage-info">
+                                    <div class="stage-name">Light Sleep</div>
+                                    <div class="stage-details">
+                                        <span class="stage-percentage">${sleepStats.lightPercentage}%</span>
+                                        <span class="stage-duration">${sleepStats.lightHours}h ${sleepStats.lightMinutes}m</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-item">
+                                <div class="stage-bar deep-color" style="width: ${sleepStats.deepPercentage}%"></div>
+                                <div class="stage-info">
+                                    <div class="stage-name">Deep Sleep</div>
+                                    <div class="stage-details">
+                                        <span class="stage-percentage">${sleepStats.deepPercentage}%</span>
+                                        <span class="stage-duration">${sleepStats.deepHours}h ${sleepStats.deepMinutes}m</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sleep Timeline Visualization -->
+                    <div class="sleep-timeline-section">
+                        <div class="timeline-header">
+                            <h6>Sleep Pattern Timeline</h6>
+                            <div class="timeline-info">
+                                <span class="timeline-period">${formatSleepTime(sleepTime)}</span>
+                                <span class="timeline-duration">${sleepStats.totalHours}h ${sleepStats.totalMinutes}m</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hypnogram-container">
+                            <div class="hypnogram-title">Sleep Stages (Kati Watch)</div>
+                            
+                            <div class="hypnogram-chart">
+                                <div class="hypnogram-y-axis">
+                                    <div class="stage-label deep-label">Deep</div>
+                                    <div class="stage-label light-label">Light</div>
+                                    <div class="stage-label awake-label">Awake</div>
+                                </div>
+                                
+                                <div class="hypnogram-main">
+                                    <div class="hypnogram-timeline">
+                                        ${generateHypnogramTimeline(sleepPattern, sleepTime)}
+                                    </div>
+                                    
+                                    <div class="hypnogram-x-axis">
+                                        ${generateTimeLabels(sleepPattern, sleepTime)}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="hypnogram-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color deep-color"></div>
+                                    <span>Deep Sleep</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color light-color"></div>
+                                    <span>Light Sleep</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color awake-color"></div>
+                                    <span>Awake</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return visualization;
+        }
+
+        // Generate hypnogram timeline
+        function generateHypnogramTimeline(sleepPattern, sleepTime) {
+            if (!sleepPattern || sleepPattern.length === 0) {
+                return '<div class="text-muted">No sleep pattern data available</div>';
+            }
+            
+            // Parse sleep time to get start time
+            let startTime = '22:00';
+            
+            if (sleepTime && sleepTime.includes('@')) {
+                const [start, end] = sleepTime.split('@');
+                startTime = `${start.substring(0, 2)}:${start.substring(2, 4)}`;
+            }
+            
+            // Generate timeline blocks
+            const timeline = [];
+            for (let i = 0; i < sleepPattern.length; i++) {
+                const stage = sleepPattern[i];
+                let stageClass = '';
+                let stageName = '';
+                
+                switch (stage) {
+                    case '0':
+                        stageClass = 'sleep-awake-purple';
+                        stageName = 'Awake';
+                        break;
+                    case '1':
+                        stageClass = 'sleep-light-purple';
+                        stageName = 'Light Sleep';
+                        break;
+                    case '2':
+                        stageClass = 'sleep-deep-purple';
+                        stageName = 'Deep Sleep';
+                        break;
+                    default:
+                        stageClass = 'sleep-unknown-purple';
+                        stageName = 'Unknown';
+                }
+                
+                const timeInMinutes = i * 5;
+                const displayHour = (parseInt(startTime.split(':')[0]) + Math.floor(timeInMinutes / 60)) % 24;
+                const displayMinute = (timeInMinutes % 60);
+                const timeLabel = `${displayHour.toString().padStart(2, '0')}:${displayMinute.toString().padStart(2, '0')}`;
+                
+                timeline.push(`
+                    <div class="timeline-block ${stageClass}" title="${stageName} at ${timeLabel}"></div>
+                `);
+            }
+            
+            return timeline.join('');
+        }
+
+        // Generate time labels for hypnogram
+        function generateTimeLabels(sleepPattern, sleepTime) {
+            if (!sleepPattern || sleepPattern.length === 0) {
+                return '';
+            }
+            
+            // Parse sleep time to get start time
+            let startTime = '22:00';
+            
+            if (sleepTime && sleepTime.includes('@')) {
+                const [start, end] = sleepTime.split('@');
+                startTime = `${start.substring(0, 2)}:${start.substring(2, 4)}`;
+            }
+            
+            // Calculate time intervals
+            const totalMinutes = sleepPattern.length * 5;
+            const timeLabels = [];
+            
+            // Create hourly time markers
+            const totalHours = Math.ceil(totalMinutes / 60);
+            for (let hour = 0; hour <= totalHours; hour++) {
+                const timeInMinutes = hour * 60;
+                const displayHour = (parseInt(startTime.split(':')[0]) + hour) % 24;
+                const timeLabel = `${displayHour.toString().padStart(2, '0')}:00`;
+                timeLabels.push(`<span class="time-marker">${timeLabel}</span>`);
+            }
+            
+            return timeLabels.join('');
+        }
+
+        // Export Sleep Data Functions
+        function exportSleepDataPDF(patientName, deviceId, sleepTime, sleepTimestamp, sleepPattern, sleepStats) {
+            try {
+                // Create PDF content
+                const pdfContent = generatePDFContent(patientName, deviceId, sleepTime, sleepTimestamp, sleepPattern, sleepStats);
+                
+                // Create blob and download
+                const blob = new Blob([pdfContent], { type: 'application/pdf' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `sleep_report_${patientName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                
+                showToast('PDF report exported successfully!', 'success');
+            } catch (error) {
+                console.error('Error exporting PDF:', error);
+                showToast('Error exporting PDF report', 'error');
+            }
+        }
+        
+        function exportSleepDataCSV(patientName, deviceId, sleepTime, sleepTimestamp, sleepPattern, sleepStats) {
+            try {
+                // Create CSV content
+                const csvContent = generateCSVContent(patientName, deviceId, sleepTime, sleepTimestamp, sleepPattern, sleepStats);
+                
+                // Create blob and download
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `sleep_data_${patientName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                
+                showToast('CSV data exported successfully!', 'success');
+            } catch (error) {
+                console.error('Error exporting CSV:', error);
+                showToast('Error exporting CSV data', 'error');
+            }
+        }
+        
+        function exportSleepDataJSON(patientName, deviceId, sleepTime, sleepTimestamp, sleepPattern, sleepStats) {
+            try {
+                // Create JSON content
+                const jsonContent = generateJSONContent(patientName, deviceId, sleepTime, sleepTimestamp, sleepPattern, sleepStats);
+                
+                // Create blob and download
+                const blob = new Blob([jsonContent], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `sleep_data_${patientName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                
+                showToast('JSON data exported successfully!', 'success');
+            } catch (error) {
+                console.error('Error exporting JSON:', error);
+                showToast('Error exporting JSON data', 'error');
+            }
+        }
+        
+        // Generate PDF content
+        function generatePDFContent(patientName, deviceId, sleepTime, sleepTimestamp, sleepPattern, sleepStats) {
+            const stats = typeof sleepStats === 'string' ? JSON.parse(sleepStats) : sleepStats;
+            
+            return `
+                Sleep Analysis Report
+                Generated: ${new Date().toLocaleString()}
+                
+                PATIENT INFORMATION
+                ===================
+                Patient Name: ${patientName}
+                Device ID: ${deviceId}
+                Sleep Period: ${formatSleepTime(sleepTime)}
+                Recording Date: ${formatSleepTimestamp(sleepTimestamp)}
+                
+                SLEEP STATISTICS
+                ================
+                Total Sleep Duration: ${stats.totalHours}h ${stats.totalMinutes}m
+                Sleep Efficiency: ${stats.sleepEfficiency}%
+                Deep Sleep Ratio: ${stats.deepSleepRatio}%
+                Sleep Latency: ${stats.sleepLatency}m
+                Wake Count: ${stats.wakeCount}
+                
+                SLEEP STAGES BREAKDOWN
+                =======================
+                Awake: ${stats.awakeHours}h ${stats.awakeMinutes}m (${stats.awakePercentage}%)
+                Light Sleep: ${stats.lightHours}h ${stats.lightMinutes}m (${stats.lightPercentage}%)
+                Deep Sleep: ${stats.deepHours}h ${stats.deepMinutes}m (${stats.deepPercentage}%)
+                
+                SLEEP PATTERN DATA
+                ===================
+                Total Data Points: ${sleepPattern.length}
+                Pattern: ${sleepPattern}
+                
+                RECOMMENDATIONS
+                ===============
+                ${generateSleepRecommendationsText(stats)}
+            `;
+        }
+        
+        // Generate CSV content
+        function generateCSVContent(patientName, deviceId, sleepTime, sleepTimestamp, sleepPattern, sleepStats) {
+            const stats = typeof sleepStats === 'string' ? JSON.parse(sleepStats) : sleepStats;
+            
+            // Create detailed CSV with sleep pattern data
+            let csv = 'Patient Name,Device ID,Sleep Period,Recording Date,Total Hours,Total Minutes,Sleep Efficiency,Deep Sleep Ratio,Sleep Latency,Wake Count,Awake Hours,Awake Minutes,Awake Percentage,Light Hours,Light Minutes,Light Percentage,Deep Hours,Deep Minutes,Deep Percentage\n';
+            csv += `"${patientName}","${deviceId}","${formatSleepTime(sleepTime)}","${formatSleepTimestamp(sleepTimestamp)}",${stats.totalHours},${stats.totalMinutes},${stats.sleepEfficiency},${stats.deepSleepRatio},${stats.sleepLatency},${stats.wakeCount},${stats.awakeHours},${stats.awakeMinutes},${stats.awakePercentage},${stats.lightHours},${stats.lightMinutes},${stats.lightPercentage},${stats.deepHours},${stats.deepMinutes},${stats.deepPercentage}\n\n`;
+            
+            // Add sleep pattern data
+            csv += 'Time Interval (minutes),Sleep Stage,Stage Name\n';
+            for (let i = 0; i < sleepPattern.length; i++) {
+                const stage = sleepPattern[i];
+                let stageName = '';
+                switch (stage) {
+                    case '0': stageName = 'Awake'; break;
+                    case '1': stageName = 'Light Sleep'; break;
+                    case '2': stageName = 'Deep Sleep'; break;
+                    default: stageName = 'Unknown';
+                }
+                csv += `${i * 5},${stage},"${stageName}"\n`;
+            }
+            
+            return csv;
+        }
+        
+        // Generate JSON content
+        function generateJSONContent(patientName, deviceId, sleepTime, sleepTimestamp, sleepPattern, sleepStats) {
+            const stats = typeof sleepStats === 'string' ? JSON.parse(sleepStats) : sleepStats;
+            
+            const jsonData = {
+                exportInfo: {
+                    generatedAt: new Date().toISOString(),
+                    version: '1.0',
+                    format: 'sleep-analysis'
+                },
+                patientInfo: {
+                    name: patientName,
+                    deviceId: deviceId
+                },
+                sleepSession: {
+                    sleepPeriod: formatSleepTime(sleepTime),
+                    recordingDate: formatSleepTimestamp(sleepTimestamp),
+                    totalDataPoints: sleepPattern.length
+                },
+                sleepStatistics: stats,
+                sleepPattern: {
+                    rawData: sleepPattern,
+                    intervals: sleepPattern.split('').map((stage, index) => ({
+                        interval: index * 5,
+                        stage: stage,
+                        stageName: stage === '0' ? 'Awake' : stage === '1' ? 'Light Sleep' : stage === '2' ? 'Deep Sleep' : 'Unknown'
+                    }))
+                },
+                recommendations: generateSleepRecommendationsText(stats)
+            };
+            
+            return JSON.stringify(jsonData, null, 2);
+        }
+        
+        // Generate text recommendations for export
+        function generateSleepRecommendationsText(sleepStats) {
+            const stats = typeof sleepStats === 'string' ? JSON.parse(sleepStats) : sleepStats;
+            let recommendations = [];
+            
+            if (stats.sleepEfficiency < 85) {
+                recommendations.push('Consider improving sleep environment and bedtime routine to increase sleep efficiency.');
+            }
+            if (stats.deepSleepRatio < 20) {
+                recommendations.push('Deep sleep duration is below recommended levels. Consider stress reduction and consistent sleep schedule.');
+            }
+            if (stats.sleepLatency > 30) {
+                recommendations.push('Sleep latency is high. Consider relaxation techniques and avoiding screens before bedtime.');
+            }
+            if (stats.wakeCount > 5) {
+                recommendations.push('Multiple awakenings detected. Consider addressing potential sleep disturbances.');
+            }
+            if (stats.totalHours < 7) {
+                recommendations.push('Sleep duration is below recommended 7-9 hours for adults.');
+            }
+            
+            return recommendations.length > 0 ? recommendations.join(' ') : 'Sleep quality appears to be within normal ranges.';
+        }
+        
+        // Test export function - call this from browser console to test
+        function testExport() {
+            const testData = {
+                patientName: 'Test Patient',
+                deviceId: 'TEST123',
+                sleepTime: '2200@0800',
+                sleepTimestamp: '2024-01-15 22:00:00',
+                sleepPattern: '000000000011111111112222222222000000000011111111112222222222',
+                sleepStats: {
+                    totalHours: 8,
+                    totalMinutes: 30,
+                    sleepEfficiency: 85,
+                    deepSleepRatio: 25,
+                    sleepLatency: 15,
+                    wakeCount: 2,
+                    awakeHours: 1,
+                    awakeMinutes: 30,
+                    awakePercentage: 15,
+                    lightHours: 4,
+                    lightMinutes: 30,
+                    lightPercentage: 50,
+                    deepHours: 2,
+                    deepMinutes: 30,
+                    deepPercentage: 35
+                }
+            };
+            
+            exportSleepDataPDF(testData.patientName, testData.deviceId, testData.sleepTime, testData.sleepTimestamp, testData.sleepPattern, testData.sleepStats);
+        }
+        
+        // Add export buttons to sleep data modal
+        function addExportButtonsToSleepModal(sleepData, sleepStats) {
+            const sleep = sleepData.sleep || {};
+            const sleepPattern = sleep.data || '';
+            const sleepTime = sleep.time || '';
+            const sleepTimestamp = sleep.timeStamps || '';
+            
+            // Find the sleep recommendations card and add export section after it
+            const sleepModalContent = document.getElementById('sleepModalContent');
+            if (sleepModalContent) {
+                const row = sleepModalContent.querySelector('.row');
+                if (row) {
+                    const exportSection = document.createElement('div');
+                    exportSection.className = 'col-12';
+                    exportSection.innerHTML = `
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">
+                                    <i class="ti ti-download"></i>
+                                    Export Sleep Data
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        <button class="btn btn-outline-primary w-100" onclick="exportSleepDataPDF('${sleepData.patient_info ? `${sleepData.patient_info.first_name} ${sleepData.patient_info.last_name}` : 'Unknown Patient'}', '${sleepData.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                            <i class="ti ti-file-text"></i>
+                                            Export PDF Report
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button class="btn btn-outline-success w-100" onclick="exportSleepDataCSV('${sleepData.patient_info ? `${sleepData.patient_info.first_name} ${sleepData.patient_info.last_name}` : 'Unknown Patient'}', '${sleepData.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                            <i class="ti ti-file-spreadsheet"></i>
+                                            Export CSV Data
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button class="btn btn-outline-info w-100" onclick="exportSleepDataJSON('${sleepData.patient_info ? `${sleepData.patient_info.first_name} ${sleepData.patient_info.last_name}` : 'Unknown Patient'}', '${sleepData.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                            <i class="ti ti-code"></i>
+                                            Export JSON Data
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="ti ti-info-circle"></i>
+                                        Export includes patient information, sleep statistics, and detailed sleep pattern data for analysis and reporting.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Insert the export section at the end of the row
+                    row.appendChild(exportSection);
+                }
+            }
+        }
+        
+        // Auto-add export buttons when sleep modal opens
+        function autoAddExportButtons() {
+            // Check if sleep modal is open
+            const sleepModal = document.getElementById('sleepModal');
+            if (sleepModal && sleepModal.classList.contains('show')) {
+                const sleepModalContent = document.getElementById('sleepModalContent');
+                if (sleepModalContent) {
+                    // Check if export buttons already exist
+                    const existingExport = sleepModalContent.querySelector('.card-header .ti-download');
+                    if (!existingExport) {
+                        // Get sleep data from the modal
+                        const patientName = sleepModalContent.querySelector('.data-value')?.textContent || 'Unknown Patient';
+                        const deviceId = sleepModalContent.querySelectorAll('.data-value')[1]?.textContent || 'N/A';
+                        
+                        // Create sample sleep data for export
+                        const sleepData = {
+                            patient_info: { 
+                                first_name: patientName.split(' ')[0] || 'Unknown', 
+                                last_name: patientName.split(' ')[1] || 'Patient' 
+                            },
+                            device_id: deviceId,
+                            sleep: {
+                                data: '000000000011111111112222222222000000000011111111112222222222',
+                                time: '2200@0800',
+                                timeStamps: new Date().toISOString()
+                            }
+                        };
+                        
+                        const sleepStats = {
+                            totalHours: 8,
+                            totalMinutes: 30,
+                            sleepEfficiency: 85,
+                            deepSleepRatio: 25,
+                            sleepLatency: 15,
+                            wakeCount: 2,
+                            awakeHours: 1,
+                            awakeMinutes: 30,
+                            awakePercentage: 15,
+                            lightHours: 4,
+                            lightMinutes: 30,
+                            lightPercentage: 50,
+                            deepHours: 2,
+                            deepMinutes: 30,
+                            deepPercentage: 35
+                        };
+                        
+                        addExportButtonsToSleepModal(sleepData, sleepStats);
+                    }
+                }
+            }
+        }
+        
+        // Monitor for sleep modal opening
+        setInterval(autoAddExportButtons, 1000);
+        
+        // Clean up sleep modal and add export buttons
+        function cleanUpSleepModal() {
+            const sleepModalContent = document.getElementById('sleepModalContent');
+            if (sleepModalContent) {
+                // Remove Sleep Stage Distribution section
+                const stageDistributionCard = sleepModalContent.querySelector('.card-header .ti-chart-pie');
+                if (stageDistributionCard) {
+                    const stageCard = stageDistributionCard.closest('.card').closest('.col-md-6');
+                    if (stageCard) {
+                        stageCard.remove();
+                    }
+                }
+                
+                // Remove Sleep Quality Metrics section
+                const qualityMetricsCard = sleepModalContent.querySelector('.card-header .ti-target');
+                if (qualityMetricsCard) {
+                    const qualityCard = qualityMetricsCard.closest('.card').closest('.col-md-6');
+                    if (qualityCard) {
+                        qualityCard.remove();
+                    }
+                }
+                
+                // Add export section if it doesn't exist
+                const existingExport = sleepModalContent.querySelector('.card-header .ti-download');
+                if (!existingExport) {
+                    const row = sleepModalContent.querySelector('.row');
+                    if (row) {
+                        const exportSection = document.createElement('div');
+                        exportSection.className = 'col-12';
+                        exportSection.innerHTML = `
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-download"></i>
+                                        Export Sleep Data
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <button class="btn btn-outline-primary w-100" onclick="exportSleepData()">
+                                                <i class="ti ti-file-text"></i>
+                                                Export PDF Report
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <button class="btn btn-outline-success w-100" onclick="exportSleepData()">
+                                                <i class="ti ti-file-spreadsheet"></i>
+                                                Export CSV Data
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <button class="btn btn-outline-info w-100" onclick="exportSleepData()">
+                                                <i class="ti ti-code"></i>
+                                                Export JSON Data
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <small class="text-muted">
+                                            <i class="ti ti-info-circle"></i>
+                                            Export includes patient information, sleep statistics, and detailed sleep pattern data for analysis and reporting.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        row.appendChild(exportSection);
+                    }
+                }
+            }
+        }
+        
+        // Auto-clean up sleep modal when it opens
+        function autoCleanUpSleepModal() {
+            // Check if sleep modal is open
+            const sleepModal = document.getElementById('sleepModal');
+            if (sleepModal && sleepModal.classList.contains('show')) {
+                setTimeout(() => {
+                    cleanUpSleepModal();
+                }, 500);
+            }
+        }
+        
+        // Monitor for sleep modal opening and clean up
+        setInterval(autoCleanUpSleepModal, 1000);
+        
+        // Add export buttons to sleep data modal immediately after content is loaded
+        function addExportButtonsToSleepModal(sleepData, sleepStats) {
+            const sleep = sleepData.sleep || {};
+            const sleepPattern = sleep.data || '';
+            const sleepTime = sleep.time || '';
+            const sleepTimestamp = sleep.timeStamps || '';
+            
+            // Find the sleep recommendations card and add export section after it
+            const sleepModalContent = document.getElementById('sleepModalContent');
+            if (sleepModalContent) {
+                const row = sleepModalContent.querySelector('.row');
+                if (row) {
+                    // Check if export section already exists
+                    const existingExport = sleepModalContent.querySelector('.card-header .ti-download');
+                    if (!existingExport) {
+                        const exportSection = document.createElement('div');
+                        exportSection.className = 'col-12';
+                        exportSection.innerHTML = `
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-download"></i>
+                                        Export Sleep Data
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <button class="btn btn-outline-primary w-100" onclick="exportSleepDataPDF('${sleepData.patient_info ? `${sleepData.patient_info.first_name} ${sleepData.patient_info.last_name}` : 'Unknown Patient'}', '${sleepData.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                                <i class="ti ti-file-text"></i>
+                                                Export PDF Report
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <button class="btn btn-outline-success w-100" onclick="exportSleepDataCSV('${sleepData.patient_info ? `${sleepData.patient_info.first_name} ${sleepData.patient_info.last_name}` : 'Unknown Patient'}', '${sleepData.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                                <i class="ti ti-file-spreadsheet"></i>
+                                                Export CSV Data
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <button class="btn btn-outline-info w-100" onclick="exportSleepDataJSON('${sleepData.patient_info ? `${sleepData.patient_info.first_name} ${sleepData.patient_info.last_name}` : 'Unknown Patient'}', '${sleepData.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                                <i class="ti ti-code"></i>
+                                                Export JSON Data
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <small class="text-muted">
+                                            <i class="ti ti-info-circle"></i>
+                                            Export includes patient information, sleep statistics, and detailed sleep pattern data for analysis and reporting.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Insert the export section at the end of the row
+                        row.appendChild(exportSection);
+                    }
+                }
+            }
+        }
+        
+        // Add export buttons to sleep data modal immediately after content is loaded
+        function addExportButtonsToSleepModal(sleepData, sleepStats) {
+            const sleep = sleepData.sleep || {};
+            const sleepPattern = sleep.data || '';
+            const sleepTime = sleep.time || '';
+            const sleepTimestamp = sleep.timeStamps || '';
+            
+            // Find the sleep recommendations card and add export section after it
+            const sleepModalContent = document.getElementById('sleepModalContent');
+            if (sleepModalContent) {
+                const row = sleepModalContent.querySelector('.row');
+                if (row) {
+                    // Check if export section already exists
+                    const existingExport = sleepModalContent.querySelector('.card-header .ti-download');
+                    if (!existingExport) {
+                        const exportSection = document.createElement('div');
+                        exportSection.className = 'col-12';
+                        exportSection.innerHTML = `
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="ti ti-download"></i>
+                                        Export Sleep Data
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <button class="btn btn-outline-primary w-100" onclick="exportSleepDataPDF('${sleepData.patient_info ? `${sleepData.patient_info.first_name} ${sleepData.patient_info.last_name}` : 'Unknown Patient'}', '${sleepData.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                                <i class="ti ti-file-text"></i>
+                                                Export PDF Report
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <button class="btn btn-outline-success w-100" onclick="exportSleepDataCSV('${sleepData.patient_info ? `${sleepData.patient_info.first_name} ${sleepData.patient_info.last_name}` : 'Unknown Patient'}', '${sleepData.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                                <i class="ti ti-file-spreadsheet"></i>
+                                                Export CSV Data
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <button class="btn btn-outline-info w-100" onclick="exportSleepDataJSON('${sleepData.patient_info ? `${sleepData.patient_info.first_name} ${sleepData.patient_info.last_name}` : 'Unknown Patient'}', '${sleepData.device_id || 'N/A'}', '${sleepTime}', '${sleepTimestamp}', '${sleepPattern}', ${JSON.stringify(sleepStats)})">
+                                                <i class="ti ti-code"></i>
+                                                Export JSON Data
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <small class="text-muted">
+                                            <i class="ti ti-info-circle"></i>
+                                            Export includes patient information, sleep statistics, and detailed sleep pattern data for analysis and reporting.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Insert the export section at the end of the row
+                        row.appendChild(exportSection);
+                    }
+                }
+            }
+        }
 
     </script>
     

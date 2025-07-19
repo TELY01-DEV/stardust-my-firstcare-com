@@ -162,19 +162,78 @@ class FHIRDataValidator:
                 transformed_data['category'] = 'survey'
                 
             elif topic == 'iMEDE_watch/sleepdata':
-                # Sleep data - currently has same structure as heartbeat
-                # Check if it has the expected sleep structure first
+                # Sleep data validation
                 if 'sleep' in data:
+                    # Proper sleep data structure
                     sleep = data['sleep']
                     if not isinstance(sleep, dict):
                         errors.append("'sleep' field must be an object")
                     else:
+                        # Validate sleep.timeStamps
+                        if 'timeStamps' in sleep:
+                            time_stamps = sleep['timeStamps']
+                            if not isinstance(time_stamps, str):
+                                errors.append("Sleep timeStamps must be a string")
+                            # Validate format: "DD/MM/YYYY HH:MM:SS"
+                            try:
+                                datetime.strptime(time_stamps, "%d/%m/%Y %H:%M:%S")
+                            except ValueError:
+                                warnings.append("Sleep timeStamps format should be DD/MM/YYYY HH:MM:SS")
+                        else:
+                            errors.append("Missing 'sleep.timeStamps' field")
+                        
+                        # Validate sleep.time (sleep period)
+                        if 'time' in sleep:
+                            sleep_time = sleep['time']
+                            if not isinstance(sleep_time, str):
+                                errors.append("Sleep time must be a string")
+                            # Validate format: "HHMM@HHMM" (e.g., "2200@0700")
+                            elif '@' not in sleep_time:
+                                warnings.append("Sleep time format should be HHMM@HHMM (e.g., 2200@0700)")
+                        else:
+                            errors.append("Missing 'sleep.time' field")
+                        
+                        # Validate sleep.data (sleep pattern)
                         if 'data' in sleep:
                             sleep_data = sleep['data']
                             if not isinstance(sleep_data, str):
                                 errors.append("Sleep data must be a string")
+                            else:
+                                # Validate sleep data contains only 0, 1, 2
+                                valid_chars = {'0', '1', '2'}
+                                if not all(char in valid_chars for char in sleep_data):
+                                    errors.append("Sleep data must contain only 0 (awake), 1 (light sleep), 2 (deep sleep)")
+                                # Each digit represents 5 minutes
+                                if len(sleep_data) > 0:
+                                    total_minutes = len(sleep_data) * 5
+                                    logger.info(f"Sleep tracking period: {total_minutes} minutes ({len(sleep_data)} data points)")
+                        else:
+                            errors.append("Missing 'sleep.data' field")
+                        
+                        # Validate sleep.num (total monitoring slots)
+                        if 'num' in sleep:
+                            sleep_num = sleep['num']
+                            if not isinstance(sleep_num, (int, float)):
+                                errors.append("Sleep num must be numeric")
+                            elif sleep_num <= 0:
+                                warnings.append("Sleep num should be positive")
+                            # Validate that num matches data length
+                            if 'data' in sleep and isinstance(sleep['data'], str):
+                                expected_length = len(sleep['data'])
+                                if sleep_num != expected_length:
+                                    warnings.append(f"Sleep num ({sleep_num}) doesn't match data length ({expected_length})")
+                        else:
+                            errors.append("Missing 'sleep.num' field")
+                    
+                    # Transform for FHIR
+                    transformed_data['resource_type'] = 'Observation'
+                    transformed_data['code'] = 'sleep-study'  # Sleep study LOINC code
+                    transformed_data['unit'] = 'sleep-stages'
+                    transformed_data['category'] = 'sleep'
+                    
                 else:
-                    # Handle sleep data with heartbeat-like structure
+                    # Handle sleep data with heartbeat-like structure (fallback)
+                    logger.warning("Sleep data received with heartbeat-like structure instead of proper sleep format")
                     if 'step' not in data:
                         warnings.append("Missing 'step' field")
                     else:
@@ -197,6 +256,12 @@ class FHIRDataValidator:
                             errors.append("'signalGSM' field must be numeric")
                         elif not (0 <= signal <= 100):
                             warnings.append("GSM signal outside valid range (0-100%)")
+                    
+                    # Transform for FHIR (as activity data)
+                    transformed_data['resource_type'] = 'Observation'
+                    transformed_data['code'] = 'activity-steps'  # Step count LOINC code
+                    transformed_data['unit'] = 'steps'
+                    transformed_data['category'] = 'activity'
                     
                     if 'workingMode' in data:
                         mode = data['workingMode']

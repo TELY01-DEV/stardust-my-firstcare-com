@@ -2722,7 +2722,7 @@ def get_kati_transactions():
             alarm['status'] = 'success'
             alarm['device_type'] = 'Kati_Watch'
         
-        # Combine and sort all transactions
+        # Combine and sort all transactions by timestamp
         all_transactions = kati_transactions + emergency_alarms
         all_transactions.sort(key=lambda x: x.get('timestamp', datetime.min), reverse=True)
         
@@ -2952,9 +2952,119 @@ def get_all_kati_devices():
             alarm['status'] = 'success'
             alarm['device_type'] = 'Kati_Watch'
         
-        # Combine and sort all transactions
+        # Combine and sort all transactions by timestamp
         all_transactions = kati_transactions + emergency_alarms
         all_transactions.sort(key=lambda x: x.get('timestamp', datetime.min), reverse=True)
+        
+        # Enhance transactions with patient information
+        enhanced_transactions = []
+        for transaction in all_transactions:
+            enhanced_transaction = transaction.copy()
+            
+            # Add hospital and ward information if patient_id exists
+            if transaction.get('patient_id'):
+                try:
+                    # Get patient information from patients collection
+                    patient = mqtt_monitor.db.patients.find_one({'_id': transaction['patient_id']})
+                    if patient:
+                        enhanced_transaction['patient_info'] = {
+                            'first_name': patient.get('first_name', ''),
+                            'last_name': patient.get('last_name', ''),
+                            'profile_image': patient.get('profile_image', ''),
+                            'hospital_info': {}
+                        }
+                        
+                        # Get hospital and ward information
+                        hospital_ward_data = patient.get('hospital_ward_data', {})
+                        if hospital_ward_data:
+                            # Handle different data structures
+                            if isinstance(hospital_ward_data, dict):
+                                hospital_id = hospital_ward_data.get('hospitalId')
+                                if hospital_id:
+                                    # Get hospital information from AMY.hospitals collection
+                                    hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
+                                    if hospital:
+                                        # Extract Thai hospital name from multi-language object
+                                        hospital_name_obj = hospital.get('name', {})
+                                        if isinstance(hospital_name_obj, list):
+                                            # Find Thai name in the list
+                                            thai_name = next((item.get('name', 'Unknown Hospital') for item in hospital_name_obj if item.get('code') == 'th'), 'Unknown Hospital')
+                                            enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = thai_name
+                                        else:
+                                            enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = hospital.get('name', 'Unknown Hospital')
+                                        enhanced_transaction['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
+                                        
+                                        # Get ward information from AMY.ward_lists collection
+                                        ward_list = hospital_ward_data.get('wardList', [])
+                                        if ward_list:
+                                            # Find the ward for this hospital
+                                            for ward in ward_list:
+                                                if ward.get('hospital_id') == hospital_id:
+                                                    ward_id = ward.get('ward_id')
+                                                    if ward_id:
+                                                        # Lookup ward name from AMY.ward_lists collection
+                                                        ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
+                                                        if ward_info:
+                                                            # Extract Thai ward name from multi-language object
+                                                            ward_name_obj = ward_info.get('name', {})
+                                                            if isinstance(ward_name_obj, list):
+                                                                # Find Thai name in the list
+                                                                thai_name = next((item.get('name', 'Unknown Ward') for item in ward_name_obj if item.get('code') == 'th'), 'Unknown Ward')
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = thai_name
+                                                            else:
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = ward_info.get('name', 'Unknown Ward')
+                                                            enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                        else:
+                                                            enhanced_transaction['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
+                                                            enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                    break
+                            elif isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
+                                # Handle case where hospital_ward_data is a list
+                                first_hospital = hospital_ward_data[0]
+                                if isinstance(first_hospital, dict):
+                                    hospital_id = first_hospital.get('hospitalId')
+                                    if hospital_id:
+                                        # Get hospital information from AMY.hospitals collection
+                                        hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
+                                        if hospital:
+                                            # Extract Thai hospital name from multi-language object
+                                            hospital_name_obj = hospital.get('name', {})
+                                            if isinstance(hospital_name_obj, list):
+                                                # Find Thai name in the list
+                                                thai_name = next((item.get('name', 'Unknown Hospital') for item in hospital_name_obj if item.get('code') == 'th'), 'Unknown Hospital')
+                                                enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = thai_name
+                                            else:
+                                                enhanced_transaction['patient_info']['hospital_info']['hospital_name'] = hospital.get('name', 'Unknown Hospital')
+                                            enhanced_transaction['patient_info']['hospital_info']['hospital_id'] = str(hospital_id)
+                                            
+                                            # Get ward information from AMY.ward_lists collection
+                                            ward_list = first_hospital.get('wardList', [])
+                                            if ward_list:
+                                                # Find the ward for this hospital
+                                                for ward in ward_list:
+                                                    if ward.get('hospital_id') == hospital_id:
+                                                        ward_id = ward.get('ward_id')
+                                                        if ward_id:
+                                                            # Lookup ward name from AMY.ward_lists collection
+                                                            ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
+                                                            if ward_info:
+                                                                # Extract Thai ward name from multi-language object
+                                                                ward_name_obj = ward_info.get('name', {})
+                                                                if isinstance(ward_name_obj, list):
+                                                                    # Find Thai name in the list
+                                                                    thai_name = next((item.get('name', 'Unknown Ward') for item in ward_name_obj if item.get('code') == 'th'), 'Unknown Ward')
+                                                                    enhanced_transaction['patient_info']['hospital_info']['ward_name'] = thai_name
+                                                                else:
+                                                                    enhanced_transaction['patient_info']['hospital_info']['ward_name'] = ward_info.get('name', 'Unknown Ward')
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                            else:
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
+                                                                enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
+                                                        break
+                except Exception as e:
+                    logger.warning(f"Error enhancing patient info for transaction {transaction.get('_id')}: {e}")
+            
+            enhanced_transactions.append(enhanced_transaction)
         
         # Convert ObjectIds to strings
         def convert_objectids(obj):
@@ -2974,38 +3084,52 @@ def get_all_kati_devices():
                     convert_objectids(item)
             return obj
         
-        all_transactions = convert_objectids(all_transactions)
+        enhanced_transactions = convert_objectids(enhanced_transactions)
+        
+        # Get total count for pagination
+        if data_filter == 'patient_only':
+            total_count = medical_data_collection.count_documents({
+                'device_type': 'Kati_Watch',
+                'timestamp': {'$gte': one_day_ago},
+                'patient_id': {'$exists': True, '$ne': None}
+            })
+        else:
+            total_count = medical_data_collection.count_documents({
+                'device_type': 'Kati_Watch',
+                'timestamp': {'$gte': one_day_ago}
+            })
         
         # Calculate statistics
-        mapped_count = len([t for t in all_transactions if t.get('patient_id')])
-        unmapped_count = len([t for t in all_transactions if not t.get('patient_id')])
-        unique_devices = set(t.get('device_id') for t in all_transactions if t.get('device_id'))
-        mapped_devices = set(t.get('device_id') for t in all_transactions if t.get('device_id') and t.get('patient_id'))
-        unmapped_devices = unique_devices - mapped_devices
+        mapped_count = len([t for t in enhanced_transactions if t.get('patient_id')])
+        unmapped_count = len([t for t in enhanced_transactions if not t.get('patient_id')])
         
         statistics = {
-            'total_transactions': len(all_transactions),
-            'mapped_transactions': mapped_count,
-            'unmapped_transactions': unmapped_count,
-            'total_devices': len(unique_devices),
-            'mapped_devices': len(mapped_devices),
-            'unmapped_devices': len(unmapped_devices),
+            'total_transactions': total_count,  # Use the actual total count from database
+            'mapped_devices': mapped_count,
+            'unmapped_devices': unmapped_count,
+            'active_devices': len(set(t.get('device_id') for t in enhanced_transactions if t.get('device_id'))),
             'success_rate': 100,  # All stored transactions are successful
             'topic_distribution': {},
             'emergency_count': len(emergency_alarms),
-            'filter_applied': 'all_devices',
+            'filter_applied': data_filter,
+            'pagination': {
+                'page': page,
+                'per_page': per_page,
+                'total_count': total_count,
+                'total_pages': (total_count + per_page - 1) // per_page
+            },
             'last_updated': datetime.now(timezone.utc).isoformat()
         }
         
         # Calculate topic distribution
-        for transaction in all_transactions:
+        for transaction in enhanced_transactions:
             topic = transaction.get('topic', 'unknown')
             statistics['topic_distribution'][topic] = statistics['topic_distribution'].get(topic, 0) + 1
         
         return jsonify({
             "success": True,
             "data": {
-                "transactions": all_transactions,
+                "transactions": enhanced_transactions,
                 "statistics": statistics
             }
         })
@@ -3537,6 +3661,429 @@ def get_batch_vital_signs_details(transaction_id):
         
     except Exception as e:
         logger.error(f"Error getting batch vital signs details: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/kati-transactions/<transaction_id>/sleep-details')
+@login_required
+def get_sleep_details(transaction_id):
+    """Get detailed sleep data for a specific transaction"""
+    try:
+        # Check if MongoDB connection is available
+        if mqtt_monitor.db is None:
+            return jsonify({
+                "success": False,
+                "error": "Database connection not available"
+            }), 503
+
+        # Get the transaction
+        medical_data_collection = mqtt_monitor.db['medical_data']
+        transaction = medical_data_collection.find_one({'_id': ObjectId(transaction_id)})
+        
+        if not transaction:
+            return jsonify({
+                "success": False,
+                "error": "Transaction not found"
+            }), 404
+        
+        # Check if this is a sleep data transaction
+        if transaction.get('event_type') != 'sleep_data':
+            return jsonify({
+                "success": False,
+                "error": "Transaction is not a sleep data record"
+            }), 400
+        
+        # Extract sleep data
+        sleep_data = transaction.get('data', {})
+        sleep_info = sleep_data.get('sleep', {})
+        
+        if not sleep_info:
+            return jsonify({
+                "success": False,
+                "error": "No sleep data found in transaction"
+            }), 404
+        
+        # Get enhanced patient info if available
+        patient_info = None
+        enhanced_patient_info = None
+        if transaction.get('patient_id'):
+            try:
+                patient = mqtt_monitor.db.patients.find_one({'_id': transaction['patient_id']})
+                if patient:
+                    # Basic patient info
+                    patient_info = {
+                        'first_name': patient.get('first_name', ''),
+                        'last_name': patient.get('last_name', ''),
+                        'profile_image': patient.get('profile_image', '')
+                    }
+                    
+                    # Enhanced patient info
+                    enhanced_patient_info = {
+                        'first_name': patient.get('first_name', ''),
+                        'last_name': patient.get('last_name', ''),
+                        'profile_image': patient.get('profile_image', ''),
+                        'date_of_birth': patient.get('date_of_birth'),
+                        'gender': patient.get('gender'),
+                        'mobile_phone': patient.get('mobile_phone'),
+                        'emergency_contact': patient.get('emergency_contact'),
+                        'underlying_conditions': patient.get('underlying_conditions', []),
+                        'allergies': patient.get('allergies', [])
+                    }
+                    
+                    # Add hospital and ward information if available
+                    if patient.get('hospital_ward_data'):
+                        hospital_ward_data = patient['hospital_ward_data']
+                        if isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
+                            hospital_info = hospital_ward_data[0]
+                            enhanced_patient_info['hospital_name'] = hospital_info.get('hospital_name', '')
+                            enhanced_patient_info['ward_name'] = hospital_info.get('ward_name', '')
+                        elif isinstance(hospital_ward_data, dict):
+                            enhanced_patient_info['hospital_name'] = hospital_ward_data.get('hospital_name', '')
+                            enhanced_patient_info['ward_name'] = hospital_ward_data.get('ward_name', '')
+                    
+            except Exception as e:
+                logger.warning(f"Error getting patient info: {e}")
+        
+        # Convert ObjectIds to strings
+        def convert_objectids(obj):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    if isinstance(value, dict):
+                        convert_objectids(value)
+                    elif isinstance(value, list):
+                        for item in value:
+                            convert_objectids(item)
+                    elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
+                        obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
+            elif isinstance(obj, list):
+                for item in obj:
+                    convert_objectids(item)
+            return obj
+        
+        # Convert the response data
+        response_data = {
+            'transaction_id': str(transaction['_id']),
+            'timestamp': transaction.get('timestamp'),
+            'device_id': transaction.get('device_id'),
+            'patient_info': patient_info,
+            'enhanced_patient_info': enhanced_patient_info,
+            'sleep': convert_objectids(sleep_info)
+        }
+        
+        return jsonify({
+            "success": True,
+            "data": response_data
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting sleep details: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/kati-transactions/<transaction_id>/weekly-sleep-data')
+@login_required
+def get_weekly_sleep_data(transaction_id):
+    """Get weekly sleep data for the patient associated with a transaction"""
+    try:
+        # Check if MongoDB connection is available
+        if mqtt_monitor.db is None:
+            return jsonify({
+                "success": False,
+                "error": "Database connection not available"
+            }), 503
+
+        # Get the transaction to find the patient
+        medical_data_collection = mqtt_monitor.db['medical_data']
+        transaction = medical_data_collection.find_one({'_id': ObjectId(transaction_id)})
+        
+        if not transaction:
+            return jsonify({
+                "success": False,
+                "error": "Transaction not found"
+            }), 404
+        
+        patient_id = transaction.get('patient_id')
+        if not patient_id:
+            return jsonify({
+                "success": False,
+                "error": "No patient associated with this transaction"
+            }), 400
+        
+        # Calculate date range (7 days from transaction date)
+        transaction_date = transaction.get('timestamp')
+        if isinstance(transaction_date, str):
+            transaction_date = datetime.fromisoformat(transaction_date.replace('Z', '+00:00'))
+        elif not isinstance(transaction_date, datetime):
+            transaction_date = datetime.now()
+        
+        # Get 7 days of data ending on transaction date
+        end_date = transaction_date.replace(hour=23, minute=59, second=59, microsecond=999999)
+        start_date = end_date - timedelta(days=6)
+        start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
+        
+        # Query sleep data for the patient in the date range
+        sleep_data_query = {
+            'patient_id': patient_id,
+            'event_type': 'sleep_data',
+            'timestamp': {
+                '$gte': start_date,
+                '$lte': end_date
+            }
+        }
+        
+        sleep_records = list(medical_data_collection.find(sleep_data_query).sort('timestamp', 1))
+        
+        # Initialize weekly data structure
+        days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+        quality_data = [0] * 7
+        duration_data = [0] * 7
+        
+        # Process each sleep record
+        for record in sleep_records:
+            # Calculate which day of the week this record belongs to
+            record_date = record.get('timestamp')
+            if isinstance(record_date, str):
+                record_date = datetime.fromisoformat(record_date.replace('Z', '+00:00'))
+            
+            # Calculate days from start date (0-6)
+            days_from_start = (record_date.date() - start_date.date()).days
+            
+            if 0 <= days_from_start < 7:
+                # Extract sleep data
+                sleep_data = record.get('data', {}).get('sleep', {})
+                sleep_pattern = sleep_data.get('sleep_pattern', '')
+                
+                if sleep_pattern:
+                    # Analyze sleep pattern
+                    awake = sleep_pattern.count('0')
+                    light = sleep_pattern.count('1')
+                    deep = sleep_pattern.count('2')
+                    total = len(sleep_pattern)
+                    
+                    if total > 0:
+                        # Calculate sleep duration (in hours)
+                        total_minutes = total * 5  # Each digit = 5 minutes
+                        duration_hours = total_minutes / 60
+                        
+                        # Calculate sleep quality (0-100)
+                        sleep_efficiency = ((light + deep) / total) * 100
+                        deep_sleep_ratio = (deep / (light + deep)) * 100 if (light + deep) > 0 else 0
+                        awake_percentage = (awake / total) * 100
+                        
+                        quality_score = round(
+                            (sleep_efficiency * 0.4) + 
+                            (deep_sleep_ratio * 0.3) + 
+                            ((100 - awake_percentage) * 0.3)
+                        )
+                        
+                        # Update weekly data (use the best score for each day if multiple records)
+                        if quality_data[days_from_start] == 0 or quality_score > quality_data[days_from_start]:
+                            quality_data[days_from_start] = quality_score
+                            duration_data[days_from_start] = round(duration_hours, 1)
+        
+        # Convert ObjectIds to strings
+        def convert_objectids(obj):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    if isinstance(value, dict):
+                        convert_objectids(value)
+                    elif isinstance(value, list):
+                        for item in value:
+                            convert_objectids(item)
+                    elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
+                        obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
+            elif isinstance(obj, list):
+                for item in obj:
+                    convert_objectids(item)
+            return obj
+        
+        # Prepare response data
+        response_data = {
+            'transaction_id': str(transaction['_id']),
+            'patient_id': str(patient_id),
+            'date_range': {
+                'start': start_date.isoformat(),
+                'end': end_date.isoformat()
+            },
+            'weekly_data': {
+                'days': days,
+                'quality_data': quality_data,
+                'duration_data': duration_data
+            }
+        }
+        
+        return jsonify({
+            "success": True,
+            "data": response_data
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting weekly sleep data: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/kati-transactions/<transaction_id>/vital-signs-details')
+@login_required
+def get_vital_signs_details(transaction_id):
+    """Get detailed vital signs data for a specific transaction"""
+    try:
+        # Check if MongoDB connection is available
+        if mqtt_monitor.db is None:
+            return jsonify({
+                "success": False,
+                "error": "Database connection not available"
+            }), 503
+
+        # Get the transaction from medical_data collection
+        medical_data_collection = mqtt_monitor.db['medical_data']
+        transaction = medical_data_collection.find_one({'_id': ObjectId(transaction_id)})
+        
+        if not transaction:
+            return jsonify({
+                "success": False,
+                "error": "Transaction not found"
+            }), 404
+        
+        # Check if this is a vital signs transaction
+        if transaction.get('topic') != 'iMEDE_watch/VitalSign' and transaction.get('event_type') != 'vital_signs':
+            return jsonify({
+                "success": False,
+                "error": "This transaction is not a vital signs record"
+            }), 400
+        
+        # Get patient information
+        patient_info = None
+        enhanced_patient_info = None
+        
+        if transaction.get('patient_id'):
+            try:
+                patient = mqtt_monitor.db.patients.find_one({'_id': transaction['patient_id']})
+                if patient:
+                    patient_info = {
+                        'patient_id': str(patient['_id']),
+                        'first_name': patient.get('first_name', ''),
+                        'last_name': patient.get('last_name', ''),
+                        'profile_image': patient.get('profile_image', ''),
+                        'date_of_birth': patient.get('date_of_birth'),
+                        'gender': patient.get('gender'),
+                        'phone': patient.get('phone'),
+                        'email': patient.get('email'),
+                        'address': patient.get('address'),
+                        'emergency_contact': patient.get('emergency_contact'),
+                        'medical_history': patient.get('medical_history', []),
+                        'medications': patient.get('medications', []),
+                        'underlying_conditions': patient.get('underlying_conditions', []),
+                        'allergies': patient.get('allergies', [])
+                    }
+                    
+                    # Add hospital and ward information if available
+                    if patient.get('hospital_ward_data'):
+                        hospital_ward_data = patient['hospital_ward_data']
+                        if isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
+                            hospital_info = hospital_ward_data[0]
+                            enhanced_patient_info['hospital_name'] = hospital_info.get('hospital_name', '')
+                            enhanced_patient_info['ward_name'] = hospital_info.get('ward_name', '')
+                        elif isinstance(hospital_ward_data, dict):
+                            enhanced_patient_info['hospital_name'] = hospital_ward_data.get('hospital_name', '')
+                            enhanced_patient_info['ward_name'] = hospital_ward_data.get('ward_name', '')
+                    
+            except Exception as e:
+                logger.warning(f"Error getting patient info: {e}")
+        
+        # Extract vital signs data
+        vital_signs_data = transaction.get('data', {})
+        
+        # Format the vital signs data for display
+        formatted_vital_signs = {
+            'heart_rate': {
+                'value': vital_signs_data.get('heartRate'),
+                'unit': 'bpm',
+                'status': 'Normal' if 60 <= vital_signs_data.get('heartRate', 0) <= 100 else 'Abnormal',
+                'normal_range': '60-100 bpm'
+            },
+            'blood_pressure': {
+                'systolic': vital_signs_data.get('bloodPressure', {}).get('bp_sys'),
+                'diastolic': vital_signs_data.get('bloodPressure', {}).get('bp_dia'),
+                'unit': 'mmHg',
+                'status': 'Normal' if (90 <= vital_signs_data.get('bloodPressure', {}).get('bp_sys', 0) <= 140 and 
+                                      60 <= vital_signs_data.get('bloodPressure', {}).get('bp_dia', 0) <= 90) else 'Abnormal',
+                'normal_range': '90-140/60-90 mmHg'
+            },
+            'body_temperature': {
+                'value': vital_signs_data.get('bodyTemperature'),
+                'unit': '°C',
+                'status': 'Normal' if 36.1 <= vital_signs_data.get('bodyTemperature', 0) <= 37.2 else 'Abnormal',
+                'normal_range': '36.1-37.2°C'
+            },
+            'spO2': {
+                'value': vital_signs_data.get('spO2'),
+                'unit': '%',
+                'status': 'Normal' if vital_signs_data.get('spO2', 0) >= 95 else 'Abnormal',
+                'normal_range': '≥95%'
+            },
+            'signal_gsm': {
+                'value': vital_signs_data.get('signalGSM'),
+                'unit': '%',
+                'status': 'Good' if vital_signs_data.get('signalGSM', 0) >= 70 else 'Poor',
+                'normal_range': '≥70%'
+            },
+            'battery': {
+                'value': vital_signs_data.get('battery'),
+                'unit': '%',
+                'status': 'Good' if vital_signs_data.get('battery', 0) >= 20 else 'Low',
+                'normal_range': '≥20%'
+            }
+        }
+        
+        # Add location information if available
+        location_info = None
+        if vital_signs_data.get('location'):
+            location_data = vital_signs_data['location']
+            location_info = {
+                'gps': location_data.get('GPS', {}),
+                'wifi': location_data.get('WiFi', []),
+                'lbs': location_data.get('LBS', {})
+            }
+        
+        # Convert ObjectIds to strings
+        def convert_objectids(obj):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    if isinstance(value, dict):
+                        convert_objectids(value)
+                    elif isinstance(value, list):
+                        for item in value:
+                            convert_objectids(item)
+                    elif hasattr(value, '__class__') and value.__class__.__name__ == 'ObjectId':
+                        obj[key] = str(value)
+                    elif hasattr(value, 'isoformat'):  # Handle datetime objects
+                        obj[key] = value.isoformat()
+            elif isinstance(obj, list):
+                for item in obj:
+                    convert_objectids(item)
+            return obj
+        
+        # Convert the response data
+        response_data = {
+            'transaction_id': str(transaction['_id']),
+            'timestamp': transaction.get('timestamp'),
+            'device_id': transaction.get('device_id'),
+            'imei': vital_signs_data.get('IMEI'),
+            'patient_info': patient_info,
+            'enhanced_patient_info': enhanced_patient_info,
+            'vital_signs': convert_objectids(formatted_vital_signs),
+            'location': convert_objectids(location_info),
+            'raw_data': convert_objectids(vital_signs_data)
+        }
+        
+        return jsonify({
+            "success": True,
+            "data": response_data
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting vital signs details: {e}")
         return jsonify({"success": False, "error": str(e)}), 500
 
 if __name__ == '__main__':
