@@ -640,16 +640,21 @@
         // Load medical data
         async function loadMedicalData() {
             try {
+                console.log('🔍 Loading medical data...');
                 const response = await fetch('/api/recent-medical-data');
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('📊 API Response:', data);
                     if (data.success) {
                         medicalData = data.data.recent_medical_data || [];
+                        console.log('📊 Medical data loaded:', medicalData.length, 'records');
                         displayMedicalData();
                         updateStatistics();
                     } else {
                         console.error('Failed to load medical data:', data.error);
                     }
+                } else {
+                    console.error('HTTP Error:', response.status, response.statusText);
                 }
             } catch (error) {
                 console.error('Error loading medical data:', error);
@@ -658,19 +663,29 @@
 
         // Display medical data in table
         function displayMedicalData() {
+            console.log('🎯 Displaying medical data...');
             const tbody = document.getElementById('medical-data-tbody');
+            if (!tbody) {
+                console.error('❌ Could not find medical-data-tbody element');
+                return;
+            }
             tbody.innerHTML = '';
             
             const filteredData = currentDeviceFilter === 'all' 
                 ? medicalData 
                 : medicalData.filter(item => item.device_type === currentDeviceFilter);
             
+            console.log('📊 Filtered data:', filteredData.length, 'records');
+            
             filteredData.forEach(item => {
                 const row = createMedicalDataRow(item);
                 tbody.appendChild(row);
             });
             
-            document.getElementById('data-count').textContent = filteredData.length;
+            const dataCountElement = document.getElementById('data-count');
+            if (dataCountElement) {
+                dataCountElement.textContent = filteredData.length;
+            }
         }
 
         // Create medical data row
@@ -801,6 +816,24 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Medical Monitor page loaded!');
+            
+            // Add a test element to verify the page is working
+            const testElement = document.createElement('div');
+            testElement.innerHTML = '<div class="alert alert-info">✅ Medical Monitor page loaded successfully!</div>';
+            testElement.style.position = 'fixed';
+            testElement.style.top = '10px';
+            testElement.style.right = '10px';
+            testElement.style.zIndex = '9999';
+            document.body.appendChild(testElement);
+            
+            // Remove test element after 5 seconds
+            setTimeout(() => {
+                if (testElement.parentNode) {
+                    testElement.parentNode.removeChild(testElement);
+                }
+            }, 5000);
+            
             initializeSocket();
             loadMedicalData();
             
