@@ -695,7 +695,29 @@
             const timestamp = new Date(item.timestamp).toLocaleString();
             const deviceType = item.raw_data?.device_type || 'Unknown';
             const deviceId = item.device_id || 'N/A';
-            const patientName = item.patient_name || 'Unknown';
+            
+            // Enhanced patient information display
+            let patientDisplay = 'Unknown Patient';
+            let patientDetails = '';
+            
+            if (item.patient_info) {
+                const firstName = item.patient_info.first_name || '';
+                const lastName = item.patient_info.last_name || '';
+                const hospitalName = item.patient_info.hospital_info?.hospital_name || '';
+                const wardName = item.patient_info.hospital_info?.ward_name || '';
+                
+                if (firstName || lastName) {
+                    patientDisplay = `${firstName} ${lastName}`.trim();
+                }
+                
+                if (hospitalName || wardName) {
+                    patientDetails = `${hospitalName}${hospitalName && wardName ? ' - ' : ''}${wardName}`;
+                }
+            } else {
+                // Fallback to basic patient name
+                patientDisplay = item.patient_name || 'Unknown Patient';
+            }
+            
             const dataType = item.medical_values?.data_type || 'General';
             const status = item.status || 'processed';
             
@@ -711,7 +733,10 @@
                 <td>
                     <code>${deviceId}</code>
                 </td>
-                <td>${patientName}</td>
+                <td>
+                    <div class="fw-bold">${patientDisplay}</div>
+                    ${patientDetails ? `<small class="text-muted">${patientDetails}</small>` : ''}
+                </td>
                 <td>
                     <span class="badge bg-primary">${dataType}</span>
                 </td>
