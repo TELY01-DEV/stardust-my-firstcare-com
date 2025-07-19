@@ -2429,7 +2429,7 @@ def get_recent_medical_data():
                                 # Handle different data structures
                                 if isinstance(hospital_ward_data, dict):
                                     hospital_id = hospital_ward_data.get('hospitalId')
-                                    if hospital_id:
+                                    if hospital_id and ObjectId.is_valid(hospital_id):
                                         # Get hospital information from AMY.hospitals collection
                                         hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
                                         if hospital:
@@ -2450,7 +2450,7 @@ def get_recent_medical_data():
                                                 for ward in ward_list:
                                                     if ward.get('hospital_id') == hospital_id:
                                                         ward_id = ward.get('ward_id')
-                                                        if ward_id:
+                                                        if ward_id and ObjectId.is_valid(ward_id):
                                                             # Lookup ward name from AMY.ward_lists collection
                                                             ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
                                                             if ward_info:
@@ -2472,7 +2472,7 @@ def get_recent_medical_data():
                                     first_hospital = hospital_ward_data[0]
                                     if isinstance(first_hospital, dict):
                                         hospital_id = first_hospital.get('hospitalId')
-                                        if hospital_id:
+                                        if hospital_id and ObjectId.is_valid(hospital_id):
                                             # Get hospital information from AMY.hospitals collection
                                             hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
                                             if hospital:
@@ -2493,7 +2493,7 @@ def get_recent_medical_data():
                                                     for ward in ward_list:
                                                         if ward.get('hospital_id') == hospital_id:
                                                             ward_id = ward.get('ward_id')
-                                                            if ward_id:
+                                                            if ward_id and ObjectId.is_valid(ward_id):
                                                                 # Lookup ward name from AMY.ward_lists collection
                                                                 ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
                                                                 if ward_info:
@@ -2907,7 +2907,7 @@ def get_kati_transactions():
                             # Handle different data structures
                             if isinstance(hospital_ward_data, dict):
                                 hospital_id = hospital_ward_data.get('hospitalId')
-                                if hospital_id:
+                                if hospital_id and ObjectId.is_valid(hospital_id):
                                     # Get hospital information from AMY.hospitals collection
                                     hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
                                     if hospital:
@@ -2928,7 +2928,7 @@ def get_kati_transactions():
                                             for ward in ward_list:
                                                 if ward.get('hospital_id') == hospital_id:
                                                     ward_id = ward.get('ward_id')
-                                                    if ward_id:
+                                                    if ward_id and ObjectId.is_valid(ward_id):
                                                         # Lookup ward name from AMY.ward_lists collection
                                                         ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
                                                         if ward_info:
@@ -2944,13 +2944,13 @@ def get_kati_transactions():
                                                         else:
                                                             enhanced_transaction['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
                                                             enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
-                                                    break
+                                                        break
                             elif isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
                                 # Handle case where hospital_ward_data is a list
                                 first_hospital = hospital_ward_data[0]
                                 if isinstance(first_hospital, dict):
                                     hospital_id = first_hospital.get('hospitalId')
-                                    if hospital_id:
+                                    if hospital_id and ObjectId.is_valid(hospital_id):
                                         # Get hospital information from AMY.hospitals collection
                                         hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
                                         if hospital:
@@ -2971,7 +2971,7 @@ def get_kati_transactions():
                                                 for ward in ward_list:
                                                     if ward.get('hospital_id') == hospital_id:
                                                         ward_id = ward.get('ward_id')
-                                                        if ward_id:
+                                                        if ward_id and ObjectId.is_valid(ward_id):
                                                             # Lookup ward name from AMY.ward_lists collection
                                                             ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
                                                             if ward_info:
@@ -3137,7 +3137,7 @@ def get_all_kati_devices():
                             # Handle different data structures
                             if isinstance(hospital_ward_data, dict):
                                 hospital_id = hospital_ward_data.get('hospitalId')
-                                if hospital_id:
+                                if hospital_id and ObjectId.is_valid(hospital_id):
                                     # Get hospital information from AMY.hospitals collection
                                     hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
                                     if hospital:
@@ -3158,7 +3158,7 @@ def get_all_kati_devices():
                                             for ward in ward_list:
                                                 if ward.get('hospital_id') == hospital_id:
                                                     ward_id = ward.get('ward_id')
-                                                    if ward_id:
+                                                    if ward_id and ObjectId.is_valid(ward_id):
                                                         # Lookup ward name from AMY.ward_lists collection
                                                         ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
                                                         if ward_info:
@@ -3174,13 +3174,13 @@ def get_all_kati_devices():
                                                         else:
                                                             enhanced_transaction['patient_info']['hospital_info']['ward_name'] = 'Unknown Ward'
                                                             enhanced_transaction['patient_info']['hospital_info']['ward_id'] = str(ward_id)
-                                                    break
+                                                        break
                             elif isinstance(hospital_ward_data, list) and len(hospital_ward_data) > 0:
                                 # Handle case where hospital_ward_data is a list
                                 first_hospital = hospital_ward_data[0]
                                 if isinstance(first_hospital, dict):
                                     hospital_id = first_hospital.get('hospitalId')
-                                    if hospital_id:
+                                    if hospital_id and ObjectId.is_valid(hospital_id):
                                         # Get hospital information from AMY.hospitals collection
                                         hospital = mqtt_monitor.db.hospitals.find_one({'_id': ObjectId(hospital_id)})
                                         if hospital:
@@ -3201,7 +3201,7 @@ def get_all_kati_devices():
                                                 for ward in ward_list:
                                                     if ward.get('hospital_id') == hospital_id:
                                                         ward_id = ward.get('ward_id')
-                                                        if ward_id:
+                                                        if ward_id and ObjectId.is_valid(ward_id):
                                                             # Lookup ward name from AMY.ward_lists collection
                                                             ward_info = mqtt_monitor.db.ward_lists.find_one({'_id': ObjectId(ward_id)})
                                                             if ward_info:
